@@ -1,0 +1,29 @@
+{
+  "name": "dat-registry",
+  "version": "1.0.0",
+  "description": "a registry for dats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karissamck/dat-registry.git"
+  },
+  "keywords": [
+    "data",
+    "registry",
+    "web"
+  ],
+  "author": "karissa",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/karissamck/dat-registry/issues"
+  },
+  "homepage": "https://github.com/karissamck/dat-registry",
+  "dependencies": {
+    "debug": "^2.0.0",
+    "github-oauth": "^0.1.1",
+    "routes-router": "^4.1.1"
+  }
+}
