@@ -1,4 +1,5 @@
-var server = require('server')
+var Server = require('./server')
 
 var port = process.env['DAT_REGISTRY_PORT']
-server.listen(port)
+var datRegistryServer = Server()
+datRegistryServer.listen(port)

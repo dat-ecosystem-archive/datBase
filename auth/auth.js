@@ -1,4 +1,4 @@
-var github = require('github')
+var github = require('./github')
 
 module.exports = Auth
 
