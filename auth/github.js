@@ -1,7 +1,9 @@
+var config = require('../config')
+
 githubOAuth = require('github-oauth')({
-  githubClient: process.env['GITHUB_CLIENT'],
-  githubSecret: process.env['GITHUB_SECRET'],
-  baseURL: process.env['DAT_REGISTRY_HOSTNAME'] || 'http://localhost:5000',
+  githubClient: config['GITHUB_CLIENT'],
+  githubSecret: config['GITHUB_SECRET'],
+  baseURL: config['DAT_REGISTRY_HOST'] || 'http://localhost:5000',
   loginURI: '/auth/login',
   callbackURI: '/auth/callback',
   scope: 'user' // optional, default scope is set to user
@@ -15,4 +17,5 @@ githubOAuth.on('token', function(token, serverResponse) {
   console.log('here is your shiny new github oauth token', token)
   serverResponse.end(JSON.stringify(token))
 })
+
 module.exports = githubOAuth

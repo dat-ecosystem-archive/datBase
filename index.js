@@ -1,5 +1,7 @@
 var Server = require('./server')
+var config = require('./config')
 
-var port = process.env['DAT_REGISTRY_PORT'] || 5000
+var port = config['DAT_REGISTRY_PORT']
+console.log(config)
 var datRegistryServer = new Server()
 datRegistryServer.listen(port)
