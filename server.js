@@ -1,19 +1,29 @@
 var http = require('http')
 var debug = require('debug')('server')
 var Router = require('routes-router')
-var Auth = require('./auth/auth')
+var auth = require('./auth/auth')
 
 module.exports = Server
 
-function Server() {
-  this.auth = Auth()
-}
+function Server(opts) {}
 
 Server.prototype.createRoutes = function() {
-  var router = Router()
-  router.addRoute('/login/', this.auth.login)
-  router.addRoute('/auth-callback/', this.auth.callback)
-  router.addRoute('/logout/', this.auth.logout)
+  var router = Router({
+    errorHandler: function (req, res) {
+      res.statusCode = 500
+      res.end("no u")
+    },
+    notFound: function (req, res) {
+      res.statusCode = 404
+      res.end("oh noes")
+    }
+  })
+
+  // Authentication
+  router.addRoute('/auth/login/', auth.login)
+  router.addRoute('/auth/callback/', auth.callback)
+  router.addRoute('/auth/logout/', auth.logout)
+
   return router
 }
 
