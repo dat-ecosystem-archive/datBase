@@ -1,19 +1,26 @@
-var github = require('./github')
+var githubOAuth = require('./github')
 
-module.exports = Auth
+module.exports = function(opts) {
 
-var providers = {
-  "github": github
-}
+  var that = {}
 
-function Auth() {}
+  _getProvider = function(providerName) {
+    // always returns github right now.
+    // TODO: add more providers than just github
+    return githubOAuth
+  }
 
-Auth.prototype.login = function (req, res, opts) {
-  var provider = providers[opts.provider]
-  provider.login(req, res)
-}
+  that.login = function(req, res, opts) {
+    return _getProvider(opts.provider).login(req, res)
+  }
 
-Auth.prototype.logout = function (req, res, opts) {
-  var provider = providers[opts.provider]
-  provider.callback(req, res)
+  that.callback = function(req, res, opts) {
+    return _getProvider(opts.provider).callback(req, res)
+  }
+
+  that.logout = function(req, res, opts) {
+    return 'logout'
+  }
+
+  return that
 }
