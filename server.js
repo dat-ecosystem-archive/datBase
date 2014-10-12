@@ -1,7 +1,10 @@
 var http = require('http')
 var debug = require('debug')('server')
 var Router = require('routes-router')
-var auth = require('./auth/auth')
+var fs = require('fs')
+var st = require("st")
+
+var auth = require('./auth/auth.js')
 
 module.exports = Server
 
@@ -19,6 +22,13 @@ Server.prototype.createRoutes = function() {
     }
   })
 
+  router.addRoute('/', this.index)
+
+  router.addRoute("/static/*", st({
+      path: __dirname + "/static",
+      url: "/static"
+  }))
+
   // Authentication
   router.addRoute('/auth/login/', auth.login)
   router.addRoute('/auth/callback/', auth.callback)
@@ -33,3 +43,6 @@ Server.prototype.listen = function (port) {
   console.log('listening on port ' + port)
 }
 
+Server.prototype.index = function(req, res) {    
+  res.end(fs.readFileSync('./index.html').toString())
+}

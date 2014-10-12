@@ -24,6 +24,7 @@
   "dependencies": {
     "debug": "^2.0.0",
     "github-oauth": "^0.1.1",
+    "less": "^1.7.5",
     "routes-router": "^4.1.1"
   }
 }
