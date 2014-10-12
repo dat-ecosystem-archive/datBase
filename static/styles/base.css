@@ -35,7 +35,7 @@ a {
 .header-logo {
   display: inline-block;
   font-weight: 600;
-  font-size: 48px;
+  font-size: 36px;
   background-image: url('/static/img/dat-hex-small.png');
   background-size: 40px;
   background-repeat: no-repeat;
@@ -204,6 +204,7 @@ a {
   width: 25%;
   float: right;
   margin: 20px;
+  margin-right: 200px;
 }
 .content-text-h1 {
   font-size: 36px;
@@ -398,6 +399,9 @@ a {
   .header-nav {
     background-image: none;
     position: inherit;
+  }
+  .header-search-box {
+    margin-right: 20px;
   }
   .header-nav-links {
     margin-right: 0px;
