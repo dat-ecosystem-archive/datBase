@@ -6000,9 +6000,6 @@ body {
   background-repeat: no-repeat;
   background-position: 120% -10px;
 }
-a {
-  transition: all 0.25s ease;
-}
 .header a,
 .header a:visited {
   color: #2a3749;
@@ -6032,7 +6029,7 @@ a {
   opacity: 0.9;
   background-color: #fdfdfd;
   font-weight: 700;
-  color: #2a3749;
+  color: #2A3749;
   font-size: 20px;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -6239,7 +6236,7 @@ a {
 }
 .content-card-small-stripe {
   height: 96px;
-  background-color: #2a3749;
+  background-color: #2A3749;
 }
 .content-card-small-avatar {
   background-color: #fff;
@@ -6272,7 +6269,7 @@ a {
   display: inline-block;
 }
 .footer {
-  background-color: #2a3749;
+  background-color: #2A3749;
   overflow: auto;
   color: #959ba4;
 }
@@ -6378,10 +6375,6 @@ a {
     background-image: none;
     position: inherit;
   }
-  .header-nav-links {
-    margin-right: 0px;
-    margin: 15px;
-  }
   .header-info {
     padding: 20px;
   }
@@ -6391,7 +6384,8 @@ a {
   .header-description {
     width: auto;
   }
-  .header-nav-list li {
+  .header-nav-list,
+  .header .button {
     display: none;
   }
   .footer-directory {
