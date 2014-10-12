@@ -23,3 +23,4 @@ exports.callback = function(req, res, opts) {
 exports.logout = function(req, res, opts) {
   return 'logout'
 }
+

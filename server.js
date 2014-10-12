@@ -26,7 +26,6 @@ Server.prototype.createRoutes = function() {
 
   return router
 }
-
 Server.prototype.listen = function (port) {
   var router = this.createRoutes()
   var server = http.createServer(router)
