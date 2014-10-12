@@ -1,4 +1,4 @@
-var config = require('../config')
+var config = require('../../config')
 
 githubOAuth = require('github-oauth')({
   githubClient: config['GITHUB_CLIENT'],
