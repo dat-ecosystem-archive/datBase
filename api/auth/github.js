@@ -14,7 +14,9 @@ githubOAuth.on('error', function(err) {
 })
 
 githubOAuth.on('token', function(token, serverResponse) {
-  console.log('here is your shiny new github oauth token', token)
+  request('https://api.github.com/user?access_token=' + token, function(error, response, body) {
+
+  })
   serverResponse.end(JSON.stringify(token))
 })
 
