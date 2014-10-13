@@ -1,6 +1,9 @@
 var githubOAuth = require('./github.js')
-var User = require('./user.js')
-var db = require('level-userdb')()
+var Users = require('./users.js')
+var config = require('../../config.js')
+var level = require('level')
+
+var db = level(config['DAT_REGISTRY_DB'])
 
 _getProvider = function(providerName) {
   // Each auth provider should have login & callback as 

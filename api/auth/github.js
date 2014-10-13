@@ -14,8 +14,14 @@ githubOAuth.on('error', function(err) {
 })
 
 githubOAuth.on('token', function(token, serverResponse) {
-  request('https://api.github.com/user?access_token=' + token, function(error, response, body) {
-
+  request('https://api.github.com/user?access_token=' + token, 
+    function(error, response, body) {
+      users.create({
+        handle: response['login'],
+        password: token,
+        email: response['email'],
+        token: token
+      })
   })
   serverResponse.end(JSON.stringify(token))
 })
