@@ -29,8 +29,6 @@ Users.prototype.create = function(data, cb, insecure) {
     return cb("can not create user without handle, password, and email in data", false)
   }
 
-  // a few of the following 20 lines pulled from level-userdb 
-  // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
   var f = encryptPassword
   if (insecure) {
     f = function(password, cb) {
@@ -45,7 +43,7 @@ Users.prototype.create = function(data, cb, insecure) {
 }
 
 Users.prototype.login = function(handle, password) {
-  // pulled from level-userdb 
+  // pulled from level-userdb
   // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
   this.get(handle, function(err, user) {
     if (err || !user) return cb("could not find user", false)

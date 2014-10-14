@@ -6,11 +6,12 @@ function test(name, testFunction) {
 }
 
 var tests = [
-  require('./tests/auth.js'),
+  require('./tests/authTests.js'),
 ]
 
-var finish = require('./tests/finish.js')
 
+var specificTestFile = process.argv[2]
+var specificTest = process.argv[3]
 
 if (specificTestFile) {
   var testModule = require('./' + path.relative(__dirname, specificTestFile))
