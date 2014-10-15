@@ -42,7 +42,7 @@ Users.prototype.create = function(data, cb, insecure) {
   })
 }
 
-Users.prototype.login = function(handle, password) {
+Users.prototype.login = function(handle, password, cb) {
   // pulled from level-userdb
   // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
   this.get(handle, function(err, user) {

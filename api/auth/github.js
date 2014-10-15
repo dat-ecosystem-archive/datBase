@@ -1,4 +1,6 @@
 var config = require('../../config')
+var models = require('../models.js')
+
 
 githubOAuth = require('github-oauth')({
   githubClient: config['GITHUB_CLIENT'],
@@ -14,16 +16,17 @@ githubOAuth.on('error', function(err) {
 })
 
 githubOAuth.on('token', function(token, serverResponse) {
-  request('https://api.github.com/user?access_token=' + token, 
+  request('https://api.github.com/user?access_token=' + token,
     function(error, response, body) {
       users.create({
         handle: response['login'],
         password: token,
         email: response['email'],
         token: token
+      }, function (err, id) {
+        serverResponse.end(JSON.stringify(id))
       })
   })
-  serverResponse.end(JSON.stringify(token))
 })
 
 module.exports = githubOAuth

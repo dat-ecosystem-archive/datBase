@@ -1,16 +1,12 @@
+var emailProvider = require('./email.js')
 var githubOAuth = require('./github.js')
-var Users = require('./users.js')
-var config = require('../../config.js')
-var level = require('level')
-
-var db = level(config['DAT_REGISTRY_DB'])
 
 _getProvider = function(providerName) {
-  // Each auth provider should have login & callback as 
+  // Each auth provider should have login & callback as
   // available static functions on the exported module
   // Always returns email right now.
   // TODO: add more providers than just github
-  return githubOAuth
+  return emailProvider
 }
 
 exports.create = function(req, res, opts) {

@@ -37,6 +37,6 @@ Server.prototype.listen = function (router, port) {
   console.log('listening on port ' + port)
 }
 
-Server.prototype.index = function(req, res) {    
+Server.prototype.index = function(req, res) {
   res.end(fs.readFileSync('./index.html').toString())
 }
