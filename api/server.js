@@ -2,6 +2,7 @@ var http = require('http')
 var debug = require('debug')('server')
 var Router = require('routes-router')
 var fs = require('fs')
+var jsonBody = require("body")
 
 var auth = require('./auth/auth.js')
 
@@ -31,6 +32,9 @@ Server.prototype.createRoutes = function() {
 
   return router
 }
+
+
+
 Server.prototype.listen = function (router, port) {
   var server = http.createServer(router)
   server.listen(port)

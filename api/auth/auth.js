@@ -11,7 +11,7 @@ _getProvider = function(providerName) {
 
 exports.create = function(req, res, opts) {
   // create an account
-  return _getProvider(opts.provider).callback(req, res)
+  return _getProvider(opts.provider).create(req, res)
 }
 
 exports.login = function(req, res, opts) {

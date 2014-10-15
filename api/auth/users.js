@@ -29,13 +29,15 @@ Users.prototype.create = function(data, cb, insecure) {
     return cb("can not create user without handle, password, and email in data", false)
   }
 
-  var f = encryptPassword
-  if (insecure) {
-    f = function(password, cb) {
+  var encryptPassword = function(password, cb) {
+    if (insecure) {
       return cb(null, password)
     }
+    else {
+      return bcrypt.hash(password, 10, cb)
+    }
   }
-  f(password, function(err, pass) {
+  encryptPassword(data['password'], function(err, pass) {
     data['password'] = pass
     data['createdTimestamp'] = new Date().getTime()
     self.save(data, cb)

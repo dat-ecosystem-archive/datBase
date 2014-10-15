@@ -23,6 +23,7 @@
   "homepage": "https://github.com/karissamck/dat-registry",
   "dependencies": {
     "bcrypt": "^0.8.0",
+    "body": "^4.5.0",
     "debug": "^2.0.0",
     "github-oauth": "^0.1.1",
     "less": "^1.7.5",

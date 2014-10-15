@@ -7,15 +7,18 @@ var testuser = {
   'email': 'testuser@email.com'
 }
 
-
 module.exports.createUser = function(test, common) {
   test('/auth/create/ success', function(t) {
     common.getRegistry(test, function(err, models) {
-      request.post('http://localhost:5000/auth/create/', testuser, function(err, result) {
+      request({
+        method: 'POST',
+        uri: 'http://localhost:5000/auth/create/',
+        json: testuser
+      }, function(err, result) {
         if (err) throw err
         models.users.get(testuser['handle'], function(err, user) {
           if (err) throw err
-          t.deepEqual(user, testuser)
+          t.equal(user.handle, testuser.handle)
           t.end()
         })
       })
