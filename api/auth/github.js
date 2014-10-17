@@ -37,7 +37,7 @@ githubOAuth.on('token', function(token, serverResponse) {
       }
     }, function (err, id) {
       if (err) throw err
-      serverResponse.end(JSON.stringify(id))
+      serverResponse.end(JSON.stringify({'handle': id}))
     })
   }
 
