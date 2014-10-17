@@ -1,6 +1,7 @@
+var request = require('request')
+
 var config = require('../../config')
 var models = require('../models.js')
-
 
 githubOAuth = require('github-oauth')({
   githubClient: config['GITHUB_CLIENT'],
@@ -16,17 +17,36 @@ githubOAuth.on('error', function(err) {
 })
 
 githubOAuth.on('token', function(token, serverResponse) {
-  request('https://api.github.com/user?access_token=' + token,
-    function(error, response, body) {
-      users.create({
-        handle: response['login'],
-        password: token,
-        email: response['email'],
-        token: token
-      }, function (err, id) {
-        serverResponse.end(JSON.stringify(id))
-      })
-  })
+  var params = {
+    url: 'https://api.github.com/user?access_token=' + token.access_token,
+    headers: {
+        'User-Agent': 'datproject.dat-registry'
+    },
+    json: true
+  }
+
+  function callback(err, response, body) {
+    if (err) throw err
+    models.users.create({
+      handle: body.login,
+      password: token.access_token,
+      email: body.email,
+      github: {
+        token: token.access_token,
+        account: body
+      }
+    }, function (err, id) {
+      if (err) throw err
+      serverResponse.end(JSON.stringify(id))
+    })
+  }
+
+  if (!token.access_token) {
+    serverResponse.end('improper access token')
+  }
+  else {
+    request(params, callback)
+  }
 })
 
 module.exports = githubOAuth

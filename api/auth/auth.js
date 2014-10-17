@@ -1,17 +1,16 @@
 var emailProvider = require('./email.js')
 var githubOAuth = require('./github.js')
 
+exports.create = function(req, res, opts) {
+  // create an account
+  return emailProvider.create(req, res)
+}
+
 _getProvider = function(providerName) {
   // Each auth provider should have login & callback as
   // available static functions on the exported module
-  // Always returns email right now.
   // TODO: add more providers than just github
-  return emailProvider
-}
-
-exports.create = function(req, res, opts) {
-  // create an account
-  return _getProvider(opts.provider).create(req, res)
+  return githubOAuth
 }
 
 exports.login = function(req, res, opts) {

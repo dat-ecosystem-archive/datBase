@@ -15,7 +15,7 @@ module.exports = function() {
     var server = new Server()
     var router = server.createRoutes()
     server.listen(router, port)
-    cb('win', models)
+    cb(null, models)
   }
 
   return common

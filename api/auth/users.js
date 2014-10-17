@@ -2,6 +2,7 @@ var Models = require('level-orm')
 var level = require('level')
 var util = require('util')
 var bcrypt = require('bcrypt')
+var debug = require('debug')('users')
 
 module.exports = Users
 
@@ -17,16 +18,17 @@ Users.prototype.create = function(data, cb, insecure) {
   //
   // Parameters
   // - data: object
-  //   expects handle, password, and email
+  //   expects handle, password
   // - cb: function
   //   callback when complete
   // - insecure: boolean
   //   This is for benchmarking without bcrypt hit
   //   DO NOT USE FOR ANY OTHER PURPOSE
   var self = this
+  debug("creating user " + data)
 
-  if(!data['handle'] || !data['password'] || !data['email']) {
-    return cb("can not create user without handle, password, and email in data", false)
+  if(!data['handle'] || !data['password']) {
+    return cb("can not create user without handle and password in data", false)
   }
 
   var encryptPassword = function(password, cb) {

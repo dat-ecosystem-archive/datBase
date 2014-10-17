@@ -27,7 +27,7 @@ Server.prototype.createRoutes = function() {
   // Authentication
   router.addRoute('/auth/create/', {POST: auth.create})
   router.addRoute('/auth/login/', auth.login)
-  router.addRoute('/auth/callback/', auth.callback)
+  router.addRoute('/auth/callback', auth.callback)
   router.addRoute('/auth/logout/', auth.logout)
 
   return router
