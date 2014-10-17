@@ -25,7 +25,7 @@ module.exports.createUser = function(test, common) {
           t.equal(user.handle, testUser.handle)
           t.equal(user.email, testUser.email)
           t.end()
-        })
+        }, true)
       })
     })
   })
