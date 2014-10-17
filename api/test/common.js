@@ -1,6 +1,5 @@
 var path = require('path')
 var debug = require('debug')('dat.test-common')
-
 var st = require("st")
 
 var Server = require('../../api/server.js')

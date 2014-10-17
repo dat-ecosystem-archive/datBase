@@ -6,22 +6,22 @@ var testuser = {
   'password': 'password123',
   'email': 'testuser@email.com'
 }
+var url = 'http://localhost:5000'
 
 module.exports.createUser = function(test, common) {
-  test('/auth/create/ success', function(t) {
+  test('creates a user via POST', function(t) {
     common.getRegistry(test, function(err, models) {
-      request({
-        method: 'POST',
-        uri: 'http://localhost:5000/auth/create/',
-        json: testuser
-      }, function(err, result) {
-        if (err) throw err
-        models.users.get(testuser['handle'], function(err, user) {
-          if (err) throw err
+      request({method: 'POST', uri: url + '/auth/create/', json: testuser}, get)
+      function get(err, result, json) {
+        t.ifError(err)
+        t.equal(json.handle, testuser.handle)
+        models.users.get(json.handle, function(err, user) {
+          t.ifError(err)
           t.equal(user.handle, testuser.handle)
+          t.equal(user.email, testuser.email)
           t.end()
         })
-      })
+      }
     })
   })
 }

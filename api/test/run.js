@@ -9,6 +9,7 @@ var tests = [
   require('./tests/authTests.js'),
 ]
 
+var finish = require('./tests/finish.js')
 
 var specificTestFile = process.argv[2]
 var specificTest = process.argv[3]
