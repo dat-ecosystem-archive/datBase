@@ -1,6 +1,6 @@
 var config = {
   'DEBUG': true,
-  'DAT_REGISTRY_PORT': 5000,
+  'PORT': 5000,
   'DAT_REGISTRY_HOSTNAME': 'http://localhost',
   'DAT_REGISTRY_HOST': 'http://localhost:5000',
   'DAT_REGISTRY_DB': '/tmp/db',
