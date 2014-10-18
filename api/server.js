@@ -8,7 +8,11 @@ var auth = require('./auth/auth.js')
 
 module.exports = Server
 
-function Server(opts) {}
+function Server(opts) {
+  this.options = opts
+  this.router = this.createRoutes()
+  this.server = http.createServer(this.router)
+}
 
 Server.prototype.createRoutes = function() {
   var router = Router({
@@ -31,14 +35,6 @@ Server.prototype.createRoutes = function() {
   router.addRoute('/auth/logout/', auth.logout)
 
   return router
-}
-
-
-
-Server.prototype.listen = function (router, port) {
-  var server = http.createServer(router)
-  server.listen(port)
-  console.log('listening on port ' + port)
 }
 
 Server.prototype.index = function(req, res) {
