@@ -25,7 +25,7 @@ Users.prototype.create = function(data, cb, insecure) {
   //   This is for benchmarking without bcrypt hit
   //   DO NOT USE FOR ANY OTHER PURPOSE
   var self = this
-  debug("creating user " + data)
+  debug("creating user", data)
 
   if(!data['handle'] || !data['password']) {
     return cb("can not create user without handle and password in data", false)
