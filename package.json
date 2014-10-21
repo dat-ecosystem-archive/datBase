@@ -4,7 +4,8 @@
   "description": "a registry for dats",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "node api/test/run.js"
   },
   "repository": {
     "type": "git",
@@ -26,13 +27,15 @@
     "body": "^4.5.0",
     "bytewise": "^0.7.1",
     "debug": "^2.0.0",
+    "extend": "^2.0.0",
     "github-oauth": "^0.1.1",
     "less": "^1.7.5",
-    "level": "^0.18.0",
     "level-orm": "0.0.1",
+    "level-prebuilt": "^0.18.0",
     "level-userdb": "^0.2.2",
     "request": "^2.45.0",
-    "routes-router": "^4.1.1"
+    "routes-router": "^4.1.1",
+    "st": "^0.5.2"
   },
   "devDependencies": {
     "tape": "^3.0.0"

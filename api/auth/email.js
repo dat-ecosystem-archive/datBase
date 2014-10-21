@@ -1,14 +1,20 @@
 var level = require('level')
-var models = require('../models.js')
 var jsonBody = require("body/json")
 
-exports.create = function (req, res, opts, cb) {
+module.exports = EMail
+
+function EMail(models) {
+  this.models = models
+}
+
+EMail.prototype.create = function (req, res, opts, cb) {
+  var self = this
   jsonBody(req, res, function (err, body) {
     if (err) {
       res.statusCode = 500
       return res.end("NO U")
     }
-    models.users.create({
+    self.models.users.create({
       handle: body.handle,
       password: body.password,
       email: body.email
@@ -19,7 +25,7 @@ exports.create = function (req, res, opts, cb) {
   })
 }
 
-exports.login = function (req, res, opts, cb) {
+EMail.prototype.login = function (req, res, opts, cb) {
   jsonBody(req, res, function (err, body) {
     if (err) {
       res.statusCode = 500
@@ -28,6 +34,6 @@ exports.login = function (req, res, opts, cb) {
   })
 }
 
-exports.callback = function (req, res) {
+EMail.prototype.callback = function(req, res) {
   res.end('no callback')
 }

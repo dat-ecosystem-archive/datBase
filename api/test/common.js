@@ -2,20 +2,25 @@ var path = require('path')
 var debug = require('debug')('dat.test-common')
 var st = require("st")
 
-var Server = require('../../api/server.js')
-var models = require('../../api/models.js')
-var config = require('../../config.js')
-
-var port = config['DAT_REGISTRY_PORT']
+var Server = require('../../api')
 
 module.exports = function() {
   var common = {}
 
   common.getRegistry = function (t, cb) {
-    var server = new Server()
-    var router = server.createRoutes()
-    server.listen(router, port)
-    cb(null, models)
+    
+    var api = Server()
+    var port = api.options.PORT
+
+    api.server.listen(port, function() {
+      console.log('listening on port', port)
+      cb(null, api, done)
+    })
+    
+    function done() {
+      api.server.close()
+    }
+
   }
 
   return common

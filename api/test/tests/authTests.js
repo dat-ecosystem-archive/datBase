@@ -10,7 +10,7 @@ module.exports.createUser = function(test, common) {
       'password': 'password123',
       'email': 'testuser@email.com'
     }
-    common.getRegistry(test, function(err, models) {
+    common.getRegistry(test, function(err, api, done) {
       params = {
         method: 'POST',
         uri: url + '/auth/create/',
@@ -20,11 +20,12 @@ module.exports.createUser = function(test, common) {
         t.ifError(err)
         t.equal(res.statusCode, 200)
         t.equal(json.handle, testUser.handle)
-        models.users.get(json.handle, function(err, user) {
+        api.models.users.get(json.handle, function(err, user) {
           t.ifError(err)
           t.equal(user.handle, testUser.handle)
           t.equal(user.email, testUser.email)
           t.end()
+          done()
         }, true)
       })
     })
@@ -37,6 +38,7 @@ module.exports.loginUser = function(test, common) {
       'handle': 'testuser',
       'password': 'password123'
     }
+    t.end()
   })
 }
 
