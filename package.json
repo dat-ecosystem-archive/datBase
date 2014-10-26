@@ -33,11 +33,13 @@
     "level-orm": "0.0.1",
     "level-prebuilt": "^0.18.0",
     "level-userdb": "^0.2.2",
+    "monotonic-timestamp": "0.0.9",
     "request": "^2.45.0",
     "routes-router": "^4.1.1",
     "st": "^0.5.2"
   },
   "devDependencies": {
+    "rimraf": "^2.2.8",
     "tape": "^3.0.0"
   }
 }

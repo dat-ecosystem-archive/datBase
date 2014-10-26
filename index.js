@@ -9,6 +9,6 @@ module.exports = function(overrides) {
     path: __dirname + "/static",
     url: "/static"
   }))
-  
+
   return api
 }

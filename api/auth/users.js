@@ -1,17 +1,40 @@
-var Models = require('level-orm')
-var level = require('level')
+var RestModels = require('level-restful')
 var util = require('util')
 var bcrypt = require('bcrypt')
 var debug = require('debug')('users')
+
 
 module.exports = Users
 
 function Users(db) {
   // users is the sublevel name to user
   // handle is the primary key to user for insertion
-  Models.call(this, { db: db }, 'users', 'handle');
+  fields = [
+    {
+      'name': 'handle',
+      'type': 'string'
+    },
+    {
+      'name': 'password',
+      'type': 'string'
+    },
+    {
+      'name': 'email',
+      'type': 'string',
+      'optional': true
+    },
+    {
+      'name': 'data',
+      'type': 'object',
+      'optional': true
+    }
+  ]
+  opts = {
+    rest: false
+  }
+  RestModels.call(this, db, 'users', 'handle', fields, opts);
 }
-util.inherits(Users, Models);
+util.inherits(Users, RestModels);
 
 Users.prototype.create = function(data, cb, insecure) {
   // Creates a user given some data
@@ -25,7 +48,7 @@ Users.prototype.create = function(data, cb, insecure) {
   //   This is for benchmarking without bcrypt hit
   //   DO NOT USE FOR ANY OTHER PURPOSE
   var self = this
-  debug("creating user", data)
+  debug("creating user", data);
 
   if(!data['handle'] || !data['password']) {
     return cb("can not create user without handle and password in data", false)

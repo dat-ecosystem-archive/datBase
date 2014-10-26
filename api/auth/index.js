@@ -6,10 +6,10 @@ var githubProvider = require('./github.js')
 module.exports = function(models) {
   var provider = githubProvider(models)
   var emailProvider = new EMailProvider(models)
-  
+
   // also make the email provider accessible to the consumer (TODO restructure this)
   provider.emailProvider = emailProvider
-  
+
   return {
     create: emailProvider.create.bind(emailProvider),
     login: function(req, res, opts) {
