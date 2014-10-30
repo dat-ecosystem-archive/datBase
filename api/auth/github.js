@@ -14,7 +14,7 @@ module.exports = function(models, overrides) {
     callbackURI: '/auth/callback',
     scope: 'user' // optional, default scope is set to user
   }
-  
+
   var gh = githubOAuth(extend({}, options, overrides))
 
   gh.on('error', function(err) {
@@ -35,7 +35,7 @@ module.exports = function(models, overrides) {
     } else {
       request(params, callback)
     }
-    
+
     function callback(err, response, body) {
       debug('token verification response', {status: response.statusCode, body: body})
       // TODO don't throw
@@ -44,7 +44,7 @@ module.exports = function(models, overrides) {
         handle: body.login,
         password: token.access_token,
         email: body.email,
-        github: {
+        data: {
           token: token.access_token,
           account: body
         }
@@ -54,6 +54,6 @@ module.exports = function(models, overrides) {
       })
     }
   })
-  
+
   return gh
 }

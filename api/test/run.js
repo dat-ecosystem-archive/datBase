@@ -6,9 +6,15 @@ function test(name, testFunction) {
   return tape(common.testPrefix + name, testFunction)
 }
 
-var tests = [
-  require(path.join(__dirname, 'tests', 'authTests.js')),
+var testFiles = [
+  'authTests.js',
+  'metadatTests.js'
 ]
+
+var tests = []
+for (i in testFiles) {
+  tests.push(require(path.join(__dirname, 'tests', testFiles[i])))
+}
 
 // var finish = require(path.join(__dirname, 'tests', 'finish.js'))
 
