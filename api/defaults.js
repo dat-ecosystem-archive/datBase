@@ -3,7 +3,7 @@ var config = {
   'PORT': 5000,
   'DAT_REGISTRY_HOSTNAME': 'http://localhost',
   'DAT_REGISTRY_HOST': 'http://localhost:5000',
-  'DAT_REGISTRY_DB': '/tmp/db',
+  'DAT_REGISTRY_DB': '../data',
 
   'GITHUB_CLIENT': undefined,
   'GITHUB_SECRET': undefined

@@ -1,4 +1,4 @@
-var level = require('level')
+var level = require('level-prebuilt')
 var RestModels = require('level-restful')
 var bytewise = require('bytewise/hex')
 var util = require('util')
