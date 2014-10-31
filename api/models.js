@@ -8,9 +8,8 @@ var timestamp = require('monotonic-timestamp')
 var defaults = require('./defaults.js')
 var Users = require('./auth/users.js')
 
-// TODO pass in overrides
-module.exports = function() {
-  var db = level(defaults['DAT_REGISTRY_DB'],
+module.exports = function(opts) {
+  var db = level(opts.DAT_REGISTRY_DB,
     { keyEncoding: bytewise, valueEncoding: 'json' })
 
   return {

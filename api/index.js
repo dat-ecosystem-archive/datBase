@@ -20,7 +20,7 @@ function Server(overrides) {
   if (!(self instanceof Server)) return new Server(overrides)
   self.options = extend({}, defaults, overrides)
 
-  self.models = createModels()
+  self.models = createModels(self.options)
   self.router = self.createRoutes()
   self.server = http.createServer(self.router)
 }

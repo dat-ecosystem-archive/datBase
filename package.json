@@ -34,7 +34,7 @@
     "less": "^1.7.5",
     "level-orm": "0.0.1",
     "level-prebuilt": "^0.18.0",
-    "level-restful": "0.0.1",
+    "level-restful": "^0.0.2",
     "level-userdb": "^0.2.2",
     "monotonic-timestamp": "0.0.9",
     "path": "^0.4.9",
