@@ -9,7 +9,7 @@ require('string.prototype.startswith')
 
 var auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
-var createModels = require('./models.js')
+var createModels = require('./models')
 
 module.exports = Server
 
