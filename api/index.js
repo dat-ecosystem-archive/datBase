@@ -5,7 +5,6 @@ var extend = require('extend')
 var Router = require('routes-router')
 var jsonBody = require("body")
 var debug = require('debug')('server')
-require('string.prototype.startswith')
 
 var auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
