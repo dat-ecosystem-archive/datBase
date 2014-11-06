@@ -2,6 +2,7 @@ var githubOAuth = require('github-oauth')
 var request = require('request')
 var extend = require('extend')
 var debug = require('debug')('github-provider')
+var uuid = require('uuid')
 
 var defaults = require('../defaults.js')
 
@@ -21,7 +22,7 @@ module.exports = function(models, overrides) {
     console.error('there was a login error', err)
   })
 
-  gh.on('token', function(token, serverResponse) {
+  gh.on('token', function(token, res) {
     var params = {
       url: 'https://api.github.com/user?access_token=' + token.access_token,
       headers: {
@@ -31,26 +32,41 @@ module.exports = function(models, overrides) {
     }
 
     if (!token.access_token) {
-      serverResponse.end('improper access token')
+      res.end('improper access token')
     } else {
-      request(params, callback)
+      request(params, githubUserDataCallback)
     }
 
-    function callback(err, response, body) {
-      debug('token verification response', {status: response.statusCode, body: body})
-      // TODO don't throw
+    function githubUserDataCallback(err, response, body) {
+      debug('github user data response', {
+        status: response.statusCode,
+        body: body
+      })
       if (err) throw err
-      models.users.create({
+      var random = uuid.v1()
+
+      var userData = {
         handle: body.login,
-        password: token.access_token,
+        password: random,
         email: body.email,
         data: {
           token: token.access_token,
           account: body
         }
-      }, function (err, id) {
-        if (err) throw err
-        serverResponse.end(JSON.stringify({'handle': id}))
+      }
+
+      models.users.create(userData, function (err, id) {
+        if (err) {
+          debug('cannot create user in database', userData)
+          throw err
+        }
+        models.users.login(id, random, function (err, user) {
+          if (err) {
+            debug('cannot login user', id)
+            res.end('bad credentials')
+          }
+          res.end(JSON.stringify(user))
+        })
       })
     }
   })

@@ -37,7 +37,8 @@
     "monotonic-timestamp": "0.0.9",
     "request": "^2.45.0",
     "routes-router": "^4.1.1",
-    "st": "^0.5.2"
+    "st": "^0.5.2",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "rimraf": "^2.2.8",
