@@ -65,7 +65,7 @@ module.exports = function(models, overrides) {
             debug('cannot login user', id)
             res.end('bad credentials')
           }
-          res.end(JSON.stringify(user))
+          res.end(JSON.stringify({"id": user.id}))
         })
       })
     }

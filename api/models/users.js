@@ -1,5 +1,6 @@
 var RestModels = require('level-restful')
 var util = require('util')
+var uuid = require('uuid')
 var bcrypt = require('bcrypt')
 var debug = require('debug')('users')
 
@@ -32,9 +33,10 @@ function Users(db) {
   opts = {
     rest: false
   }
-  RestModels.call(this, db, 'users', 'handle', fields, opts);
+  RestModels.call(this, db, 'users', 'id', fields, opts);
 }
 util.inherits(Users, RestModels);
+Users.prototype.keyfn = uuid.v1
 
 Users.prototype.create = function(data, cb, insecure) {
   // Creates a user given some data
