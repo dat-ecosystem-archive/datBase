@@ -74,12 +74,12 @@ Users.prototype.create = function(data, cb, insecure) {
 Users.prototype.login = function(handle, password, cb) {
   // pulled from level-userdb
   // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
+  var self = this
   this.get(handle, function(err, user) {
     if (err || !user) return cb("could not find user", false)
       bcrypt.compare(password.toString(), user.password.toString(), function(err, res) {
         if (err || !res) return cb("password mismatch", false)
-        cb(null, user)
+          cb(null, user)
       })
   })
 }
-

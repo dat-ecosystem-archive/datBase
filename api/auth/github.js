@@ -22,7 +22,7 @@ module.exports = function(models, overrides) {
     console.error('there was a login error', err)
   })
 
-  gh.on('token', function(token, res) {
+  gh.on('token', function(token, res, tokenResponse, req) {
     var params = {
       url: 'https://api.github.com/user?access_token=' + token.access_token,
       headers: {
@@ -65,7 +65,15 @@ module.exports = function(models, overrides) {
             debug('cannot login user', id)
             res.end('bad credentials')
           }
-          res.end(JSON.stringify({"id": user.id}))
+
+          req.session.del('user', function () {
+            req.session.set('user', user.id, function() {
+              //  prevent transmission of sensitive plain-text info to client
+              delete user['password']
+              res.end(JSON.stringify({"user": user}))
+            })
+          })
+
         })
       })
     }

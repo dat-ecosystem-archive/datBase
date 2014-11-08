@@ -5,6 +5,7 @@ var extend = require('extend')
 var Router = require('routes-router')
 var jsonBody = require("body")
 var debug = require('debug')('server')
+var levelSession = require('level-session')
 
 var auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
@@ -18,13 +19,29 @@ function Server(overrides) {
 
   if (!(self instanceof Server)) return new Server(overrides)
   self.options = extend({}, defaults, overrides)
-
   self.models = createModels(self.options)
+  self.session = levelSession({
+    db: self.models.db,
+    cookieName: 'dat-registry'
+  })
   self.router = self.createRoutes()
-  self.server = http.createServer(self.router)
+  self.server = http.createServer(function(req, res) {
+    self.session(req, res, function() {
+      req.session.get('user', function(err, userid) {
+        self.models.users.get(userid, function (err, user) {
+          if (user) {
+            delete user['password']
+            req.user = user
+          }
+          self.router(req, res)
+        })
+      })
+    })
+  })
 }
 
 Server.prototype.createRoutes = function() {
+  var self = this
 
   var router = Router({
     errorHandler: function (req, res) {
@@ -36,20 +53,25 @@ Server.prototype.createRoutes = function() {
       res.end("oh noes")
     },
     tearDown: function (req, res) {
-
+      self.session.close()
     }
   })
 
   router.addRoute('/', this.index)
 
   // Authentication
-  var provider = auth(this.models)
-  router.addRoute('/auth/login/', provider.login)
+  var provider = auth(this.models, this.session)
+  router.addRoute('/auth/login', provider.login)
   router.addRoute('/auth/callback', provider.callback)
-  router.addRoute('/auth/logout/', provider.logout)
+  router.addRoute('/auth/logout', provider.logout)
+  router.addRoute('/auth/currentuser', function (req, res) {
+    if (!req.user) {
+      res.end('no current user')
+    }
+    res.end(JSON.stringify(req.user))
+  })
 
   // Wire up API endpoints
-  var self = this
   router.addRoute('/api/:model/:id?', function(req, res, opts) {
     var id = opts.params.id || ''
     var model = opts.params.model
