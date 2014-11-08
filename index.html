@@ -12,17 +12,35 @@
   <link rel="stylesheet" href="/static/styles/base.css" media="screen">
 </head>
 <body>
+<div class="banner {{message.type}}">
+  <div class="banner-text">{{message.text}}</div>
+</div>
 <div class="header">
   <div class="header-nav">
     <div class="header-nav-links">
       <ul class="header-nav-list">
-        <li><a href="about.html">About</a></li>
-        <li><a href="team.html">Team</a></li>
-        <li><a href="docs.html">Docs</a></li>
+        <li><a href="/browse">Browse</a></li>
+        <li><a href="/about">About</a></li>
       </ul>
-      <a href="/auth/login/" ><div class="button"><span class="octocat"></span>Login with GitHub</div></a>
+      {{#if user}}
+      <div class="btn-group">
+        <div class="btn content-card-small-avatar"
+             data-user="{{user.handle}}"
+             data-toggle="dropdown"></div>
+
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/auth/logout">Logout</a></li>
+        </ul>
+      </div>
+      {{else}}
+      <a href="/auth/login/" >
+        <div class="button"><span class="octocat"></span>Login with GitHub</div>
+      </a>
+      {{/if}}
     </div>
     <div class="header-left">
+        <a href="/"><div class="header-logo">dat</div></a>
       <div class="header-search-box">
         <div class="input-group">
           <input class="form-control" type="search" placeholder="Search">
@@ -31,75 +49,12 @@
           </span>
         </div>
       </div>
-        <a href="/"><div class="header-logo">dat</div></a>
     </div>
   </div>
-
-  <div class="header-info">
-    <div class="header-title header-title-bigger">Open data, collaborated</div>
-    <div class="header-horizontal-rule"></div>
-    <div class="header-description">Dat is an open source project that provides a streaming interface between every file format and data storage backend.</div>
-    <div class="header-continue"><a href="#content">Find out more <span class="rsaquo">&rsaquo;</span></a></div>
-  </div>
-
 </div>
 
 <div id="content" class="content">
-  <div class="content-title">Dat Alpha Now Available</div>
-  <div class="content-subtitle">Our first stable registry, intended for early adopters. <a href="https://github.com/maxogden/dat/blob/master/docs/dat-stable-alpha.md">Read more here</a>.</div>
-  <div class="content-horizontal-rule"></div>
-  <div class="content-sub-container">
-    <img width="675" src="/static/img/dat-diagram.png">
-    <!-- <div class="content-card">
-      <img src="http://placekitten.com/480/270">
-      <div class="content-card-title">Dat alpha preview screencast</div>
-      <div class="content-card-subtitle">April 2014</div>
-    </div>
-    <div class="content-card">
-      <img src="http://placekitten.com/480/270">
-      <div class="content-card-title">10 minute intro presentation to dat</div>
-      <div class="content-card-subtitle">Late 2013</div>
-    </div> -->
-  </div>
-  <div class="content-title">Dat Registry</div>
-  <div class="content-subtitle"></div>
-  <div class="content-horizontal-rule"></div>
-  <div class="content-sub-container content-feature-selectors">
-    <div class="content-feature-selector">
-    </div>
-    <div class="content-feature-selector">
-    </div>
-    <div class="content-feature-selector">
-    </div>
-  </div>
-
-  <div class="content-title">Dat Client</div>
-  <div class="content-subtitle">Learn more at our <a href="https://github.com/maxogden/dat/blob/master/docs/getting-started.md">getting started guide</a>.</div>
-  <div class="content-horizontal-rule"></div>
-  <div class="content-sub-container content-feature-cards">
-    <div class="content-feature-card">
-      <img src="/static/img/dat-hex-1.png">
-      <div class="content-card-title">Streaming</div>
-      <div class="content-card-subtitle">Everything in dat is built using streaming + non-blocking components so that you can work with large datasets and get immediate, real-time results without running out of RAM.</div>
-    </div>
-    <div class="content-feature-card">
-      <img src="/static/img/dat-hex-2.png">
-      <div class="content-card-title">Made with Modules</div>
-      <div class="content-card-subtitle">Dat stores data locally, but you can easily configure it to store its tabular data in the database of your choice (e.g. PostgreSQL) and its files in external file stores (e.g. Google Drive).</div>
-    </div>
-    <div class="content-feature-card">
-      <img src="/static/img/dat-hex-3.png">
-      <div class="content-card-title">REST and CLI</div>
-      <div class="content-card-subtitle">You can stream data in and out of dat from the command line using any program that can write to stdin (e.g. R, Python, Ruby, etc) or you can use dat's built in HTTP REST API.</div>
-    </div>
-  </div>
-  <div class="content-title">Sponsors and supporters</div>
-  <div class="content-horizontal-rule"></div>
-  <div class="content-sub-container content-logos">
-    <a href="http://www.sloan.org/major-program-areas/digital-information-technology/data-and-computational-research/"><img src="/static/img/sloan.png"></a>
-    <a href="http://www.knightfoundation.org/grants/201346305/"><img src="/static/img/knight.png"></a>
-    <a href="http://usodi.org/"><img src="/static/img/usodi.png"></a>
-  </div>
+{{{content}}}
 </div>
 
 <div class="footer">
@@ -145,6 +100,17 @@
     <span class="footer-emphasized">dat</span> &bull; 2014 &bull; styleguide by <a href="https://github.com/flipside-org">flipside</a> &bull; page source on <a href="https://github.com/datproject/dat-registry">github</a>. Freezing Rain designed by <a href="http://www.thenounproject.com/OliM">OliM</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
   </div>
 </div>
+<script type="text/javascript" src="/static/js/gravatar.js"></script>
+<script type="text/javascript">
+  var gravatar = require('gravatar')
+  var peeps = document.querySelectorAll('.content-card-small-avatar')
+  for (var i = 0; i < peeps.length; i++) {
+    var peep = peeps[i]
+    var username = peep.getAttribute('data-user')
+    if (!username) continue
+    peep.setAttribute('style', "background-image: url('https://github.com/" + username + ".png')")
+  }
+</script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

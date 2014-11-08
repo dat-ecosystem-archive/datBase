@@ -4,7 +4,7 @@
   "description": "a registry for dats",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js -e js,css,html",
     "test": "node api/test/run.js | tap-spec"
   },
   "repository": {
@@ -27,13 +27,17 @@
     "body": "^4.5.0",
     "bytewise": "^0.7.1",
     "debug": "^2.0.0",
+    "error": "^4.3.0",
     "extend": "^2.0.0",
     "fulltext-engine": "^1.1.1",
     "github-oauth": "^0.1.1",
+    "handlebars": "^2.0.0",
     "level-prebuilt": "^0.18.0",
     "level-queryengine": "^3.0.1",
     "level-restful": "^1.0.0",
     "level-session": "^0.3.1",
+    "ractive": "^0.6.1",
+    "redirecter": "^0.2.3",
     "request": "^2.45.0",
     "routes-router": "^4.1.1",
     "st": "^0.5.2",

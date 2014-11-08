@@ -15,98 +15,35 @@ body {
 .button:hover {
   background-color: @buttong-bg-hover;
 }
-.header {
-  background: #fff;
-  background-image: url('/static/img/header-abstract.png');
-  background-repeat: no-repeat;
-  background-position: 120% -10px;
-}
-a {
-  transition: all 0.25s ease;
-}
-.header a,
-.header a:visited {
-  color: @header-link;
-  text-decoration: none;
-}
-.header a:hover {
-  text-decoration: underline;
-}
-.header-logo {
-  display: inline-block;
-  font-weight: 600;
-  font-size: 36px;
-  background-image: url('/static/img/dat-hex-small.png');
-  background-size: 40px;
-  background-repeat: no-repeat;
-  padding-left: 50px;
-  background-position: 0px 8px;
-  margin-left: 160px;
-  margin-top: 8px;
-}
-.header-nav {
-  height: 80px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  opacity: 0.9;
-  background-color: @white-background;
-  font-weight: 700;
-  color: @dark-blue;
-  font-size: 20px;
-  border-bottom: 1px solid @white-border;
-}
-.header-nav-links {
-  margin-right: 160px;
-  float: right;
-}
-.header-nav-list {
-  line-height: 80px;
-  margin: 0;
-}
-.header-nav-list,
-.header-nav-list li {
-  display: inline-block;
-}
-.header-nav-list li {
-  margin-right: 30px;
-}
-.header-info {
-  padding-left: 160px;
-  padding-top: 110px;
-  padding-bottom: 30px;
-}
-.header-title {
-  font-size: 40px;
-  font-weight: 700;
-}
-.header-title-bigger {
+
+.jumbotron-title:extend(h1) {
   padding-top: 40px;
 }
-.header-horizontal-rule {
-  width: 64px;
+.jumbotron-horizontal-rule {
+  width: 100%;
+  max-width: 64px;
   height: 4px;
   background: #bfc3c8;
   margin: 5px 0;
 }
-.header-description {
-  width: 525px;
+.jumbotron-description {
+  width: 100%;
+  max-width: 525px;
   font-size: 20px;
   margin: 20px 0;
   color: #6A7380;
 }
-.header-continue {
+.jumbotron-continue {
   font-size: 20px;
   font-weight: 700;
   color: #35B44F;
   padding-right: 10px;
   padding-bottom: 50px;
 }
-.header .header-continue a {
+.jumbotron-continue a {
   color: #35B44F;
 }
-.header-spacer {
+.jumbotron-spacer {
   height: 80px;
 }
 .content {
@@ -198,14 +135,6 @@ a {
   border-top: 1px solid @light-border;
   background-color: @light-background;
 }
-.header-search-box {
-  min-width: 100px;
-  max-width: 250px;
-  width: 25%;
-  float: right;
-  margin: 20px;
-  margin-right: 200px;
-}
 .content-text-h1 {
   font-size: 36px;
   font-weight: 700;
@@ -265,13 +194,10 @@ a {
 }
 .content-card-small-avatar {
   background-color: #fff;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   margin: 0 auto;
-  position: absolute;
-  left: 75px;
-  top: 40px;
-  background-size: 100px;
+  background-size: 46px;
   border: 4px solid white;
   box-shadow: 1px 1px #eee;
 }
@@ -393,52 +319,4 @@ a {
   height: 18px;
   background-image: url('/static/img/bitcoin.png');
   margin-right: 10px;
-}
-@media screen and (max-width: 1115px) {
-  .header,
-  .header-nav {
-    background-image: none;
-    position: inherit;
-  }
-  .header-search-box {
-    margin-right: 20px;
-  }
-  .header-nav-links {
-    margin-right: 0px;
-    margin: 15px;
-  }
-  .header-info {
-    padding: 20px;
-  }
-  .header-logo {
-    margin-left: 20px;
-  }
-  .header-description {
-    width: auto;
-  }
-  .header-nav-list li {
-    display: none;
-  }
-  .footer-directory {
-    padding: 20px;
-  }
-  .content {
-    margin-top: 0;
-  }
-  .content-feature-card {
-    margin: 0 auto 20px auto;
-  }
-  .content-sub-container {
-    margin: 0 20px 20px 20px;
-    padding-top: 30px;
-  }
-  .content-text-container {
-    padding: 20px;
-  }
-  .content-text-intro {
-    width: 100%;
-  }
-  .content-text-paragraph {
-    width: 100%;
-  }
 }

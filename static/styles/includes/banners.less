@@ -1,0 +1,20 @@
+@import "variables";
+
+.banner {
+  color: @off-white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999999;
+
+  &.success {
+    background-color: @green;
+  }
+  &.error {
+    background-color: @error;
+  }
+}
+
+.banner-text {
+  text-align: center;
+}

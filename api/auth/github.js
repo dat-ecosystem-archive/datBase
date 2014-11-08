@@ -3,6 +3,7 @@ var request = require('request')
 var extend = require('extend')
 var debug = require('debug')('github-provider')
 var uuid = require('uuid')
+var redirecter = require('redirecter')
 
 var defaults = require('../defaults.js')
 
@@ -66,13 +67,19 @@ module.exports = function(models, overrides) {
             res.end('bad credentials')
           }
 
-          req.session.del('user', function (err) {
+          //  prevent transmission of sensitive plain-text info to client
+          delete user['password']
+
+          req.session.del('userid', function (err) {
             if (err) throw err
-            req.session.set('user', user.id, function(err) {
+            req.session.set('userid', user.id, function(err) {
               if (err) throw err
-              //  prevent transmission of sensitive plain-text info to client
-              delete user['password']
-              res.end(JSON.stringify({"user": user}))
+              req.session.set('message', {
+                  'type': 'success',
+                  'text': 'You have successfully logged in with github.'
+                }, function () {
+                  redirecter(req, res, '/')
+              })
             })
           })
 
