@@ -66,8 +66,10 @@ module.exports = function(models, overrides) {
             res.end('bad credentials')
           }
 
-          req.session.del('user', function () {
-            req.session.set('user', user.id, function() {
+          req.session.del('user', function (err) {
+            if (err) throw err
+            req.session.set('user', user.id, function(err) {
+              if (err) throw err
               //  prevent transmission of sensitive plain-text info to client
               delete user['password']
               res.end(JSON.stringify({"user": user}))
