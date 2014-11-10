@@ -41,10 +41,6 @@ module.exports = function() {
   }
 
   common.getRegistry = function (t, cb) {
-
-    var dbPath = defaults.DAT_REGISTRY_DB
-    rimraf.sync(dbPath);
-
     var api = Server()
     var port = api.options.PORT
 
@@ -54,9 +50,17 @@ module.exports = function() {
     })
 
     function done() {
-      api.server.close()
-      api.models.db.close()
-      t.end()
+      setTimeout(destroy, 100) // fixes weird test errors on travis-ci
+
+      function destroy() {
+        var dbPath = defaults.DAT_REGISTRY_DB
+        rimraf(dbPath, function () {
+          api.server.close()
+          api.models.db.close()
+          t.end()
+        });
+      }
+
     }
 
   }
