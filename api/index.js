@@ -28,13 +28,10 @@ function Server(overrides) {
   self.server = http.createServer(function(req, res) {
     self.session(req, res, function() {
       req.session.get('user', function(err, userid) {
-        self.models.users.get(userid, function (err, user) {
-          if (user) {
-            delete user['password']
-            req.user = user
-          }
-          self.router(req, res)
-        })
+        if (!err) {
+          req.user = userid
+        }
+        self.router(req, res)
       })
     })
   })
