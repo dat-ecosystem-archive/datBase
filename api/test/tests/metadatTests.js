@@ -15,7 +15,7 @@ module.exports.createMetadat = function (test, common) {
       function (err, api, res, json, done) {
         t.ifError(err)
         t.equal(res.statusCode, 201)
-        t.equal(typeof json.id, 'number')
+        t.equal(typeof json.id, 'string')
         t.equal(json.name, data.name)
         done()
       }
@@ -216,11 +216,6 @@ module.exports.updateMetadat = function (test, common) {
     )
   })
 }
-
-
-
-
-
 
 module.exports.all = function(test, common) {
   module.exports.createMetadat(test, common);

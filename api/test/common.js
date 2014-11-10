@@ -9,6 +9,7 @@ var defaults = require('../../api/defaults.js')
 
 module.exports = function() {
   var common = {}
+  common.testPrefix = ''
 
 
   common.testGET = function (t, path, data, cb) {
@@ -41,10 +42,7 @@ module.exports = function() {
 
   common.getRegistry = function (t, cb) {
 
-    var dbPath = defaults.DAT_REGISTRY_DB
-    rimraf.sync(dbPath);
-
-    var api = Server()
+    var api = Server(defaults)
     var port = api.options.PORT
 
     api.server.listen(port, function() {
@@ -53,9 +51,17 @@ module.exports = function() {
     })
 
     function done() {
-      api.server.close()
-      api.models.db.close()
-      t.end()
+      setTimeout(destroy, 100) // fixes weird test errors on travis-ci
+
+      function destroy() {
+        rimraf(defaults.DAT_REGISTRY_DB, function () {
+          api.server.close()
+          api.models.db.close()
+          api.session.close()
+          t.end()
+        });
+      }
+
     }
 
   }

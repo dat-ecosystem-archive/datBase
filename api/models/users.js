@@ -1,5 +1,6 @@
 var RestModels = require('level-restful')
 var util = require('util')
+var uuid = require('uuid')
 var bcrypt = require('bcrypt')
 var debug = require('debug')('users')
 
@@ -32,9 +33,10 @@ function Users(db) {
   opts = {
     rest: false
   }
-  RestModels.call(this, db, 'users', 'handle', fields, opts);
+  RestModels.call(this, db, 'users', 'id', fields, opts);
 }
 util.inherits(Users, RestModels);
+Users.prototype.keyfn = uuid.v1
 
 Users.prototype.create = function(data, cb, insecure) {
   // Creates a user given some data
@@ -69,10 +71,11 @@ Users.prototype.create = function(data, cb, insecure) {
   })
 }
 
-Users.prototype.login = function(handle, password, cb) {
+Users.prototype.login = function(id, password, cb) {
   // pulled from level-userdb
   // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
-  this.get(handle, function(err, user) {
+  var self = this
+  this.get(id, function(err, user) {
     if (err || !user) return cb("could not find user", false)
       bcrypt.compare(password.toString(), user.password.toString(), function(err, res) {
         if (err || !res) return cb("password mismatch", false)
@@ -80,4 +83,3 @@ Users.prototype.login = function(handle, password, cb) {
       })
   })
 }
-
