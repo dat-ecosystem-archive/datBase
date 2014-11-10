@@ -9,6 +9,7 @@ var defaults = require('../../api/defaults.js')
 
 module.exports = function() {
   var common = {}
+  common.testPrefix = ''
 
 
   common.testGET = function (t, path, data, cb) {

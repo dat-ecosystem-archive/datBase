@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node api/test/run.js"
+    "test": "node api/test/run.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "rimraf": "^2.2.8",
+    "tap-spec": "^1.0.1",
     "tape": "^3.0.0"
   }
 }
