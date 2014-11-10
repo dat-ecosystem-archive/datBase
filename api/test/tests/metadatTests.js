@@ -217,11 +217,6 @@ module.exports.updateMetadat = function (test, common) {
   })
 }
 
-
-
-
-
-
 module.exports.all = function(test, common) {
   module.exports.createMetadat(test, common);
   module.exports.getMetadats(test, common);

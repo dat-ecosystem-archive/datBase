@@ -41,7 +41,8 @@ module.exports = function() {
   }
 
   common.getRegistry = function (t, cb) {
-    var api = Server()
+
+    var api = Server(defaults)
     var port = api.options.PORT
 
     api.server.listen(port, function() {
@@ -53,8 +54,7 @@ module.exports = function() {
       setTimeout(destroy, 100) // fixes weird test errors on travis-ci
 
       function destroy() {
-        var dbPath = defaults.DAT_REGISTRY_DB
-        rimraf(dbPath, function () {
+        rimraf(defaults.DAT_REGISTRY_DB, function () {
           api.server.close()
           api.models.db.close()
           t.end()
