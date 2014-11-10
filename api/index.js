@@ -50,14 +50,14 @@ Server.prototype.createRoutes = function() {
       res.end("oh noes")
     },
     tearDown: function (req, res) {
-      self.session.close()
+
     }
   })
 
-  router.addRoute('/', this.index)
+  router.addRoute('/', self.index)
 
   // Authentication
-  var provider = auth(this.models, this.session)
+  var provider = auth(self.models)
   router.addRoute('/auth/login', provider.login)
   router.addRoute('/auth/callback', provider.callback)
   router.addRoute('/auth/logout', provider.logout)
