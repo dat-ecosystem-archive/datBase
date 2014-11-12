@@ -109,6 +109,7 @@ Server.prototype.dispatch = function(location) {
   }
 }
 
+// TODO: this is entirely not ok and needs to be put in the frontend.
 function render(req, res, location, data) {
   var index = fs.readFileSync('./index.html').toString()
   data['content'] = new Ractive({
@@ -116,6 +117,7 @@ function render(req, res, location, data) {
     data: data
   }).toHTML()
 
+  // TODO: message should be retrieved from api and set in the frontend.
   req.session.get('message', function (err, message) {
 
     data['message'] = message

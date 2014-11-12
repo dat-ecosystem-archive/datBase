@@ -40,6 +40,7 @@
     "redirecter": "^0.2.3",
     "request": "^2.45.0",
     "routes-router": "^4.1.1",
+    "run-waterfall": "^1.0.2",
     "st": "^0.5.2",
     "uuid": "^2.0.1"
   },
