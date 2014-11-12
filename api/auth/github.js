@@ -87,7 +87,6 @@ module.exports = function(models, overrides) {
           id: user.id,
           handle: user.login,
           password: uuid.v1(),
-          email: user.email,
           data: user
         }
         models.users.create(newUser, function (err, id) {
