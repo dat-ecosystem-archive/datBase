@@ -225,7 +225,6 @@ body {
 }
 .content {
   background-color: #f4f5f6;
-  overflow: auto;
 }
 .content a,
 .content-a :visited {
@@ -312,7 +311,6 @@ body {
   width: 65%;
   margin: auto;
   background-color: #fff;
-  overflow: auto;
   background-color: #f4f5f6;
 }
 .content-text-h1 {
