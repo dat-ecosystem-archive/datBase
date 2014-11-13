@@ -12,6 +12,10 @@ function Users(db) {
   // handle is the primary key to user for insertion
   fields = [
     {
+      'name': 'id',
+      'type': 'number'
+    },
+    {
       'name': 'handle',
       'type': 'string'
     },
@@ -36,7 +40,6 @@ function Users(db) {
   RestModels.call(this, db, 'users', 'id', fields, opts);
 }
 util.inherits(Users, RestModels);
-Users.prototype.keyfn = uuid.v1
 
 Users.prototype.create = function(data, cb, insecure) {
   // Creates a user given some data

@@ -6,8 +6,10 @@ var Router = require('routes-router')
 var jsonBody = require("body")
 var debug = require('debug')('server')
 var levelSession = require('level-session')
+var redirecter = require('redirecter')
+var Ractive = require('ractive');
 
-var auth = require('./auth/index.js')
+var Auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
 var createModels = require('./models')
 
@@ -27,9 +29,9 @@ function Server(overrides) {
   self.router = self.createRoutes()
   self.server = http.createServer(function(req, res) {
     self.session(req, res, function() {
-      req.session.get('user', function(err, userid) {
+      req.session.get('userid', function(err, userid) {
         if (!err) {
-          req.user = userid
+          req.userid = userid
         }
         self.router(req, res)
       })
@@ -42,30 +44,44 @@ Server.prototype.createRoutes = function() {
 
   var router = Router({
     errorHandler: function (req, res) {
-      res.statusCode = 500
-      res.end("no u")
+      req.session.set('message', {
+          'type': 'error',
+          'text': '500: There has been a grave server error. Please open an issue on github.'
+        }, function () {
+          redirecter(req, res, '/')
+      })
     },
     notFound: function (req, res) {
-      res.statusCode = 404
-      res.end("oh noes")
-    },
-    tearDown: function (req, res) {
-
+      req.session.set('message', {
+          'type': 'error',
+          'text': '404: No dats.'
+        }, function () {
+          redirecter(req, res, '/')
+      })
     }
   })
 
-  router.addRoute('/', self.index)
+  router.addRoute('/', this.dispatch('./templates/splash.html'))
+  router.addRoute('/about', this.dispatch('./templates/about.html'))
+
 
   // Authentication
-  var provider = auth(self.models)
-  router.addRoute('/auth/login', provider.login)
-  router.addRoute('/auth/callback', provider.callback)
-  router.addRoute('/auth/logout', provider.logout)
-  router.addRoute('/auth/currentuser', function (req, res) {
-    if (!req.user) {
-      res.end('no current user')
-    }
-    res.end(JSON.stringify(req.user))
+  var auth = Auth(this.models)
+  router.addRoute('/auth/login', auth.login)
+  router.addRoute('/auth/callback', auth.callback)
+  router.addRoute('/auth/logout', auth.logout)
+
+  router.addRoute('/profile', function (req, res, opts, cb) {
+    self.models.users.get(req.userid, function (err, user) {
+      restrictToSelf(req, res, user, function (err) {
+        if (err) return cb(err)
+        render(req, res, './templates/profile.html', {user: user})
+      })
+    })
+  })
+
+  router.addRoute('/restricted', function (req, res) {
+    render(req, res, './templates/system/restricted.html')
   })
 
   // Wire up API endpoints
@@ -78,6 +94,60 @@ Server.prototype.createRoutes = function() {
   return router
 }
 
-Server.prototype.index = function(req, res) {
-  res.end(fs.readFileSync('./index.html').toString())
+Server.prototype.dispatch = function(location) {
+  var self = this
+  return function (req, res) {
+    if (req.userid) {
+      // TODO: hits the database if we have a user.. every time..
+      self.models.users.get(req.userid, function (err, user) {
+        if (err) return cb(err)
+        render(req, res, location, {user: user})
+      })
+    } else {
+        render(req, res, location, {user: null})
+    }
+  }
+}
+
+// TODO: this is entirely not ok and needs to be put in the frontend.
+function render(req, res, location, data) {
+  var index = fs.readFileSync('./index.html').toString()
+  data['content'] = new Ractive({
+    template: fs.readFileSync(location).toString(),
+    data: data
+  }).toHTML()
+
+  // TODO: message should be retrieved from api and set in the frontend.
+  req.session.get('message', function (err, message) {
+
+    data['message'] = message
+
+    req.session.del('message', function (err) {
+      var template =  new Ractive({
+        template: index,
+        data: data
+      });
+      return res.end(template.toHTML())
+    })
+  })
+}
+
+function restrictToSelf(req, res, user, callback) {
+  req.session.get("userid", function (err, authedUser) {
+    if (err) {
+      return callback(err)
+    }
+    if (user && user.id === authedUser) {
+      return callback()
+    }
+    req.session.set('message', {
+        'type': 'error',
+        'text': 'Silly cat, this dat is not for you.'
+      }, function (err) {
+        if (err) {
+          return callback(err)
+        }
+        redirecter(req, res, '/')
+    })
+  })
 }

@@ -3,6 +3,8 @@ var request = require('request')
 var extend = require('extend')
 var debug = require('debug')('github-provider')
 var uuid = require('uuid')
+var redirecter = require('redirecter')
+var waterfall = require('run-waterfall')
 
 var defaults = require('../defaults.js')
 
@@ -43,43 +45,73 @@ module.exports = function(models, overrides) {
         body: body
       })
       if (err) throw err
-      var random = uuid.v1()
 
-      var userData = {
-        handle: body.login,
-        password: random,
-        email: body.email,
-        data: {
-          token: token.access_token,
-          account: body
+      waterfall([
+        function (callback) {
+          getOrCreateGithubUser(body, callback)
+        },
+        function (user, callback) {
+          loginUser(req, user, callback)
         }
-      }
-
-      models.users.create(userData, function (err, id) {
-        if (err) {
-          debug('cannot create user in database', userData)
-          throw err
-        }
-        models.users.login(id, random, function (err, user) {
+      ],
+        function (err) {
+          //the finisher
+          var type, text;
           if (err) {
-            debug('cannot login user', id)
-            res.end('bad credentials')
+            type = 'error'
+            text = 'Could not log you in with github.'
+            throw err
           }
-
-          req.session.del('user', function (err) {
-            if (err) throw err
-            req.session.set('user', user.id, function(err) {
-              if (err) throw err
-              //  prevent transmission of sensitive plain-text info to client
-              delete user['password']
-              res.end(JSON.stringify({"user": user}))
-            })
+          else {
+            type = 'success'
+            text = 'You have successfully logged in with github.'
+          }
+          req.session.set('message', {
+            'type': type,
+            'text': text
+          }, function () {
+            debug('redirecting')
+            redirecter(req, res, '/')
           })
-
-        })
-      })
+        }
+      )
     }
   })
 
+  function getOrCreateGithubUser(user, callback) {
+    // get or create user
+    debug('getting user', user)
+    models.users.get(user.id, function (err) {
+      if (err) {
+        var newUser = {
+          id: user.id,
+          handle: user.login,
+          password: uuid.v1(),
+          data: user
+        }
+        models.users.create(newUser, function (err, id) {
+          if (err) {
+            debug('cannot create user in database', userData)
+            callback(err)
+          }
+          return callback(null, newUser)
+        })
+      }
+      return callback(null, user)
+    })
+  }
+
+  function loginUser(req, user, callback) {
+    // set session (login user) &
+    // prevent transmission of sensitive plain-text info to client
+    delete user['password']
+    req.session.del('userid', function (err) {
+      if (err) callback(err)
+      req.session.set('userid', user.id, function(err) {
+        if (err) callback(err)
+        callback(null)
+      })
+    })
+  }
   return gh
 }

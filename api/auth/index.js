@@ -1,7 +1,7 @@
 var path = require('path')
 var githubProvider = require('./github.js')
+var redirecter = require('redirecter')
 
-// TODO pass in overrides
 module.exports = function(models) {
   var provider = githubProvider(models)
 
@@ -13,14 +13,17 @@ module.exports = function(models) {
       provider.callback(req, res)
     },
     logout: function(req, res, opts) {
-      logout(req, res, opts)
-    }
+      req.session.del('userid', function (err) {
+        if (err) {
+          return callback(err)
+        }
+        req.session.set('message', {
+            'type': 'success',
+            'text': 'You have successfully logged out!'
+          }, function () {
+            redirecter(req, res, '/')
+        })
+      })
+    },
   }
-}
-
-function logout(req, res, opts) {
-  req.session.del('user', function (err) {
-    if (err) throw err
-    res.end('logged out')
-  })
 }
