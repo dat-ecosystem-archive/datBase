@@ -80,8 +80,13 @@ Server.prototype.createRoutes = function() {
     })
   })
 
-  router.addRoute('/restricted', function (req, res) {
-    render(req, res, './templates/system/restricted.html')
+  router.addRoute('/publish', function (req, res) {
+    self.models.users.get(req.userid, function (err, user) {
+      restrictToSelf(req, res, user, function (err) {
+        if (err) return cb(err)
+        render(req, res, './templates/metadat/publish.html', {user: user})
+      })
+    })
   })
 
   // Wire up API endpoints

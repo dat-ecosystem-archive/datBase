@@ -1,3 +1,5 @@
+/* Colors */
+/* Containers */
 .dropdown-menu {
   min-width: 0px;
 }
@@ -37,8 +39,10 @@ h6 {
   padding-top: 80px;
   background-image: url('/static/img/header-abstract.png');
   background-repeat: no-repeat;
+  background-color: #fff;
   background-position: 120% -10px;
   padding-left: 160px;
+  border-bottom: 1px solid #dfe2e4;
   padding-bottom: 10px;
 }
 .header-search-box {
@@ -304,8 +308,11 @@ body {
 }
 .content-text-container {
   padding: 50px 160px 50px 160px;
+  max-width: 900px;
+  width: 65%;
+  margin: auto;
+  background-color: #fff;
   overflow: auto;
-  border-top: 1px solid #dfe2e4;
   background-color: #f4f5f6;
 }
 .content-text-h1 {
@@ -495,5 +502,4 @@ body {
 }
 #content {
   margin-top: 0px;
-  background: #fff;
 }

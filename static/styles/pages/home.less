@@ -80,7 +80,7 @@ body {
   margin: 15px auto;
 }
 .content-sub-container {
-  margin: 0 160px 70px 160px;
+  margin: 0 @side-margin 70px @side-margin;
   padding-top: 30px;
   overflow: auto;
   text-align: center;
@@ -130,9 +130,12 @@ body {
   margin-right: 0;
 }
 .content-text-container {
-  padding: 50px 160px 50px 160px;
+  padding: 50px @side-margin 50px @side-margin;
+  max-width: 900px;
+  width: 65%;
+  margin: auto;
+  background-color: #fff;
   overflow: auto;
-  border-top: 1px solid @light-border;
   background-color: @light-background;
 }
 .content-text-h1 {
@@ -233,7 +236,7 @@ body {
 }
 .footer-directory {
   overflow: auto;
-  padding: 50px 160px 30px 160px;
+  padding: 50px @side-margin 30px @side-margin;
   border-bottom: 1px solid #3f4b5b;
 }
 .footer-credits {

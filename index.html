@@ -19,6 +19,11 @@
   <div class="header-nav">
     <div class="header-nav-links">
       <ul class="header-nav-list">
+        {{#if user}}
+        <li><a href="/publish">Publish</a></li>
+        {{else}}
+        <li><span data-toggle="tooltip" data-placement="bottom" title="You must login to publish">Publish</span></li>
+        {{/if}}
         <li><a href="/browse">Browse</a></li>
         <li><a href="/about">About</a></li>
       </ul>
@@ -123,6 +128,8 @@
 </script>
 
 <script src="/static/vendor/flat-ui/js/vendor/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="/static/vendor/flat-ui/js/flat-ui.min.js"></script>
+<script src="/static/js/app.js"></script>
 </body>
 </html>
