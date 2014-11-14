@@ -82,10 +82,7 @@ Server.prototype.createRoutes = function() {
 
   router.addRoute('/publish', function (req, res) {
     self.models.users.get(req.userid, function (err, user) {
-      restrictToSelf(req, res, user, function (err) {
-        if (err) return cb(err)
         render(req, res, './templates/metadat/publish.html', {user: user})
-      })
     })
   })
 

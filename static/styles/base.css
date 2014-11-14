@@ -45,6 +45,12 @@ h6 {
   border-bottom: 1px solid #dfe2e4;
   padding-bottom: 10px;
 }
+.header-info h1 {
+  max-width: 900px;
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+}
 .header-search-box {
   min-width: 100px;
   max-width: 250px;
@@ -110,120 +116,8 @@ a {
 .header-nav-list li {
   margin-right: 30px;
 }
-.banner {
-  color: #fdfdfd;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 999999;
-}
-.banner.success {
-  background-color: #35b44f;
-}
-.banner.error {
-  background-color: #c0392b;
-}
-.banner-text {
-  text-align: center;
-}
-@media screen and (max-width: 650px) {
-  .hidden-mobile {
-    display: none;
-  }
-}
-@media screen and (max-width: 1115px) {
-  .header-info,
-  .jumbotron-info {
-    background-image: none;
-    position: inherit;
-    width: 100%;
-  }
-  .header-info {
-    padding: 80px 0px 0px 20px;
-  }
-  .jumbotron-info {
-    padding: 0px 0px 0px 20px;
-  }
-  .header-logo {
-    margin-left: 20px;
-  }
-  .header-description {
-    width: auto;
-  }
-  .header-nav-links {
-    margin-right: 0px;
-  }
-  .footer-directory {
-    padding: 20px;
-  }
-  .content {
-    margin-top: 0;
-  }
-  .content-feature-card {
-    margin: 0 auto 20px auto;
-  }
-  .content-sub-container {
-    margin: 0 20px 20px 20px;
-    padding-top: 30px;
-  }
-  .content-text-container {
-    padding: 20px;
-  }
-  .content-text-intro {
-    width: 100%;
-  }
-  .content-text-paragraph {
-    width: 100%;
-  }
-}
-body {
-  font-family: 'Source Sans Pro', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-.button {
-  display: inline-block;
-  font-size: 20px;
-  font-weight: 600;
-  color: white;
-  background-color: #35b44f;
-  padding: 7px 14px;
-  border-radius: 5px;
-}
-.button:hover {
-  background-color: #a9ce7f;
-}
-.jumbotron-title {
-  padding-top: 40px;
-}
-.jumbotron-horizontal-rule {
-  width: 100%;
-  max-width: 64px;
-  height: 4px;
-  background: #bfc3c8;
-  margin: 5px 0;
-}
-.jumbotron-description {
-  width: 100%;
-  max-width: 525px;
-  font-size: 20px;
-  margin: 20px 0;
-  color: #6A7380;
-}
-.jumbotron-continue {
-  font-size: 20px;
-  font-weight: 700;
-  color: #35B44F;
-  padding-right: 10px;
-  padding-bottom: 50px;
-}
-.jumbotron-continue a {
-  color: #35B44F;
-}
-.jumbotron-spacer {
-  height: 80px;
-}
-.content {
+#content {
+  margin-top: 0px;
   background-color: #f4f5f6;
 }
 .content a,
@@ -305,12 +199,11 @@ body {
 .content-feature-cards > :last-child {
   margin-right: 0;
 }
-.content-text-container {
-  padding: 50px 160px 50px 160px;
-  max-width: 900px;
+.content-text-container,
+.app-text-container {
+  max-width: 650px;
   width: 65%;
   margin: auto;
-  background-color: #fff;
   background-color: #f4f5f6;
 }
 .content-text-h1 {
@@ -319,16 +212,15 @@ body {
   color: #2A3749;
 }
 .content-text-intro {
+  padding-top: 50px;
   font-size: 20px;
   color: #6A7380;
   margin-bottom: 25px;
-  width: 60%;
 }
 .content-text-paragraph {
   font-size: 16px;
   color: #2A3749;
   margin-bottom: 10px;
-  width: 60%;
 }
 .content-text-container a,
 .content-text-container a:visited {
@@ -396,6 +288,127 @@ body {
 }
 .content-logos div {
   display: inline-block;
+}
+.app-page {
+  padding-top: 80px;
+  background-color: #fff;
+}
+.app-text-container {
+  background-color: #fff;
+}
+.banner {
+  color: #fdfdfd;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999999;
+}
+.banner.success {
+  background-color: #35b44f;
+}
+.banner.error {
+  background-color: #c0392b;
+}
+.banner-text {
+  text-align: center;
+}
+@media screen and (max-width: 650px) {
+  .hidden-mobile {
+    display: none;
+  }
+}
+@media screen and (max-width: 1115px) {
+  .header-info,
+  .jumbotron-info {
+    background-image: none;
+    position: inherit;
+    width: 100%;
+  }
+  .header-info {
+    padding: 80px 0px 0px 20px;
+  }
+  .jumbotron-info {
+    padding: 0px 0px 0px 20px;
+  }
+  .header-logo {
+    margin-left: 20px;
+  }
+  .header-description {
+    width: auto;
+  }
+  .header-nav-links {
+    margin-right: 0px;
+  }
+  .footer-directory {
+    padding: 20px;
+  }
+  .content {
+    margin-top: 0;
+  }
+  .content-feature-card {
+    margin: 0 auto 20px auto;
+  }
+  .content-sub-container {
+    margin: 0 20px 20px 20px;
+    padding-top: 30px;
+  }
+  .content-text-container,
+  .app-text-container {
+    padding: 20px;
+  }
+  .content-text-intro {
+    width: 100%;
+  }
+  .content-text-paragraph {
+    width: 100%;
+  }
+}
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.button {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  background-color: #35b44f;
+  padding: 7px 14px;
+  border-radius: 5px;
+}
+.button:hover {
+  background-color: #a9ce7f;
+}
+.jumbotron-title {
+  padding-top: 40px;
+}
+.jumbotron-horizontal-rule {
+  width: 100%;
+  max-width: 64px;
+  height: 4px;
+  background: #bfc3c8;
+  margin: 5px 0;
+}
+.jumbotron-description {
+  width: 100%;
+  max-width: 525px;
+  font-size: 20px;
+  margin: 20px 0;
+  color: #6A7380;
+}
+.jumbotron-continue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #35B44F;
+  padding-right: 10px;
+  padding-bottom: 50px;
+}
+.jumbotron-continue a {
+  color: #35B44F;
+}
+.jumbotron-spacer {
+  height: 80px;
 }
 .footer {
   background-color: #2a3749;
@@ -497,7 +510,4 @@ body {
   height: 18px;
   background-image: url('/static/img/bitcoin.png');
   margin-right: 10px;
-}
-#content {
-  margin-top: 0px;
 }
