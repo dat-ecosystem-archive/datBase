@@ -1,14 +1,39 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/karissa/dev/dat/dat-registry/app/index.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/karissa/dev/dat/dat-registry/app/controllers/profile.js":[function(require,module,exports){
+var user = require('../user.js');
+var debug = require('debug')('profile')
+
+module.exports = function () {
+
+  this.on('submit', function (event) {
+    var user = this.get('user')
+    $.ajax({
+      url: '/api/users/' + user.id,
+      data: user,
+      type: 'PUT',
+      success: function (data, status) {
+        window.ractive.set('message', data.message);
+      }
+    });
+
+    event.original.preventDefault();
+  });
+}
+
+},{"../user.js":"/Users/karissa/dev/dat/dat-registry/app/user.js","debug":"/Users/karissa/dev/dat/dat-registry/node_modules/debug/browser.js"}],"/Users/karissa/dev/dat/dat-registry/app/index.js":[function(require,module,exports){
 var Ractive = require('ractive');
 var page = require('page');
+
 var main = require('./main.js');
+var user = require('./user.js');
 
 var init = {
   ctx: function (ctx, next) {
+    // default for all pages
+    ctx.template = require('./templates/pages/404.html')
     ctx.data = {};
-    main(ctx, function () {
-      next();
-    });
+    ctx.onrender = function () {};
+
+    main(ctx, next)
   }
 }
 
@@ -24,6 +49,7 @@ var routes = {
   profile: function (ctx, next) {
     ctx.data.user = ctx.state.user
     ctx.template = require('./templates/pages/profile.html');
+    ctx.onrender = require('./controllers/profile.js')
     next();
   },
   browse: function (ctx, next) {
@@ -40,14 +66,18 @@ function render(ctx, next) {
   window.ractive = new Ractive({
     el: "#content",
     template: ctx.template,
-    data: ctx.data
+    data: ctx.data,
+    onrender: function () {
+      $('a:not(.server)').click(function(e){
+        var href = $(this).attr('href')
+        page(href)
+        e.preventDefault()
+      })
+
+      ctx.onrender.call(this)
+    }
   });
 
-  $('a:not(.server)').click(function(e){
-    var href = $(this).attr('href')
-    page(href)
-    e.preventDefault()
-  })
 }
 
 page('*', init.ctx)
@@ -59,17 +89,17 @@ page('/browse', routes.browse);
 page('*', render)
 page({click: false});
 
-},{"./main.js":"/Users/karissa/dev/dat/dat-registry/app/main.js","./templates/metadat/browse.html":"/Users/karissa/dev/dat/dat-registry/app/templates/metadat/browse.html","./templates/metadat/publish.html":"/Users/karissa/dev/dat/dat-registry/app/templates/metadat/publish.html","./templates/pages/about.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/about.html","./templates/pages/profile.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/profile.html","./templates/pages/splash.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/splash.html","page":"/Users/karissa/dev/dat/dat-registry/node_modules/page/index.js","ractive":"/Users/karissa/dev/dat/dat-registry/node_modules/ractive/ractive.js"}],"/Users/karissa/dev/dat/dat-registry/app/main.js":[function(require,module,exports){
+},{"./controllers/profile.js":"/Users/karissa/dev/dat/dat-registry/app/controllers/profile.js","./main.js":"/Users/karissa/dev/dat/dat-registry/app/main.js","./templates/metadat/browse.html":"/Users/karissa/dev/dat/dat-registry/app/templates/metadat/browse.html","./templates/metadat/publish.html":"/Users/karissa/dev/dat/dat-registry/app/templates/metadat/publish.html","./templates/pages/404.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/404.html","./templates/pages/about.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/about.html","./templates/pages/profile.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/profile.html","./templates/pages/splash.html":"/Users/karissa/dev/dat/dat-registry/app/templates/pages/splash.html","./user.js":"/Users/karissa/dev/dat/dat-registry/app/user.js","page":"/Users/karissa/dev/dat/dat-registry/node_modules/page/index.js","ractive":"/Users/karissa/dev/dat/dat-registry/node_modules/ractive/ractive.js"}],"/Users/karissa/dev/dat/dat-registry/app/main.js":[function(require,module,exports){
 var gravatar = require('gravatar');
 var Ractive = require('ractive');
 
 var user = require('./user.js');
 
-module.exports = function(ctx, cb) {
+module.exports = function(ctx, next) {
   user.get(function (err, user) {
     ctx.state.user = user
     render(user)
-    cb()
+    next()
   })
 }
 
@@ -79,62 +109,514 @@ function render(user) {
     template: require('./templates/main.html'),
     data: {
       user: user
+    },
+    onrender: function () {
+      var peeps = $('.content-card-small-avatar')
+      for (var i = 0; i < peeps.length; i++) {
+        var peep = peeps[i]
+        var username = peep.getAttribute('data-user')
+        if (!username) continue
+        peep.setAttribute('style', "background-image: url('https://github.com/" + username + ".png')")
+      }
+
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     }
   })
 
-  var peeps = $('.content-card-small-avatar')
-  for (var i = 0; i < peeps.length; i++) {
-    var peep = peeps[i]
-    var username = peep.getAttribute('data-user')
-    if (!username) continue
-    peep.setAttribute('style', "background-image: url('https://github.com/" + username + ".png')")
-  }
 }
 
 },{"./templates/main.html":"/Users/karissa/dev/dat/dat-registry/app/templates/main.html","./user.js":"/Users/karissa/dev/dat/dat-registry/app/user.js","gravatar":"/Users/karissa/dev/dat/dat-registry/node_modules/gravatar/index.js","ractive":"/Users/karissa/dev/dat/dat-registry/node_modules/ractive/ractive.js"}],"/Users/karissa/dev/dat/dat-registry/app/templates/main.html":[function(require,module,exports){
-module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":["banner ",{"t":2,"r":"message.type"}]},"f":[{"t":7,"e":"div","a":{"class":"banner-text"},"f":[{"t":2,"r":"message.text"}]}]}," ",{"t":7,"e":"div","a":{"class":"header"},"f":[{"t":7,"e":"div","a":{"class":"header-nav"},"f":[{"t":7,"e":"div","a":{"class":"header-nav-links"},"f":[{"t":7,"e":"ul","a":{"class":"header-nav-list"},"f":[{"t":4,"n":50,"r":"user","f":[{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/publish"},"f":["Publish"]}]}]},{"t":4,"n":51,"f":[{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"data-toggle":"tooltip","data-placement":"bottom","title":"You must login to publish"},"f":["Publish"]}]}],"r":"user"}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/browse"},"f":["Browse"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/about"},"f":["About"]}]}]}," ",{"t":4,"n":50,"r":"user","f":[{"t":7,"e":"div","a":{"class":"btn-group"},"f":[{"t":7,"e":"div","a":{"class":"btn content-card-small-avatar","data-user":[{"t":2,"r":"user.handle"}],"data-toggle":"dropdown"}}," ",{"t":7,"e":"ul","a":{"class":"dropdown-menu","role":"menu"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/profile"},"f":["Profile"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/auth/logout","class":"server"},"f":["Logout"]}]}]}]}]},{"t":4,"n":51,"f":[{"t":7,"e":"a","a":{"class":"server","href":"/auth/login/"},"f":[{"t":7,"e":"div","a":{"class":"button"},"f":[{"t":7,"e":"span","a":{"class":"octocat"}},"Login with GitHub"]}]}],"r":"user"}]}," ",{"t":7,"e":"div","a":{"class":"header-left"},"f":[{"t":7,"e":"a","a":{"href":"/"},"f":[{"t":7,"e":"div","a":{"class":"header-logo"},"f":["dat"]}]}," ",{"t":7,"e":"div","a":{"class":"header-search-box"},"f":[{"t":7,"e":"div","a":{"class":"input-group"},"f":[{"t":7,"e":"input","a":{"class":"form-control","type":"search","placeholder":"Search"}}," ",{"t":7,"e":"span","a":{"class":"input-group-btn"},"f":[{"t":7,"e":"button","a":{"type":"submit","class":"btn"},"f":[{"t":7,"e":"span","a":{"class":"fui-search"}}]}]}]}]}]}]}]}," ",{"t":7,"e":"div","a":{"id":"content","class":"content"},"f":[]}," ",{"t":7,"e":"div","a":{"class":"footer"},"f":[{"t":7,"e":"div","a":{"class":"footer-directory"},"f":[{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Explore"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"ul","a":{"class":"footer-nav-list"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"team.html"},"f":["Team"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"http://www.stickermule.com/marketplace/1892-dat-2-hexagon-sticker-v2"},"f":["Get Stickers"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Learn"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"ul","a":{"class":"footer-nav-list"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"about.html"},"f":["About"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"docs.html"},"f":["Docs"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Connect"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"ul","a":{"class":"footer-nav-list"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"https://twitter.com/dat_project"},"f":[{"t":7,"e":"span","a":{"class":"twitter-green"}},"Twitter"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"https://github.com/maxogden/dat"},"f":[{"t":7,"e":"span","a":{"class":"octocat-green"}},"GitHub"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Support"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"code-container"},"f":[{"t":7,"e":"span","a":{"class":"bitcoin"}}," 19DqLuAssLa2XpVd8GabgMBCFTjXPYTbbV"]}," ",{"t":7,"e":"div","a":{"class":"footer-subtitle"},"f":["Support dat by donating Bitcoins to our address above."]}," ",{"t":7,"e":"div","a":{"class":"footer-subtitle"},"f":["You can also ",{"t":7,"e":"a","a":{"href":"https://coinbase.com/checkouts/4c07b345e596636fbd6b269abbf1689f","target":"_blank"},"f":["donate with Coinbase"]},"."]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-credits"},"f":[{"t":7,"e":"span","a":{"class":"footer-emphasized"},"f":["dat"]}," • 2014 • styleguide by ",{"t":7,"e":"a","a":{"href":"https://github.com/flipside-org"},"f":["flipside"]}," • page source on ",{"t":7,"e":"a","a":{"href":"https://github.com/datproject/dat-registry"},"f":["github"]},". Freezing Rain designed by ",{"t":7,"e":"a","a":{"href":"http://www.thenounproject.com/OliM"},"f":["OliM"]}," from the ",{"t":7,"e":"a","a":{"href":"http://www.thenounproject.com"},"f":["Noun Project"]}]}]}]}
+module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":["banner ",{"t":2,"r":"message.type"}]},"f":[{"t":7,"e":"div","a":{"class":"banner-text"},"f":[{"t":2,"r":"message.text"}]}]}," ",{"t":7,"e":"div","a":{"class":"header"},"f":[{"t":7,"e":"div","a":{"class":"header-nav"},"f":[{"t":7,"e":"div","a":{"class":"header-nav-links"},"f":[{"t":7,"e":"ul","a":{"class":"header-nav-list"},"f":[{"t":4,"n":50,"r":"user","f":[{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/publish"},"f":["Publish"]}]}]},{"t":4,"n":51,"f":[{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"data-toggle":"tooltip","data-placement":"bottom","title":"You must login to publish"},"f":["Publish"]}]}],"r":"user"}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/browse"},"f":["Browse"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/about"},"f":["About"]}]}]}," ",{"t":4,"n":50,"r":"user","f":[{"t":7,"e":"div","a":{"class":"btn-group"},"f":[{"t":7,"e":"div","a":{"class":"btn content-card-small-avatar","data-user":[{"t":2,"r":"user.data.login"}],"data-toggle":"dropdown"}}," ",{"t":7,"e":"ul","a":{"class":"dropdown-menu","role":"menu"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/profile"},"f":["Profile"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"/auth/logout","class":"server"},"f":["Logout"]}]}]}]}]},{"t":4,"n":51,"f":[{"t":7,"e":"a","a":{"class":"server","href":"/auth/login/"},"f":[{"t":7,"e":"div","a":{"class":"button"},"f":[{"t":7,"e":"span","a":{"class":"octocat"}},"Login with GitHub"]}]}],"r":"user"}]}," ",{"t":7,"e":"div","a":{"class":"header-left"},"f":[{"t":7,"e":"a","a":{"href":"/"},"f":[{"t":7,"e":"div","a":{"class":"header-logo"},"f":["dat"]}]}," ",{"t":7,"e":"div","a":{"class":"header-search-box"},"f":[{"t":7,"e":"div","a":{"class":"input-group"},"f":[{"t":7,"e":"input","a":{"class":"form-control","type":"search","placeholder":"Search"}}," ",{"t":7,"e":"span","a":{"class":"input-group-btn"},"f":[{"t":7,"e":"button","a":{"type":"submit","class":"btn"},"f":[{"t":7,"e":"span","a":{"class":"fui-search"}}]}]}]}]}]}]}]}," ",{"t":7,"e":"div","a":{"id":"content","class":"content"},"f":[]}," ",{"t":7,"e":"div","a":{"class":"footer"},"f":[{"t":7,"e":"div","a":{"class":"footer-directory"},"f":[{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Explore"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"ul","a":{"class":"footer-nav-list"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"team.html"},"f":["Team"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"http://www.stickermule.com/marketplace/1892-dat-2-hexagon-sticker-v2"},"f":["Get Stickers"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Learn"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"ul","a":{"class":"footer-nav-list"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"about.html"},"f":["About"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]},{"t":7,"e":"a","a":{"href":"docs.html"},"f":["Docs"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Connect"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"ul","a":{"class":"footer-nav-list"},"f":[{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"https://twitter.com/dat_project"},"f":[{"t":7,"e":"span","a":{"class":"twitter-green"}},"Twitter"]}]}," ",{"t":7,"e":"li","f":[{"t":7,"e":"a","a":{"href":"https://github.com/maxogden/dat"},"f":[{"t":7,"e":"span","a":{"class":"octocat-green"}},"GitHub"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-column"},"f":[{"t":7,"e":"div","a":{"class":"footer-heading"},"f":["Support"]}," ",{"t":7,"e":"div","a":{"class":"footer-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"code-container"},"f":[{"t":7,"e":"span","a":{"class":"bitcoin"}}," 19DqLuAssLa2XpVd8GabgMBCFTjXPYTbbV"]}," ",{"t":7,"e":"div","a":{"class":"footer-subtitle"},"f":["Support dat by donating Bitcoins to our address above."]}," ",{"t":7,"e":"div","a":{"class":"footer-subtitle"},"f":["You can also ",{"t":7,"e":"a","a":{"href":"https://coinbase.com/checkouts/4c07b345e596636fbd6b269abbf1689f","target":"_blank"},"f":["donate with Coinbase"]},"."]}]}]}," ",{"t":7,"e":"div","a":{"class":"footer-credits"},"f":[{"t":7,"e":"span","a":{"class":"footer-emphasized"},"f":["dat"]}," • 2014 • styleguide by ",{"t":7,"e":"a","a":{"href":"https://github.com/flipside-org"},"f":["flipside"]}," • page source on ",{"t":7,"e":"a","a":{"href":"https://github.com/datproject/dat-registry"},"f":["github"]},". Freezing Rain designed by ",{"t":7,"e":"a","a":{"href":"http://www.thenounproject.com/OliM"},"f":["OliM"]}," from the ",{"t":7,"e":"a","a":{"href":"http://www.thenounproject.com"},"f":["Noun Project"]}]}]}]}
 },{}],"/Users/karissa/dev/dat/dat-registry/app/templates/metadat/browse.html":[function(require,module,exports){
 module.exports={"v":1,"t":[]}
 },{}],"/Users/karissa/dev/dat/dat-registry/app/templates/metadat/publish.html":[function(require,module,exports){
 module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":"app-page"},"f":[{"t":7,"e":"div","a":{"class":"app-text-container"},"f":[{"t":7,"e":"h1","f":["Publish"]}," ",{"t":7,"e":"form","a":{"class":"form-horizontal","role":"form"},"f":[{"t":7,"e":"p","f":["This is where you can publish your data for anyone to clone and explore on their own machine. You need to already have a dat hosted somewhere. Don't have one yet? ",{"t":7,"e":"a","a":{"href":"/docs#begin"},"f":["Don't worry, it just takes a minute."]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"div","a":{"class":"col-sm-10"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputURL","placeholder":"http://","value":"http://"}}]}," ",{"t":7,"e":"div","a":{"class":"col-sm-2"},"f":[{"t":7,"e":"button","a":{"type":"submit","class":"btn btn-success"},"f":["Preview"]}]}]}," ",{"t":7,"e":"div","a":{"class":"preview"},"f":[{"t":7,"e":"h2","f":["This stuff is pulled automatically from the dat.json file"]}," ",{"t":7,"e":"p","a":{"class":"help-block"},"f":["It updates when your dat updates."]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"div","a":{"class":"col-sm-12"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputName","value":[{"t":2,"r":"dat.name"}],"disabled":0}}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"div","a":{"class":"col-sm-12"},"f":[{"t":7,"e":"textarea","a":{"class":"form-control","id":"inputDescription","disabled":0},"f":["\n              ",{"t":2,"r":"dat.description"},"\n            "]}]}]}," ",{"t":7,"e":"pre","a":{"class":"col-sm-12"},"f":[{"t":2,"r":"dat.json"}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"div","a":{"class":"col-sm-offset-10 col-sm-12"},"f":[{"t":7,"e":"button","a":{"type":"submit","class":"btn btn-success","disabled":0},"f":["Publish"]}]}]}]}]}]}]}," ",{"t":7,"e":"script","a":{"type":"text/javascript"},"f":["\n$(function () {\n  var urlBox = $(\"#inputURL\");\n  urlBox.blur(function () {\n    console.log(urlBox.val());\n  });\n})\n"]}]}
+},{}],"/Users/karissa/dev/dat/dat-registry/app/templates/pages/404.html":[function(require,module,exports){
+module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":"app-page"},"f":[{"t":7,"e":"div","a":{"class":"app-text-container centered"},"f":[{"t":7,"e":"h1","f":["404: oops!"]}," ",{"t":7,"e":"p","f":["Looks like we sent you to the wrong cat, I mean dat."]}," ",{"t":7,"e":"img","a":{"src":"/static/img/mad_cat.jpg"}}]}]}]}
 },{}],"/Users/karissa/dev/dat/dat-registry/app/templates/pages/about.html":[function(require,module,exports){
 module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":"header-info"},"f":[{"t":7,"e":"h1","f":["About Dat"]}]}," ",{"t":7,"e":"div","a":{"class":"content-text-container"},"f":[{"t":7,"e":"div","a":{"class":"content-text-intro"},"f":["Dat is an grant funded, open source project housed in the ",{"t":7,"e":"a","a":{"href":"http://usodi.org/"},"f":["US Open Data Institute"]},". While dat is a general purpose tool, we have a focus on open science use cases."]}," ",{"t":7,"e":"div","a":{"class":"content-text-paragraph"},"f":["The high level goal of the dat project is to build a streaming interface between every database and file storage backend in the world. By building tools to build and share data pipelines we aim to bring to data a style of collaboration similar to what git brings to source code."]}," ",{"t":7,"e":"div","a":{"class":"content-text-paragraph"},"f":["The first code went into dat ",{"t":7,"e":"a","a":{"href":"https://github.com/maxogden/dat/commit/e5eda57b53f60b05c0c3d97da90c10cd17dcbe19"},"f":["on August 17th 2013"]},". The first six months were spent making a prototype (thanks to the ",{"t":7,"e":"a","a":{"href":"http://www.knightfoundation.org/grants/201346305/"},"f":["Knight foundation Prototype Fund"]},") and the last six months have been spent on taking dat beyond the prototype phase and into something more concrete (the Dat Alpha release)."]}," ",{"t":7,"e":"div","a":{"class":"content-text-paragraph"},"f":["In April 2014 we were able to expand the team working on dat from 1 person to 3 persons, thanks to ",{"t":7,"e":"a","a":{"href":"http://usodi.org/2014/04/02/dat"},"f":["support from the Sloan foundation"]},". Sloan's proposition was that they like the initial dat prototype but wanted to see scientific data use cases be treated as top priority. As a result we expanded the scope of the project from its tabular data specific beginnings and have focused on adding features that will help us work with larger open scientific datasets."]}]}]}
 },{}],"/Users/karissa/dev/dat/dat-registry/app/templates/pages/profile.html":[function(require,module,exports){
-module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":"app-page"},"f":[{"t":7,"e":"div","a":{"class":"app-text-container"},"f":[{"t":7,"e":"h1","f":["Profile"]}," ",{"t":7,"e":"form","a":{"class":"form-horizontal","role":"form"},"f":[{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputEmail","class":"col-sm-2 control-label"},"f":["Handle"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputEmail","placeholder":[{"t":2,"r":"user.handle"}],"disabled":0}}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputEmail","class":"col-sm-2 control-label"},"f":["Email"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"email","class":"form-control","id":"inputEmail","placeholder":[{"t":2,"r":"user.data.email"}],"disabled":0}}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputLocation","class":"col-sm-2 control-label"},"f":["Location"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputLocation","placeholder":[{"t":2,"r":"user.data.location"}],"disabled":0}}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputWebsite","class":"col-sm-2 control-label"},"f":["Website"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputWebsite","placeholder":[{"t":2,"r":"user.data.blog"}],"disabled":0}}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputBio","class":"col-sm-2 control-label"},"f":["Bio"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-4"},"f":[{"t":7,"e":"textarea","a":{"class":"form-control","id":"inputBio","disabled":0},"f":["\n            ",{"t":2,"r":"user.data.bio"},"\n          "]}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"div","a":{"class":"col-sm-offset-2 col-sm-6"},"f":[{"t":7,"e":"button","a":{"type":"submit","class":"btn btn-danger","disabled":0},"f":["Save"]}]}]}]}]}]}]}
+module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":"app-page"},"f":[{"t":7,"e":"div","a":{"class":"app-text-container"},"f":[{"t":7,"e":"h1","f":["Profile"]}," ",{"t":7,"e":"form","a":{"id":"form","class":"form-horizontal"},"v":{"submit":"submit"},"f":[{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputEmail","class":"col-sm-2 control-label"},"f":["Handle"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputEmail","value":[{"t":2,"r":"user.handle"}]}}," ",{"t":7,"e":"p","a":{"class":"help-block"},"f":["The name where your dats belong."]}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputEmail","class":"col-sm-2 control-label"},"f":["Email"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"email","class":"form-control","id":"inputEmail","value":[{"t":2,"r":"user.data.email"}]}}," ",{"t":7,"e":"p","a":{"class":"help-block"},"f":["This is public information!"]}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputLocation","class":"col-sm-2 control-label"},"f":["Location"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputLocation","value":[{"t":2,"r":"user.data.location"}]}}," ",{"t":7,"e":"p","a":{"class":"help-block"},"f":["Also public."]}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputWebsite","class":"col-sm-2 control-label"},"f":["Website"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"input","a":{"type":"text","class":"form-control","id":"inputWebsite","value":[{"t":2,"r":"user.data.blog"}]}}," ",{"t":7,"e":"p","a":{"class":"help-block"},"f":["Let people know where to find you."]}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"label","a":{"for":"inputBio","class":"col-sm-2 control-label"},"f":["Bio"]}," ",{"t":7,"e":"div","a":{"class":"col-sm-6"},"f":[{"t":7,"e":"textarea","a":{"class":"form-control","id":"inputBio"},"f":[{"t":2,"r":"user.data.bio"}]}," ",{"t":7,"e":"p","a":{"class":"help-block"},"f":["Why are you using dat?"]}]}]}," ",{"t":7,"e":"div","a":{"class":"form-group"},"f":[{"t":7,"e":"div","a":{"class":"col-sm-offset-2 col-sm-6"},"f":[{"t":7,"e":"button","a":{"type":"submit","class":"btn btn-danger"},"f":["Save"]}]}]}]}]}]}]}
 },{}],"/Users/karissa/dev/dat/dat-registry/app/templates/pages/splash.html":[function(require,module,exports){
 module.exports={"v":1,"t":[{"t":7,"e":"div","a":{"class":"jumbotron-info"},"f":[{"t":7,"e":"h1","a":{"class":"jumbotron-title"},"f":["Open data, collaborated"]}," ",{"t":7,"e":"div","a":{"class":"jumbotron-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"jumbotron-description"},"f":["Dat is an open source project that provides a streaming interface between every file format and data storage backend."]}," ",{"t":7,"e":"div","a":{"class":"jumbotron-continue"},"f":[{"t":7,"e":"a","a":{"href":"#content"},"f":["Find out more ",{"t":7,"e":"span","a":{"class":"rsaquo"},"f":["›"]}]}]}]}," ",{"t":7,"e":"div","a":{"class":"content-title"},"f":["Dat Alpha Now Available"]}," ",{"t":7,"e":"div","a":{"class":"content-subtitle"},"f":["Our first stable registry, intended for early adopters. ",{"t":7,"e":"a","a":{"href":"https://github.com/maxogden/dat/blob/master/docs/dat-stable-alpha.md"},"f":["Read more here"]},"."]}," ",{"t":7,"e":"div","a":{"class":"content-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"content-sub-container"},"f":[{"t":7,"e":"img","a":{"width":"675","src":"/static/img/dat-diagram.png"}}," "]}," ",{"t":7,"e":"div","a":{"class":"content-title"},"f":["Dat Registry"]}," ",{"t":7,"e":"div","a":{"class":"content-subtitle"}}," ",{"t":7,"e":"div","a":{"class":"content-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"content-sub-container content-feature-selectors"},"f":[{"t":7,"e":"div","a":{"class":"content-feature-selector"},"f":[]}," ",{"t":7,"e":"div","a":{"class":"content-feature-selector"},"f":[]}," ",{"t":7,"e":"div","a":{"class":"content-feature-selector"},"f":[]}]}," ",{"t":7,"e":"div","a":{"class":"content-title"},"f":["Dat Client"]}," ",{"t":7,"e":"div","a":{"class":"content-subtitle"},"f":["Learn more at our ",{"t":7,"e":"a","a":{"href":"https://github.com/maxogden/dat/blob/master/docs/getting-started.md"},"f":["getting started guide"]},"."]}," ",{"t":7,"e":"div","a":{"class":"content-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"content-sub-container content-feature-cards"},"f":[{"t":7,"e":"div","a":{"class":"content-feature-card"},"f":[{"t":7,"e":"img","a":{"src":"/static/img/dat-hex-1.png"}}," ",{"t":7,"e":"div","a":{"class":"content-card-title"},"f":["Streaming"]}," ",{"t":7,"e":"div","a":{"class":"content-card-subtitle"},"f":["Everything in dat is built using streaming + non-blocking components so that you can work with large datasets and get immediate, real-time results without running out of RAM."]}]}," ",{"t":7,"e":"div","a":{"class":"content-feature-card"},"f":[{"t":7,"e":"img","a":{"src":"/static/img/dat-hex-2.png"}}," ",{"t":7,"e":"div","a":{"class":"content-card-title"},"f":["Made with Modules"]}," ",{"t":7,"e":"div","a":{"class":"content-card-subtitle"},"f":["Dat stores data locally, but you can easily configure it to store its tabular data in the database of your choice (e.g. PostgreSQL) and its files in external file stores (e.g. Google Drive)."]}]}," ",{"t":7,"e":"div","a":{"class":"content-feature-card"},"f":[{"t":7,"e":"img","a":{"src":"/static/img/dat-hex-3.png"}}," ",{"t":7,"e":"div","a":{"class":"content-card-title"},"f":["REST and CLI"]}," ",{"t":7,"e":"div","a":{"class":"content-card-subtitle"},"f":["You can stream data in and out of dat from the command line using any program that can write to stdin (e.g. R, Python, Ruby, etc) or you can use dat's built in HTTP REST API."]}]}]}," ",{"t":7,"e":"div","a":{"class":"content-title"},"f":["Sponsors and supporters"]}," ",{"t":7,"e":"div","a":{"class":"content-horizontal-rule"}}," ",{"t":7,"e":"div","a":{"class":"content-sub-container content-logos"},"f":[{"t":7,"e":"a","a":{"href":"http://www.sloan.org/major-program-areas/digital-information-technology/data-and-computational-research/"},"f":[{"t":7,"e":"img","a":{"src":"/static/img/sloan.png"}}]}," ",{"t":7,"e":"a","a":{"href":"http://www.knightfoundation.org/grants/201346305/"},"f":[{"t":7,"e":"img","a":{"src":"/static/img/knight.png"}}]}," ",{"t":7,"e":"a","a":{"href":"http://usodi.org/"},"f":[{"t":7,"e":"img","a":{"src":"/static/img/usodi.png"}}]}]}]}
 },{}],"/Users/karissa/dev/dat/dat-registry/app/user.js":[function(require,module,exports){
 var user = {}
 
-
 user.get = function(cb) {
-  $.getJSON('/auth/currentuser', function (data, status) {
+  $.getJSON('/auth/currentuser', function (data) {
     if (data.status == 'success') {
       cb(null, data.user)
     }
     else {
-      cb(data.message)
+      cb(data)
     }
   })
 }
-
 module.exports = user
 
-// Users.prototype.restrictToSelf = function(ctx, next) {
-//   ctx.userid
-//     if (err) {
-//       return callback(err)
-//     }
-//     if (user && user.id === authedUser) {
-//       return callback()
-//     }
-//     else {
-//       render(req, res, './templates/splash.html', {message: {
-//         'type': 'error',
-//         'text': 'Silly cat, this dat is not for you.'
-//       }})
-//     }
-//   })
+},{}],"/Users/karissa/dev/dat/dat-registry/node_modules/debug/browser.js":[function(require,module,exports){
+
+/**
+ * This is the web browser implementation of `debug()`.
+ *
+ * Expose `debug()` as the module.
+ */
+
+exports = module.exports = require('./debug');
+exports.log = log;
+exports.formatArgs = formatArgs;
+exports.save = save;
+exports.load = load;
+exports.useColors = useColors;
+
+/**
+ * Colors.
+ */
+
+exports.colors = [
+  'lightseagreen',
+  'forestgreen',
+  'goldenrod',
+  'dodgerblue',
+  'darkorchid',
+  'crimson'
+];
+
+/**
+ * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+ * and the Firebug extension (any Firefox version) are known
+ * to support "%c" CSS customizations.
+ *
+ * TODO: add a `localStorage` variable to explicitly enable/disable colors
+ */
+
+function useColors() {
+  // is webkit? http://stackoverflow.com/a/16459606/376773
+  return ('WebkitAppearance' in document.documentElement.style) ||
+    // is firebug? http://stackoverflow.com/a/398120/376773
+    (window.console && (console.firebug || (console.exception && console.table))) ||
+    // is firefox >= v31?
+    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+    (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
+}
+
+/**
+ * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+ */
+
+exports.formatters.j = function(v) {
+  return JSON.stringify(v);
+};
+
+
+/**
+ * Colorize log arguments if enabled.
+ *
+ * @api public
+ */
+
+function formatArgs() {
+  var args = arguments;
+  var useColors = this.useColors;
+
+  args[0] = (useColors ? '%c' : '')
+    + this.namespace
+    + (useColors ? ' %c' : ' ')
+    + args[0]
+    + (useColors ? '%c ' : ' ')
+    + '+' + exports.humanize(this.diff);
+
+  if (!useColors) return args;
+
+  var c = 'color: ' + this.color;
+  args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
+
+  // the final "%c" is somewhat tricky, because there could be other
+  // arguments passed either before or after the %c, so we need to
+  // figure out the correct index to insert the CSS into
+  var index = 0;
+  var lastC = 0;
+  args[0].replace(/%[a-z%]/g, function(match) {
+    if ('%%' === match) return;
+    index++;
+    if ('%c' === match) {
+      // we only are interested in the *last* %c
+      // (the user may have provided their own)
+      lastC = index;
+    }
+  });
+
+  args.splice(lastC, 0, c);
+  return args;
+}
+
+/**
+ * Invokes `console.log()` when available.
+ * No-op when `console.log` is not a "function".
+ *
+ * @api public
+ */
+
+function log() {
+  // This hackery is required for IE8,
+  // where the `console.log` function doesn't have 'apply'
+  return 'object' == typeof console
+    && 'function' == typeof console.log
+    && Function.prototype.apply.call(console.log, console, arguments);
+}
+
+/**
+ * Save `namespaces`.
+ *
+ * @param {String} namespaces
+ * @api private
+ */
+
+function save(namespaces) {
+  try {
+    if (null == namespaces) {
+      localStorage.removeItem('debug');
+    } else {
+      localStorage.debug = namespaces;
+    }
+  } catch(e) {}
+}
+
+/**
+ * Load `namespaces`.
+ *
+ * @return {String} returns the previously persisted debug modes
+ * @api private
+ */
+
+function load() {
+  var r;
+  try {
+    r = localStorage.debug;
+  } catch(e) {}
+  return r;
+}
+
+/**
+ * Enable namespaces listed in `localStorage.debug` initially.
+ */
+
+exports.enable(load());
+
+},{"./debug":"/Users/karissa/dev/dat/dat-registry/node_modules/debug/debug.js"}],"/Users/karissa/dev/dat/dat-registry/node_modules/debug/debug.js":[function(require,module,exports){
+
+/**
+ * This is the common logic for both the Node.js and web browser
+ * implementations of `debug()`.
+ *
+ * Expose `debug()` as the module.
+ */
+
+exports = module.exports = debug;
+exports.coerce = coerce;
+exports.disable = disable;
+exports.enable = enable;
+exports.enabled = enabled;
+exports.humanize = require('ms');
+
+/**
+ * The currently active debug mode names, and names to skip.
+ */
+
+exports.names = [];
+exports.skips = [];
+
+/**
+ * Map of special "%n" handling functions, for the debug "format" argument.
+ *
+ * Valid key names are a single, lowercased letter, i.e. "n".
+ */
+
+exports.formatters = {};
+
+/**
+ * Previously assigned color.
+ */
+
+var prevColor = 0;
+
+/**
+ * Previous log timestamp.
+ */
+
+var prevTime;
+
+/**
+ * Select a color.
+ *
+ * @return {Number}
+ * @api private
+ */
+
+function selectColor() {
+  return exports.colors[prevColor++ % exports.colors.length];
+}
+
+/**
+ * Create a debugger with the given `namespace`.
+ *
+ * @param {String} namespace
+ * @return {Function}
+ * @api public
+ */
+
+function debug(namespace) {
+
+  // define the `disabled` version
+  function disabled() {
+  }
+  disabled.enabled = false;
+
+  // define the `enabled` version
+  function enabled() {
+
+    var self = enabled;
+
+    // set `diff` timestamp
+    var curr = +new Date();
+    var ms = curr - (prevTime || curr);
+    self.diff = ms;
+    self.prev = prevTime;
+    self.curr = curr;
+    prevTime = curr;
+
+    // add the `color` if not set
+    if (null == self.useColors) self.useColors = exports.useColors();
+    if (null == self.color && self.useColors) self.color = selectColor();
+
+    var args = Array.prototype.slice.call(arguments);
+
+    args[0] = exports.coerce(args[0]);
+
+    if ('string' !== typeof args[0]) {
+      // anything else let's inspect with %o
+      args = ['%o'].concat(args);
+    }
+
+    // apply any `formatters` transformations
+    var index = 0;
+    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
+      // if we encounter an escaped % then don't increase the array index
+      if (match === '%%') return match;
+      index++;
+      var formatter = exports.formatters[format];
+      if ('function' === typeof formatter) {
+        var val = args[index];
+        match = formatter.call(self, val);
+
+        // now we need to remove `args[index]` since it's inlined in the `format`
+        args.splice(index, 1);
+        index--;
+      }
+      return match;
+    });
+
+    if ('function' === typeof exports.formatArgs) {
+      args = exports.formatArgs.apply(self, args);
+    }
+    var logFn = enabled.log || exports.log || console.log.bind(console);
+    logFn.apply(self, args);
+  }
+  enabled.enabled = true;
+
+  var fn = exports.enabled(namespace) ? enabled : disabled;
+
+  fn.namespace = namespace;
+
+  return fn;
+}
+
+/**
+ * Enables a debug mode by namespaces. This can include modes
+ * separated by a colon and wildcards.
+ *
+ * @param {String} namespaces
+ * @api public
+ */
+
+function enable(namespaces) {
+  exports.save(namespaces);
+
+  var split = (namespaces || '').split(/[\s,]+/);
+  var len = split.length;
+
+  for (var i = 0; i < len; i++) {
+    if (!split[i]) continue; // ignore empty strings
+    namespaces = split[i].replace(/\*/g, '.*?');
+    if (namespaces[0] === '-') {
+      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+    } else {
+      exports.names.push(new RegExp('^' + namespaces + '$'));
+    }
+  }
+}
+
+/**
+ * Disable debug output.
+ *
+ * @api public
+ */
+
+function disable() {
+  exports.enable('');
+}
+
+/**
+ * Returns true if the given mode name is enabled, false otherwise.
+ *
+ * @param {String} name
+ * @return {Boolean}
+ * @api public
+ */
+
+function enabled(name) {
+  var i, len;
+  for (i = 0, len = exports.skips.length; i < len; i++) {
+    if (exports.skips[i].test(name)) {
+      return false;
+    }
+  }
+  for (i = 0, len = exports.names.length; i < len; i++) {
+    if (exports.names[i].test(name)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Coerce `val`.
+ *
+ * @param {Mixed} val
+ * @return {Mixed}
+ * @api private
+ */
+
+function coerce(val) {
+  if (val instanceof Error) return val.stack || val.message;
+  return val;
+}
+
+},{"ms":"/Users/karissa/dev/dat/dat-registry/node_modules/debug/node_modules/ms/index.js"}],"/Users/karissa/dev/dat/dat-registry/node_modules/debug/node_modules/ms/index.js":[function(require,module,exports){
+/**
+ * Helpers.
+ */
+
+var s = 1000;
+var m = s * 60;
+var h = m * 60;
+var d = h * 24;
+var y = d * 365.25;
+
+/**
+ * Parse or format the given `val`.
+ *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
+ * @param {String|Number} val
+ * @param {Object} options
+ * @return {String|Number}
+ * @api public
+ */
+
+module.exports = function(val, options){
+  options = options || {};
+  if ('string' == typeof val) return parse(val);
+  return options.long
+    ? long(val)
+    : short(val);
+};
+
+/**
+ * Parse the given `str` and return milliseconds.
+ *
+ * @param {String} str
+ * @return {Number}
+ * @api private
+ */
+
+function parse(str) {
+  var match = /^((?:\d+)?\.?\d+) *(ms|seconds?|s|minutes?|m|hours?|h|days?|d|years?|y)?$/i.exec(str);
+  if (!match) return;
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
+  switch (type) {
+    case 'years':
+    case 'year':
+    case 'y':
+      return n * y;
+    case 'days':
+    case 'day':
+    case 'd':
+      return n * d;
+    case 'hours':
+    case 'hour':
+    case 'h':
+      return n * h;
+    case 'minutes':
+    case 'minute':
+    case 'm':
+      return n * m;
+    case 'seconds':
+    case 'second':
+    case 's':
+      return n * s;
+    case 'ms':
+      return n;
+  }
+}
+
+/**
+ * Short format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function short(ms) {
+  if (ms >= d) return Math.round(ms / d) + 'd';
+  if (ms >= h) return Math.round(ms / h) + 'h';
+  if (ms >= m) return Math.round(ms / m) + 'm';
+  if (ms >= s) return Math.round(ms / s) + 's';
+  return ms + 'ms';
+}
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function long(ms) {
+  return plural(ms, d, 'day')
+    || plural(ms, h, 'hour')
+    || plural(ms, m, 'minute')
+    || plural(ms, s, 'second')
+    || ms + ' ms';
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, n, name) {
+  if (ms < n) return;
+  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
+  return Math.ceil(ms / n) + ' ' + name + 's';
+}
+
 },{}],"/Users/karissa/dev/dat/dat-registry/node_modules/gravatar/index.js":[function(require,module,exports){
 module.exports = require('./lib/gravatar');
 

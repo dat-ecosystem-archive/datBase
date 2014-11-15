@@ -1,13 +1,17 @@
 var Ractive = require('ractive');
 var page = require('page');
+
 var main = require('./main.js');
+var user = require('./user.js');
 
 var init = {
   ctx: function (ctx, next) {
+    // default for all pages
+    ctx.template = require('./templates/pages/404.html')
     ctx.data = {};
-    main(ctx, function () {
-      next();
-    });
+    ctx.onrender = function () {};
+
+    main(ctx, next)
   }
 }
 
@@ -23,6 +27,7 @@ var routes = {
   profile: function (ctx, next) {
     ctx.data.user = ctx.state.user
     ctx.template = require('./templates/pages/profile.html');
+    ctx.onrender = require('./controllers/profile.js')
     next();
   },
   browse: function (ctx, next) {
@@ -39,14 +44,18 @@ function render(ctx, next) {
   window.ractive = new Ractive({
     el: "#content",
     template: ctx.template,
-    data: ctx.data
+    data: ctx.data,
+    onrender: function () {
+      $('a:not(.server)').click(function(e){
+        var href = $(this).attr('href')
+        page(href)
+        e.preventDefault()
+      })
+
+      ctx.onrender.call(this)
+    }
   });
 
-  $('a:not(.server)').click(function(e){
-    var href = $(this).attr('href')
-    page(href)
-    e.preventDefault()
-  })
 }
 
 page('*', init.ctx)

@@ -2,48 +2,53 @@
   <div class="app-text-container">
     <h1>Profile</h1>
 
-    <form class="form-horizontal" role="form">
+    <form id="form" class="form-horizontal" on-submit="submit">
 
       <div class="form-group">
         <label for="inputEmail" class="col-sm-2 control-label">Handle</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="inputEmail" placeholder="{{user.handle}}" disabled />
+          <input type="text" class="form-control" id="inputEmail" value="{{user.handle}}"  />
+          <p class="help-block">The name where your dats belong.</p>
         </div>
       </div>
 
       <div class="form-group">
         <label for="inputEmail" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-6">
-          <input type="email" class="form-control" id="inputEmail" placeholder="{{user.data.email}}" disabled />
+          <input type="email" class="form-control" id="inputEmail" value="{{user.data.email}}"  />
+          <p class="help-block">This is public information!</p>
         </div>
       </div>
 
       <div class="form-group">
         <label for="inputLocation" class="col-sm-2 control-label">Location</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="inputLocation" placeholder="{{user.data.location}}" disabled />
+          <input type="text" class="form-control" id="inputLocation" value="{{user.data.location}}"  />
+          <p class="help-block">Also public.</p>
         </div>
       </div>
 
       <div class="form-group">
         <label for="inputWebsite" class="col-sm-2 control-label">Website</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="inputWebsite" placeholder="{{user.data.blog}}" disabled />
+          <input type="text" class="form-control" id="inputWebsite" value="{{user.data.blog}}"  />
+          <p class="help-block">Let people know where to find you.</p>
         </div>
       </div>
 
       <div class="form-group">
         <label for="inputBio" class="col-sm-2 control-label">Bio</label>
-        <div class="col-sm-4">
-          <textarea class="form-control" id="inputBio"  disabled>
+        <div class="col-sm-6">
+          <textarea class="form-control" id="inputBio"  >
             {{user.data.bio}}
           </textarea>
+          <p class="help-block">Why are you using dat?</p>
         </div>
       </div>
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-6">
-          <button type="submit" class="btn btn-danger" disabled>Save</button>
+          <button type="submit" class="btn btn-danger">Save</button>
         </div>
       </div>
     </form>

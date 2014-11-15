@@ -44,13 +44,13 @@ Server.prototype.createRoutes = function() {
   var self = this
 
   var router = Router({
-    errorHandler: function (req, res) {
-      req.session.set('message', {
-          'type': 'error',
-          'text': '500: There has been a grave server error. Please open an issue on github.'
-        }, function () {
-          redirecter(req, res, '/')
-      })
+    errorHandler: function (req, res, err) {
+      console.trace(err)
+      res.end(JSON.stringify({
+        'type': 'error',
+        'text': '500: There has been a grave server error. Please open an issue on github.',
+        'error': err.message
+      }))
     },
     notFound: function (req, res) {
       res.end(fs.readFileSync('./index.html').toString())
@@ -65,6 +65,7 @@ Server.prototype.createRoutes = function() {
   router.addRoute('/auth/currentuser', function (req, res) {
     if (req.userid) {
       self.models.users.get(req.userid, function (err, user) {
+        delete user['password']
         res.end(JSON.stringify({
           'status': 'success',
           'user': user
@@ -79,11 +80,35 @@ Server.prototype.createRoutes = function() {
   })
 
   // Wire up API endpoints
-  router.addRoute('/api/:model/:id?', function(req, res, opts) {
-    var id = opts.params.id || ''
-    var model = opts.params.model
-    self.models[model].dispatch(req, res, id)
+  router.addRoute('/api/:model/:id?', function(req, res, opts, cb) {
+    var id = parseInt(opts.params.id) || opts.params.id || ''
+    var model = self.models[opts.params.model]
+    if (!model) {
+      return cb(new Error('no model'))
+    }
+    model.dispatch(req, res, id, cb)
   })
 
   return router
+}
+
+
+Server.prototype.restrictToSelf = function(req, res, userid, cb) {
+  var self = this
+  req.session.get('userid', function (err, userid) {
+    self.models.users.get(userid, function (err, authedUser) {
+      if (err) {
+        return cb(err)
+      }
+      if (user && user.id === authedUser) {
+        return cb(authedUser)
+      }
+      else {
+        render(req, res, './templates/splash.html', {message: {
+          'type': 'error',
+          'text': 'Silly cat, this dat is not for you.'
+        }})
+      }
+    })
+  })
 }
