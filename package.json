@@ -36,7 +36,7 @@
     "handlebars": "^2.0.0",
     "level-prebuilt": "^0.18.0",
     "level-queryengine": "^3.0.1",
-    "level-restful": "^1.0.0",
+    "level-restful": "^1.0.1",
     "level-session": "^0.3.1",
     "page": "^1.4.1",
     "ractive": "^0.6.1",
