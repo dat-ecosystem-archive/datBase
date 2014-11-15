@@ -5,12 +5,14 @@
   <title>Dat Registry</title>
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+  <link rel="icon"
+        type="image/png"
+        href="/static/img/dat-hex-small.png">
   <link rel="stylesheet" href="/static/styles/vendor/reset.css" media="screen">
   <link rel="stylesheet" href="/static/styles/vendor/normalize.css" media="screen">
   <link rel="stylesheet" href="/static/styles/vendor/bootstrap.min.css" media="screen">
   <link rel="stylesheet" href="/static/vendor/flat-ui/css/flat-ui.min.css" media="screen">
   <link rel="stylesheet" href="/static/styles/base.css" media="screen">
-  <script src="/static/vendor/flat-ui/js/vendor/jquery.min.js"></script>
 </head>
 <body>
 <div class="banner {{message.type}}">
@@ -40,7 +42,7 @@
         </ul>
       </div>
       {{else}}
-      <a href="/auth/login/" >
+      <a class="server" href="/auth/login/" >
         <div class="button"><span class="octocat"></span>Login with GitHub</div>
       </a>
       {{/if}}
@@ -60,7 +62,6 @@
 </div>
 
 <div id="content" class="content">
-{{{content}}}
 </div>
 
 <div class="footer">
@@ -128,8 +129,13 @@
   ga('send', 'pageview');
 </script>
 
+<script src="/static/vendor/flat-ui/js/vendor/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="/static/vendor/flat-ui/js/flat-ui.min.js"></script>
-<script src="/static/js/app.js"></script>
+<script src="/static/js/bundle.js"></script>
+<script type="text/javascript">
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 </body>
 </html>

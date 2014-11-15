@@ -25,6 +25,7 @@
   "dependencies": {
     "bcrypt": "^0.8.0",
     "body": "^4.5.0",
+    "brfs": "^1.2.0",
     "bytewise": "^0.7.1",
     "debug": "^2.0.0",
     "error": "^4.3.0",
@@ -36,6 +37,7 @@
     "level-queryengine": "^3.0.1",
     "level-restful": "^1.0.0",
     "level-session": "^0.3.1",
+    "page": "^1.4.1",
     "ractive": "^0.6.1",
     "redirecter": "^0.2.3",
     "request": "^2.45.0",

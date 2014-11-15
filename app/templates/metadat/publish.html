@@ -4,7 +4,9 @@
 
     <form class="form-horizontal" role="form">
         <p >
-          This is where your dat is hosted. Don't have one yet? <a href="/docs">Don't worry, it just takes a minute.</a>
+          This is where you can publish your data for anyone to clone and explore on their own machine.
+          You need to already have a dat hosted somewhere. Don't have one yet?
+          <a href="/docs#begin">Don't worry, it just takes a minute.</a>
         </p>
       <div class="form-group">
         <div class="col-sm-10">
@@ -34,12 +36,9 @@
         </div>
       </div>
 -->
-      <div class="preview ">
+      <div class="preview">
         <h2>This stuff is pulled automatically from the dat.json file</h2>
             <p class="help-block">It updates when your dat updates.</p>
-  <pre class="col-sm-12">
-  {{dat.json}}
-  </pre>
         <div class="form-group">
           <div class="col-sm-12">
             <input type="text" class="form-control" id="inputName" value="{{dat.name}}" disabled />
@@ -53,6 +52,9 @@
             </textarea>
           </div>
         </div>
+  <pre class="col-sm-12">
+  {{dat.json}}
+  </pre>
 
         <div class="form-group">
           <div class="col-sm-offset-10 col-sm-12">

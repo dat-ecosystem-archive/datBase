@@ -28,6 +28,7 @@ function Server(overrides) {
   })
   self.router = self.createRoutes()
   self.server = http.createServer(function(req, res) {
+    console.log(req.url)
     self.session(req, res, function() {
       req.session.get('userid', function(err, userid) {
         if (!err) {
@@ -51,39 +52,28 @@ Server.prototype.createRoutes = function() {
           redirecter(req, res, '/')
       })
     },
-    notFound: function (req, res) {
-      req.session.set('message', {
-          'type': 'error',
-          'text': '404: No dats.'
-        }, function () {
-          redirecter(req, res, '/')
-      })
-    }
+    notFound: self.dispatch('./tempaltes/splash.html').bind(self)
   })
-
-  router.addRoute('/', this.dispatch('./templates/splash.html'))
-  router.addRoute('/about', this.dispatch('./templates/about.html'))
-
 
   // Authentication
   var auth = Auth(this.models)
   router.addRoute('/auth/login', auth.login)
   router.addRoute('/auth/callback', auth.callback)
   router.addRoute('/auth/logout', auth.logout)
-
-  router.addRoute('/profile', function (req, res, opts, cb) {
-    self.models.users.get(req.userid, function (err, user) {
-      restrictToSelf(req, res, user, function (err) {
-        if (err) return cb(err)
-        render(req, res, './templates/profile.html', {user: user})
+  router.addRoute('/auth/currentuser', function (req, res) {
+    if (req.userid) {
+      self.models.users.get(req.userid, function (err, user) {
+        res.end(JSON.stringify({
+          'status': 'success',
+          'user': user
+        }));
       })
-    })
-  })
-
-  router.addRoute('/publish', function (req, res) {
-    self.models.users.get(req.userid, function (err, user) {
-        render(req, res, './templates/metadat/publish.html', {user: user})
-    })
+    } else {
+      res.end(JSON.stringify({
+        'status': 'error',
+        'message': 'no current user'
+      }));
+    }
   })
 
   // Wire up API endpoints
@@ -111,18 +101,13 @@ Server.prototype.dispatch = function(location) {
   }
 }
 
-// TODO: this is entirely not ok and needs to be put in the frontend.
 function render(req, res, location, data) {
   var index = fs.readFileSync('./index.html').toString()
-  data['content'] = new Ractive({
-    template: fs.readFileSync(location).toString(),
-    data: data
-  }).toHTML()
 
-  // TODO: message should be retrieved from api and set in the frontend.
   req.session.get('message', function (err, message) {
-
-    data['message'] = message
+    if (message) {
+      data['message'] = message
+    }
 
     req.session.del('message', function (err) {
       var template =  new Ractive({
@@ -130,26 +115,6 @@ function render(req, res, location, data) {
         data: data
       });
       return res.end(template.toHTML())
-    })
-  })
-}
-
-function restrictToSelf(req, res, user, callback) {
-  req.session.get("userid", function (err, authedUser) {
-    if (err) {
-      return callback(err)
-    }
-    if (user && user.id === authedUser) {
-      return callback()
-    }
-    req.session.set('message', {
-        'type': 'error',
-        'text': 'Silly cat, this dat is not for you.'
-      }, function (err) {
-        if (err) {
-          return callback(err)
-        }
-        redirecter(req, res, '/')
     })
   })
 }
