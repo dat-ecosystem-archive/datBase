@@ -20,10 +20,6 @@ function Users(db) {
       'type': 'string'
     },
     {
-      'name': 'password',
-      'type': 'string'
-    },
-    {
       'name': 'email',
       'type': 'string',
       'optional': true

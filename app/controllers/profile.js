@@ -7,7 +7,7 @@ module.exports = function () {
     var user = this.get('user')
     $.ajax({
       url: '/api/users/' + user.id,
-      data: user,
+      data: JSON.stringify(user),
       type: 'PUT',
       success: function (data, status) {
         window.ractive.set('message', data.message);
