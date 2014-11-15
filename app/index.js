@@ -1,27 +1,28 @@
 var Ractive = require('ractive');
 var page = require('page');
-
-var user = require('./user.js');
+var main = require('./main.js');
 
 var init = {
   ctx: function (ctx, next) {
     ctx.data = {};
-    ctx.partials = {};
-    next();
+    main(ctx, function () {
+      next();
+    });
   }
-};
+}
 
 var routes = {
   splash: function (ctx, next) {
-    ctx.template = require('./templates/splash.html');
+    ctx.template = require('./templates/pages/splash.html');
     next();
   },
   about: function (ctx, next) {
-    ctx.template = require('./templates/about.html');
+    ctx.template = require('./templates/pages/about.html');
     next();
   },
   profile: function (ctx, next) {
-    ctx.template = require('./templates/profile.html');
+    ctx.data.user = ctx.state.user
+    ctx.template = require('./templates/pages/profile.html');
     next();
   },
   browse: function (ctx, next) {
@@ -39,20 +40,20 @@ function render(ctx, next) {
     el: "#content",
     template: ctx.template,
     data: ctx.data
+  });
+
+  $('a:not(.server)').click(function(e){
+    var href = $(this).attr('href')
+    page(href)
+    e.preventDefault()
   })
 }
 
-page('*', init.ctx);
+page('*', init.ctx)
 page('/', routes.splash);
 page('/about', routes.about);
-page('/profile', user.load, routes.profile);
+page('/profile',  routes.profile);
 page('/publish', routes.publish);
 page('/browse', routes.browse);
 page('*', render)
 page({click: false});
-
-$('a:not(.server)').click(function(e){
-  var href = $(this).attr('href')
-  page(href)
-  e.preventDefault()
-})

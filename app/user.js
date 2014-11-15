@@ -1,18 +1,18 @@
-module.exports = {
-  load: function(ctx, next) {
-    if (!ctx.data.user) {
-      $.getJSON('/auth/currentuser', function (data, status) {
-        if (data.status == 'success') {
-          ctx.data.user = data.user;
-        }
-        else {
-          ctx.data.user = null;
-        }
-        next();
-      })
+var user = {}
+
+
+user.get = function(cb) {
+  $.getJSON('/auth/currentuser', function (data, status) {
+    if (data.status == 'success') {
+      cb(null, data.user)
     }
-  }
+    else {
+      cb(data.message)
+    }
+  })
 }
+
+module.exports = user
 
 // Users.prototype.restrictToSelf = function(ctx, next) {
 //   ctx.userid

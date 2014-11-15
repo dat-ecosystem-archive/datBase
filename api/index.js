@@ -52,7 +52,9 @@ Server.prototype.createRoutes = function() {
           redirecter(req, res, '/')
       })
     },
-    notFound: self.dispatch('./tempaltes/splash.html').bind(self)
+    notFound: function (req, res) {
+      res.end(fs.readFileSync('./index.html').toString())
+    }
   })
 
   // Authentication
@@ -84,37 +86,4 @@ Server.prototype.createRoutes = function() {
   })
 
   return router
-}
-
-Server.prototype.dispatch = function(location) {
-  var self = this
-  return function (req, res) {
-    if (req.userid) {
-      // TODO: hits the database if we have a user.. every time..
-      self.models.users.get(req.userid, function (err, user) {
-        if (err) return cb(err)
-        render(req, res, location, {user: user})
-      })
-    } else {
-        render(req, res, location, {user: null})
-    }
-  }
-}
-
-function render(req, res, location, data) {
-  var index = fs.readFileSync('./index.html').toString()
-
-  req.session.get('message', function (err, message) {
-    if (message) {
-      data['message'] = message
-    }
-
-    req.session.del('message', function (err) {
-      var template =  new Ractive({
-        template: index,
-        data: data
-      });
-      return res.end(template.toHTML())
-    })
-  })
 }
