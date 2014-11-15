@@ -4,7 +4,7 @@ var Ractive = require('ractive');
 var user = require('./user.js');
 
 module.exports = function(ctx, next) {
-  user.get(function (err, user) {
+  user.currentUser(function (err, user) {
     ctx.state.user = user
     render(user)
     next()
@@ -12,7 +12,7 @@ module.exports = function(ctx, next) {
 }
 
 function render(user) {
-  var ractive = new Ractive({
+  window.ractive = new Ractive({
     el: '#main',
     template: require('./templates/main.html'),
     data: {

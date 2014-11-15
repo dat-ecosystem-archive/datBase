@@ -41,7 +41,7 @@ var routes = {
 };
 
 function render(ctx, next) {
-  window.ractive = new Ractive({
+  var ractive = new Ractive({
     el: "#content",
     template: ctx.template,
     data: ctx.data,

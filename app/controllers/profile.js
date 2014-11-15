@@ -4,16 +4,21 @@ var debug = require('debug')('profile')
 module.exports = function () {
 
   this.on('submit', function (event) {
-    var user = this.get('user')
-    $.ajax({
-      url: '/api/users/' + user.id,
-      data: JSON.stringify(user),
-      type: 'PUT',
-      success: function (data, status) {
-        window.ractive.set('message', data.message);
-      }
-    });
+    user.update(this.get('user'), function (err) {
+      var message;
 
+      if (err) {
+        message = {
+          'type': 'error',
+          'text': 'We could not update your profile!'
+        }
+      }
+      message = {
+        'type': 'success',
+        'text': 'Profile updated successfully!'
+      }
+      window.ractive.set('message', message)
+    })
     event.original.preventDefault();
   });
 }

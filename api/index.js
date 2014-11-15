@@ -47,9 +47,9 @@ Server.prototype.createRoutes = function() {
     errorHandler: function (req, res, err) {
       console.trace(err)
       res.end(JSON.stringify({
-        'type': 'error',
-        'text': '500: There has been a grave server error. Please open an issue on github.',
-        'error': err.message
+        'status': 'error',
+        'message': '500: There has been a grave server error. Please open an issue on github.',
+        'errorMessage': err.message
       }))
     },
     notFound: function (req, res) {
@@ -74,7 +74,7 @@ Server.prototype.createRoutes = function() {
     } else {
       res.end(JSON.stringify({
         'status': 'error',
-        'message': 'no current user'
+        'message': 'No current user.'
       }));
     }
   })
@@ -105,8 +105,8 @@ Server.prototype.restrictToSelf = function(req, res, userid, cb) {
       }
       else {
         render(req, res, './templates/splash.html', {message: {
-          'type': 'error',
-          'text': 'Silly cat, this dat is not for you.'
+          'status': 'error',
+          'message': 'Silly cat, this dat is not for you.'
         }})
       }
     })
