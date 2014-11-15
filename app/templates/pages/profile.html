@@ -8,7 +8,7 @@
         <label for="inputEmail" class="col-sm-2 control-label">Handle</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="inputEmail" value="{{user.handle}}"  />
-          <p class="help-block">The name where your dats belong.</p>
+          <p class="help-block">Where your dats belong.</p>
         </div>
       </div>
 
@@ -39,10 +39,9 @@
       <div class="form-group">
         <label for="inputBio" class="col-sm-2 control-label">Bio</label>
         <div class="col-sm-6">
-          <textarea class="form-control" id="inputBio"  >
-            {{user.data.bio}}
+          <textarea class="form-control" id="inputBio" value="{{user.data.bio}}">
           </textarea>
-          <p class="help-block">Why are you using dat?</p>
+          <p class="help-block">Who are you and why are you using dat?</p>
         </div>
       </div>
 
