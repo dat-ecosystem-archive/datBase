@@ -84,12 +84,13 @@ module.exports = function(models, overrides) {
       if (err) {
         var newUser = {
           id: user.id,
+          password: 'password',
           handle: user.login,
           data: user
         }
         models.users.create(newUser, function (err, id) {
           if (err) {
-            debug('cannot create user in database', userData)
+            debug('cannot create user in database', newUser)
             callback(err)
           }
           return callback(null, newUser)
