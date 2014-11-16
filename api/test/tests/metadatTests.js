@@ -115,7 +115,6 @@ module.exports.deleteMetadat = function (test, common) {
 module.exports.getMetadats = function (test, common) {
   test('get a metadat', function (t) {
 
-
     var data = {
       'owner_id': 1,
       'name': 'test entry',
