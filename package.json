@@ -32,7 +32,7 @@
     "error": "^4.3.0",
     "extend": "^2.0.0",
     "fulltext-engine": "^1.1.1",
-    "github-oauth": "^0.1.1",
+    "github-oauth": "^0.2.0",
     "level-prebuilt": "^0.18.0",
     "level-queryengine": "^3.0.1",
     "level-restful": "1.0.1",
@@ -47,7 +47,6 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
-    "gravatar": "^1.1.0",
     "ractivate": "^0.2.0",
     "rimraf": "^2.2.8",
     "tap-spec": "^1.0.1",
