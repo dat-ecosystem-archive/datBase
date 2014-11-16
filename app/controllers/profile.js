@@ -1,4 +1,4 @@
-var user = require('../user.js');
+var user = require('../models/user.js');
 var debug = require('debug')('profile')
 
 module.exports = function () {

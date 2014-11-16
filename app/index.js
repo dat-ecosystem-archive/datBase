@@ -1,8 +1,8 @@
 var Ractive = require('ractive');
 var page = require('page');
 
-var main = require('./main.js');
-var user = require('./user.js');
+var main = require('./controllers/main.js');
+var user = require('./models/user.js');
 
 var init = {
   ctx: function (ctx, next) {

@@ -1,7 +1,7 @@
 var gravatar = require('gravatar');
 var Ractive = require('ractive');
 
-var user = require('./user.js');
+var user = require('../models/user.js');
 
 module.exports = function(ctx, next) {
   user.currentUser(function (err, user) {
@@ -14,7 +14,7 @@ module.exports = function(ctx, next) {
 function render(user) {
   window.ractive = new Ractive({
     el: '#main',
-    template: require('./templates/main.html'),
+    template: require('../templates/main.html'),
     data: {
       user: user
     },
