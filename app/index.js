@@ -25,7 +25,7 @@ var routes = {
     next();
   },
   profile: function (ctx, next) {
-    if (!ctx.data.user) {
+    if (!ctx.state.user) {
       ctx.template = require('./templates/pages/404.html');
       return next();
     }
