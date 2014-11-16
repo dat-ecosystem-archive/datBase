@@ -51,7 +51,7 @@ module.exports = function() {
     })
 
     function done() {
-      setTimeout(destroy, 200) // fixes weird test errors on travis-ci
+      setTimeout(destroy, 100) // fixes weird test errors on travis-ci
 
       function destroy() {
         rimraf(defaults.DAT_REGISTRY_DB, function () {

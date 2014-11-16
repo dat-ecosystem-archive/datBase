@@ -1,6 +1,5 @@
 var RestModels = require('level-restful')
 var util = require('util')
-var uuid = require('uuid')
 var bcrypt = require('bcrypt')
 var debug = require('debug')('users')
 var jsonBody = require("body/json");
