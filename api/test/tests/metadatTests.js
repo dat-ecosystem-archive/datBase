@@ -171,11 +171,11 @@ module.exports.updateMetadat = function (test, common) {
     common.testPOST(t, '/api/metadat', data,
       function (err, api, res, json, done) {
         t.ifError(err)
-        t.equal(res.statusCode, 201)
-        t.equal(json.name, data.name)
-        t.equal(json.owner_id, data.owner_id)
-        t.equal(json.url, data.url)
-        t.equal(json.license, data.license)
+        t.equal(res.statusCode, 201, 'created status')
+        t.equal(json.name, data.name, 'name equal')
+        t.equal(json.owner_id, data.owner_id, 'owner id equal')
+        t.equal(json.url, data.url, 'url equal')
+        t.equal(json.license, data.license, 'license equal')
         debug('debugin', json)
 
         data['name'] = 'test entry MODIFIED!'
