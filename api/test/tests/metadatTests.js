@@ -139,15 +139,15 @@ module.exports.getMetadats = function (test, common) {
             t.equal(res.statusCode, 200)
             data['id'] = json['id']
             t.deepEqual(json, data)
-          }
-        )
 
-        request('http://localhost:' + api.options.PORT + '/api/metadat',
-          function (err, res, json) {
-            t.ifError(err)
-            t.equal(res.statusCode, 200)
-            t.equal(json.length, 1)
-            done()
+            request('http://localhost:' + api.options.PORT + '/api/metadat',
+              function (err, res, json) {
+                t.ifError(err)
+                t.equal(res.statusCode, 200)
+                t.equal(json.length, 1)
+                done()
+              }
+            )
           }
         )
       }
@@ -187,7 +187,7 @@ module.exports.updateMetadat = function (test, common) {
           function (err, res, json) {
             t.ifError(err)
             t.equal(res.statusCode, 200)
-            data['id'] = json['id']
+            data.id = json.id
             t.equal(json.name, 'test entry MODIFIED!')
             t.deepEqual(json, data)
 
@@ -202,7 +202,7 @@ module.exports.updateMetadat = function (test, common) {
               function (err, res, json) {
                 t.ifError(err)
                 t.equal(res.statusCode, 200)
-                data['id'] = json['id']
+                data.id = json.id
                 t.equal(json.name, 'test entry MODIFIED 1 more time!!')
                 t.equal(json.owner_id, 23)
                 t.deepEqual(json, data)
