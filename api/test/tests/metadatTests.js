@@ -137,7 +137,7 @@ module.exports.getMetadats = function (test, common) {
           function (err, res, json) {
             t.ifError(err)
             t.equal(res.statusCode, 200)
-            data['id'] = json['id']
+            data.id = json.id
             t.deepEqual(json, data)
 
             request('http://localhost:' + api.options.PORT + '/api/metadat',
