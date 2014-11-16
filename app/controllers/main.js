@@ -1,4 +1,3 @@
-var gravatar = require('gravatar');
 var Ractive = require('ractive');
 
 var user = require('../models/user.js');
