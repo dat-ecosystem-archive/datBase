@@ -12,15 +12,17 @@ user.currentUser = function(cb) {
 }
 
 user.update = function (user, cb) {
- $.ajax({
+
+  $.ajax({
     url: '/api/users/' + user.id,
     data: JSON.stringify(user),
     type: 'PUT',
     success: function (data, status) {
+      var data = JSON.parse(data);
       if (data.status == 'error') {
-        cb(new Error(data.message))
+        return cb(new Error(data.message))
       }
-      cb(new Error('test'))
+      return cb(null)
     }
   });
 }

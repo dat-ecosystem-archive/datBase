@@ -96,6 +96,13 @@ Users.prototype.deleteHandler = function(req, res, id, cb) {
   })
 }
 
+Users.prototype.putHandler = function(req, res, id, cb) {
+  var self = this
+  restrictToSelf(req, res, id, function (err) {
+    if (err) return cb(err)
+    RestModels.prototype.putHandler.call(self, req, res, id, cb)
+  })
+}
 
 Users.prototype.postHandler = function(req, res, cb) {
   return cb(new Error('You dont have permission to create users!!'))

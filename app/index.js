@@ -25,6 +25,10 @@ var routes = {
     next();
   },
   profile: function (ctx, next) {
+    if (!ctx.data.user) {
+      ctx.template = require('./templates/pages/404.html');
+      return next();
+    }
     ctx.data.user = ctx.state.user
     ctx.template = require('./templates/pages/profile.html');
     ctx.onrender = require('./controllers/profile.js')

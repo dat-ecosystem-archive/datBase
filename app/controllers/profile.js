@@ -5,17 +5,16 @@ module.exports = function () {
 
   this.on('submit', function (event) {
     user.update(this.get('user'), function (err) {
-      var message;
+      var message = {
+        'type': 'success',
+        'text': 'Profile updated successfully!'
+      }
 
       if (err) {
         message = {
           'type': 'error',
           'text': 'We could not update your profile!'
         }
-      }
-      message = {
-        'type': 'success',
-        'text': 'Profile updated successfully!'
       }
       window.ractive.set('message', message)
     })
