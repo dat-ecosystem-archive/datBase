@@ -4,113 +4,20 @@
   <meta charset="utf-8">
   <title>Dat Registry</title>
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
-  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
-  <link rel="stylesheet" href="/static/styles/vendor/reset.css" media="screen">
-  <link rel="stylesheet" href="/static/styles/vendor/normalize.css" media="screen">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="icon"
+        type="image/png"
+        href="/static/img/dat-hex-small.png">
+  <link rel="stylesheet" href="/static/styles/vendor/reset.min.css" media="screen">
+  <link rel="stylesheet" href="/static/styles/vendor/normalize.min.css" media="screen">
   <link rel="stylesheet" href="/static/styles/vendor/bootstrap.min.css" media="screen">
   <link rel="stylesheet" href="/static/vendor/flat-ui/css/flat-ui.min.css" media="screen">
   <link rel="stylesheet" href="/static/styles/base.css" media="screen">
 </head>
 <body>
-<div class="banner {{message.type}}">
-  <div class="banner-text">{{message.text}}</div>
-</div>
-<div class="header">
-  <div class="header-nav">
-    <div class="header-nav-links">
-      <ul class="header-nav-list">
-        <li><a href="/browse">Browse</a></li>
-        <li><a href="/about">About</a></li>
-      </ul>
-      {{#if user}}
-      <div class="btn-group">
-        <div class="btn content-card-small-avatar"
-             data-user="{{user.handle}}"
-             data-toggle="dropdown"></div>
 
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="/profile">Profile</a></li>
-          <li><a href="/auth/logout">Logout</a></li>
-        </ul>
-      </div>
-      {{else}}
-      <a href="/auth/login/" >
-        <div class="button"><span class="octocat"></span>Login with GitHub</div>
-      </a>
-      {{/if}}
-    </div>
-    <div class="header-left">
-        <a href="/"><div class="header-logo">dat</div></a>
-      <div class="header-search-box">
-        <div class="input-group">
-          <input class="form-control" type="search" placeholder="Search">
-          <span class="input-group-btn">
-            <button type="submit" class="btn"><span class="fui-search"></span></button>
-          </span>
-        </div>
-      </div>
-    </div>
+  <div id="main">
   </div>
-</div>
-
-<div id="content" class="content">
-{{{content}}}
-</div>
-
-<div class="footer">
-  <div class="footer-directory">
-    <div class="footer-column">
-      <div class="footer-heading">Explore</div>
-      <div class="footer-horizontal-rule"></div>
-      <ul class="footer-nav-list">
-        <li><span class="rsaquo">&rsaquo;</span><a href="team.html">Team</a></li>
-        <li><span class="rsaquo">&rsaquo;</span><a href="http://www.stickermule.com/marketplace/1892-dat-2-hexagon-sticker-v2">Get Stickers</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <div class="footer-heading">Learn</div>
-      <div class="footer-horizontal-rule"></div>
-      <ul class="footer-nav-list">
-        <li><span class="rsaquo">&rsaquo;</span><a href="about.html">About</a></li>
-        <li><span class="rsaquo">&rsaquo;</span><a href="docs.html">Docs</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <div class="footer-heading">Connect</div>
-      <div class="footer-horizontal-rule"></div>
-      <ul class="footer-nav-list">
-        <li><a href="https://twitter.com/dat_project"><span class="twitter-green"></span>Twitter</a></li>
-        <li><a href="https://github.com/maxogden/dat"><span class="octocat-green"></span>GitHub</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <div class="footer-heading">Support</div>
-      <div class="footer-horizontal-rule"></div>
-      <div class="code-container">
-        <span class="bitcoin"></span>
-        19DqLuAssLa2XpVd8GabgMBCFTjXPYTbbV
-      </div>
-      <div class="footer-subtitle">Support dat by donating Bitcoins to our address above.</div>
-      <div class="footer-subtitle">You can also <a href="https://coinbase.com/checkouts/4c07b345e596636fbd6b269abbf1689f" target="_blank">donate with Coinbase</a>.</div>
-    </div>
-
-
-  </div>
-  <div class="footer-credits">
-    <span class="footer-emphasized">dat</span> &bull; 2014 &bull; styleguide by <a href="https://github.com/flipside-org">flipside</a> &bull; page source on <a href="https://github.com/datproject/dat-registry">github</a>. Freezing Rain designed by <a href="http://www.thenounproject.com/OliM">OliM</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
-  </div>
-</div>
-<script type="text/javascript" src="/static/js/gravatar.js"></script>
-<script type="text/javascript">
-  var gravatar = require('gravatar')
-  var peeps = document.querySelectorAll('.content-card-small-avatar')
-  for (var i = 0; i < peeps.length; i++) {
-    var peep = peeps[i]
-    var username = peep.getAttribute('data-user')
-    if (!username) continue
-    peep.setAttribute('style', "background-image: url('https://github.com/" + username + ".png')")
-  }
-</script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -118,11 +25,13 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-49664853-1', 'dat-data.com');
+  ga('create', '', 'dat-data.com');
   ga('send', 'pageview');
 </script>
 
 <script src="/static/vendor/flat-ui/js/vendor/jquery.min.js"></script>
-<script src="/static/vendor/flat-ui/js/flat-ui.min.js"></script>
+<script src="/static/vendor/bootstrap.min.js"></script>
+<script src="/static/js/bundle.js"></script>
+
 </body>
 </html>

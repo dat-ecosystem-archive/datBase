@@ -1,5 +1,5 @@
 var RestModels = require('level-restful'),
-    uuid = require('uuid'),
+    timestamp = require('monotonic-timestamp')
     util = require('util');
 
 module.exports = MetaDat;
@@ -36,4 +36,4 @@ function MetaDat(db) {
 }
 
 util.inherits(MetaDat, RestModels);
-MetaDat.prototype.keyfn = uuid.v1
+MetaDat.prototype.keyfn = timestamp

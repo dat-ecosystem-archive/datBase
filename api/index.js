@@ -8,6 +8,7 @@ var debug = require('debug')('server')
 var levelSession = require('level-session')
 var redirecter = require('redirecter')
 var Ractive = require('ractive');
+var sendJson = require('send-data/json')
 
 var Auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
@@ -28,6 +29,7 @@ function Server(overrides) {
   })
   self.router = self.createRoutes()
   self.server = http.createServer(function(req, res) {
+    console.log(req.url)
     self.session(req, res, function() {
       req.session.get('userid', function(err, userid) {
         if (!err) {
@@ -43,111 +45,51 @@ Server.prototype.createRoutes = function() {
   var self = this
 
   var router = Router({
-    errorHandler: function (req, res) {
-      req.session.set('message', {
-          'type': 'error',
-          'text': '500: There has been a grave server error. Please open an issue on github.'
-        }, function () {
-          redirecter(req, res, '/')
+    errorHandler: function (req, res, err) {
+      console.trace(err)
+      sendJson(req, res, {
+        'status': 'error',
+        'message': '500: There has been a grave server error. Please open an issue on github.',
+        'errorMessage': err.message
       })
     },
     notFound: function (req, res) {
-      req.session.set('message', {
-          'type': 'error',
-          'text': '404: No dats.'
-        }, function () {
-          redirecter(req, res, '/')
-      })
+      res.end(fs.readFileSync('./index.html').toString())
     }
   })
-
-  router.addRoute('/', this.dispatch('./templates/splash.html'))
-  router.addRoute('/about', this.dispatch('./templates/about.html'))
-
 
   // Authentication
   var auth = Auth(this.models)
   router.addRoute('/auth/login', auth.login)
   router.addRoute('/auth/callback', auth.callback)
   router.addRoute('/auth/logout', auth.logout)
-
-  router.addRoute('/profile', function (req, res, opts, cb) {
-    self.models.users.get(req.userid, function (err, user) {
-      restrictToSelf(req, res, user, function (err) {
-        if (err) return cb(err)
-        render(req, res, './templates/profile.html', {user: user})
+  router.addRoute('/auth/currentuser', function (req, res) {
+    if (req.userid) {
+      self.models.users.get(req.userid, function (err, user) {
+        delete user['password']
+        sendJson(req, res, {
+          'status': 'success',
+          'user': user
+        });
       })
-    })
-  })
-
-  router.addRoute('/restricted', function (req, res) {
-    render(req, res, './templates/system/restricted.html')
+    } else {
+      sendJson(req, res, {
+        'status': 'error',
+        'message': 'No current user.'
+      });
+    }
   })
 
   // Wire up API endpoints
-  router.addRoute('/api/:model/:id?', function(req, res, opts) {
-    var id = opts.params.id || ''
-    var model = opts.params.model
-    self.models[model].dispatch(req, res, id)
+  router.addRoute('/api/:model/:id?', function(req, res, opts, cb) {
+    var id = parseInt(opts.params.id) || opts.params.id || ''
+    var model = self.models[opts.params.model]
+    if (!model) {
+      return cb(new Error('no model'))
+    }
+    model.dispatch(req, res, id, cb)
   })
 
   return router
 }
 
-Server.prototype.dispatch = function(location) {
-  var self = this
-  return function (req, res) {
-    if (req.userid) {
-      // TODO: hits the database if we have a user.. every time..
-      self.models.users.get(req.userid, function (err, user) {
-        if (err) return cb(err)
-        render(req, res, location, {user: user})
-      })
-    } else {
-        render(req, res, location, {user: null})
-    }
-  }
-}
-
-// TODO: this is entirely not ok and needs to be put in the frontend.
-function render(req, res, location, data) {
-  var index = fs.readFileSync('./index.html').toString()
-  data['content'] = new Ractive({
-    template: fs.readFileSync(location).toString(),
-    data: data
-  }).toHTML()
-
-  // TODO: message should be retrieved from api and set in the frontend.
-  req.session.get('message', function (err, message) {
-
-    data['message'] = message
-
-    req.session.del('message', function (err) {
-      var template =  new Ractive({
-        template: index,
-        data: data
-      });
-      return res.end(template.toHTML())
-    })
-  })
-}
-
-function restrictToSelf(req, res, user, callback) {
-  req.session.get("userid", function (err, authedUser) {
-    if (err) {
-      return callback(err)
-    }
-    if (user && user.id === authedUser) {
-      return callback()
-    }
-    req.session.set('message', {
-        'type': 'error',
-        'text': 'Silly cat, this dat is not for you.'
-      }, function (err) {
-        if (err) {
-          return callback(err)
-        }
-        redirecter(req, res, '/')
-    })
-  })
-}

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js -e js,css,html",
-    "test": "node api/test/run.js | tap-spec"
+    "test": "node api/test/run.js | tap-spec",
+    "watch": "watchify -t ractivate app/index.js -o static/js/bundle.js",
+    "watch-css": "autoless static/styles"
   },
   "repository": {
     "type": "git",
@@ -30,23 +32,26 @@
     "error": "^4.3.0",
     "extend": "^2.0.0",
     "fulltext-engine": "^1.1.1",
-    "github-oauth": "^0.1.1",
-    "handlebars": "^2.0.0",
+    "github-oauth": "^0.2.0",
     "level-prebuilt": "^0.18.0",
     "level-queryengine": "^3.0.1",
-    "level-restful": "^1.0.0",
+    "level-restful": "1.0.1",
     "level-session": "^0.3.1",
+    "monotonic-timestamp": "0.0.9",
+    "page": "^1.4.1",
     "ractive": "^0.6.1",
     "redirecter": "^0.2.3",
     "request": "^2.45.0",
     "routes-router": "^4.1.1",
     "run-waterfall": "^1.0.2",
-    "st": "^0.5.2",
-    "uuid": "^2.0.1"
+    "send-data": "^3.3.3",
+    "st": "^0.5.2"
   },
   "devDependencies": {
+    "ractivate": "^0.2.0",
     "rimraf": "^2.2.8",
     "tap-spec": "^1.0.1",
-    "tape": "^3.0.0"
+    "tape": "^3.0.0",
+    "watchify": "^2.1.1"
   }
 }

@@ -3,14 +3,17 @@
 .banner {
   color: @off-white;
   position: fixed;
+  display: none;
   top: 0;
   width: 100%;
   z-index: 999999;
 
   &.success {
+    display: block;
     background-color: @green;
   }
   &.error {
+    display: block;
     background-color: @error;
   }
 }

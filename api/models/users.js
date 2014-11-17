@@ -1,9 +1,8 @@
 var RestModels = require('level-restful')
 var util = require('util')
-var uuid = require('uuid')
 var bcrypt = require('bcrypt')
 var debug = require('debug')('users')
-
+var jsonBody = require("body/json");
 
 module.exports = Users
 
@@ -20,10 +19,6 @@ function Users(db) {
       'type': 'string'
     },
     {
-      'name': 'password',
-      'type': 'string'
-    },
-    {
       'name': 'email',
       'type': 'string',
       'optional': true
@@ -34,9 +29,7 @@ function Users(db) {
       'optional': true
     }
   ]
-  opts = {
-    rest: false
-  }
+  opts = {}
   RestModels.call(this, db, 'users', 'id', fields, opts);
 }
 util.inherits(Users, RestModels);
@@ -56,7 +49,7 @@ Users.prototype.create = function(data, cb, insecure) {
   debug("creating user", data);
 
   if(!data['handle'] || !data['password']) {
-    return cb("can not create user without handle and password in data", false)
+    return cb(new Error("can not create user without handle and password in data"), false)
   }
 
   var encryptPassword = function(password, cb) {
@@ -79,10 +72,37 @@ Users.prototype.login = function(id, password, cb) {
   // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
   var self = this
   this.get(id, function(err, user) {
-    if (err || !user) return cb("could not find user", false)
+    if (err || !user) return cb(new Error("could not find user"), false)
       bcrypt.compare(password.toString(), user.password.toString(), function(err, res) {
-        if (err || !res) return cb("password mismatch", false)
+        if (err || !res) return cb(new Error("password mismatch"), false)
         cb(null, user)
       })
   })
+}
+
+function restrictToSelf(req, res, id, cb) {
+  if (req.userid === id) {
+    cb(null)
+  }
+  else return cb(new Error('access denied'))
+}
+
+Users.prototype.deleteHandler = function(req, res, id, cb) {
+  var self = this
+  restrictToSelf(req, res, id, function (err) {
+    if (err) return cb(err)
+    RestModels.prototype.deleteHandler.call(self, req, res, id, cb)
+  })
+}
+
+Users.prototype.putHandler = function(req, res, id, cb) {
+  var self = this
+  restrictToSelf(req, res, id, function (err) {
+    if (err) return cb(err)
+    RestModels.prototype.putHandler.call(self, req, res, id, cb)
+  })
+}
+
+Users.prototype.postHandler = function(req, res, cb) {
+  return cb(new Error('You dont have permission to create users!!'))
 }
