@@ -1,6 +1,7 @@
 var Ractive = require('ractive');
 var page = require('page');
 
+var routes = require('./routes.js')
 var main = require('./controllers/main.js');
 var user = require('./models/user.js');
 
@@ -14,35 +15,6 @@ var init = {
     main(ctx, next)
   }
 }
-
-var routes = {
-  splash: function (ctx, next) {
-    ctx.template = require('./templates/pages/splash.html');
-    next();
-  },
-  about: function (ctx, next) {
-    ctx.template = require('./templates/pages/about.html');
-    next();
-  },
-  profile: function (ctx, next) {
-    if (!ctx.state.user) {
-      ctx.template = require('./templates/pages/404.html');
-      return next();
-    }
-    ctx.data.user = ctx.state.user
-    ctx.template = require('./templates/pages/profile.html');
-    ctx.onrender = require('./controllers/profile.js')
-    next();
-  },
-  browse: function (ctx, next) {
-    ctx.template = require('./templates/metadat/browse.html');
-    next();
-  },
-  publish: function (ctx, next) {
-    ctx.template = require('./templates/metadat/publish.html');
-    next();
-  }
-};
 
 function render(ctx, next) {
   var ractive = new Ractive({
