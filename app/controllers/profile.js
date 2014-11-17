@@ -2,9 +2,10 @@ var user = require('../models/user.js');
 var debug = require('debug')('profile')
 
 module.exports = function () {
+  var ractive = this
 
-  this.on('submit', function (event) {
-    user.update(this.get('user'), function (err) {
+  ractive.on('submit', function (event) {
+    user.update(ractive.get('user'), function (err) {
       var message = {
         'type': 'success',
         'text': 'Profile updated successfully!'
