@@ -57,21 +57,10 @@ module.exports = function(models, overrides) {
           //the finisher
           var type, text;
           if (err) {
-            type = 'error'
-            text = 'Could not log you in with github.'
-            throw err
+            throw new Error('Could not log you in with github.')
           }
-          else {
-            type = 'success'
-            text = 'You have successfully logged in with github.'
-          }
-          req.session.set('message', {
-            'type': type,
-            'text': text
-          }, function () {
-            debug('redirecting')
-            redirecter(req, res, '/')
-          })
+          debug('redirecting')
+          redirecter(req, res, '/')
         }
       )
     }
@@ -91,7 +80,7 @@ module.exports = function(models, overrides) {
         models.users.create(newUser, function (err, id) {
           if (err) {
             debug('cannot create user in database', newUser)
-            callback(err)
+            return callback(err)
           }
           return callback(null, newUser)
         })
@@ -103,10 +92,10 @@ module.exports = function(models, overrides) {
   function loginUser(req, user, callback) {
     // delete current session and set new session
     req.session.del('userid', function (err) {
-      if (err) callback(err)
+      if (err) return callback(err)
       req.session.set('userid', user.id, function(err) {
-        if (err) callback(err)
-        callback(null)
+        if (err) return callback(err)
+        return callback(null)
       })
     })
   }

@@ -8,6 +8,7 @@ var debug = require('debug')('server')
 var levelSession = require('level-session')
 var redirecter = require('redirecter')
 var Ractive = require('ractive');
+var sendJson = require('send-data/json')
 
 var Auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
@@ -46,11 +47,11 @@ Server.prototype.createRoutes = function() {
   var router = Router({
     errorHandler: function (req, res, err) {
       console.trace(err)
-      res.end(JSON.stringify({
+      sendJson(req, res, {
         'status': 'error',
         'message': '500: There has been a grave server error. Please open an issue on github.',
         'errorMessage': err.message
-      }))
+      })
     },
     notFound: function (req, res) {
       res.end(fs.readFileSync('./index.html').toString())
@@ -66,16 +67,16 @@ Server.prototype.createRoutes = function() {
     if (req.userid) {
       self.models.users.get(req.userid, function (err, user) {
         delete user['password']
-        res.end(JSON.stringify({
+        sendJson(req, res, {
           'status': 'success',
           'user': user
-        }));
+        });
       })
     } else {
-      res.end(JSON.stringify({
+      sendJson(req, res, {
         'status': 'error',
         'message': 'No current user.'
-      }));
+      });
     }
   })
 
@@ -92,23 +93,3 @@ Server.prototype.createRoutes = function() {
   return router
 }
 
-
-Server.prototype.restrictToSelf = function(req, res, userid, cb) {
-  var self = this
-  req.session.get('userid', function (err, userid) {
-    self.models.users.get(userid, function (err, authedUser) {
-      if (err) {
-        return cb(err)
-      }
-      if (user && user.id === authedUser) {
-        return cb(authedUser)
-      }
-      else {
-        render(req, res, './templates/splash.html', {message: {
-          'status': 'error',
-          'message': 'Silly cat, this dat is not for you.'
-        }})
-      }
-    })
-  })
-}
