@@ -8,12 +8,9 @@ module.exports = {
     next();
   },
   profile: function (ctx, next) {
-    if (!ctx.state.user) {
-      ctx.ractive.template = require('./templates/pages/404.html');
-      return next();
-    }
-    ctx.ractive = require('./controllers/profile.js')
-    ctx.ractive.data.user = ctx.state.user
+    ctx.ractive = require('./controllers/profile.js')({
+      user: ctx.state.user
+    })
     next();
   },
   browse: function (ctx, next) {
@@ -21,7 +18,9 @@ module.exports = {
     next();
   },
   publish: function (ctx, next) {
-    ctx.ractive = require('./controllers/publish.js')
+    ctx.ractive = require('./controllers/publish.js')({
+      user: ctx.state.user
+    })
     next();
   }
 };

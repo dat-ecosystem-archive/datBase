@@ -36,11 +36,19 @@ function render(ctx, next) {
 
 }
 
+function requiresAuth(ctx, next) {
+  if (!ctx.state.user) {
+    ctx.ractive.template = require('./templates/pages/404.html');
+    return render(ctx, next)
+  }
+  next()
+}
+
 page('*', init.ctx)
 page('/', routes.splash);
 page('/about', routes.about);
-page('/profile',  routes.profile);
-page('/publish', routes.publish);
+page('/profile',  requiresAuth, routes.profile);
+page('/publish', requiresAuth, routes.publish);
 page('/browse', routes.browse);
 page('*', render)
 page({click: false});

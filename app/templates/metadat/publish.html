@@ -15,6 +15,9 @@
           {{state.introText}}
         </p>
 
+      <div id="finish" class="{{state.name == 'finish' ? 'visible': 'hidden'}}">
+        <a href="/view/{{metadat.id}}">Redirecting...</a>
+      </div>
 
       <div id="submit" class="{{state.name == 'submit' ? 'visible' : 'hidden'}}">
         <div class="form-group">
@@ -32,7 +35,8 @@
               value="{{metadat.description}}"></textarea>
           </div>
           <div class="col-sm-2">
-            <button type="submit" class="btn btn-success" disabled>Publish</button>
+            <button type="submit" class="btn btn-success"
+                on-click="publish">Publish</button>
           </div>
         </div>
 

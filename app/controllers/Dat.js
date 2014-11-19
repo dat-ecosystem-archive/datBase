@@ -7,11 +7,16 @@ function Dat(url) {
   this.url = url
 };
 
-Dat.prototype.save = function (metadata) {
+Dat.prototype.save = function (metadat, cb) {
   var self = this
-  var apiUrl = self.constructUrl
-  $.post(apiUrl, data, function (data) {
-
+  var options = {
+    uri: '/api/metadat',
+    method: 'POST',
+    json: metadat
+  }
+  request(options, function (err, resp, json) {
+    if (err) return cb(err)
+    return cb(null, resp, json)
   })
 }
 
@@ -25,9 +30,10 @@ Dat.prototype.api = function(cb) {
   var self = this
   var apiUrl = self.constructUrl('/api')
   var options = {
-    url: apiUrl,
+    uri: apiUrl,
     method: 'GET',
-    json: true
+    json: true,
+    timeout: 10000 // 10 seconds
   }
   request(options, cb)
 }
@@ -42,7 +48,7 @@ Dat.prototype.apiSession = function (user, pass, cb) {
   }
 
   var options = {
-    url: apiUrl,
+    uri: apiUrl,
     method: 'GET',
     json: true,
     headers: {'authorization': 'Basic ' + btoa(user + ':' + pass)}
