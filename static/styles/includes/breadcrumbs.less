@@ -11,7 +11,7 @@
 }
 
 .breadcrumbs li {
-  width: 20%;
+  width: 24%;
   margin-left: 4%;
   margin-right: 4%;
   display: inline-block;
@@ -23,6 +23,9 @@
       text-decoration: none;
       border-bottom: none;
       cursor: default;
+    }
+    .fui-check {
+      display: none;
     }
   }
 
@@ -36,12 +39,16 @@
   }
 
   a.finished {
-    font-weight: normal;
+    font-weight: bold;
     color: @dark-blue;
     &:hover {
       font-weight: none;
       border-bottom: 1px solid @dark-blue;
       cursor: pointer;
+    }
+    .fui-check {
+      display: inline-block;
+      float: right;
     }
   }
 }

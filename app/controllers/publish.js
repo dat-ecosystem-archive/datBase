@@ -3,7 +3,49 @@ var debug = require('debug')('publish')
 
 var Dat = require('./Dat.js')
 
+var STATES = {
+  'begin': {
+    'introText': 'Enter the URL for this dat.',
+    'index': 0
+  },
+  'preview': {
+    'introText': 'Is this the dat you were looking for?',
+    'index': 1
+  },
+  'authorize': {
+    'introText': 'Okay, so it was you who set up this dat?',
+    'index': 2
+  },
+  'submit': {
+    'introText': 'Give it a name',
+    'index': 3
+  },
+  'finish': {
+    'introText': 'Alright! Your dat has been created.',
+    'index': 4
+  }
+}
+
 module.exports =  function (data) {
+
+  data.visibleState = function (state) {
+    return this.get('state') === state ? 'visible' : 'hidden'
+  }
+
+  data.breadcrumbClass = function (bcName) {
+    var currentState = this.get('state.index')
+    var item = STATES[bcName].index
+    if (item == currentState) {
+      return 'active'
+    }
+    if (item < currentState) {
+      return 'finished'
+    }
+    if (item > currentState) {
+      return ''
+    }
+  }
+
   return {
     data: data,
     template: require('../templates/metadat/publish.html'),
@@ -13,32 +55,9 @@ module.exports =  function (data) {
       var user = data.user;
 
       ractive.set('metadat', {
-        url: 'http://'
+        url: 'https://dat-tweetser.herokuapp.com/'
       })
 
-      var states = {
-        'begin': {
-          'introText': 'Enter the URL for this dat.',
-        },
-        'preview': {
-          'introText': 'Is this the dat you were looking for?'
-        },
-        'previewLoading': {
-          'introText': 'Loading...'
-        },
-        'previewFailure': {
-          'introText': "Hmm, that URL seems broken, try again?"
-        },
-        'authorize': {
-          'introText': 'Okay, so it was you who set up this dat?'
-        },
-        'submit': {
-          'introText': 'Give it a name'
-        },
-        'finish': {
-          'introText': 'Alright! Your dat has been created.'
-        }
-      }
       setState('begin')
 
       var typing = false;
@@ -49,10 +68,6 @@ module.exports =  function (data) {
         } else {
           setState('begin')
         }
-      })
-
-      ractive.observe('adminUsername adminPassword', function () {
-        ractive.set('loading', false)
       })
 
       ractive.on('publish', function (event) {
@@ -73,6 +88,14 @@ module.exports =  function (data) {
         event.original.preventDefault();
       })
 
+      /** Authorization **/
+
+      ractive.observe('adminUsername adminPassword', function () {
+        // when the user accidentally types in the wrong password,
+        // and then tries to fix it, remove the loading and error STATES
+        ractive.set('loading', false)
+      })
+
       ractive.on('authorizeSubmit', function (event) {
         ractive.set('loading', true)
         var adminUsername = ractive.get('adminUsername')
@@ -80,11 +103,13 @@ module.exports =  function (data) {
 
         dat.apiSession(adminUsername, adminPassword, function (err, resp, json) {
           ractive.set('loading', false)
+
           if (err) {
-            ractive.set('feedback', err.message)
-            ractive.set('error', true)
+            ractive.set('authorizeError', true)
             return
           }
+
+          ractive.set('authorizeError', false)
           setState('submit')
         })
         event.original.preventDefault();
@@ -97,15 +122,13 @@ module.exports =  function (data) {
 
       function setState(state) {
         console.log('setting state', state)
-        ractive.set('feedback', null)
-        ractive.set('error', false)
-        ractive.set('state', states[state])
+        ractive.set('state', STATES[state])
         ractive.set('state.name', state)
       }
 
       function getPreview(url) {
         dat = new Dat(url)
-        setState('previewLoading')
+        ractive.set('loading', true)
 
         dat.api(function (err, resp, json) {
           if (err) {
@@ -118,9 +141,11 @@ module.exports =  function (data) {
             }
 
             // if that didn't work it just failed
-            setState('previewFailure')
+            ractive.set('urlError', true)
+            ractive.set('state.introText', "Hmm, that URL seems broken, try again?")
             return;
           }
+          ractive.set('urlError', false)
 
           // set up the metadat with the correct data
           ractive.set('metadat.url', url)
