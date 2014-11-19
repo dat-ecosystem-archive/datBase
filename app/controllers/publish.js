@@ -21,7 +21,7 @@ var STATES = {
     'index': 3
   },
   'finish': {
-    'introText': 'Alright! Your dat has been created.',
+    'introText': 'Alright! Creating your dat...',
     'index': 4
   }
 }
@@ -84,6 +84,12 @@ module.exports =  function (data) {
           }
           ractive.set('metadat.id', json.id)
           setState('finish')
+
+          // for visual confirmation
+          setTimeout(function () {
+            ractive.set('state.introText', 'Done!')
+            window.location.href = '/view/' + metadat.id;
+          }, 2000)
         })
         event.original.preventDefault();
       })
@@ -94,6 +100,7 @@ module.exports =  function (data) {
         // when the user accidentally types in the wrong password,
         // and then tries to fix it, remove the loading and error STATES
         ractive.set('loading', false)
+        ractive.set('authorizeError', false)
       })
 
       ractive.on('authorizeSubmit', function (event) {
