@@ -13,10 +13,6 @@ module.exports = {
     })
     next();
   },
-  browse: function (ctx, next) {
-    ctx.ractive.template = require('./templates/metadat/browse.html');
-    next();
-  },
   publish: function (ctx, next) {
     ctx.ractive = require('./controllers/publish.js')({
       user: ctx.state.user
@@ -25,7 +21,14 @@ module.exports = {
   },
   view: function (ctx, next) {
     ctx.ractive = require('./controllers/view.js')({
+      user: ctx.state.user,
       metadatId: ctx.params.id
+    })
+    next()
+  },
+  browse: function (ctx, next) {
+    ctx.ractive = require('./controllers/browse.js')({
+      user: ctx.state.user,
     })
     next()
   }

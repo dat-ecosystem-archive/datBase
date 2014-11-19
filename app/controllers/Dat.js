@@ -47,6 +47,19 @@ Dat.prototype.apiSession = function (user, pass, cb) {
   )
 }
 
+Dat.all = function (cb) {
+  var self = this
+  var options = {
+    uri: '/api/metadat',
+    method: 'GET',
+    json: true
+  }
+  request(options, function (err, resp, json) {
+    if (err) return cb(err)
+    return cb(null, resp, json)
+  })
+}
+
 Dat.get = function (metadatId, cb) {
   var self = this
   var options = {

@@ -15,15 +15,6 @@ module.exports =  function (data) {
       ractive.set('metadat', {
         url: 'http://'
       })
-      /** testing **/
-      ractive.set('adminPassword', 'C0wl3v3l!')
-      ractive.set('adminUsername', 'krmckelv')
-
-      ractive.set('metadat', {
-        url: 'https://dat-tweetser.herokuapp.com/'
-      })
-
-      /** end testing **/
 
       var states = {
         'begin': {

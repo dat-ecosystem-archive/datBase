@@ -51,15 +51,19 @@ module.exports = function() {
     })
 
     function done() {
-      setTimeout(destroy, 100) // fixes weird test errors on travis-ci
+      setTimeout(closeTheThings, 100) // fixes weird test errors on travis-ci
 
       function destroy() {
         rimraf(defaults.DAT_REGISTRY_DB, function () {
-          api.server.close()
-          api.models.db.close()
-          api.session.close()
-          t.end()
+          closeTheThings()
         });
+      }
+
+      function closeTheThings() {
+        api.server.close()
+        api.models.db.close()
+        api.session.close()
+        t.end()
       }
 
     }
