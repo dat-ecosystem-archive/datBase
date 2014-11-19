@@ -15,9 +15,13 @@
           {{state.introText}}
         </p>
 
-      <div id="finish" class="{{state.name == 'finish' ? 'visible': 'hidden'}}">
+      {{#if state.name == 'finish'}}
+
+      <div id="finish">
         <a href="/view/{{metadat.id}}">Redirecting...</a>
       </div>
+
+      {{else}}
 
       <div id="submit" class="{{state.name == 'submit' ? 'visible' : 'hidden'}}">
         <div class="form-group">
@@ -94,16 +98,17 @@
           {{/if}}
         </div>
 
-      {{#if metadat.json}}
+        {{#if metadat.json}}
         <div class="preview-frame">
 
             <iframe src="{{metadat.url}}"></iframe>
             <div class="json"><pre class="col-sm-12">{{metadat.json}}</pre></div>
 
         </div>
-      {{/if}}
+        {{/if}}
 
       </div>
     </div>
+    {{/if}}
   </div>
 </div>

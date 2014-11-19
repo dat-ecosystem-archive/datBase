@@ -22,5 +22,9 @@ module.exports = {
       user: ctx.state.user
     })
     next();
+  },
+  view: function (ctx, next) {
+    ctx.ractive = require('./controllers/view.js')()
+    next()
   }
 };
