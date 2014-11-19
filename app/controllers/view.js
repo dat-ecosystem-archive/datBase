@@ -15,7 +15,7 @@ module.exports = function (data) {
         if (err) {
           window.ractive.set('message', {
             type: 'error',
-            text: err.message
+            text: resp.message
           })
         }
         ractive.set('metadat', metadat)

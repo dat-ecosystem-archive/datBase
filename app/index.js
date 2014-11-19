@@ -5,6 +5,12 @@ var routes = require('./routes.js')
 var main = require('./controllers/main.js');
 var user = require('./models/user.js');
 
+var helpers = Ractive.defaults.data
+
+helpers.prettyJSON = function (json) {
+  return JSON.stringify(json, undefined, 2)
+}
+
 var init = {
   ctx: function (ctx, next) {
     // default for all pages

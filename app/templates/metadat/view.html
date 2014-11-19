@@ -1,7 +1,20 @@
 <div class="app-page">
   <div class="app-text-container">
-  <h1> {{metadat.name}}</h1>
+    <h1>{{metadat.name}}</h1>
+    <p>{{metadat.description}}</p>
 
+    <div id="preview">
+      <div class="col-sm-12">
+        {{metadat.url}}
+      </div>
 
+      <div class="col-sm-12">
+        <div class="preview-frame">
+          <iframe src="{{metadat.url}}"></iframe>
+            <div class="json"><pre class="col-sm-12">{{prettyJSON(metadat.json)}}</pre></div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>

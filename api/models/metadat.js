@@ -21,20 +21,24 @@ function MetaDat(db) {
       'type': 'string'
     },
     {
+      'name': 'json',
+      'type': 'object'
+    },
+    {
       'name': 'url',
       'type': 'string'
     },
+    {
+      'name': 'license',
+      'type': 'string',
+      'optional': true,
+      'default': 'BSD'
+    }
     // {
     //   'name': 'schema',
     //   'type': 'string',
     //   'optional': true
     // },
-    // {
-    //   'name': 'license',
-    //   'type': 'string',
-    //   'optional': true,
-    //   'default': 'BSD'
-    // }
   ]
   RestModels.call(this, db, 'metadat', 'id', fields, opts);
 }

@@ -133,7 +133,7 @@ module.exports =  function (data) {
 
           // set up the metadat with the correct data
           ractive.set('metadat.url', url)
-          ractive.set('metadat.json', JSON.stringify(json, undefined, 2))
+          ractive.set('metadat.json', json)
           ractive.set('metadat.name', json.name)
           ractive.set('metadat.description', json.description)
           ractive.set('metadat.publisher', json.publisher)

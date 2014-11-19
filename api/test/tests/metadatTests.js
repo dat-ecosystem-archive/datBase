@@ -6,7 +6,12 @@ module.exports.createMetadat = function (test, common) {
     var data = {
       'owner_id': 1,
       'name': 'test entry',
+      'description': 'i am a description',
       'url': 'http://dat-data.dathub.org',
+      'json': {
+        'name': 'some-name',
+        'version': 1.3
+      },
       'license': 'BSD-2'
      // 'keywords': ['entry', 'test', 'data', 'dathub']
     }
@@ -26,8 +31,13 @@ module.exports.createMetadat = function (test, common) {
     var data = {
       'owner_id': 'DELETE FROM *',
       'name': 'hello',
+      'description': 'i am a description',
       'url': 'http://dat-data.dathub.org',
-      'license': 'BSD-2'
+      'license': 'BSD-2',
+      'json': {
+        'name': 'some-name',
+        'version': 1.3
+      }
      // 'keywords': ['entry', 'test', 'data', 'dathub']
     }
 
@@ -44,7 +54,12 @@ module.exports.createMetadat = function (test, common) {
     var data = {
       'owner_id': 1,
       'url': 'http://dat-data.dathub.org',
-      'license': 'BSD-2'
+      'license': 'BSD-2',
+      'description': 'i am a description',
+      'json': {
+        'name': 'some-name',
+        'version': 1.3
+      }
      // 'keywords': ['entry', 'test', 'data', 'dathub']
     }
 
@@ -79,7 +94,12 @@ module.exports.deleteMetadat = function (test, common) {
       'owner_id': 1,
       'name': 'test entry',
       'url': 'http://dat-data.dathub.org',
-      'license': 'BSD-2'
+      'license': 'BSD-2',
+      'description': 'i am a description',
+      'json': {
+        'name': 'some-name',
+        'version': 1.3
+      }
      // 'keywords': ['entry', 'test', 'data', 'dathub']
     }
 
@@ -119,7 +139,12 @@ module.exports.getMetadats = function (test, common) {
       'owner_id': 1,
       'name': 'test entry',
       'url': 'http://dat-data.dathub.org',
-      'license': 'BSD-2'
+      'license': 'BSD-2',
+      'description': 'i am a description',
+      'json': {
+        'name': 'some-name',
+        'version': 1.3
+      }
      // 'keywords': ['entry', 'test', 'data', 'dathub']
     }
 
@@ -164,7 +189,12 @@ module.exports.updateMetadat = function (test, common) {
       'owner_id': 1,
       'name': 'test entry',
       'url': 'http://dat-data.dathub.org',
-      'license': 'BSD-2'
+      'license': 'BSD-2',
+      'description': 'i am a description',
+      'json': {
+        'name': 'some-name',
+        'version': 1.3
+      }
      // 'keywords': ['entry', 'test', 'data', 'dathub']
     }
 
