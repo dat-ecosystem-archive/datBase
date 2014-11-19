@@ -24,7 +24,9 @@ module.exports = {
     next();
   },
   view: function (ctx, next) {
-    ctx.ractive = require('./controllers/view.js')()
+    ctx.ractive = require('./controllers/view.js')({
+      metadatId: ctx.params.id
+    })
     next()
   }
 };

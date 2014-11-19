@@ -2,11 +2,6 @@ var user = require('../models/user.js');
 var debug = require('debug')('profile')
 
 module.exports = function (data) {
-  if (!data) {
-    data = {
-      user: null
-    }
-  }
   return {
     data: data,
     template: require('../templates/pages/profile.html'),

@@ -7,19 +7,6 @@ function Dat(url) {
   this.url = url
 };
 
-Dat.prototype.save = function (metadat, cb) {
-  var self = this
-  var options = {
-    uri: '/api/metadat',
-    method: 'POST',
-    json: metadat
-  }
-  request(options, function (err, resp, json) {
-    if (err) return cb(err)
-    return cb(null, resp, json)
-  })
-}
-
 Dat.prototype.constructUrl = function (urlPath) {
   var apiUrl = path.join(this.url, urlPath)
   console.log('constructing', apiUrl)
@@ -40,13 +27,7 @@ Dat.prototype.api = function(cb) {
 
 Dat.prototype.apiSession = function (user, pass, cb) {
   var self = this
-
   var apiUrl = self.constructUrl('/api/session')
-
-  function setHeader(xhr) {
-    xhr.setRequestHeader();
-  }
-
   var options = {
     uri: apiUrl,
     method: 'GET',
@@ -64,4 +45,32 @@ Dat.prototype.apiSession = function (user, pass, cb) {
       return cb(null, resp, json)
     }
   )
+}
+
+Dat.get = function (metadatId, cb) {
+  var self = this
+  var options = {
+    uri: '/api/metadat/' + metadatId,
+    method: 'GET',
+    json: true
+  }
+  request(options, function (err, resp, json) {
+    if (err) {
+      return cb(new Error('Could not get that dat, are you sure the ID is right?'))
+    }
+    return cb(null, resp, json)
+  })
+}
+
+Dat.prototype.save = function (metadat, cb) {
+  var self = this
+  var options = {
+    uri: '/api/metadat',
+    method: 'POST',
+    json: metadat
+  }
+  request(options, function (err, resp, json) {
+    if (err) return cb(err)
+    return cb(null, resp, json)
+  })
 }

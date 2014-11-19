@@ -4,11 +4,6 @@ var debug = require('debug')('publish')
 var Dat = require('./Dat.js')
 
 module.exports =  function (data) {
-  if (!data) {
-    data = {
-      user: null
-    }
-  }
   return {
     data: data,
     template: require('../templates/metadat/publish.html'),
@@ -75,7 +70,10 @@ module.exports =  function (data) {
 
         dat.save(metadat, function (err, resp, json) {
           if (err) {
-            ractive.set('feedback', err.message)
+            window.ractive.set('message', {
+              type: 'error',
+              text: err.message
+            })
             ractive.set('error', true)
           }
           ractive.set('metadat.id', json.id)
