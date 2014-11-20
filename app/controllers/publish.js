@@ -71,7 +71,7 @@ module.exports =  function (data) {
       ractive.on('submitOK', function (event) {
         // save the metadat
         var metadat = ractive.get('metadat')
-        metadat.owner_id = user.id
+        metadat.owner_id = user.handle
 
         dat.save(metadat, function (err, resp, json) {
           if (err) {

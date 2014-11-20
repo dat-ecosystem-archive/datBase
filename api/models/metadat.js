@@ -10,7 +10,7 @@ function MetaDat(db) {
   fields = [
     {
       'name': 'owner_id',
-      'type': 'number'
+      'type': 'string'
     },
     {
       'name': 'description',

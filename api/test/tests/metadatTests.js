@@ -4,7 +4,7 @@ var debug = require('debug')('test-metadat')
 module.exports.createMetadat = function (test, common) {
   test('creates a new Metadat via POST', function(t) {
     var data = {
-      'owner_id': 1,
+      'owner_id': 'mafintosh',
       'name': 'test entry',
       'description': 'i am a description',
       'url': 'http://dat-data.dathub.org',
@@ -29,7 +29,7 @@ module.exports.createMetadat = function (test, common) {
 
   test('invalid field type throws 400', function(t) {
     var data = {
-      'owner_id': 'DELETE FROM *',
+      'owner_id': 1,
       'name': 'hello',
       'description': 'i am a description',
       'url': 'http://dat-data.dathub.org',
@@ -52,7 +52,7 @@ module.exports.createMetadat = function (test, common) {
 
   test('missing required field throws 400', function(t) {
     var data = {
-      'owner_id': 1,
+      'owner_id': 'karissa',
       'url': 'http://dat-data.dathub.org',
       'license': 'BSD-2',
       'description': 'i am a description',
@@ -91,7 +91,7 @@ module.exports.getMetadatsEmpty = function (test, common) {
 module.exports.deleteMetadat = function (test, common) {
   test('creates a new Metadat via POST then deletes it', function(t) {
     var data = {
-      'owner_id': 1,
+      'owner_id': 'mafintosh',
       'name': 'test entry',
       'url': 'http://dat-data.dathub.org',
       'license': 'BSD-2',
@@ -136,7 +136,7 @@ module.exports.getMetadats = function (test, common) {
   test('get a metadat', function (t) {
 
     var data = {
-      'owner_id': 1,
+      'owner_id': 'karissa',
       'name': 'test entry',
       'url': 'http://dat-data.dathub.org',
       'license': 'BSD-2',
@@ -186,7 +186,7 @@ module.exports.updateMetadat = function (test, common) {
   //TODO: callback hell! want to use promises?
   test('get a metadat', function (t) {
     var data = {
-      'owner_id': 1,
+      'owner_id': 'karissa',
       'name': 'test entry',
       'url': 'http://dat-data.dathub.org',
       'license': 'BSD-2',
@@ -222,7 +222,7 @@ module.exports.updateMetadat = function (test, common) {
             t.deepEqual(json, data)
 
             data['name'] = 'test entry MODIFIED 1 more time!!'
-            data['owner_id'] = 23
+            data['owner_id'] = 'mafintosh'
 
             request({
               method: 'PUT',
@@ -234,7 +234,7 @@ module.exports.updateMetadat = function (test, common) {
                 t.equal(res.statusCode, 200)
                 data.id = json.id
                 t.equal(json.name, 'test entry MODIFIED 1 more time!!')
-                t.equal(json.owner_id, 23)
+                t.equal(json.owner_id, 'mafintosh')
                 t.deepEqual(json, data)
                 done()
               }
