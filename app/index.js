@@ -48,7 +48,7 @@ function render(ctx, next) {
 
 function requiresAuth(ctx, next) {
   if (!ctx.state.user) {
-    ctx.ractive.template = require('./templates/pages/404.html');
+    ctx.ractive.template = require('./templates/pages/restricted.html');
     return render(ctx, next)
   }
   next()
