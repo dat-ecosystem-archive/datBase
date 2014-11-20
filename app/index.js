@@ -15,6 +15,14 @@ helpers.errorClass = function (state) {
   return this.get(state) ? 'has-error' : '';
 }
 
+helpers.loadingClass = function() {
+  return this.get('loading') ? 'btn-disabled' : 'btn-success';
+}
+
+helpers.loadingText = function (text) {
+  return this.get('loading') ? 'Loading' : text
+}
+
 var init = {
   ctx: function (ctx, next) {
     // default for all pages

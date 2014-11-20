@@ -6,7 +6,7 @@ var Dat = require('./Dat.js')
 var STATES = {
   'begin': {
     'introText': 'Enter the URL for this dat.',
-    'index': 0
+    'index': 1
   },
   'preview': {
     'introText': 'Is this the dat you were looking for?',
@@ -55,12 +55,12 @@ module.exports =  function (data) {
       var user = data.user;
 
       function setState(state) {
-        console.log('setting state', state)
+        debug('setting state', state)
         ractive.set('state', STATES[state])
         ractive.set('state.name', state)
       }
 
-      setState('begin')
+      beginState()
 
       ractive.set('metadat', {
         url: 'https://'
@@ -101,7 +101,7 @@ module.exports =  function (data) {
         ractive.set('authorizeError', false)
       })
 
-      ractive.on('authorizeSubmit', function (event) {
+      ractive.on('authorizeOK', function (event) {
         ractive.set('loading', true)
         var adminUsername = ractive.get('adminUsername')
         var adminPassword = ractive.get('adminPassword')
@@ -123,7 +123,7 @@ module.exports =  function (data) {
       /** PREVIEW **/
 
       ractive.observe('metadat.url', function (newVal, old, keyPath) {
-        resetState()
+        beginState()
       })
 
       // ok buttong on preview
@@ -152,6 +152,7 @@ module.exports =  function (data) {
 
       function getPreview(url) {
         dat = new Dat(url)
+        console.log('loading')
         ractive.set('loading', true)
 
         dat.api(function (err, resp, json) {
@@ -168,6 +169,7 @@ module.exports =  function (data) {
             onPreviewError();
             return;
           }
+          ractive.set('loading', false)
           ractive.set('urlError', false)
 
           // set up the metadat with the correct data
@@ -189,15 +191,19 @@ module.exports =  function (data) {
 
       function onPreviewError() {
         setState('begin')
+        ractive.set('loading', false)
         ractive.set('urlError', true)
         ractive.set('metadat.json', null)
         ractive.set('adminPassword', null)
         ractive.set('adminUsername', null)
       }
 
-      function resetState() {
+      function beginState() {
         ractive.set('loading', false)
         ractive.set('urlError', false)
+        ractive.set('authorizeError', false)
+        ractive.set('adminPassword', null)
+        ractive.set('adminUsername', null)
         ractive.set('metadat.json', null)
         setState('begin')
       }

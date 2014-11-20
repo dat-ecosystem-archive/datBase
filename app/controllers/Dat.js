@@ -20,7 +20,7 @@ Dat.prototype.api = function(cb) {
     uri: apiUrl,
     method: 'GET',
     json: true,
-    timeout: 10000 // 10 seconds
+    timeout: 8000 // 8 seconds
   }
   request(options, cb)
 }

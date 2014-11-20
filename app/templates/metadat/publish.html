@@ -52,8 +52,8 @@
           </div>
           <div class="col-sm-2">
             <button type="submit" on-click="submitOK"
-              class="btn {{loading ? 'btn-disabled' : 'btn-success'}}">
-               {{ loading ? 'Loading' : 'Publish' }}
+              class="btn {{loadingClass()}}">
+               {{ loadingText('Publish') }}
             </button>
           </div>
         </div>
@@ -80,9 +80,10 @@
             </p>
           </div>
           <div class="col-sm-2">
-            <button type="submit" on-click="authorizeSubmit"
-               class="btn {{loading ? 'btn-disabled' : 'btn-success'}}">
-               {{ loading ? 'Loading' : 'Submit' }}
+            <button type="submit" on-click="authorizeOK"
+               class="btn {{loadingClass()}}">
+               {{ loadingText('Submit') }}
+
             </button>
           </div>
         </div>
@@ -107,8 +108,9 @@
           {{#if state.name == 'begin' || state.name == 'preview'}}
             <div class="col-sm-2">
               <button type="submit" on-click="previewOK"
-                 class="btn btn-success">
-            {{metadat.json ? 'Yes' : 'Next'}}</button>
+                 class="btn {{loadingClass()}}">
+
+               {{ loadingText(metadat.json ? 'Yes' : 'Next')}}</button>
             </div>
           {{/if}}
         </div>
