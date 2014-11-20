@@ -70,7 +70,7 @@ module.exports = function(models, overrides) {
     // get or create user
     debug('getting user', user.login)
 
-    models.users.get(user.login, function (err, user) {
+    models.users.get(user.login, function (err) {
       if (err) {
         // user doesn't exist, so we create a new one
         var newUser = {
