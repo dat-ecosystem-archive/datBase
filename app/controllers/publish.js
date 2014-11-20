@@ -54,25 +54,23 @@ module.exports =  function (data) {
       var dat = null;
       var user = data.user;
 
-      ractive.set('metadat', {
-        url: 'https://dat-tweetser.herokuapp.com/'
-      })
+      function setState(state) {
+        console.log('setting state', state)
+        ractive.set('state', STATES[state])
+        ractive.set('state.name', state)
+      }
 
       setState('begin')
 
-      var typing = false;
-
-      ractive.observe('metadat.url', function (url, oldValue, keyPath) {
-        if (isUrl(url)) {
-          getPreview(url)
-        } else {
-          setState('begin')
-        }
+      ractive.set('metadat', {
+        url: 'https://'
       })
+
+      /** PUBLISH **/
 
       ractive.on('publish', function (event) {
         var metadat = ractive.get('metadat')
-        metadat['owner_id'] = user.id
+        metadat.owner_id = user.id
 
         dat.save(metadat, function (err, resp, json) {
           if (err) {
@@ -80,7 +78,6 @@ module.exports =  function (data) {
               type: 'error',
               text: err.message
             })
-            ractive.set('error', true)
           }
           ractive.set('metadat.id', json.id)
           setState('finish')
@@ -94,9 +91,9 @@ module.exports =  function (data) {
         event.original.preventDefault();
       })
 
-      /** Authorization **/
+      /** AUTHORIZE **/
 
-      ractive.observe('adminUsername adminPassword', function () {
+      ractive.observe('adminUsername adminPassword', function (newVal, old, keyPath) {
         // when the user accidentally types in the wrong password,
         // and then tries to fix it, remove the loading and error STATES
         ractive.set('loading', false)
@@ -122,34 +119,55 @@ module.exports =  function (data) {
         event.original.preventDefault();
       })
 
-      ractive.on('previewOK', function (event) {
-        setState('authorize')
-        event.original.preventDefault();
+      /** PREVIEW **/
+
+      ractive.observe('metadat.url', function (newVal, old, keyPath) {
+        ractive.set('loading', false)
+        ractive.set('urlError', false)
+        ractive.set('metadat.json', null)
+        setState('begin')
       })
 
-      function setState(state) {
-        console.log('setting state', state)
-        ractive.set('state', STATES[state])
-        ractive.set('state.name', state)
-      }
+      // ok buttong on preview
+      ractive.on('previewOK', function (event) {
+        // preview is currently visible
+        if (successfulPreview()) {
+          return setState('authorize')
+        }
+
+        // url needs to be checked/previewed
+        var url = ractive.get('metadat.url')
+
+        if (!/^http/.test(url)) {
+          url = 'http://' + url
+        }
+
+        if (isUrl(url)) {
+          getPreview(url)
+        }
+        else {
+          onPreviewError();
+          return
+        }
+        event.original.preventDefault();
+      })
 
       function getPreview(url) {
         dat = new Dat(url)
         ractive.set('loading', true)
 
         dat.api(function (err, resp, json) {
+          ractive.set('loading', false)
           if (err) {
-            // in the case the user typed http but really meant https
+            // attempt url sanitizing
             if (/^http:\/\//.test(url)) {
-
               //replace http with https
               url = url.replace('http://', 'https://')
               return getPreview(url)
             }
 
             // if that didn't work it just failed
-            ractive.set('urlError', true)
-            ractive.set('state.introText', "Hmm, that URL seems broken, try again?")
+            onPreviewError();
             return;
           }
           ractive.set('urlError', false)
@@ -164,9 +182,21 @@ module.exports =  function (data) {
         })
       }
 
-      function stateIs(name) {
-       return ractive.get('state.name') == name
+      function successfulPreview() {
+        var json = ractive.get('metadat.json')
+        var success = json != null && json != undefined
+        console.log('success', success)
+        return success
+      }
+
+      function onPreviewError() {
+        setState('begin')
+        ractive.set('urlError', true)
+        ractive.set('metadat.json', null)
+        ractive.set('adminPassword', null)
+        ractive.set('adminUsername', null)
       }
     }
+
   }
 }

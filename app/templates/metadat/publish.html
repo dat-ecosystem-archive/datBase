@@ -104,15 +104,16 @@
 
           </div>
 
-          {{#if state.name == 'preview'}}
-          <div class="col-sm-2">
-            <button type="submit" on-click="previewOK"
-               class="btn btn-success">Yes</button>
-          </div>
+          {{#if state.name == 'begin' || state.name == 'preview'}}
+            <div class="col-sm-2">
+              <button type="submit" on-click="previewOK"
+                 class="btn btn-success">
+            {{metadat.json ? 'Yes' : 'Next'}}</button>
+            </div>
           {{/if}}
         </div>
 
-        {{#if metadat.json}}
+        {{#if metadat.json && state.name != 'begin'}}
         <div class="preview-frame">
 
             <iframe src="{{metadat.url}}"></iframe>
