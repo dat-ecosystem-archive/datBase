@@ -8,7 +8,11 @@ var user = require('./models/user.js');
 var helpers = Ractive.defaults.data
 
 helpers.prettyJSON = function (json) {
-  return JSON.stringify(json, undefined, 2)
+  return JSON.stringify(json, undefined, 2);
+}
+
+helpers.errorClass = function (state) {
+  return this.get(state) ? 'has-error' : '';
 }
 
 var init = {

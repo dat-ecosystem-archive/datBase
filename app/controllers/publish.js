@@ -28,8 +28,8 @@ var STATES = {
 
 module.exports =  function (data) {
 
-  data.visibleState = function (state) {
-    return this.get('state') === state ? 'visible' : 'hidden'
+  data.visibleClass = function (state) {
+    return this.get('state.name') == state ? 'visible' : 'hidden';
   }
 
   data.breadcrumbClass = function (bcName) {
@@ -66,9 +66,10 @@ module.exports =  function (data) {
         url: 'https://'
       })
 
-      /** PUBLISH **/
+      /** SUBMIT **/
 
-      ractive.on('publish', function (event) {
+      ractive.on('submitOK', function (event) {
+        // save the metadat
         var metadat = ractive.get('metadat')
         metadat.owner_id = user.id
 
@@ -122,10 +123,7 @@ module.exports =  function (data) {
       /** PREVIEW **/
 
       ractive.observe('metadat.url', function (newVal, old, keyPath) {
-        ractive.set('loading', false)
-        ractive.set('urlError', false)
-        ractive.set('metadat.json', null)
-        setState('begin')
+        resetState()
       })
 
       // ok buttong on preview
@@ -195,6 +193,13 @@ module.exports =  function (data) {
         ractive.set('metadat.json', null)
         ractive.set('adminPassword', null)
         ractive.set('adminUsername', null)
+      }
+
+      function resetState() {
+        ractive.set('loading', false)
+        ractive.set('urlError', false)
+        ractive.set('metadat.json', null)
+        setState('begin')
       }
     }
 
