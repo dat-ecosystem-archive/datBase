@@ -126,7 +126,7 @@ module.exports =  function (data) {
         beginState()
       })
 
-      // ok buttong on preview
+      // ok button on preview
       ractive.on('previewOK', function (event) {
         // preview is currently visible
         if (successfulPreview()) {
@@ -136,6 +136,7 @@ module.exports =  function (data) {
         // url needs to be checked/previewed
         var url = ractive.get('metadat.url')
 
+        // if it doesnt have http://, add it.
         if (!/^http/.test(url)) {
           url = 'http://' + url
         }
