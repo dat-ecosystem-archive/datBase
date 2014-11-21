@@ -145,7 +145,7 @@ module.exports =  function (data) {
           getPreview(url)
         }
         else {
-          onPreviewError();
+          getPreview(url)
           return
         }
         event.original.preventDefault();
@@ -159,9 +159,9 @@ module.exports =  function (data) {
         dat.api(function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
-            // attempt url sanitizing
+            console.log(err.message)
+            // maybe they don't know its https? replace http with https
             if (/^http:\/\//.test(url)) {
-              //replace http with https
               url = url.replace('http://', 'https://')
               return getPreview(url)
             }
