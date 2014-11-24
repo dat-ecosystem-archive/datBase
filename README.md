@@ -9,25 +9,27 @@ See the website at http://dat-data.com for more information.
 
 ## Setting up
 
-0. Install dependencies
+Install dependencies
 ```bash
 $ npm install
 ```
 
-1. Have github oauth keys in your environment (same environment that will run ```npm start```)
-
+Have github app keys in your environment (same environment that will run ```npm start```)
 ```bash
 export GITHUB_CLIENT='client-key-here'
 export GITHUB_SECRET='secret-key-here'
 ```
 
-2. Watch your browserify and less bundles
+Watch your browserify and less bundles (in separate terminals)
 ```bash
 $ npm run watch
+```
+
+```bash
 $ npm run watch-css
 ```
 
-3. Run the server
+Run the server
 ```bash
 $ npm start
 ```
