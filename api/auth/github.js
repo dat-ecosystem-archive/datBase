@@ -57,10 +57,10 @@ module.exports = function(models, overrides) {
           //the finisher
           var type, text;
           if (err) {
-            throw new Error('Could not log you in with github.')
+            throw err
           }
           debug('redirecting')
-          redirecter(req, res, '/')
+          redirecter(req, res, '/profile')
         }
       )
     }
@@ -68,24 +68,28 @@ module.exports = function(models, overrides) {
 
   function getOrCreateGithubUser(user, callback) {
     // get or create user
-    debug('getting user', user)
-    models.users.get(user.id, function (err) {
+    debug('getting user', user.login)
+
+    models.users.get(user.login, function (err) {
       if (err) {
+        // user doesn't exist, so we create a new one
         var newUser = {
-          id: user.id,
-          password: 'password',
           handle: user.login,
+          password: 'password', // dummy password.
           data: user
         }
-        models.users.create(newUser, function (err, id) {
+        models.users.create(newUser, function (err, handle) {
           if (err) {
             debug('cannot create user in database', newUser)
             return callback(err)
           }
+          debug('new user created', handle)
           return callback(null, newUser)
         })
       }
-      return callback(null, user)
+      else {
+        return callback(null, user)
+      }
     })
   }
 
@@ -93,7 +97,7 @@ module.exports = function(models, overrides) {
     // delete current session and set new session
     req.session.del('userid', function (err) {
       if (err) return callback(err)
-      req.session.set('userid', user.id, function(err) {
+      req.session.set('userid', user.handle, function(err) {
         if (err) return callback(err)
         return callback(null)
       })

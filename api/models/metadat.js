@@ -10,7 +10,7 @@ function MetaDat(db) {
   fields = [
     {
       'name': 'owner_id',
-      'type': 'number'
+      'type': 'string'
     },
     {
       'name': 'description',
@@ -40,8 +40,11 @@ function MetaDat(db) {
     //   'optional': true
     // },
   ]
+  opts = {}
   RestModels.call(this, db, 'metadat', 'id', fields, opts);
 }
 
 util.inherits(MetaDat, RestModels);
 MetaDat.prototype.keyfn = timestamp
+
+

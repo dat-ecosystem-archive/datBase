@@ -71,7 +71,7 @@ module.exports =  function (data) {
       ractive.on('submitOK', function (event) {
         // save the metadat
         var metadat = ractive.get('metadat')
-        metadat.owner_id = user.id
+        metadat.owner_id = user.handle
 
         dat.save(metadat, function (err, resp, json) {
           if (err) {
@@ -126,7 +126,7 @@ module.exports =  function (data) {
         beginState()
       })
 
-      // ok buttong on preview
+      // ok button on preview
       ractive.on('previewOK', function (event) {
         // preview is currently visible
         if (successfulPreview()) {
@@ -136,6 +136,7 @@ module.exports =  function (data) {
         // url needs to be checked/previewed
         var url = ractive.get('metadat.url')
 
+        // if it doesnt have http://, add it.
         if (!/^http/.test(url)) {
           url = 'http://' + url
         }
@@ -144,7 +145,7 @@ module.exports =  function (data) {
           getPreview(url)
         }
         else {
-          onPreviewError();
+          getPreview(url)
           return
         }
         event.original.preventDefault();
@@ -158,9 +159,9 @@ module.exports =  function (data) {
         dat.api(function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
-            // attempt url sanitizing
+            console.log(err.message)
+            // maybe they don't know its https? replace http with https
             if (/^http:\/\//.test(url)) {
-              //replace http with https
               url = url.replace('http://', 'https://')
               return getPreview(url)
             }

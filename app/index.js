@@ -62,12 +62,12 @@ function requiresAuth(ctx, next) {
   next()
 }
 
-page('*',           init.ctx)
-page('/',           routes.splash);
-page('/about',      routes.about);
-page('/profile',    requiresAuth, routes.profile);
-page('/publish',    routes.publish);
-page('/view/:id',   routes.view);
-page('/browse',     routes.browse);
-page('*',           render)
+page('*',             init.ctx)
+page('/',             routes.splash);
+page('/about',        routes.about);
+page('/profile',      requiresAuth, routes.profile);
+page('/publish',      routes.publish);
+page('/browse',       routes.browse);
+page('/view/:id',     routes.view);
+page('*',             render)
 page({click: false});

@@ -14,7 +14,7 @@ user.currentUser = function(cb) {
 user.update = function (user, cb) {
 
   $.ajax({
-    url: '/api/users/' + user.id,
+    url: '/api/users/' + user.handle,
     data: JSON.stringify(user),
     type: 'PUT',
     success: function (data, status) {

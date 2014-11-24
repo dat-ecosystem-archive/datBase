@@ -11,10 +11,6 @@ function Users(db) {
   // handle is the primary key to user for insertion
   fields = [
     {
-      'name': 'id',
-      'type': 'number'
-    },
-    {
       'name': 'handle',
       'type': 'string'
     },
@@ -30,7 +26,7 @@ function Users(db) {
     }
   ]
   opts = {}
-  RestModels.call(this, db, 'users', 'id', fields, opts);
+  RestModels.call(this, db, 'users', 'handle', fields, opts);
 }
 util.inherits(Users, RestModels);
 
@@ -63,6 +59,7 @@ Users.prototype.create = function(data, cb, insecure) {
   encryptPassword(data['password'], function(err, pass) {
     data['password'] = pass
     data['createdTimestamp'] = new Date().getTime()
+    console.log('saving', data)
     self.save(data, cb)
   })
 }
