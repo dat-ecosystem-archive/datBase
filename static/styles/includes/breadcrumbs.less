@@ -1,0 +1,50 @@
+.breadcrumbs-nav {
+  width: 80%;
+  margin: 44px auto 22px auto;
+  text-align: center;
+}
+
+.breadcrumbs {
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+}
+
+.breadcrumbs li {
+  width: 24%;
+  margin-left: 4%;
+  margin-right: 4%;
+  display: inline-block;
+
+  a {
+    font-weight: normal;
+    color: @dark-text;
+    &:hover {
+      text-decoration: none;
+      border-bottom: none;
+      cursor: default;
+    }
+    .fui-check {
+      display: none;
+    }
+  }
+
+  a.active {
+    font-weight: normal;
+    color: @dark-blue;
+    border-bottom: 1px solid @dark-blue;
+    &:hover {
+      font-weight: none;
+    }
+  }
+
+  a.finished {
+    font-weight: bold;
+    color: @dark-blue;
+
+    .fui-check {
+      display: inline-block;
+      float: right;
+    }
+  }
+}

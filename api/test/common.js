@@ -55,11 +55,15 @@ module.exports = function() {
 
       function destroy() {
         rimraf(defaults.DAT_REGISTRY_DB, function () {
-          api.server.close()
-          api.models.db.close()
-          api.session.close()
-          t.end()
+          closeTheThings()
         });
+      }
+
+      function closeTheThings() {
+        api.server.close()
+        api.models.db.close()
+        api.session.close()
+        t.end()
       }
 
     }

@@ -13,17 +13,20 @@ function MetaDat(db) {
       'type': 'number'
     },
     {
+      'name': 'description',
+      'type': 'string'
+    },
+    {
       'name': 'name',
       'type': 'string'
     },
     {
-      'name': 'url',
-      'type': 'string'
+      'name': 'json',
+      'type': 'object'
     },
     {
-      'name': 'schema',
-      'type': 'string',
-      'optional': true
+      'name': 'url',
+      'type': 'string'
     },
     {
       'name': 'license',
@@ -31,6 +34,11 @@ function MetaDat(db) {
       'optional': true,
       'default': 'BSD'
     }
+    // {
+    //   'name': 'schema',
+    //   'type': 'string',
+    //   'optional': true
+    // },
   ]
   RestModels.call(this, db, 'metadat', 'id', fields, opts);
 }
