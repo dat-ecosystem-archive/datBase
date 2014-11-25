@@ -70,14 +70,15 @@ module.exports = function(models, overrides) {
     // get or create user
     debug('getting user', user.login)
 
-    models.users.get(user.login, function (err) {
+    models.users.get(user.login, function (err, newUser) {
       if (err) {
         // user doesn't exist, so we create a new one
-        var newUser = {
+        newUser = {
           handle: user.login,
           password: 'password', // dummy password.
           data: user
         }
+        debug('creating new user', newUser)
         models.users.create(newUser, function (err, handle) {
           if (err) {
             debug('cannot create user in database', newUser)
