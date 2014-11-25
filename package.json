@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run serve",
-    "serve": "nodemon server.js -e js,css,html",
+    "server": "nodemon server.js -e js,css,html",
     "test": "node api/test/run.js | tap-spec",
     "watch": "watchify -t ractivate app/index.js -o static/js/bundle.js",
     "watch-css": "autoless static/styles"
