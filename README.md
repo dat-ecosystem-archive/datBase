@@ -20,6 +20,13 @@ export GITHUB_CLIENT='client-key-here'
 export GITHUB_SECRET='secret-key-here'
 ```
 
+Run the server
+```bash
+$ npm start
+```
+
+You can also run the file watchers and server individually if you prefer to have them in separate terminals:
+
 Watch your browserify and less bundles (in separate terminals)
 ```bash
 $ npm run watch
@@ -29,7 +36,7 @@ $ npm run watch
 $ npm run watch-css
 ```
 
-Run the server
-```bash
-$ npm start
+Run just the server:
+```
+$ npm run server
 ```
