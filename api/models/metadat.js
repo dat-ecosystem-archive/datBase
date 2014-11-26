@@ -1,6 +1,7 @@
 var RestModels = require('level-restful'),
     timestamp = require('monotonic-timestamp')
-    util = require('util');
+    util = require('util'),
+    jsonBody = require("body/json");
 
 module.exports = MetaDat;
 
@@ -46,5 +47,3 @@ function MetaDat(db) {
 
 util.inherits(MetaDat, RestModels);
 MetaDat.prototype.keyfn = timestamp
-
-

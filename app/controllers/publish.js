@@ -1,7 +1,7 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
-var Dat = require('./Dat.js')
+var Metadat = require('../models/metadat.js')
 
 var STATES = {
   'begin': {
@@ -73,6 +73,14 @@ module.exports =  function (data) {
         var metadat = ractive.get('metadat')
         metadat.owner_id = user.handle
 
+        if (!dat) {
+          window.ractive.set('message', {
+            type: 'error',
+            text: 'Something went wrong, refresh your browser and try again.'
+          })
+          return
+        }
+
         dat.save(metadat, function (err, resp, json) {
           if (err) {
             window.ractive.set('message', {
@@ -133,7 +141,7 @@ module.exports =  function (data) {
           return setState('authorize')
         }
 
-        // url needs to be checked/previewed
+        // url needs to be checked
         var url = ractive.get('metadat.url')
 
         // if it doesnt have http://, add it.
@@ -141,18 +149,20 @@ module.exports =  function (data) {
           url = 'http://' + url
         }
 
+        // if its not a url,
         if (isUrl(url)) {
           getPreview(url)
         }
         else {
-          getPreview(url)
+          ractive.set('loading', false)
+          ractive.set('urlError', true)
           return
         }
         event.original.preventDefault();
       })
 
       function getPreview(url) {
-        dat = new Dat(url)
+        dat = new Metadat(url)
         console.log('loading')
         ractive.set('loading', true)
 
@@ -166,20 +176,17 @@ module.exports =  function (data) {
               return getPreview(url)
             }
 
-            // if that didn't work it just failed
-            onPreviewError();
+            // if that didn't work it just failed. go back to beginning.
+            beginState()
+            ractive.set('urlError', true)
             return;
           }
           ractive.set('loading', false)
           ractive.set('urlError', false)
 
-          // set up the metadat with the correct data
+          // set up the metadat with the correct url
           ractive.set('metadat.url', url)
-          ractive.set('metadat.json', json)
-          ractive.set('metadat.name', json.name)
-          ractive.set('metadat.description', json.description)
-          ractive.set('metadat.publisher', json.publisher)
-          setState('preview')
+          onPreviewSuccess(json)
         })
       }
 
@@ -190,13 +197,12 @@ module.exports =  function (data) {
         return success
       }
 
-      function onPreviewError() {
-        setState('begin')
-        ractive.set('loading', false)
-        ractive.set('urlError', true)
-        ractive.set('metadat.json', null)
-        ractive.set('adminPassword', null)
-        ractive.set('adminUsername', null)
+      function onPreviewSuccess(json) {
+        ractive.set('metadat.json', json)
+        ractive.set('metadat.name', json.name)
+        ractive.set('metadat.description', json.description)
+        ractive.set('metadat.publisher', json.publisher)
+        setState('preview')
       }
 
       function beginState() {

@@ -1,19 +1,19 @@
 var path = require('path')
 var request = require('xhr')
 
-module.exports = Dat
+module.exports = Metadat
 
-function Dat(url) {
+function Metadat(url) {
   this.url = url
 };
 
-Dat.prototype.constructUrl = function (urlPath) {
+Metadat.prototype.constructUrl = function (urlPath) {
   var apiUrl = this.url + urlPath
   console.log('constructing', apiUrl)
   return apiUrl
 }
 
-Dat.prototype.api = function(cb) {
+Metadat.prototype.api = function(cb) {
   var self = this
   var apiUrl = self.constructUrl('/api')
   var options = {
@@ -25,7 +25,7 @@ Dat.prototype.api = function(cb) {
   request(options, cb)
 }
 
-Dat.prototype.apiSession = function (user, pass, cb) {
+Metadat.prototype.apiSession = function (user, pass, cb) {
   var self = this
   var apiUrl = self.constructUrl('/api/session')
   var options = {
@@ -36,9 +36,7 @@ Dat.prototype.apiSession = function (user, pass, cb) {
   }
   request(options,
     function (err, resp, json) {
-      if (err) {
-        return cb(new Error('Something went wrong.'))
-      }
+      if (err) return cb(err)
       if (json.loggedOut) {
         return cb(new Error('Bad username or password.'))
       }
@@ -47,7 +45,7 @@ Dat.prototype.apiSession = function (user, pass, cb) {
   )
 }
 
-Dat.prototype.save = function (metadat, cb) {
+Metadat.prototype.save = function (metadat, cb) {
   var self = this
   var options = {
     uri: '/api/metadat',
@@ -60,7 +58,7 @@ Dat.prototype.save = function (metadat, cb) {
   })
 }
 
-Dat.all = function (cb) {
+Metadat.prototype.all = function (cb) {
   var options = {
     uri: '/api/metadat',
     method: 'GET',
@@ -72,7 +70,7 @@ Dat.all = function (cb) {
   })
 }
 
-Dat.get = function (metadatId, cb) {
+Metadat.prototype.get = function (metadatId, cb) {
   var options = {
     uri: '/api/metadat/' + metadatId,
     method: 'GET',
