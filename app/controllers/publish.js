@@ -3,6 +3,16 @@ var debug = require('debug')('publish')
 
 var Metadat = require('../models/metadat.js')
 
+/**
+ * A state in our publish flow.
+ * Params
+ * ------
+ * introText: string
+ *  What the user will see when in this state.
+ * index: int
+ *  The index determines breadcrumb level.
+ *  1-preview, 2- authorize, 3-submit, 4-all finished
+ */
 var STATES = {
   'begin': {
     'introText': 'Enter the URL for this dat.',
@@ -32,6 +42,7 @@ module.exports =  function (data) {
     return this.get('state.name') == state ? 'visible' : 'hidden';
   }
 
+  // TODO: pull breadcrumbs out
   data.breadcrumbClass = function (bcName) {
     var currentState = this.get('state.index')
     var item = STATES[bcName].index
@@ -46,6 +57,7 @@ module.exports =  function (data) {
     }
   }
 
+  /* Return the ractive object to be rendered */
   return {
     data: data,
     template: require('../templates/metadat/publish.html'),
@@ -66,78 +78,10 @@ module.exports =  function (data) {
         url: 'https://'
       })
 
-      /** SUBMIT **/
+      /** Preview **/
 
-      ractive.on('submitOK', function (event) {
-        // save the metadat
-        var metadat = ractive.get('metadat')
-        metadat.owner_id = user.handle
-
-        if (!dat) {
-          window.ractive.set('message', {
-            type: 'error',
-            text: 'Something went wrong, refresh your browser and try again.'
-          })
-          return
-        }
-
-        dat.save(metadat, function (err, resp, json) {
-          if (err) {
-            window.ractive.set('message', {
-              type: 'error',
-              text: err.message
-            })
-          }
-          ractive.set('metadat.id', json.id)
-          setState('finish')
-
-          // for visual confirmation
-          setTimeout(function () {
-            ractive.set('state.introText', 'Done!')
-            window.location.href = '/view/' + metadat.id;
-          }, 2000)
-        })
-        event.original.preventDefault();
-      })
-
-      /** AUTHORIZE **/
-
-      ractive.observe('adminUsername adminPassword', function (newVal, old, keyPath) {
-        // when the user accidentally types in the wrong password,
-        // and then tries to fix it, remove the loading and error STATES
-        ractive.set('loading', false)
-        ractive.set('authorizeError', false)
-      })
-
-      ractive.on('authorizeOK', function (event) {
-        ractive.set('loading', true)
-        var adminUsername = ractive.get('adminUsername')
-        var adminPassword = ractive.get('adminPassword')
-
-        dat.apiSession(adminUsername, adminPassword, function (err, resp, json) {
-          ractive.set('loading', false)
-
-          if (err) {
-            ractive.set('authorizeError', true)
-            return
-          }
-
-          ractive.set('authorizeError', false)
-          setState('submit')
-        })
-        event.original.preventDefault();
-      })
-
-      /** PREVIEW **/
-
-      ractive.observe('metadat.url', function (newVal, old, keyPath) {
-        beginState()
-      })
-
-      // ok button on preview
-      ractive.on('previewOK', function (event) {
-        // preview is currently visible
-        if (successfulPreview()) {
+      ractive.on('previewOK', function (event)
+        if (previewVisible()) {
           return setState('authorize')
         }
 
@@ -161,6 +105,9 @@ module.exports =  function (data) {
         event.original.preventDefault();
       })
 
+      /* Get the metadat preview
+       * TODO: it might be nice to move this to the metadat object.
+       */
       function getPreview(url) {
         dat = new Metadat(url)
         console.log('loading')
@@ -190,7 +137,78 @@ module.exports =  function (data) {
         })
       }
 
-      function successfulPreview() {
+      /** Authorize **/
+
+      ractive.on('authorizeOK', function (event) {
+        ractive.set('loading', true)
+        var adminUsername = ractive.get('adminUsername')
+        var adminPassword = ractive.get('adminPassword')
+
+        dat.apiSession(adminUsername, adminPassword, function (err, resp, json) {
+          ractive.set('loading', false)
+
+          if (err) {
+            ractive.set('authorizeError', true)
+            return
+          }
+
+          ractive.set('authorizeError', false)
+          setState('submit')
+        })
+        event.original.preventDefault();
+      })
+
+      /** Submit **/
+
+      ractive.on('submitOK', function (event) {
+        // save the metadat
+        var metadat = ractive.get('metadat')
+        metadat.owner_id = user.handle
+
+        if (!metadat.name || !metadat.description) {
+          ractive.set('submitError', true)
+          return
+        }
+
+        Metadat.create(metadat, function (err, resp, json) {
+          if (err) {
+            window.ractive.set('message', {
+              type: 'error',
+              text: err.message
+            })
+          }
+          ractive.set('metadat.id', json.id)
+          ractive.set('submitError', false)
+          setState('finish')
+
+          // delayed for visual confirmation
+          setTimeout(function () {
+            ractive.set('state.introText', 'Done!')
+            window.location.href = '/view/' + metadat.id;
+          }, 2000)
+        })
+        event.original.preventDefault();
+      })
+
+
+      /** Observers to reset error states **/
+
+      ractive.observe('adminUsername adminPassword', function (newVal, old, keyPath) {
+        ractive.set('loading', false)
+        ractive.set('authorizeError', false)
+      })
+
+      ractive.observe('metadat.name metadat.description', function (newVal, old, keyPath) {
+        ractive.set('submitError', false)
+      })
+
+      ractive.observe('metadat.url', function (newVal, old, keyPath) {
+        beginState()
+      })
+
+      /** Stateful functions **/
+
+      function previewVisible() {
         var json = ractive.get('metadat.json')
         var success = json != null && json != undefined
         console.log('success', success)

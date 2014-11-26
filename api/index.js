@@ -49,8 +49,7 @@ Server.prototype.createRoutes = function() {
       console.trace(err)
       sendJson(req, res, {
         'status': 'error',
-        'message': '500: There has been a grave server error. Please open an issue on github.',
-        'errorMessage': err.message
+        'message': err.message
       })
     },
     notFound: function (req, res) {
@@ -74,7 +73,7 @@ Server.prototype.createRoutes = function() {
       })
     } else {
       sendJson(req, res, {
-        'status': 'error',
+        'status': 'warning',
         'message': 'No current user.'
       });
     }

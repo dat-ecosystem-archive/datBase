@@ -1,10 +1,10 @@
 var path = require('path')
-var request = require('xhr')
+var request = require('../common/error-request.js')
 
 module.exports = Metadat
 
 function Metadat(url) {
-  this.url = url
+  this.url = url.replace(/\/$/, '')
 };
 
 Metadat.prototype.constructUrl = function (urlPath) {
@@ -45,7 +45,7 @@ Metadat.prototype.apiSession = function (user, pass, cb) {
   )
 }
 
-Metadat.prototype.save = function (metadat, cb) {
+Metadat.create = function (metadat, cb) {
   var self = this
   var options = {
     uri: '/api/metadat',
@@ -58,7 +58,7 @@ Metadat.prototype.save = function (metadat, cb) {
   })
 }
 
-Metadat.prototype.all = function (cb) {
+Metadat.all = function (cb) {
   var options = {
     uri: '/api/metadat',
     method: 'GET',
@@ -70,7 +70,7 @@ Metadat.prototype.all = function (cb) {
   })
 }
 
-Metadat.prototype.get = function (metadatId, cb) {
+Metadat.get = function (metadatId, cb) {
   var options = {
     uri: '/api/metadat/' + metadatId,
     method: 'GET',

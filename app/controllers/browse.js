@@ -1,6 +1,6 @@
 var debug = require('debug')('browse')
 
-var Dat = require('./Dat.js')
+var Metadat = require('../models/metadat.js')
 
 module.exports = function (data) {
   return {
@@ -9,7 +9,7 @@ module.exports = function (data) {
     onrender: function () {
       var ractive = this
 
-      Dat.all(function (err, resp, metadats) {
+      Metadat.all(function (err, resp, metadats) {
         if (err) {
           window.ractive.set('message', {
             type: 'error',

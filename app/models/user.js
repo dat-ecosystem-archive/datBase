@@ -1,4 +1,4 @@
-var request = require('xhr')
+var request = require('../common/error-request.js')
 
 module.exports.currentUser = function(cb) {
   var options = {
@@ -8,13 +8,7 @@ module.exports.currentUser = function(cb) {
   }
 
   request(options, function (err, resp, json) {
-    if (err) return cb(err)
-    if (json.status == 'success') {
-      cb(null, json.user)
-    }
-    else {
-      cb(json)
-    }
+    cb(err, json.user)
   })
 }
 
