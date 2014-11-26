@@ -1,5 +1,5 @@
 var path = require('path')
-var request = require('browser-request')
+var request = require('xhr')
 
 module.exports = Dat
 
@@ -47,8 +47,20 @@ Dat.prototype.apiSession = function (user, pass, cb) {
   )
 }
 
-Dat.all = function (cb) {
+Dat.prototype.save = function (metadat, cb) {
   var self = this
+  var options = {
+    uri: '/api/metadat',
+    method: 'POST',
+    json: metadat
+  }
+  request(options, function (err, resp, json) {
+    if (err) return cb(err)
+    return cb(null, resp, json)
+  })
+}
+
+Dat.all = function (cb) {
   var options = {
     uri: '/api/metadat',
     method: 'GET',
@@ -61,7 +73,6 @@ Dat.all = function (cb) {
 }
 
 Dat.get = function (metadatId, cb) {
-  var self = this
   var options = {
     uri: '/api/metadat/' + metadatId,
     method: 'GET',
@@ -71,19 +82,6 @@ Dat.get = function (metadatId, cb) {
     if (err) {
       return cb(new Error('Could not get that dat, are you sure the ID is right?'))
     }
-    return cb(null, resp, json)
-  })
-}
-
-Dat.prototype.save = function (metadat, cb) {
-  var self = this
-  var options = {
-    uri: '/api/metadat',
-    method: 'POST',
-    json: metadat
-  }
-  request(options, function (err, resp, json) {
-    if (err) return cb(err)
     return cb(null, resp, json)
   })
 }

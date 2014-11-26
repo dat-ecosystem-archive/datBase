@@ -28,7 +28,6 @@
   "dependencies": {
     "bcrypt": "^0.8.0",
     "body": "^4.5.0",
-    "browser-request": "^0.3.2",
     "bytewise": "^0.7.1",
     "debug": "^2.0.0",
     "extend": "^2.0.0",
@@ -47,7 +46,8 @@
     "routes-router": "^4.1.1",
     "run-waterfall": "^1.0.2",
     "send-data": "^3.3.3",
-    "st": "^0.5.2"
+    "st": "^0.5.2",
+    "xhr": "^1.17.0"
   },
   "devDependencies": {
     "autoless": "^0.1.5",

@@ -1,29 +1,34 @@
-var user = {}
+var request = require('xhr')
 
-user.currentUser = function(cb) {
-  $.getJSON('/auth/currentuser', function (data) {
-    if (data.status == 'success') {
-      cb(null, data.user)
+module.exports.currentUser = function(cb) {
+  var options = {
+    uri: '/auth/currentuser',
+    method: 'GET',
+    json: true
+  }
+
+  request(options, function (err, resp, json) {
+    if (err) return cb(err)
+    if (json.status == 'success') {
+      cb(null, json.user)
     }
     else {
-      cb(data)
+      cb(json)
     }
   })
 }
 
-user.update = function (user, cb) {
-
-  $.ajax({
-    url: '/api/users/' + user.handle,
-    data: JSON.stringify(user),
-    type: 'PUT',
-    success: function (data, status) {
-      var data = JSON.parse(data);
-      if (data.status == 'error') {
-        return cb(new Error(data.message))
-      }
-      return cb(null)
+module.exports.update = function (user, cb) {
+  var options = {
+    uri: '/api/users/' + user.handle,
+    method: 'PUT',
+    json: user
+  }
+  request(options, function (err, resp, json) {
+    if (err) return cb(err)
+    if (json.status == 'error') {
+      return cb(new Error(json.message))
     }
+    return cb(null)
   });
 }
-module.exports = user
