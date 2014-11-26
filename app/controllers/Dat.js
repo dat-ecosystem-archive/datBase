@@ -8,7 +8,7 @@ function Dat(url) {
 };
 
 Dat.prototype.constructUrl = function (urlPath) {
-  var apiUrl = path.join(this.url, urlPath)
+  var apiUrl = this.url + urlPath
   console.log('constructing', apiUrl)
   return apiUrl
 }
