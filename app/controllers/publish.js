@@ -2,6 +2,7 @@ var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
 var Metadat = require('../models/metadat.js')
+var RemoteDat = require('../models/remotedat.js')
 
 /**
  * A state in our publish flow.
@@ -75,7 +76,8 @@ module.exports =  function (data) {
       beginState()
 
       ractive.set('metadat', {
-        url: 'https://'
+        url: 'https://',
+        owner_id: user.handle
       })
 
       /** Preview **/
@@ -109,11 +111,10 @@ module.exports =  function (data) {
        * TODO: it might be nice to move this to the metadat object.
        */
       function getPreview(url) {
-        dat = new Metadat(url)
-        console.log('loading')
         ractive.set('loading', true)
 
-        dat.api(function (err, resp, json) {
+        // call the dat
+        RemoteDat.api(url, function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
             console.log(err.message)
@@ -143,8 +144,10 @@ module.exports =  function (data) {
         ractive.set('loading', true)
         var adminUsername = ractive.get('adminUsername')
         var adminPassword = ractive.get('adminPassword')
+        var url = ractive.get('metadat.url')
 
-        dat.apiSession(adminUsername, adminPassword, function (err, resp, json) {
+        RemoteDat.apiSession(url, adminUsername, adminPassword,
+            function (err, resp, json) {
           ractive.set('loading', false)
 
           if (err) {
@@ -162,29 +165,31 @@ module.exports =  function (data) {
 
       ractive.on('submitOK', function (event) {
         // save the metadat
-        var metadat = ractive.get('metadat')
-        metadat.owner_id = user.handle
+        var metadat = new Metadat(ractive.get('metadat'))
 
-        if (!metadat.name || !metadat.description) {
+        // make sure we have a name & description
+        if (!metadat.data.name || !metadat.data.description) {
           ractive.set('submitError', true)
           return
         }
 
-        Metadat.create(metadat, function (err, resp, json) {
+        // alright lets do it!
+        metadat.create(function (err, resp, json) {
           if (err) {
             window.ractive.set('message', {
               type: 'error',
               text: err.message
             })
+            return
           }
-          ractive.set('metadat.id', json.id)
+          // looks like a success
           ractive.set('submitError', false)
           setState('finish')
 
           // delayed for visual confirmation
           setTimeout(function () {
             ractive.set('state.introText', 'Done!')
-            window.location.href = '/view/' + metadat.id;
+            window.location.href = '/view/' + metadat.data.id;
           }, 2000)
         })
         event.original.preventDefault();

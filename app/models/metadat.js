@@ -3,57 +3,26 @@ var request = require('../common/error-request.js')
 
 module.exports = Metadat
 
-function Metadat(url) {
-  this.url = url.replace(/\/$/, '')
-};
-
-Metadat.prototype.constructUrl = function (urlPath) {
-  var apiUrl = this.url + urlPath
-  console.log('constructing', apiUrl)
-  return apiUrl
-}
-
-Metadat.prototype.api = function(cb) {
-  var self = this
-  var apiUrl = self.constructUrl('/api')
-  var options = {
-    uri: apiUrl,
-    method: 'GET',
-    json: true,
-    timeout: 8000 // 8 seconds
+function Metadat(metadat) {
+  if (metadat.name) {
+    metadat.name = metadat.name.trim()
   }
-  request(options, cb)
-}
-
-Metadat.prototype.apiSession = function (user, pass, cb) {
-  var self = this
-  var apiUrl = self.constructUrl('/api/session')
-  var options = {
-    uri: apiUrl,
-    method: 'GET',
-    json: true,
-    headers: {'authorization': 'Basic ' + btoa(user + ':' + pass)}
+  if (metadat.description) {
+    metadat.description = metadat.description.trim()
   }
-  request(options,
-    function (err, resp, json) {
-      if (err) return cb(err)
-      if (json.loggedOut) {
-        return cb(new Error('Bad username or password.'))
-      }
-      return cb(null, resp, json)
-    }
-  )
+  this.data = metadat
 }
 
-Metadat.create = function (metadat, cb) {
+Metadat.prototype.create = function (cb) {
   var self = this
   var options = {
     uri: '/api/metadat',
     method: 'POST',
-    json: metadat
+    json: this.data
   }
   request(options, function (err, resp, json) {
     if (err) return cb(err)
+    self.data.id = json.id
     return cb(null, resp, json)
   })
 }
