@@ -1,5 +1,7 @@
 var request = require('../common/error-request.js')
 
+/** TODO: can we replace this by using the dat JS api? **/
+
 function constructUrl (url, path) {
   var apiUrl = url.replace(/\/$/, '') + path
   console.log('constructing', apiUrl)
