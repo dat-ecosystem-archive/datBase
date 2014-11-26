@@ -89,7 +89,8 @@ module.exports = function(models, overrides) {
         })
       }
       else {
-        return callback(null, user)
+        debug('calling back', newUser)
+        return callback(null, newUser)
       }
     })
   }
