@@ -80,7 +80,7 @@ module.exports =  function (data) {
 
       /** Preview **/
 
-      ractive.on('previewOK', function (event)
+      ractive.on('previewOK', function (event) {
         if (previewVisible()) {
           return setState('authorize')
         }
