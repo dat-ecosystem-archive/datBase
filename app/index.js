@@ -4,6 +4,7 @@ var page = require('page');
 var routes = require('./routes.js')
 var main = require('./controllers/main.js');
 var user = require('./models/user.js');
+var $ = jQuery = require('jquery');
 
 var helpers = Ractive.defaults.data
 

@@ -1,4 +1,6 @@
 var Ractive = require('ractive');
+var $ = jQuery = require('jquery');
+var bootstrap = require('bootstrap');
 
 var user = require('../models/user.js');
 
@@ -29,9 +31,7 @@ function render(user) {
         }
       }
 
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
+      $('[data-toggle="tooltip"]').tooltip()
     }
   })
 
