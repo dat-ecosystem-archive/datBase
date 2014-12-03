@@ -11,7 +11,8 @@ function MetaDat(db) {
   fields = [
     {
       'name': 'owner_id',
-      'type': 'string'
+      'type': 'string',
+      'index': true
     },
     {
       'name': 'description',
@@ -19,7 +20,8 @@ function MetaDat(db) {
     },
     {
       'name': 'name',
-      'type': 'string'
+      'type': 'string',
+      'index': true
     },
     {
       'name': 'json',
@@ -27,7 +29,8 @@ function MetaDat(db) {
     },
     {
       'name': 'url',
-      'type': 'string'
+      'type': 'string',
+      'index': true
     },
     {
       'name': 'license',

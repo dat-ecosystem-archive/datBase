@@ -37,39 +37,92 @@ module.exports.createMetadat = function (test, common) {
     common.testPOST(t, '/api/metadat', data,
       function (err, api, res, json, done) {
         t.ifError(err)
-        t.equal(res.statusCode, 400, 'throws 400')
+        t.equal(res.statusCode, 200, 'returns 200')
+        t.equal(json.status, 'error', 'json.status is error')
         data.owner_id = 'karissa'
         done()
       }
     )
   });
 
-  test('adding a dat name that already exists for this user', function (t) {
+  test('query by url or owner_id', function (t) {
     var data = TEST_DAT
     common.testPOST(t, '/api/metadat', data,
       function (err, api, res, json, done) {
+        data.url = 'http://testing-queries.com'
+        data.owner_id = 'karissa'
 
         request({
           method: 'POST',
           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-          json: data
+          json: data,
         }, function (err, res, json) {
           t.ifError(err)
-          t.equal(res.statusCode, 400, 'throws 400')
-          done()
-        })
+          t.equal(json.url, data.url)
 
-      })
+          request({
+            method: 'GET',
+            uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+            json: data
+          }, function (err, res, json) {
+            t.ifError(err)
+            t.equal(json.length, 2, 'querying for all returns 2')
+          })
+
+          request({
+            method: 'GET',
+            uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+            json: data,
+            qs: {
+              url: data.url
+            }
+          }, function (err, res, json) {
+            t.ifError(err)
+            t.equal(json.length, 1, 'querying for url')
+          })
+
+          request({
+            method: 'GET',
+            uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+            json: data,
+            qs: {
+              owner_id: data.owner_id
+            }
+          }, function (err, res, json) {
+            t.ifError(err)
+            t.equal(json.length, 1, 'querying for owner id')
+            done()
+          })
+        })
+      }
+    )
   })
 
-  test('missing required field throws 400', function(t) {
+  // test('adding a dat name that already exists for this user', function (t) {
+  //   var data = TEST_DAT
+  //   common.testPOST(t, '/api/metadat', data,
+  //     function (err, api, res, json, done) {
+
+  //       request({
+  //         method: 'POST',
+  //         uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+  //         json: data
+  //       }, function (err, res, json) {
+  //         t.ifError(err)
+  //         t.equal(res.statusCode, 200, 'returns 200')
+  //         done()
+  //       })
+  //     })
+  // })
+
+  test('missing required field returns error', function(t) {
     var data = TEST_DAT
     delete data['owner_id']
 
     common.testPOST(t, '/api/metadat', data,
       function (err, api, res, json, done) {
         t.ifError(err)
-        t.equal(res.statusCode, 400, 'throws 400')
+        t.equal(json.status, 'error', 'json.status is error')
         data['owner_id'] = 'karissa'
         done()
       }
