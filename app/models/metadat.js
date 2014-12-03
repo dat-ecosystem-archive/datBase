@@ -1,5 +1,6 @@
 var path = require('path')
 var request = require('../common/error-request.js')
+var qs = require('querystring')
 
 module.exports = Metadat
 
@@ -36,8 +37,7 @@ Metadat.query = function (params, cb) {
     return cb(new Error('Give at least one param or use the `all` function.'))
   }
   var options = {
-    uri: '/api/metadat',
-    qs: params,
+    uri: '/api/metadat?' + qs.stringify(params),
     method: 'GET',
     json: true
   }
