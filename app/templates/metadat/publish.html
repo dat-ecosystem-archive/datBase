@@ -112,7 +112,7 @@
             </p>
           </div>
 
-          {{#if state.name == 'begin' || state.name == 'preview'}}
+          {{#if (state.name == 'begin' || state.name == 'preview') && !urlError}}
             <div class="col-sm-2">
               <button type="submit" on-click="previewOK"
                  class="btn {{loadingClass()}}">
