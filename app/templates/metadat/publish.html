@@ -103,8 +103,12 @@
           <div class="col-sm-8">
             <input type="text" class="form-control" id="metadatURL"
               placeholder="http://" value="{{metadat.url}}" />
-            <p class="{{visibleClass('begin')}} help-block">Don't have one?
-              <a href="/docs#begin">Don't worry, it just takes a minute.</a>
+            <p class="{{visibleClass('begin')}} help-block">
+              {{#if existingDat}}
+                <a href="/view/{{existingDat.id}}">Looks like that dat  already exists.</a>
+              {{else}}
+              Don't have one? <a href="/docs#begin">Don't worry, it just takes a minute.</a>
+              {{/if}}
             </p>
           </div>
 

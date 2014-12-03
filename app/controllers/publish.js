@@ -100,8 +100,11 @@ module.exports =  function (data) {
           Metadat.query({
             url: url
           }, function (err, resp, json) {
-            if (err || json.status == 'error' || json.length > 0) {
+            if (err || json.status == 'error') return onURLError()
+            if (json.length > 0) {
               onURLError()
+              ractive.set('existingDat', json[0])
+              return
             }
             getPreview(url)
           })
@@ -242,6 +245,7 @@ module.exports =  function (data) {
         ractive.set('adminPassword', null)
         ractive.set('adminUsername', null)
         ractive.set('metadat.json', null)
+        ractive.set('existingDat', null)
         setState('begin')
       }
     }
