@@ -7,9 +7,15 @@ module.exports = {
     ctx.ractive.template = require('./templates/pages/about.html');
     next();
   },
+  settings: function (ctx, next) {
+    ctx.ractive = require('./controllers/settings.js')({
+      user: ctx.state.user
+    })
+    next();
+  },
   profile: function (ctx, next) {
     ctx.ractive = require('./controllers/profile.js')({
-      user: ctx.state.user
+      handle: ctx.params.handle
     })
     next();
   },

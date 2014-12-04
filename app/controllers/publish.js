@@ -1,7 +1,7 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
-var Metadat = require('../models/metadat.js')
+var metadats = require('../models/metadats.js')
 var RemoteDat = require('../models/remotedat.js')
 
 /**
@@ -97,7 +97,7 @@ module.exports =  function (data) {
 
         // if its not a url,
         if (isUrl(url)) {
-          Metadat.query({
+          metadats.query({
             url: url
           }, function (err, resp, json) {
             if (err || json.status == 'error') return onURLError()
@@ -172,17 +172,12 @@ module.exports =  function (data) {
 
       ractive.on('submitOK', function (event) {
         // save the metadat
-        var metadat = new Metadat(ractive.get('metadat'))
-
-        // make sure we have a name & description
-        if (!metadat.data.name || !metadat.data.description) {
-          ractive.set('submitError', true)
-          return
-        }
+        var metadat = ractive.get('metadat')
 
         // alright lets do it!
-        metadat.create(function (err, resp, json) {
+        metadats.create(metadat, function (err, metadat) {
           if (err) {
+            ractive.set('submitError', true)
             window.ractive.set('message', {
               type: 'error',
               text: err.message
@@ -196,7 +191,7 @@ module.exports =  function (data) {
           // delayed for visual confirmation
           setTimeout(function () {
             ractive.set('state.introText', 'Done!')
-            window.location.href = '/view/' + metadat.data.id;
+            window.location.href = '/view/' + metadat.id;
           }, 1000)
         })
         event.original.preventDefault();

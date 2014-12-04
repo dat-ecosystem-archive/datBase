@@ -2,10 +2,10 @@ var Ractive = require('ractive');
 var $ = jQuery = require('jquery');
 var bootstrap = require('bootstrap');
 
-var user = require('../models/user.js');
+var users = require('../models/users.js');
 
 module.exports = function(ctx, next) {
-  user.currentUser(function (err, user) {
+  users.currentUser(function (err, user) {
     if (err) ctx.state.user = null
     ctx.state.user = user
     render(user)

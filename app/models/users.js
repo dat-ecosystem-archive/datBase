@@ -12,6 +12,18 @@ module.exports.currentUser = function(cb) {
   })
 }
 
+module.exports.get = function (handle, cb) {
+  var options = {
+    uri: '/api/users/' + handle,
+    method: 'GET',
+    json: true
+  }
+  request(options, function (err, resp, json) {
+    return cb(err, json)
+  })
+}
+
+
 module.exports.update = function (user, cb) {
   var options = {
     uri: '/api/users/' + user.handle,
@@ -19,10 +31,6 @@ module.exports.update = function (user, cb) {
     json: user
   }
   request(options, function (err, resp, json) {
-    if (err) return cb(err)
-    if (json.status == 'error') {
-      return cb(new Error(json.message))
-    }
-    return cb(null)
+    return cb(err)
   });
 }

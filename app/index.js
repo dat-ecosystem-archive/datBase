@@ -1,26 +1,25 @@
 var Ractive = require('ractive');
 var page = require('page');
-
-var routes = require('./routes.js')
-var main = require('./controllers/main.js');
-var user = require('./models/user.js');
 var $ = jQuery = require('jquery');
 
-var helpers = Ractive.defaults.data
+var main = require('./controllers/main.js')
+var routes = require('./routes.js')
 
-helpers.prettyJSON = function (json) {
+var templateHelpers = Ractive.defaults.data
+
+templateHelpers.prettyJSON = function (json) {
   return JSON.stringify(json, undefined, 2);
 }
 
-helpers.errorClass = function (state) {
+templateHelpers.errorClass = function (state) {
   return this.get(state) ? 'has-error' : '';
 }
 
-helpers.loadingClass = function() {
+templateHelpers.loadingClass = function() {
   return this.get('loading') ? 'btn-disabled' : 'btn-success';
 }
 
-helpers.loadingText = function (text) {
+templateHelpers.loadingText = function (text) {
   return this.get('loading') ? 'Loading' : text
 }
 
@@ -30,6 +29,7 @@ var init = {
     ctx.ractive = {
       template: require('./templates/pages/404.html'),
       data: {},
+      partials: {},
       onrender: function () {}
     }
 
@@ -42,6 +42,7 @@ function render(ctx, next) {
     el: "#content",
     template: ctx.ractive.template,
     data: ctx.ractive.data,
+    partials: ctx.ractive.partials,
     onrender: function () {
       $('a:not(.no-page)').click(function(e){
         var href = $(this).attr('href')
@@ -63,12 +64,16 @@ function requiresAuth(ctx, next) {
   next()
 }
 
-page('*',             init.ctx)
-page('/',             routes.splash);
-page('/about',        routes.about);
-page('/profile',      requiresAuth, routes.profile);
-page('/publish',      routes.publish);
-page('/browse',       routes.browse);
-page('/view/:id',     routes.view);
+page('*',               init.ctx)
+page('/',               routes.splash);
+page('/about',          routes.about);
+page('/browse',         routes.browse);
+
+page('/settings',       requiresAuth, routes.settings);
+page('/publish',        requiresAuth, routes.publish);
+
+page('/profile/:handle',routes.profile);
+page('/view/:id',       routes.view);
+
 page('*',             render)
 page({click: false});

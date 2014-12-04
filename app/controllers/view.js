@@ -1,6 +1,6 @@
 var debug = require('debug')('view')
 
-var Metadat = require('../models/metadat.js')
+var metadats = require('../models/metadats.js')
 
 module.exports = function (data) {
   return {
@@ -10,7 +10,7 @@ module.exports = function (data) {
       var ractive = this
       var metadatId = data.metadatId
 
-      Metadat.get(metadatId, function (err, resp, metadat) {
+      metadats.getById(metadatId, function (err, resp, metadat) {
         if (err) {
           window.ractive.set('message', {
             type: 'error',

@@ -60,7 +60,7 @@ module.exports = function(models, overrides) {
             throw err
           }
           debug('redirecting')
-          redirecter(req, res, '/profile')
+          redirecter(req, res, '/')
         }
       )
     }

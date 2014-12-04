@@ -1,26 +1,7 @@
 <div class="app-page">
   <div class="app-text-container">
     <h1>Browse</h1>
-
-    <div class="browse-metadats">
-    {{#each metadats}}
-      <div class="metadat">
-        <div class="title">
-          <h2>
-            <a href="/view/{{this.id}}">
-              <img src="/static/img/dat-hex-small.png" class="small-dat-title-icon" />{{this.owner_id}}/{{this.name}}
-            </a>
-          </h2>
-          <p>{{this.description}}</p>
-          <p class="version">v{{this.json.version}}</p>
-        </div>
-        <div class="info">
-          {{#if this.json.rows}}
-            <p>{{this.json.rows}} rows at {{this.json.approximateSize.rows}}<p>
-          {{/if}}
-        </div>
-      </div>
-    {{/each}}
+    {{>listMetadats metadats}}
     </div>
   </div>
 </div>

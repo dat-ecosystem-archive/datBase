@@ -15,6 +15,7 @@ module.exports = function (options, callback) {
         type: 'error',
         text: error
       })
+      return callback(err)
     }
     else {
       debug('response', err, resp, json)
