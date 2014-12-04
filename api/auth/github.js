@@ -76,7 +76,16 @@ module.exports = function(models, overrides) {
         newUser = {
           handle: user.login,
           password: 'password', // dummy password.
-          data: user
+          data: {
+            email: user.email,
+            name: user.name,
+            location: user.location,
+            bio: user.bio,
+            blog: user.blog,
+            company: user.company,
+            id: user.id,
+            login: user.login
+          }
         }
         debug('creating new user', newUser)
         models.users.create(newUser, function (err, handle) {
