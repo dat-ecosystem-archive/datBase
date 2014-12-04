@@ -1,7 +1,6 @@
 var debug = require('debug')('profile');
 
-var metadats = require('../models/metadats.js');
-var users = require('../models/users.js');
+var api = require('../api');
 
 module.exports = function (data) {
   return {
@@ -12,12 +11,12 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
-      users.get(data.handle, function (err, user) {
+      api.users.get(data.handle, function (err, user) {
         if (err) return cb(err)
         ractive.set('user', user)
       })
 
-      metadats.query({
+      api.metadats.query({
         owner_id: data.handle
       }, function (err, metadats) {
         ractive.set('metadats', metadats)

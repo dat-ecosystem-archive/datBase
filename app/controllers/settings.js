@@ -1,4 +1,4 @@
-var users = require('../models/users.js');
+var api = require('../api');
 var debug = require('debug')('settings')
 
 module.exports = function (data) {
@@ -9,7 +9,7 @@ module.exports = function (data) {
       var ractive = this
 
       ractive.on('submit', function (event) {
-        users.update(ractive.get('user'), function (err) {
+        api.users.update(ractive.get('user'), function (err) {
           if (!err) {
             window.ractive.set('message', {
               'type': 'success',

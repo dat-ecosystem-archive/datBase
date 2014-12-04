@@ -1,8 +1,7 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
-var metadats = require('../models/metadats.js')
-var RemoteDat = require('../models/remotedat.js')
+var api = require('../api')
 
 /**
  * A state in our publish flow.
@@ -97,7 +96,7 @@ module.exports =  function (data) {
 
         // if its not a url,
         if (isUrl(url)) {
-          metadats.query({
+          api.metadats.query({
             url: url
           }, function (err, resp, json) {
             if (err || json.status == 'error') return onURLError()
@@ -123,7 +122,7 @@ module.exports =  function (data) {
         ractive.set('loading', true)
 
         // call the dat
-        RemoteDat.api(url, function (err, resp, json) {
+        api.remoteDat.api(url, function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
             console.error(err.message)
@@ -153,7 +152,7 @@ module.exports =  function (data) {
         var adminPassword = ractive.get('adminPassword')
         var url = ractive.get('metadat.url')
 
-        RemoteDat.apiSession(url, adminUsername, adminPassword,
+        api.remoteDat.apiSession(url, adminUsername, adminPassword,
             function (err, resp, json) {
           ractive.set('loading', false)
 
@@ -175,7 +174,7 @@ module.exports =  function (data) {
         var metadat = ractive.get('metadat')
 
         // alright lets do it!
-        metadats.create(metadat, function (err, metadat) {
+        api.metadats.create(metadat, function (err, metadat) {
           if (err) {
             ractive.set('submitError', true)
             window.ractive.set('message', {

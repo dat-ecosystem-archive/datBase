@@ -1,6 +1,6 @@
 var debug = require('debug')('browse')
 
-var metadats = require('../models/metadats.js')
+var api = require('../api')
 
 module.exports = function (data) {
   return {
@@ -12,7 +12,7 @@ module.exports = function (data) {
     onrender: function () {
       var ractive = this
 
-      metadats.all(function (err, metadats) {
+      api.metadats.all(function (err, metadats) {
         if (err) {
           ractive.set('metadats', [])
         }
