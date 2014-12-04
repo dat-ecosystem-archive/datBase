@@ -97,14 +97,23 @@ module.exports =  function (data) {
 
         // if its not a url,
         if (isUrl(url)) {
-          getPreview(url)
+          Metadat.query({
+            url: url
+          }, function (err, resp, json) {
+            if (err || json.status == 'error') return onURLError()
+            if (json.length > 0) {
+              onURLError()
+              ractive.set('existingDat', json[0])
+              return
+            }
+            getPreview(url)
+          })
         }
         else {
-          ractive.set('loading', false)
-          ractive.set('urlError', true)
+          onURLError()
           return
         }
-        event.original.preventDefault();
+        event.original.preventDefault()
       })
 
       /* Get the metadat preview
@@ -117,7 +126,7 @@ module.exports =  function (data) {
         RemoteDat.api(url, function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
-            console.log(err.message)
+            console.error(err.message)
             // maybe they don't know its https? replace http with https
             if (/^http:\/\//.test(url)) {
               url = url.replace('http://', 'https://')
@@ -125,12 +134,10 @@ module.exports =  function (data) {
             }
 
             // if that didn't work it just failed. go back to beginning.
-            beginState()
-            ractive.set('urlError', true)
+            beginState();
+            onURLError();
             return;
           }
-          ractive.set('loading', false)
-          ractive.set('urlError', false)
 
           // set up the metadat with the correct url
           ractive.set('metadat.url', url)
@@ -190,7 +197,7 @@ module.exports =  function (data) {
           setTimeout(function () {
             ractive.set('state.introText', 'Done!')
             window.location.href = '/view/' + metadat.data.id;
-          }, 2000)
+          }, 1000)
         })
         event.original.preventDefault();
       })
@@ -213,11 +220,14 @@ module.exports =  function (data) {
 
       /** Stateful functions **/
 
+      function onURLError() {
+        ractive.set('urlError', true)
+        ractive.set('loading', false)
+      }
+
       function previewVisible() {
         var json = ractive.get('metadat.json')
-        var success = json != null && json != undefined
-        console.log('success', success)
-        return success
+        return json != null && json != undefined
       }
 
       function onPreviewSuccess(json) {
@@ -235,6 +245,7 @@ module.exports =  function (data) {
         ractive.set('adminPassword', null)
         ractive.set('adminUsername', null)
         ractive.set('metadat.json', null)
+        ractive.set('existingDat', null)
         setState('begin')
       }
     }
