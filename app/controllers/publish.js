@@ -1,8 +1,7 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
-var Metadat = require('../models/metadat.js')
-var RemoteDat = require('../models/remotedat.js')
+var api = require('../api')
 
 /**
  * A state in our publish flow.
@@ -97,7 +96,7 @@ module.exports =  function (data) {
 
         // if its not a url,
         if (isUrl(url)) {
-          Metadat.query({
+          api.metadats.query({
             url: url
           }, function (err, resp, json) {
             if (err || json.status == 'error') return onURLError()
@@ -123,7 +122,7 @@ module.exports =  function (data) {
         ractive.set('loading', true)
 
         // call the dat
-        RemoteDat.api(url, function (err, resp, json) {
+        api.remoteDat.api(url, function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
             console.error(err.message)
@@ -153,7 +152,7 @@ module.exports =  function (data) {
         var adminPassword = ractive.get('adminPassword')
         var url = ractive.get('metadat.url')
 
-        RemoteDat.apiSession(url, adminUsername, adminPassword,
+        api.remoteDat.apiSession(url, adminUsername, adminPassword,
             function (err, resp, json) {
           ractive.set('loading', false)
 
@@ -172,17 +171,12 @@ module.exports =  function (data) {
 
       ractive.on('submitOK', function (event) {
         // save the metadat
-        var metadat = new Metadat(ractive.get('metadat'))
-
-        // make sure we have a name & description
-        if (!metadat.data.name || !metadat.data.description) {
-          ractive.set('submitError', true)
-          return
-        }
+        var metadat = ractive.get('metadat')
 
         // alright lets do it!
-        metadat.create(function (err, resp, json) {
+        api.metadats.create(metadat, function (err, metadat) {
           if (err) {
+            ractive.set('submitError', true)
             window.ractive.set('message', {
               type: 'error',
               text: err.message
@@ -196,7 +190,7 @@ module.exports =  function (data) {
           // delayed for visual confirmation
           setTimeout(function () {
             ractive.set('state.introText', 'Done!')
-            window.location.href = '/view/' + metadat.data.id;
+            window.location.href = '/view/' + metadat.id;
           }, 1000)
         })
         event.original.preventDefault();

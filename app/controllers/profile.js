@@ -1,30 +1,26 @@
-var user = require('../models/user.js');
-var debug = require('debug')('profile')
+var debug = require('debug')('profile');
+
+var api = require('../api');
 
 module.exports = function (data) {
   return {
     data: data,
     template: require('../templates/pages/profile.html'),
+    partials: {
+      listMetadats: require('../templates/metadat/list.html')
+    },
     onrender: function () {
       var ractive = this
+      api.users.get(data.handle, function (err, user) {
+        if (err) return cb(err)
+        ractive.set('user', user)
+      })
 
-      ractive.on('submit', function (event) {
-        user.update(ractive.get('user'), function (err) {
-          var message = {
-            'type': 'success',
-            'text': 'Profile updated successfully!'
-          }
-
-          if (err) {
-            message = {
-              'type': 'error',
-              'text': 'We could not update your profile!'
-            }
-          }
-          window.ractive.set('message', message)
-        })
-        event.original.preventDefault();
-      });
+      api.metadats.query({
+        owner_id: data.handle
+      }, function (err, metadats) {
+        ractive.set('metadats', metadats)
+      })
     }
   }
 }
