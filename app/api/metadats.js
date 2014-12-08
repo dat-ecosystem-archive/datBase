@@ -15,11 +15,11 @@ metadats.sanitize = function(metadat) {
 }
 
 /** Creating a metadat **/
-metadats.create = function (cb, metadat) {
+metadats.create = function (metadat, cb) {
   var self = this
   var metadat = metadats.sanitize(metadat)
-  if (!metadat.data.name || !metadat.data.description) {
-    return cb(new Error('Requires a name and description.'))
+  if (!metadat.name || !metadat.description) {
+    return cb('Requires a name and description.')
   }
 
   var options = {

@@ -98,7 +98,7 @@ module.exports =  function (data) {
         if (isUrl(url)) {
           api.metadats.query({
             url: url
-          }, function (err, resp, json) {
+          }, function (err, json) {
             if (err || json.status == 'error') return onURLError()
             if (json.length > 0) {
               onURLError()
