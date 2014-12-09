@@ -5,7 +5,11 @@ module.exports = function (options, callback) {
   debug('requesting', options)
   xhr(options, function (err, resp, json) {
     var error;
-    if (json.status == 'error') {
+    if (err) {
+      error = "Could not connect."
+    }
+
+    if (json && json.status == 'error') {
       error = json.message
     }
 

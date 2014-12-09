@@ -99,11 +99,15 @@ module.exports =  function (data) {
           api.metadats.query({
             url: url
           }, function (err, json) {
-            if (err || json.status == 'error') return onURLError()
-            if (json.length > 0) {
-              onURLError()
-              ractive.set('existingDat', json[0])
-              return
+            if (err || json) {
+              if (json.status == 'error') {
+                return onURLError()
+              }
+              if (json.url == url) {
+                onURLError()
+                ractive.set('existingDat', json)
+                return
+              }
             }
             getPreview(url)
           })
