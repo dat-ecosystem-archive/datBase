@@ -2,6 +2,7 @@ var Ractive = require('ractive');
 var $ = jQuery = require('jquery');
 var bootstrap = require('bootstrap');
 
+var gravatar = require('../common/gravatar.js')
 var api = require('../api');
 
 module.exports = function(ctx, next) {
@@ -22,13 +23,7 @@ function render(user) {
     },
     onrender: function () {
       if (user) {
-        var peeps = $('.content-card-small-avatar')
-        for (var i = 0; i < peeps.length; i++) {
-          var peep = peeps[i]
-          var username = peep.getAttribute('data-user')
-          if (!username) continue
-          peep.setAttribute('style', "background-image: url('https://github.com/" + username + ".png')")
-        }
+        gravatar('.content-card-small-avatar')
       }
 
       $('[data-toggle="tooltip"]').tooltip()

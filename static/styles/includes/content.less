@@ -146,13 +146,21 @@
   background-color: @dark-blue;
 }
 .content-card-small-avatar {
+  @size: 50px;
   background-color: #fff;
-  width: 50px;
-  height: 50px;
+  width: @size;
+  height: @size;
   margin: 0 auto;
-  background-size: 46px;
+  background-size: @size - 4;
   border: 4px solid white;
   box-shadow: 1px 1px #eee;
+}
+.content-card-large-avatar {
+  &:extend(.content-card-small-avatar);
+  @size: 150px;
+  width: @size;
+  height: @size;
+  background-size: @size - 4;
 }
 .content-logos p {
   text-align: center;

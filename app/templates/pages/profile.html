@@ -1,13 +1,17 @@
 <div class="app-page">
   <div class="app-text-container">
-    <h1>{{user.handle}}</h1>
 
     <div class="user-info col-sm-4">
+      <div class="btn content-card-large-avatar"
+           data-user="{{user.data.login}}"></div>
+
+      <h1>{{user.handle}}</h1>
+
       <p>{{user.data.bio}}</p>
 
       <p>{{user.data.location}}</p>
 
-      <p>{{user.data.blog}}</p>
+      <p><a href="{{user.data.blog}}" target="_blank">{{user.data.blog}}</a></p>
 
       <p>{{user.data.email}}</p>
 

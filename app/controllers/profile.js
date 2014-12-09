@@ -1,6 +1,7 @@
 var debug = require('debug')('profile');
 
 var api = require('../api');
+var gravatar = require('../common/gravatar.js')
 
 module.exports = function (data) {
   return {
@@ -14,6 +15,7 @@ module.exports = function (data) {
       api.users.get(data.handle, function (err, user) {
         if (err) return cb(err)
         ractive.set('user', user)
+        gravatar('.content-card-large-avatar')
       })
 
       api.metadats.query({
