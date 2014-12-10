@@ -78,7 +78,7 @@ module.exports.createMetadat = function (test, common) {
             }
           }, function (err, res, json) {
             t.ifError(err)
-            t.equal(json.length, 1, 'querying for url')
+            t.equal(json.url, data.url, 'querying for url')
           })
 
           request({
@@ -90,7 +90,7 @@ module.exports.createMetadat = function (test, common) {
             }
           }, function (err, res, json) {
             t.ifError(err)
-            t.equal(json.length, 1, 'querying for owner id')
+            t.equal(json.owner_id, data.owner_id, 'querying for owner id')
             done()
           })
         })
