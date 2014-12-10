@@ -27,7 +27,7 @@ function Server(overrides) {
     db: self.models.db,
     cookieName: 'dat-registry'
   })
-  self.router = self.createRoutes()
+  self.router = self.createRoutes(self.options)
   self.server = http.createServer(function(req, res) {
     console.log(req.url)
     self.session(req, res, function() {
@@ -41,7 +41,7 @@ function Server(overrides) {
   })
 }
 
-Server.prototype.createRoutes = function() {
+Server.prototype.createRoutes = function (options) {
   var self = this
 
   var router = Router({
@@ -58,7 +58,7 @@ Server.prototype.createRoutes = function() {
   })
 
   // Authentication
-  var auth = Auth(this.models)
+  var auth = Auth(this.models, options.auth)
   router.addRoute('/auth/login', auth.login)
   router.addRoute('/auth/callback', auth.callback)
   router.addRoute('/auth/logout', auth.logout)

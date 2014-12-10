@@ -2,8 +2,13 @@ var path = require('path')
 var githubProvider = require('./github.js')
 var redirecter = require('redirecter')
 
-module.exports = function(models) {
+module.exports = function(models, opts) {
   var provider = githubProvider(models)
+  if (opts) {
+    if (opts.provider) {
+      provider = opts.provider
+    }
+  }
 
   return {
     login: function(req, res, opts) {
