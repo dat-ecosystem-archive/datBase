@@ -8,6 +8,7 @@ function test(name, testFunction) {
 
 var testFiles = [
   'authTests.js',
+  'userTests.js',
   'metadatTests.js'
 ]
 

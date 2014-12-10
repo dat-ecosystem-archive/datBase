@@ -23,6 +23,7 @@ module.exports = function (data) {
       }, function (err, metadats) {
         ractive.set('metadats', metadats)
       })
+
     }
   }
 }

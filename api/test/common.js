@@ -6,13 +6,13 @@ var rimraf = require('rimraf')
 
 var Server = require('../../api')
 var defaults = require('../../api/defaults.js')
+var MockLoginProvider = require('./mockLoginProvider.js')
 
 module.exports = function() {
   var common = {}
   common.testPrefix = ''
 
-
-  common.testGET = function (t, path, data, cb) {
+  common.testGET = function (t, path, cb) {
     this.getRegistry(t, function(err, api, done) {
       params = {
         method: 'GET',
@@ -41,7 +41,9 @@ module.exports = function() {
   }
 
   common.getRegistry = function (t, cb) {
-
+    defaults.auth = {
+      provider: new MockLoginProvider()
+    }
     var api = Server(defaults)
     var port = api.options.PORT
 
@@ -72,4 +74,3 @@ module.exports = function() {
 
   return common
 }
-
