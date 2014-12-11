@@ -68,13 +68,14 @@ module.exports = function(models, overrides) {
 
   function getOrCreateGithubUser(user, callback) {
     // get or create user
-    debug('getting user', user.login)
+    debug('getting user', user)
 
-    models.users.get(user.login, function (err, newUser) {
+    models.users.byGithubId.get(user.id, function (err, newUser) {
       if (err) {
         // user doesn't exist, so we create a new one
         newUser = {
           handle: user.login,
+          githubId: user.id,
           password: 'password', // dummy password.
           data: {
             email: user.email,
@@ -83,7 +84,6 @@ module.exports = function(models, overrides) {
             bio: user.bio,
             blog: user.blog,
             company: user.company,
-            id: user.id,
             login: user.login
           }
         }
