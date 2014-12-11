@@ -12,10 +12,7 @@ module.exports = function (data) {
 
       api.metadats.getById(metadatId, function (err, resp, metadat) {
         if (err) {
-          window.ractive.set('message', {
-            type: 'error',
-            text: err.message
-          })
+          window.ractive.message('error', err.message)
           return
         }
         ractive.set('metadat', metadat)

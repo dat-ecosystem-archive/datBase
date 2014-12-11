@@ -21,6 +21,16 @@ function render(user) {
     data: {
       user: user
     },
+    message: function (type, text) {
+      var ractive = this
+      ractive.set('message', {
+        type: type,
+        text: text
+      })
+      setTimeout(function() {
+        ractive.set('message', null)
+      }, 2000)
+    },
     onrender: function () {
       if (user) {
         gravatar('.content-card-small-avatar')

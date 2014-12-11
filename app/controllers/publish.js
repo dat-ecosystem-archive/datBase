@@ -181,10 +181,7 @@ module.exports =  function (data) {
         api.metadats.create(metadat, function (err, metadat) {
           if (err) {
             ractive.set('submitError', true)
-            window.ractive.set('message', {
-              type: 'error',
-              text: err.message
-            })
+            window.ractive.message('error', err.message)
             return
           }
           // looks like a success
