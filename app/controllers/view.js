@@ -10,7 +10,7 @@ module.exports = function (data) {
       var ractive = this
       var metadatId = data.metadatId
 
-      api.metadats.getById(metadatId, function (err, resp, metadat) {
+      api.metadats.getById(metadatId, function (err, metadat) {
         if (err) {
           window.ractive.message('error', err.message)
           return

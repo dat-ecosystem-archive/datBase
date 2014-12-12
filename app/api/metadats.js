@@ -17,7 +17,7 @@ metadats.sanitize = function(metadat) {
 metadats.create = function (metadat, cb) {
   var self = this
   var metadat = metadats.sanitize(metadat)
-  if (!metadat.name || !metadat.description) {
+  if (!metadat.name || !metadat.description || !metadat.url) {
     return cb('Requires a name and description.')
   }
 
@@ -78,7 +78,7 @@ metadats.getById = function (metadatId, cb) {
     if (err) {
       return cb(new Error('Could not get that dat, are you sure the ID is right?'))
     }
-    return cb(null, resp, json)
+    return cb(null, json)
   })
 }
 
