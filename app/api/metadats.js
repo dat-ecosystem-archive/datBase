@@ -1,6 +1,5 @@
 var request = require('../common/error-request.js')
 var qs = require('querystring')
-var request = require('../common/error-request.js')
 
 metadats = {}
 
