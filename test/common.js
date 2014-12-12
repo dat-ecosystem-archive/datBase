@@ -4,8 +4,8 @@ var st = require("st")
 var request = require('request').defaults({json: true})
 var rimraf = require('rimraf')
 
-var Server = require('../../api')
-var defaults = require('../../api/defaults.js')
+var Server = require('../api')
+var defaults = require('../api/defaults.js')
 var MockLoginProvider = require('./mockLoginProvider.js')
 
 module.exports = function() {
@@ -41,6 +41,10 @@ module.exports = function() {
   }
 
   common.getRegistry = function (t, cb) {
+    if (cb == undefined) {
+      cb = t
+    }
+
     defaults.auth = {
       provider: new MockLoginProvider()
     }
@@ -65,7 +69,7 @@ module.exports = function() {
         api.server.close()
         api.models.db.close()
         api.session.close()
-        t.end()
+        if (t.end) t.end()
       }
 
     }
