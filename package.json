@@ -30,6 +30,7 @@
     "body": "^4.5.0",
     "bootstrap": "^3.3.1",
     "bytewise": "^0.7.1",
+    "dat-api-client": "^1.0.0",
     "debug": "^2.0.0",
     "extend": "^2.0.0",
     "fulltext-engine": "^1.1.1",

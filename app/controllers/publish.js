@@ -2,6 +2,7 @@ var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
 var api = require('../api')
+var datApiClient = require('dat-api-client')
 
 /**
  * A state in our publish flow.
@@ -125,8 +126,11 @@ module.exports =  function (data) {
       function getPreview(url) {
         ractive.set('loading', true)
 
+        var client = new datApiClient({
+          url: url
+        })
         // call the dat
-        api.remoteDat.api(url, function (err, resp, json) {
+        client.info(function (err, resp, json) {
           ractive.set('loading', false)
           if (err) {
             console.error(err.message)
@@ -152,12 +156,13 @@ module.exports =  function (data) {
 
       ractive.on('authorizeOK', function (event) {
         ractive.set('loading', true)
-        var adminUsername = ractive.get('adminUsername')
-        var adminPassword = ractive.get('adminPassword')
-        var url = ractive.get('metadat.url')
+        var client = new datApiClient({
+          url:  ractive.get('metadat.url'),
+          user: ractive.get('adminUsername'),
+          pass: ractive.get('adminPassword')
+        })
 
-        api.remoteDat.apiSession(url, adminUsername, adminPassword,
-            function (err, resp, json) {
+        client.session(function (err, resp, json) {
           ractive.set('loading', false)
 
           if (err) {
