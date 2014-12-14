@@ -45,9 +45,8 @@ module.exports = function() {
       cb = t
     }
 
-    defaults.auth = {
-      provider: new MockLoginProvider()
-    }
+    defaults.auth = { provider: new MockLoginProvider() }
+    defaults.DEBUG = true
     var api = Server(defaults)
     var port = api.options.PORT
 

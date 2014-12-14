@@ -1,7 +1,5 @@
 var users = require('./users.js');
-var metadats = require('./metadats.js');
+var registry = require('dat-registry-api').defaults({ uri: '' });
 
-module.exports = {
-  users: users,
-  metadats: metadats
-}
+
+module.exports = registry
