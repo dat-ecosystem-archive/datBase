@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
     "server": "nodemon server.js -e js,css,html",
-    "test": "node api/test/run.js | tap-spec",
+    "test": "node test/run.js | tap-spec",
+    "test-browser": "node test/run-browser.js | tap-spec",
     "watch": "watchify -t ractivate app/index.js -o static/js/bundle.js",
     "watch-css": "autoless static/styles"
   },
@@ -30,6 +31,7 @@
     "body": "^4.5.0",
     "bootstrap": "^3.3.1",
     "bytewise": "^0.7.1",
+    "corsify": "^2.0.0",
     "dat-api-client": "^1.0.0",
     "debug": "^2.0.0",
     "extend": "^2.0.0",
@@ -56,10 +58,13 @@
   },
   "devDependencies": {
     "autoless": "^0.1.5",
+    "browserify": "^7.0.0",
     "ractivate": "^0.2.0",
     "rimraf": "^2.2.8",
+    "run-series": "^1.0.2",
     "tap-spec": "^1.0.1",
     "tape": "^3.0.0",
+    "tape-run": "^0.3.0",
     "watchify": "^2.1.1"
   }
 }

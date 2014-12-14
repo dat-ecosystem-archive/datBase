@@ -23,7 +23,6 @@ module.exports.get = function (handle, cb) {
   })
 }
 
-
 module.exports.update = function (user, cb) {
   var options = {
     uri: '/api/users/' + user.handle,

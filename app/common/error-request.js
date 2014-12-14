@@ -10,8 +10,7 @@ module.exports = function (options, callback) {
     }
     if (json && json.status == 'error') {
       console.error(json.message)
-      window.ractive.message('error', json.message)
-      return callback(err)
+      return callback(new Error(json.message))
     }
     else {
       debug('response', err, resp, json)

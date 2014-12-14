@@ -9,6 +9,7 @@ var levelSession = require('level-session')
 var redirecter = require('redirecter')
 var Ractive = require('ractive');
 var sendJson = require('send-data/json')
+var Corsify = require("corsify")
 
 var Auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
@@ -28,15 +29,27 @@ function Server(overrides) {
     cookieName: 'dat-registry'
   })
   self.router = self.createRoutes(self.options)
-  self.server = http.createServer(function(req, res) {
-    console.log(req.url)
-    self.session(req, res, function() {
-      req.session.get('userid', function(err, userid) {
-        if (!err) {
-          req.userid = userid
-        }
-        self.router(req, res)
-      })
+
+  if (self.options.DEBUG) {
+    var cors = Corsify({
+      'Access-Control-Allow-Origin': 'http://localhost:8080'
+    })
+    self.server = http.createServer(cors(self.routeProvider.bind(self)))
+  }
+  else {
+    self.server = http.createServer(self.routeProvider.bind(self))
+  }
+}
+
+Server.prototype.routeProvider = function(req, res) {
+  var self = this
+  console.log(req.url)
+  self.session(req, res, function() {
+    req.session.get('userid', function(err, userid) {
+      if (!err) {
+        req.userid = userid
+      }
+      self.router(req, res)
     })
   })
 }
