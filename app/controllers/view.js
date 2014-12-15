@@ -1,6 +1,6 @@
 var debug = require('debug')('view')
 
-var api = require('../api')
+var dathubClient = require('../hub')
 
 module.exports = function (data) {
   return {
@@ -10,7 +10,7 @@ module.exports = function (data) {
       var ractive = this
       var metadatId = data.metadatId
 
-      api.metadats.getById(metadatId, function (err, metadat) {
+      dathubClient.metadats.getById(metadatId, function (err, metadat) {
         if (err) {
           window.ractive.message('error', err.message)
           return

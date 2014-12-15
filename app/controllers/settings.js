@@ -1,4 +1,4 @@
-var api = require('../api');
+var dathubClient = require('../hub');
 var debug = require('debug')('settings')
 
 module.exports = function (data) {
@@ -9,7 +9,7 @@ module.exports = function (data) {
       var ractive = this
 
       ractive.on('submit', function (event) {
-        api.users.update(ractive.get('user'), function (err) {
+        dathubClient.users.update(ractive.get('user'), function (err) {
           if (!err) {
             window.ractive.set('message', {
               'type': 'success',
