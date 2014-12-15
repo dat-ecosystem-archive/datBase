@@ -1,7 +1,7 @@
 {
-  "name": "dat-registry",
-  "version": "1.0.1",
-  "description": "a registry for dats",
+  "name": "dathub",
+  "version": "1.0.2",
+  "description": "a place to pubilsh and collaborate your datasets.",
   "main": "index.js",
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
@@ -13,19 +13,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/karissamck/dat-registry.git"
+    "url": "https://github.com/karissamck/dathub.git"
   },
   "keywords": [
-    "data",
-    "registry",
+    "data", "datasets", "publish",
+    "registry", "dathub", "dat",
     "web"
   ],
   "author": "karissa",
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/karissamck/dat-registry/issues"
+    "url": "https://github.com/karissamck/dathub/issues"
   },
-  "homepage": "https://github.com/karissamck/dat-registry",
+  "homepage": "http://dat-data.com",
   "dependencies": {
     "bcrypt": "^0.8.0",
     "body": "^4.5.0",
