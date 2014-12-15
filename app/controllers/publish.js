@@ -1,8 +1,8 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
 
-var api = require('../api')
-var datApiClient = require('dat-api-client')
+var dathubClient = require('../hub')
+var datClient = require('dat-api-client')
 
 /**
  * A state in our publish flow.
@@ -97,7 +97,7 @@ module.exports =  function (data) {
 
         // if its not a url,
         if (isUrl(url)) {
-          api.metadats.query({
+          dathubClient.metadats.query({
             url: url
           }, function (err, json) {
             if (err || json) {
@@ -126,7 +126,7 @@ module.exports =  function (data) {
       function getPreview(url) {
         ractive.set('loading', true)
 
-        var client = new datApiClient({
+        var client = new datClient({
           url: url
         })
         // call the dat
@@ -156,7 +156,7 @@ module.exports =  function (data) {
 
       ractive.on('authorizeOK', function (event) {
         ractive.set('loading', true)
-        var client = new datApiClient({
+        var client = new datClient({
           url:  ractive.get('metadat.url'),
           user: ractive.get('adminUsername'),
           pass: ractive.get('adminPassword')
@@ -183,7 +183,7 @@ module.exports =  function (data) {
         var metadat = ractive.get('metadat')
 
         // alright lets do it!
-        api.metadats.create(metadat, function (err, metadat) {
+        dathubClient.metadats.create(metadat, function (err, metadat) {
           if (err) {
             ractive.set('submitError', true)
             window.ractive.message('error', err.message)

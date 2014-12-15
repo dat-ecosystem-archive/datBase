@@ -1,6 +1,6 @@
 var debug = require('debug')('browse')
 
-var api = require('../api')
+var dathubClient = require('../hub')
 
 module.exports = function (data) {
   return {
@@ -12,7 +12,7 @@ module.exports = function (data) {
     onrender: function () {
       var ractive = this
 
-      api.metadats.all(function (err, metadats) {
+      dathubClient.metadats.all(function (err, metadats) {
         if (err) {
           ractive.set('metadats', [])
         }

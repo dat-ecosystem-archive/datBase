@@ -3,10 +3,10 @@ var $ = jQuery = require('jquery');
 var bootstrap = require('bootstrap');
 
 var gravatar = require('../common/gravatar.js')
-var api = require('../api');
+var dathubClient = require('../hub');
 
 module.exports = function(ctx, next) {
-  api.users.currentUser(function (err, user) {
+  dathubClient.users.currentUser(function (err, user) {
     if (err) ctx.state.user = null
     ctx.state.user = user
     render(user)
