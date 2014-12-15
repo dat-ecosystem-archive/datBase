@@ -1,13 +1,13 @@
-Dat Registry
+Dathub
 ===========
 
-[![build status](https://secure.travis-ci.org/karissa/dat-registry.png)](http://travis-ci.org/karissa/dat-registry)
+[![build status](https://secure.travis-ci.org/karissa/dathub.png)](http://travis-ci.org/karissa/dathub)
 
-This is initially built as a web client that will host a simple index and registry of metadata related to hosted dats. It is *not* a hosting service for dats themselves.
+This is a web client that will let you publish and collaborate your data. It is *not* a data hosting service.
 
 See the website at http://dat-data.com for more information.
 
-## Setting up
+## Develeper setup
 
 Install dependencies
 ```bash
@@ -40,7 +40,7 @@ Run just the server:
 ```
 $ npm run server
 ```
- 
+
 # License
 Copyright (c) 2014, Karissa McKelvey All rights reserved.
 
