@@ -7,8 +7,7 @@
     "start": "npm run watch & npm run watch-css & npm run server",
     "server": "nodemon server.js -e js,css,html",
     "test": "node test/run.js | tap-spec",
-    "test-browser": "node test/run-browser.js | tap-spec",
-    "watch": "watchify -t ractivate app/index.js -o static/js/bundle.js",
+    "watch": "watchify -t ractivate browser/index.js -o static/js/bundle.js",
     "watch-css": "autoless static/styles"
   },
   "repository": {
