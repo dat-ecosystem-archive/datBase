@@ -1,5 +1,8 @@
+var fs = require('fs')
+var response = require('response')
 var st = require("st")
 
+var indexHTML = fs.readFileSync('./index.html')
 var Server = require('./api')
 
 module.exports = function(overrides) {
@@ -10,5 +13,9 @@ module.exports = function(overrides) {
     url: "/static"
   }))
 
+  api.router.addRoute("*", function(req, res) {
+    response.html(indexHTML).pipe(res)
+  })
+  
   return api
 }

@@ -1,5 +1,5 @@
 var jsonBody = require("body/json")
-var sendJson = require('send-data/json')
+var response = require('response')
 
 module.exports = EMail
 
@@ -17,7 +17,7 @@ EMail.prototype.create = function (req, res, opts, cb) {
       email: body.email
     }, function (err, id) {
       if (err) throw err
-      sendJson(req, res, {'handle': id})
+      response.json({'handle': id}).pipe(res)
     })
   })
 }

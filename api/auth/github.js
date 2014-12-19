@@ -1,9 +1,9 @@
 var githubOAuth = require('github-oauth')
 var request = require('request')
 var extend = require('extend')
-var debug = require('debug')('github-provider')
 var redirecter = require('redirecter')
 var waterfall = require('run-waterfall')
+var debug = require('debug')('github-provider')
 
 var defaults = require('../defaults.js')
 

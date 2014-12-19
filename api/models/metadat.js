@@ -1,52 +1,11 @@
-var RestModels = require('level-restful'),
-    timestamp = require('monotonic-timestamp')
-    util = require('util'),
-    jsonBody = require("body/json");
+var levelRest = require('../level-rest.js')
+var defaultSchema = require('./metadat.json')
 
-module.exports = MetaDat;
+module.exports = function(db, opts) {
+  if (!opts) opts = {}
+  if (!opts.schema) opts.schema = defaultSchema
 
-function MetaDat(db) {
-  // MetaDat is the metadata for a particular dat instance.
-  // id is the primary key, auto incremented by timestamp
-  fields = [
-    {
-      'name': 'owner_id',
-      'type': 'string',
-      'index': true
-    },
-    {
-      'name': 'description',
-      'type': 'string'
-    },
-    {
-      'name': 'name',
-      'type': 'string',
-      'index': true
-    },
-    {
-      'name': 'json',
-      'type': 'object'
-    },
-    {
-      'name': 'url',
-      'type': 'string',
-      'index': true
-    },
-    {
-      'name': 'license',
-      'type': 'string',
-      'optional': true,
-      'default': 'BSD'
-    }
-    // {
-    //   'name': 'schema',
-    //   'type': 'string',
-    //   'optional': true
-    // },
-  ]
-  opts = {}
-  RestModels.call(this, db, 'metadat', 'id', fields, opts);
+  var model = levelRest(db, opts)
+
+  return model
 }
-
-util.inherits(MetaDat, RestModels);
-MetaDat.prototype.keyfn = timestamp

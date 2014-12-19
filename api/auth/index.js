@@ -27,7 +27,8 @@ module.exports = function(models, opts) {
             'text': 'You have successfully logged out!'
           }, function () {
             redirecter(req, res, '/')
-        })
+          }
+        )
       })
     },
   }

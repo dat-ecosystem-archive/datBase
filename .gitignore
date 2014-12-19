@@ -2,3 +2,4 @@ node_modules/
 data/*
 *.css
 static/js/bundle.js
+.DS_Store

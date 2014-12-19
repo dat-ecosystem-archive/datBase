@@ -1,0 +1,28 @@
+{
+  "owner_id": {
+    "type": "string",
+    "required": true,
+    "index": true
+  },
+  "description": {
+    "type": "string",
+    "required": true
+  },
+  "name": {
+    "type": "string",
+    "required": true,
+    "index": true
+  },
+  "json": {
+    "type": "object",
+    "required": true
+  },
+  "url": {
+    "type": "string",
+    "required": true,
+    "index": true
+  },
+  "license": {
+    "type": "string"    
+  }
+}
