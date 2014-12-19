@@ -42,17 +42,32 @@ function Server(overrides) {
   }
   
   // sublevel-ify the db
+  self.originalDb = self.db
   self.db = sublevel(self.db)
   
   self.session = levelSession({
     db: self.db.sublevel('sessions'),
     cookieName: 'dat-registry',
-    ttl: {sub: self.db.sublevel('ttl')}
+    ttl: {
+      sub: self.db.sublevel('ttl')
+    }
   })
   
   self.models = self.createModels()
   self.router = self.createRoutes(self.options)
   self.server = http.createServer(self.routeProvider.bind(self))
+}
+
+Server.prototype.close = function(cb) {
+  var self = this
+  // HACK because of https://github.com/dominictarr/level-sublevel/issues/78
+  self.originalDb.close(function closeDb(err) {
+    if (err) return cb(err)
+    self.session.close(function closeSession(err) {
+      if (err) return cb(err)
+      self.server.close(cb)
+    })
+  })
 }
 
 Server.prototype.routeProvider = function(req, res) {
@@ -115,7 +130,8 @@ Server.prototype.createRoutes = function (options) {
     var model = self.models[opts.params.model]
     
     if (!model) {
-      response.json({error: 'Model not found'}).error(404).pipe(res)
+      res.statusCode = 400
+      response.json({error: 'Model not found'}).pipe(res)
       return 
     }
     
@@ -125,7 +141,8 @@ Server.prototype.createRoutes = function (options) {
       if (err) {
         var code = 400
         if (err.notFound) code = 404
-        response.json({error: err}).error(code).pipe(res)
+        res.statusCode = code
+        response.json({error: err}).pipe(res)
         return
       }
       
@@ -159,7 +176,7 @@ Server.prototype.createModels = function(opts) {
   // initialize rest parsers for each model
   models.users.handler = restParser(models.users)
   models.metadat.handler = restParser(models.metadat)
-
+  
   models.users.byGithubId = Secondary(this.db.sublevel('users'), 'title')
   
   return models

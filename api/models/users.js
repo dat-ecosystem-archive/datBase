@@ -48,8 +48,8 @@ function create(data, cb, insecure) {
   encryptPassword(data['password'], function(err, pass) {
     data['password'] = pass
     data['createdTimestamp'] = new Date().getTime()
-    console.log('saving', data)
-    self.save(data, cb)
+    debug('posting user', data)
+    self.post(data, cb)
   })
 }
 

@@ -49,7 +49,7 @@ LevelREST.prototype.put = function(data, opts, cb) {
     error.errors = errors
     return cb(error)
   }
-  db.put(opts.id, data, opts, function(err) {
+  this.db.put(opts.id, data, opts, function(err) {
     if (err) return cb(err)
     cb(null, opts.id)
   })
@@ -66,7 +66,7 @@ LevelREST.prototype.post = function(data, opts, cb) {
 LevelREST.prototype.delete = function(opts, cb) {
   if (!opts) opts = {}
   debug('delete', opts)
-  db.del(opts.id, opts, function(err) {
+  this.db.del(opts.id, opts, function(err) {
     if (err) return cb(err)
     cb()
   })

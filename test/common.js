@@ -65,10 +65,10 @@ module.exports = function() {
       }
 
       function closeTheThings() {
-        api.server.close()
-        api.models.db.close()
-        api.session.close()
-        if (t.end) t.end()
+        api.close(function(err) {
+          if (err) console.error('test db close err', err)
+          if (t.end) t.end()
+        })
       }
 
     }

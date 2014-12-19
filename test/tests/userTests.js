@@ -1,7 +1,6 @@
 var request = require('request').defaults({json: true})
 var debug = require('debug')('test-users')
 
-
 module.exports.onlyUpdateCurrentUser = function(test, common) {
   test('only update the current user', function(t) {
     common.testGET(t, '/auth/login',
