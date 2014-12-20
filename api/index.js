@@ -137,12 +137,20 @@ Server.prototype.createRoutes = function (options) {
     
     var method = req.method.toLowerCase()
     
+    // disallow user creation
+    if (method === 'post' && opts.params.model === 'users') {
+      var code = 403
+      res.statusCode = code
+      response.json({status: 'error', error: 'action not allowed'}).pipe(res)
+      return
+    }
+    
     model.handler.dispatch(req, id, function(err, data) {
       if (err) {
         var code = 400
         if (err.notFound) code = 404
         res.statusCode = code
-        response.json({error: err}).pipe(res)
+        response.json({status: 'error', error: err.message}).pipe(res)
         return
       }
       
@@ -154,6 +162,8 @@ Server.prototype.createRoutes = function (options) {
       
       if (method === 'put' || method === 'post') {
         res.statusCode = 201
+        // TODO should we treat validation errors as a 200 or a 4xx?
+        if (data.status && data.status === 'error') res.statusCode = 200
         response.json(data).pipe(res)
         return
       }

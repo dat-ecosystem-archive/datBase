@@ -1,7 +1,6 @@
 var request = require('request').defaults({json: true})
 var debug = require('debug')('test-metadat')
 
-
 var TEST_DAT = {
   'owner_id': 'mafintosh',
   'name': 'test entry',
@@ -14,7 +13,6 @@ var TEST_DAT = {
   'license': 'BSD-2',
 }
  // 'keywords': ['entry', 'test', 'data', 'dathub']
-
 
 module.exports.createMetadat = function (test, common) {
   test('creates a new Metadat via POST', function(t) {

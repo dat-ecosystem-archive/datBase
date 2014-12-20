@@ -45,13 +45,12 @@ LevelREST.prototype.put = function(data, opts, cb) {
   debug('put', data, opts)
   if (!this.validate(data)) {
     var errors = this.validate.errors
-    var error = new Error('put/post failed due to schema validation errors')
-    error.errors = errors
-    return cb(error)
+    return cb(null, {status: "error", errors: errors})
   }
   this.db.put(opts.id, data, opts, function(err) {
     if (err) return cb(err)
-    cb(null, opts.id)
+    data.id = opts.id
+    cb(null, data)
   })
 }
 
