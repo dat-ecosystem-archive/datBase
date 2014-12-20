@@ -44,7 +44,7 @@ function Server(overrides) {
   // sublevel-ify the db
   self.originalDb = self.db
   self.db = sublevel(self.db)
-  
+    
   self.session = levelSession({
     db: self.db.sublevel('sessions'),
     cookieName: 'dat-registry',
@@ -126,7 +126,7 @@ Server.prototype.createRoutes = function (options) {
   // Models
   router.addRoute('/api/:model/:id?', function(req, res, opts) {
     res.setHeader('content-type', 'application/json')
-    var id = parseInt(opts.params.id) || opts.params.id || ''
+    var id = parseInt(opts.params.id) || opts.params.id
     var model = self.models[opts.params.model]
     
     if (!model) {
@@ -145,7 +145,10 @@ Server.prototype.createRoutes = function (options) {
       return
     }
     
-    model.handler.dispatch(req, id, function(err, data) {
+    var params = {}
+    if (id) params.id = id
+    
+    model.handler.dispatch(req, params, function(err, data) {
       if (err) {
         var code = 400
         if (err.notFound) code = 404
@@ -154,6 +157,8 @@ Server.prototype.createRoutes = function (options) {
         return
       }
       
+      if (!data) data = {status: 'error', error: 'no data returned'}
+            
       if (method === 'get' || method === 'delete') {
         res.statusCode = 200
         response.json(data).pipe(res)

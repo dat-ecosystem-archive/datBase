@@ -57,14 +57,14 @@ module.exports.createMetadat = function (test, common) {
         }, function (err, res, json) {
           t.ifError(err)
           t.equal(json.url, data.url)
-
+          
           request({
             method: 'GET',
             uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
             json: data
           }, function (err, res, json) {
             t.ifError(err)
-            t.equal(json.length, 2, 'querying for all returns 2')
+            t.equal(json.data.length, 2, 'querying for all returns 2')
           })
 
           request({
@@ -135,7 +135,7 @@ module.exports.getMetadatsEmpty = function (test, common) {
         function (err, res, json) {
           t.ifError(err)
           t.equal(res.statusCode, 200, 'returns 200')
-          t.equal(json.length, 0, 'returns no items')
+          t.equal(json.data.length, 0, 'returns no items')
           done()
         }
       )
@@ -202,7 +202,7 @@ module.exports.getMetadats = function (test, common) {
               function (err, res, json) {
                 t.ifError(err)
                 t.equal(res.statusCode, 200, 'returns 200')
-                t.equal(json.length, 1, 'length for 1 metadat')
+                t.equal(json.data.length, 1, 'length for 1 metadat')
                 done()
               }
             )

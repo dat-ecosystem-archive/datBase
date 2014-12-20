@@ -17,26 +17,27 @@ function LevelREST(db, options) {
 
 LevelREST.prototype.get = function(opts, cb) {
   var self = this
-  debug('get', opts)
   if (!opts.id) return this.getAll(opts, cb)
+  debug('get', opts)
   this.db.get(opts.id, opts, function(err, row) {
     if (err) return cb(err)
-    cb(null, row.value)
+    cb(null, row)
   })
 }
 
 LevelREST.prototype.getAll = function(opts, cb) {
   var self = this
-  debug('getAll', opts)
+  if (!opts) opts = {}
   if (!opts.limit) opts.limit = this.options.pageLimit || 50
   if (opts.limit > this.options.pageLimit) {
     var msg = 'limit must be under ' + this.options.pageLimit
     return cb(new Error(msg))
   }
+  debug('getAll', opts)
   var getStream = this.db.createValueStream(opts)
   getStream.on('error', cb)
   getStream.pipe(concat(function concatenator(rows) {
-    cb(null, rows)
+    cb(null, {data: rows})
   }))
 }
 
