@@ -4,11 +4,8 @@ var http = require('http')
 var extend = require('extend')
 var Router = require('routes-router')
 var jsonBody = require("body")
-var bytewise = require('bytewise/hex')
 var level = require('level-prebuilt')
-var levelSession = require('level-session')
-var sublevel = require('level-sublevel')
-var Secondary = require('level-secondary')
+var subdown = require('subleveldown')
 var redirecter = require('redirecter')
 var Ractive = require('ractive')
 var Corsify = require("corsify")
@@ -35,24 +32,9 @@ function Server(overrides) {
   if (self.options.db) {
     self.db = self.options.db
   } else {
-    self.db = level(self.options.DAT_REGISTRY_DB, {
-      keyEncoding: bytewise,
-      valueEncoding: 'json'
-    })
+    self.db = level(self.options.DAT_REGISTRY_DB)
   }
-  
-  // sublevel-ify the db
-  self.originalDb = self.db
-  self.db = sublevel(self.db)
-    
-  self.session = levelSession({
-    db: self.db.sublevel('sessions'),
-    cookieName: 'dat-registry',
-    ttl: {
-      sub: self.db.sublevel('ttl')
-    }
-  })
-  
+
   self.models = self.createModels()
   self.router = self.createRoutes(self.options)
   self.server = http.createServer(self.routeProvider.bind(self))
@@ -60,8 +42,7 @@ function Server(overrides) {
 
 Server.prototype.close = function(cb) {
   var self = this
-  // HACK because of https://github.com/dominictarr/level-sublevel/issues/78
-  self.originalDb.close(function closeDb(err) {
+  self.db.close(function closeDb(err) {
     if (err) return cb(err)
     self.session.close(function closeSession(err) {
       if (err) return cb(err)
@@ -74,12 +55,7 @@ Server.prototype.routeProvider = function(req, res) {
   var self = this
   console.error(req.method, req.url)
   self.session(req, res, function() {
-    req.session.get('userid', function(err, userid) {
-      if (!err) {
-        req.userid = userid
-      }
-      self.router(req, res)
-    })
+    self.router(req, res)
   })
 }
 
@@ -107,26 +83,28 @@ Server.prototype.createRoutes = function (options) {
   router.addRoute('/auth/callback', auth.callback)
   router.addRoute('/auth/logout', auth.logout)
   router.addRoute('/auth/currentuser', function (req, res) {
-    if (req.userid) {
-      self.models.users.get(req.userid, function (err, user) {
-        delete user['password']
+    req.session.get('userid', function(err, userid) {
+      if (userid) {
+        self.models.users.get(userid, function (err, user) {
+          delete user['password']
+          response.json({
+            'status': 'success',
+            'user': user
+          }).pipe(res)
+        })
+      } else {
         response.json({
-          'status': 'success',
-          'user': user
+          'status': 'warning',
+          'message': 'No current user.'
         }).pipe(res)
-      })
-    } else {
-      response.json({
-        'status': 'warning',
-        'message': 'No current user.'
-      }).pipe(res)
-    }
+      }
+    })
   })
 
   // Models
   router.addRoute('/api/:model/:id?', function(req, res, opts) {
     res.setHeader('content-type', 'application/json')
-    var id = parseInt(opts.params.id) || opts.params.id
+    var id = opts.params.id
     var model = self.models[opts.params.model]
     
     if (!model) {
@@ -136,63 +114,85 @@ Server.prototype.createRoutes = function (options) {
     }
     
     var method = req.method.toLowerCase()
-    
-    // disallow user creation
-    if (method === 'post' && opts.params.model === 'users') {
-      var code = 403
-      res.statusCode = code
-      response.json({status: 'error', error: 'action not allowed'}).pipe(res)
-      return
-    }
-    
     var params = {}
     if (id) params.id = id
-    
-    model.handler.dispatch(req, params, function(err, data) {
-      if (err) {
-        var code = 400
-        if (err.notFound) code = 404
-        res.statusCode = code
-        response.json({status: 'error', error: err.message}).pipe(res)
-        return
-      }
       
-      if (!data) data = {status: 'error', error: 'no data returned'}
+    ensurePermissions(req, res, opts, function(err) {
+      if (err) return disallow(res)
+      model.handler.dispatch(req, params, function(err, data) {
+        if (err) {
+          var code = 400
+          if (err.notFound) code = 404
+          if (err.statusCode) code = err.statusCode
+          res.statusCode = code
+          response.json({status: 'error', error: err.message}).pipe(res)
+          return
+        }
+      
+        if (!data) data = {status: 'error', error: 'no data returned'}
             
-      if (method === 'get' || method === 'delete') {
-        res.statusCode = 200
-        response.json(data).pipe(res)
-        return
-      }
+        if (method === 'get' || method === 'delete') {
+          res.statusCode = 200
+          response.json(data).pipe(res)
+          return
+        }
       
-      if (method === 'put' || method === 'post') {
-        res.statusCode = 201
-        // TODO should we treat validation errors as a 200 or a 4xx?
-        if (data.status && data.status === 'error') res.statusCode = 200
-        response.json(data).pipe(res)
-        return
-      }
+        if (method === 'put' || method === 'post') {
+          res.statusCode = 201
+          // TODO should we treat validation errors as a 200 or a 4xx?
+          if (data.status && data.status === 'error') res.statusCode = 200
+          response.json(data).pipe(res)
+          return
+        }
 
-      // should never get here
-      debug('unknown model method', method)
-      res.end()
+        // should never get here
+        debug('unknown model method', method)
+        res.end()
+      })      
     })
+    
   })
 
   return router
 }
 
 Server.prototype.createModels = function(opts) {
+  var usersDb = subdown(this.db, 'users', {valueEncoding: 'json'})
+  var metadatDb = subdown(this.db, 'metadat', {valueEncoding: 'json'})
+  
   var models = {
-    users: users(this.db.sublevel('users'), opts),
-    metadat: metadat(this.db.sublevel('metadat'), opts)
+    users: users(usersDb, opts),
+    metadat: metadat(metadatDb, opts)
   }
   
   // initialize rest parsers for each model
   models.users.handler = restParser(models.users)
   models.metadat.handler = restParser(models.metadat)
   
-  models.users.byGithubId = Secondary(this.db.sublevel('users'), 'title')
+  // TODO replace with a more proper secondary indexing solution
+  models.users.byGithubId = subdown(this.db, 'githubId')
   
   return models
+}
+
+function disallow(res) {
+  var code = 403
+  res.statusCode = code
+  response.json({status: 'error', error: 'action not allowed'}).pipe(res)
+}
+
+function ensurePermissions(req, res, opts, cb) {
+  var method = req.method.toLowerCase()
+  
+  // allow all GETs (assumes no side effects and no private data exposed over REST)
+  if (method === 'get') return setImmediate(cb)
+    
+  // otherwise assumes side-effects, so check the session
+  req.session.get('userid', function(err, userid) {
+    if (err) return cb(err)
+    if (!userid) return setImmediate(function() {
+      cb(new Error('action not allowed'))
+    })
+    cb()
+  })
 }

@@ -70,37 +70,41 @@ module.exports = function(models, overrides) {
     // get or create user
     debug('getting user', user)
 
-    models.users.byGithubId.get(user.id, function (err, newUser) {
-      if (err) {
-        // user doesn't exist, so we create a new one
-        newUser = {
-          handle: user.login,
-          githubId: user.id,
-          password: 'password', // dummy password.
-          data: {
-            email: user.email,
-            name: user.name,
-            location: user.location,
-            bio: user.bio,
-            blog: user.blog,
-            company: user.company,
-            login: user.login
-          }
+    getByGithubId(user.id, function (err, existingUser) {
+      if (existingUser) {
+        debug('user exists', existingUser)
+        return callback(null, existingUser)
+      }
+      // user doesn't exist, so we create a new one
+      var newUser = {
+        handle: user.login,
+        githubId: user.id,
+        password: 'password', // dummy password.
+        data: {
+          email: user.email,
+          name: user.name,
+          location: user.location,
+          bio: user.bio,
+          blog: user.blog,
+          company: user.company,
+          login: user.login
         }
-        debug('creating new user', newUser)
-        models.users.create(newUser, function (err, handle) {
-          if (err) {
-            debug('cannot create user in database', newUser)
-            return callback(err)
-          }
-          debug('new user created', handle)
-          return callback(null, newUser)
+      }
+      debug('creating new user', newUser)
+      models.users.accounts.create(newUser.handle, function (err) {
+        if (err) {
+          debug('cannot create user in database', newUser)
+          return callback(err)
+        }
+        models.users.accounts.put(newUser.handle, function (err) {
+          if (err) return cb(err)
+          models.users.byGithubId.put(newUser.githubId, newUser.handle, function (err) {
+            if (err) return cb(err)
+            debug('new user created')
+            return callback(null, newUser)
+          })
         })
-      }
-      else {
-        debug('calling back', newUser)
-        return callback(null, newUser)
-      }
+      })
     })
   }
 
@@ -114,5 +118,13 @@ module.exports = function(models, overrides) {
       })
     })
   }
+  
+  function getByGithubId(id, cb) {
+    models.users.byGithubId.get(id, function (err, userId) {
+      if (err) return cb(err)
+      models.users.get({id: userId}, cb)
+    })
+  }
+  
   return gh
 }

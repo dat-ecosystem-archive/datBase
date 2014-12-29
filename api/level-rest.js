@@ -1,5 +1,6 @@
 var validator = require('is-my-json-valid')
 var concat = require('concat-stream')
+var uuid = require('hat')
 var debug = require('debug')('level-rest')
 
 module.exports = LevelREST
@@ -11,7 +12,7 @@ function LevelREST(db, options) {
   this.options = options
   if (options.schema) this.validate = validator(options.schema)
   this.generateId = options.generateId || function() {
-    return +Date.now()
+    return uuid()
   }.bind(this)
 }
 
@@ -42,20 +43,30 @@ LevelREST.prototype.getAll = function(opts, cb) {
 }
 
 LevelREST.prototype.put = function(data, opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
   if (!opts) opts = {}
   debug('put', data, opts)
   if (!this.validate(data)) {
     var errors = this.validate.errors
     return cb(null, {status: "error", errors: errors})
   }
-  this.db.put(opts.id, data, opts, function(err) {
+  var id = opts.id
+  delete opts.id
+  this.db.put(id, data, opts, function(err) {
     if (err) return cb(err)
-    data.id = opts.id
+    data.id = id
     cb(null, data)
   })
 }
 
 LevelREST.prototype.post = function(data, opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
   if (!opts) opts = {}
   if (!opts.id) opts.id = this.generateId()
   debug('post', data, opts)

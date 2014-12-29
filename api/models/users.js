@@ -1,70 +1,142 @@
 var util = require('util')
-var bcrypt = require('bcrypt')
+var concat = require('concat-stream')
+var accountdown = require('accountdown')
+var accountdownBasicAuth = require('accountdown-basic')
 var debug = require('debug')('users')
-var levelRest = require('../level-rest.js')
 var defaultSchema = require('./users.json')
 
 module.exports = Users
 
 function Users(db, opts) {
+  if (!(this instanceof Users)) return new Users(db, opts)
   if (!opts) opts = {}
   if (!opts.schema) opts.schema = defaultSchema
-
-  var model = levelRest(db, opts)
-    
-  // attach custom user methods
-  model.create = create.bind(model)
-  model.login = login.bind(model)
-    
-  return model
-}
-
-function create(data, cb, insecure) {
-  // Creates a user given some data
-  //
-  // Parameters
-  // - data: object
-  //   expects handle, password
-  // - cb: function
-  //   callback when complete
-  // - insecure: boolean
-  //   This is for benchmarking without bcrypt hit
-  //   DO NOT USE FOR ANY OTHER PURPOSE
-  var self = this
-  debug("creating user", data)
-
-  if(!data['handle'] || !data['password']) {
-    return cb(new Error("can not create user without handle and password in data"), false)
-  }
-
-  var encryptPassword = function(password, cb) {
-    if (insecure) {
-      return cb(null, password)
+  this.options = opts
+  this.db = db
+  this.accounts = accountdown(db, {
+    login: {
+      basic: accountdownBasicAuth
     }
-    else {
-      return bcrypt.hash(password, 10, cb)
-    }
-  }
-  encryptPassword(data['password'], function(err, pass) {
-    data['password'] = pass
-    data['createdTimestamp'] = new Date().getTime()
-    debug('posting user', data)
-    self.post(data, cb)
   })
 }
 
-function login(id, password, cb) {
-  // pulled from level-userdb
-  // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
+Users.prototype.get = function(opts, cb) {
   var self = this
-  this.get(id, function(err, user) {
-    if (err || !user) return cb(new Error("could not find user"), false)
-      bcrypt.compare(password.toString(), user.password.toString(), function(err, res) {
-        if (err || !res) return cb(new Error("password mismatch"), false)
-        cb(null, user)
-      })
+  if (!opts.id) return this.getAll(opts, cb)
+  debug('get', opts)
+  this.accounts.get(opts.id, opts, function(err, row) {
+    if (err) return cb(err)
+    cb(null, row)
   })
 }
+
+Users.prototype.getAll = function(opts, cb) {
+  var self = this
+  if (!opts) opts = {}
+  if (!opts.limit) opts.limit = this.options.pageLimit || 50
+  if (opts.limit > this.options.pageLimit) {
+    var msg = 'limit must be under ' + this.options.pageLimit
+    return cb(new Error(msg))
+  }
+  debug('getAll', opts)
+  var getStream = this.accounts.list(opts)
+  getStream.on('error', cb)
+  getStream.pipe(concat(function concatenator(rows) {
+    cb(null, {data: rows})
+  }))
+}
+
+// set profile data for existing user
+Users.prototype.put = function(data, opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
+  if (!opts) opts = {}
+  debug('put', data, opts)
+  if (!this.validate(data)) {
+    var errors = this.validate.errors
+    return cb(null, {status: "error", errors: errors})
+  }
+  this.accounts.put(opts.id, data, function(err) {
+    if (err) return cb(err)
+    data.id = id
+    cb(null, data)
+  })
+}
+
+// do not allow POST for users
+Users.prototype.post = function(data, opts, cb) {
+  debug('post', opts)
+  var err = new Error('action not allowed')
+  err.statusCode = 403
+  setImmediate(function() {
+    cb(err)
+  })
+}
+
+Users.prototype.delete = function(opts, cb) {
+  if (!opts) opts = {}
+  debug('delete', opts)
+  this.accounts.remove(opts.id, function(err) {
+    if (err) return cb(err)
+    cb()
+  })
+}
+
+// function create(data, cb, insecure) {
+//   // Creates a user given some data
+//   //
+//   // Parameters
+//   // - data: object
+//   //   expects handle, password
+//   // - cb: function
+//   //   callback when complete
+//   // - insecure: boolean
+//   //   This is for benchmarking without bcrypt hit
+//   //   DO NOT USE FOR ANY OTHER PURPOSE
+//   var self = this
+//   debug("creating user", data)
+//
+//   if(!data['handle'] || !data['password']) {
+//     return cb(new Error("can not create user without handle and password in data"), false)
+//   }
+//
+//   var encryptPassword = function(password, cb) {
+//     if (insecure) {
+//       return cb(null, password)
+//     }
+//     else {
+//       return bcrypt.hash(password, 10, cb)
+//     }
+//   }
+//   encryptPassword(data['password'], function(err, pass) {
+//     data['password'] = pass
+//     data['createdTimestamp'] = new Date().getTime()
+//     debug('posting user', data)
+//     self.post(data, function(err, user) {
+//       if (err) return cb(err)
+//       // store secondary index manually TODO automate
+//       self.byGithubId.put(user.githubId, user.id, function(err) {
+//         if (err) return cb(err)
+//         cb(null, user)
+//       })
+//     })
+//   })
+// }
+
+// function login(id, password, cb) {
+//   // pulled from level-userdb
+//   // https://github.com/FrozenRidge/level-userdb/blob/master/db.js
+//   var self = this
+//   this.get(id, function(err, user) {
+//     if (err || !user) return cb(new Error("could not find user"), false)
+//       bcrypt.compare(password.toString(), user.password.toString(), function(err, res) {
+//         if (err || !res) return cb(new Error("password mismatch"), false)
+//         cb(null, user)
+//       })
+//   })
+// }
 
 // function restrictToSelf(req, res, id, cb) {
 //   if (req.userid === id) {

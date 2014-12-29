@@ -5,7 +5,7 @@ module.exports.onlyUpdateCurrentUser = function(test, common) {
   test('only update the current user', function(t) {
     common.testGET(t, '/auth/login',
       function (err, api, res, json, done) {
-        t.ifError(err)
+        t.ifError(err, 'no error')
         request({
           method: 'PUT',
           uri: 'http://localhost:' + api.options.PORT + '/api/users/notme',
@@ -13,11 +13,13 @@ module.exports.onlyUpdateCurrentUser = function(test, common) {
             handle: 'notyou'
           }
         }, function (err, res, json) {
-          t.ifError(err)
+          t.ifError(err, 'no error')
+          t.equals(res.statusCode, 403, '403')
           t.equals(json.status, 'error', 'throws error message return')
           done()
         })
-    })
+      }
+    )
   })
 }
 
@@ -37,14 +39,13 @@ module.exports.cantCreateUser = function(test, common) {
           uri: 'http://localhost:' + api.options.PORT + '/api/users/',
         }, function (err, res, json) {
           t.ifError(err)
-          t.equals(json.length, 0, 'user not created')
+          t.equals(json.data.length, 0, 'user not created')
           done()
         })
       }
     )
   })
 }
-
 
 module.exports.all = function(test, common) {
   module.exports.onlyUpdateCurrentUser(test, common);
