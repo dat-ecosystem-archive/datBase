@@ -23,6 +23,7 @@ function render(user) {
     },
     message: function (type, text) {
       var ractive = this
+
       ractive.set('message', {
         type: type,
         text: text
@@ -32,10 +33,11 @@ function render(user) {
       }, 2000)
     },
     onrender: function () {
+      var ractive = this
+
       if (user) {
         gravatar('.content-card-small-avatar')
       }
-
       $('[data-toggle="tooltip"]').tooltip()
     }
   })
