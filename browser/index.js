@@ -50,26 +50,50 @@ function render(ctx, next) {
         e.preventDefault()
       })
 
-      // TODO: pull this out into a module that
-      // you give an element and it grabs all inputs and sets the enclosing button[type="submit"]
-      // as the one to click
-      var ENTER_KEY = 13;
-
-      $("input").keypress(function (e) {
-        var submitTarget = $(this).data('submit-target');
-        if ((e.which && e.which == ENTER_KEY) || (e.keyCode && e.keyCode == ENTER_KEY)) {
-            $(submitTarget).click();
-            return false;
-        } else {
-            return true;
-        }
-      });
+      autoEnterCollection(document.getElementsByClassName("form"))
 
       ctx.ractive.onrender.call(this)
     }
   });
 
 }
+
+
+var ENTER_KEY = 13;
+
+function autoEnterCollection(els) {
+  for (var i = 0; i < els.length; ++i) {
+    autoEnterForm(els[i]);
+  }
+}
+
+function getSubmitTarget(el) {
+  var submitTarget = el.getElementsByTagName("button")
+  if (submitTarget.length == 0) {
+    console.error('could not find corresponding button')
+    return false
+  }
+  return submitTarget[0]
+}
+
+function autoEnterForm(el) {
+  var inputs = el.getElementsByTagName("input")
+  for (var i = 0; i < inputs.length; i++) {
+    var input = inputs[i]
+    input.onkeypress = function (e) {
+      e = e || window.event;
+      if ((e.which && e.which == ENTER_KEY) ||
+            (e.keyCode && e.keyCode == ENTER_KEY) ||
+              (e.charCode && e.charCode == ENTER_KEY)) {
+        getSubmitTarget(el).click()
+        return false;
+      } else {
+        return true;
+      }
+    };
+  }
+}
+
 
 function requiresAuth(ctx, next) {
   if (!ctx.state.user) {
