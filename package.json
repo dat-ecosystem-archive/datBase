@@ -38,6 +38,7 @@
     "dat-api-client": "^1.0.0",
     "dathub-api-client": "^1.0.0",
     "debug": "^2.0.0",
+    "enter-means-submit": "^1.0.1",
     "extend": "^2.0.0",
     "fulltext-engine": "^1.1.1",
     "github-oauth": "^0.2.0",

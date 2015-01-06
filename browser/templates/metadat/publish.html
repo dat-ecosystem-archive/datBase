@@ -36,7 +36,7 @@
       {{else}}
 
       <!-- submit -->
-      <div id="submit" class="{{visibleClass('submit')}}">
+      <div class="{{visibleClass('submit')}} authorize form">
         <div class="form-group {{errorClass('submitError')}}">
           <label for="inputName" class="col-sm-2 control-label">Name</label>
           <div class="col-sm-8">
@@ -63,7 +63,7 @@
       </div>
 
       <!-- authorize -->
-      <div id="authorize" class="{{visibleClass('authorize')}}">
+      <div class="{{visibleClass('authorize')}} authorize form">
 
         <div class="form-group {{errorClass('authorizeError')}}">
           <label for="inputHandle" class="col-sm-2 control-label">Username</label>
@@ -96,7 +96,7 @@
       </div>
 
       <!-- preview -->
-      <div id="preview">
+      <div class="preview form">
         <div class="form-group {{errorClass('urlError')}}">
 
           <label for="metadatURL" class="col-sm-2 control-label">URL</label>

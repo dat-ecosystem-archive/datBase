@@ -1,6 +1,7 @@
 var Ractive = require('ractive');
 var page = require('page');
 var $ = jQuery = require('jquery');
+var enterMeansSubmit = require('enter-means-submit');
 
 var main = require('./controllers/main.js')
 var routes = require('./routes.js')
@@ -50,11 +51,15 @@ function render(ctx, next) {
         e.preventDefault()
       })
 
+      enterMeansSubmit(document.getElementsByClassName("form"))
+
       ctx.ractive.onrender.call(this)
     }
   });
 
 }
+
+
 
 function requiresAuth(ctx, next) {
   if (!ctx.state.user) {
