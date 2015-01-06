@@ -6,7 +6,7 @@ var rimraf = require('rimraf')
 
 var Server = require('../api')
 var defaults = require('../api/defaults.js')
-var MockLoginProvider = require('./mockLoginProvider.js')
+var testUser = require('./testUser.json')
 
 module.exports = function() {
   var common = {}
@@ -45,10 +45,28 @@ module.exports = function() {
       cb = t
     }
 
-    defaults.auth = { provider: new MockLoginProvider() }
     defaults.DEBUG = true
     var api = Server(defaults)
     var port = api.options.PORT
+    
+    api.router.addRoute('/auth/github/testlogin', function(req, res, params) {
+      debug('testlogin!')
+      api.auth.github.getOrCreate(testUser, function(err, user) {
+        if (err) {
+          res.statusCode = 500
+          res.end(JSON.stringify({error: err.message}))
+          return
+        }
+        api.sessions.login(res, function(err, session) {
+          if (err) {
+            res.statusCode = 500
+            res.end(JSON.stringify({error: err.message}))
+            return
+          }
+          res.end(JSON.stringify(session))
+        })
+      })
+    })
 
     api.server.listen(port, function() {
       console.log('listening on port', port)

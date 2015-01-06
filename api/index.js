@@ -11,10 +11,12 @@ var Ractive = require('ractive')
 var Corsify = require("corsify")
 var restParser = require('rest-parser')
 var response = require('response')
+var redirecter = require('redirecter')
+var cookieAuth = require('cookie-auth')
 var debug = require('debug')('server')
 
 var defaults = require('./defaults.js')
-var Auth = require('./auth/index.js')
+var githubAuth = require('./auth/github.js')
 var metadat = require('./models/metadat.js')
 var users = require('./models/users.js')
 
@@ -35,27 +37,17 @@ function Server(overrides) {
     self.db = level(self.options.DAT_REGISTRY_DB)
   }
 
+  self.sessions = cookieAuth({name: 'dathub'})
   self.models = self.createModels()
   self.router = self.createRoutes(self.options)
-  self.server = http.createServer(self.routeProvider.bind(self))
+  self.server = http.createServer(self.router.bind(self))
 }
 
 Server.prototype.close = function(cb) {
   var self = this
-  self.db.close(function closeDb(err) {
+  self.db.close(function closedDb(err) {
     if (err) return cb(err)
-    self.session.close(function closeSession(err) {
-      if (err) return cb(err)
-      self.server.close(cb)
-    })
-  })
-}
-
-Server.prototype.routeProvider = function(req, res) {
-  var self = this
-  console.error(req.method, req.url)
-  self.session(req, res, function() {
-    self.router(req, res)
+    self.server.close(cb)
   })
 }
 
@@ -78,15 +70,26 @@ Server.prototype.createRoutes = function (options) {
   })
   
   // Authentication
-  var auth = Auth(this.models, options.auth)
-  router.addRoute('/auth/login', auth.login)
-  router.addRoute('/auth/callback', auth.callback)
-  router.addRoute('/auth/logout', auth.logout)
+  self.auth = {
+    github: githubAuth(this.models, this.sessions)
+  }
+    
+  router.addRoute('/auth/github/login', self.auth.github.oauth.login)
+  router.addRoute('/auth/github/callback', self.auth.github.oauth.callback)
+  router.addRoute('/auth/logout', function(req, res, opts) {
+    return self.sessions.logout(req, res)
+  })
   router.addRoute('/auth/currentuser', function (req, res) {
-    req.session.get('userid', function(err, userid) {
-      if (userid) {
-        self.models.users.get(userid, function (err, user) {
-          delete user['password']
+    self.sessions.getSession(req, function(err, session) {
+      if (session) {
+        self.models.users.get(session.session, function (err, user) {
+          if (err) {
+            response.json({
+              'status': 'warning',
+              'message': err.message
+            }).pipe(res)
+            return
+          }
           response.json({
             'status': 'success',
             'user': user
@@ -152,6 +155,22 @@ Server.prototype.createRoutes = function (options) {
     })
     
   })
+  
+  function ensurePermissions(req, res, opts, cb) {
+    var method = req.method.toLowerCase()
+  
+    // allow all GETs (assumes no side effects and no private data exposed over REST)
+    if (method === 'get') return setImmediate(cb)
+    
+    // otherwise assumes side-effects, so check the session
+    self.sessions.getSession(req, function(err, session) {
+      if (err) return cb(err)
+      if (!session) return setImmediate(function() {
+        cb(new Error('action not allowed'))
+      })
+      cb()
+    })
+  }
 
   return router
 }
@@ -181,18 +200,3 @@ function disallow(res) {
   response.json({status: 'error', error: 'action not allowed'}).pipe(res)
 }
 
-function ensurePermissions(req, res, opts, cb) {
-  var method = req.method.toLowerCase()
-  
-  // allow all GETs (assumes no side effects and no private data exposed over REST)
-  if (method === 'get') return setImmediate(cb)
-    
-  // otherwise assumes side-effects, so check the session
-  req.session.get('userid', function(err, userid) {
-    if (err) return cb(err)
-    if (!userid) return setImmediate(function() {
-      cb(new Error('action not allowed'))
-    })
-    cb()
-  })
-}
