@@ -22,6 +22,7 @@ LevelREST.prototype.get = function(opts, cb) {
   debug('get', opts)
   this.db.get(opts.id, opts, function(err, row) {
     if (err) return cb(err)
+    row.id = opts.id
     cb(null, row)
   })
 }
@@ -43,6 +44,7 @@ LevelREST.prototype.getAll = function(opts, cb) {
 }
 
 LevelREST.prototype.put = function(data, opts, cb) {
+  var self = this
   if (typeof opts === 'function') {
     cb = opts
     opts = {}
@@ -55,10 +57,15 @@ LevelREST.prototype.put = function(data, opts, cb) {
   }
   var id = opts.id
   delete opts.id
-  this.db.put(id, data, opts, function(err) {
-    if (err) return cb(err)
-    data.id = id
-    cb(null, data)
+  
+  // check if row already exists (for e.g. 200 or 201)
+  this.db.get(id, opts, function(err, row) {
+    var exists = !!row
+    self.db.put(id, data, opts, function(err) {
+      if (err) return cb(err)
+      data.id = id
+      cb(null, {created: !exists, data: data})
+    })
   })
 }
 

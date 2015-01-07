@@ -3,6 +3,7 @@ var debug = require('debug')('test-common')
 var st = require("st")
 var request = require('request').defaults({json: true})
 var rimraf = require('rimraf')
+var jar = request.jar()
 
 var Server = require('../api')
 var defaults = require('../api/defaults.js')
@@ -11,31 +12,51 @@ var testUser = require('./testUser.json')
 module.exports = function() {
   var common = {}
   common.testPrefix = ''
+  
+  common.login = function(api, cb) {
+    request({
+      url: 'http://localhost:' + api.options.PORT + "/auth/github/testlogin",
+      jar: jar,
+      json: true
+    },  function (err, res, data) {
+      cb(err, jar)
+    })
+  }
 
   common.testGET = function (t, path, cb) {
     this.getRegistry(t, function(err, api, done) {
-      params = {
-        method: 'GET',
-        uri: 'http://localhost:' + api.options.PORT + path
-      }
-      debug('requesting', params)
-      request(params, function get(err, res, json) {
-        cb(err, api, res, json, done)
+      if (err) t.ifErr(err)
+      common.login(api, function(err, jar) {
+        if (err) t.ifErr(err)
+        params = {
+          method: 'GET',
+          jar: jar,
+          uri: 'http://localhost:' + api.options.PORT + path
+        }
+        debug('requesting', params)
+        request(params, function get(err, res, json) {
+          cb(err, api, jar, res, json, done)
+        })
       })
     })
   }
 
   common.testPOST = function (t, path, data, cb) {
     this.getRegistry(t, function(err, api, done) {
-      params = {
-        method: 'POST',
-        uri: 'http://localhost:' + api.options.PORT + path,
-        json: data,
-        'content-type': 'application/json'
-      }
-      debug('requesting', params)
-      request(params, function get(err, res, json) {
-        cb(err, api, res, json, done)
+      if (err) t.ifErr(err)
+      common.login(api, function(err, jar) {
+        if (err) t.ifErr(err)
+        params = {
+          method: 'POST',
+          uri: 'http://localhost:' + api.options.PORT + path,
+          json: data,
+          jar: jar,
+          'content-type': 'application/json'
+        }
+        debug('requesting', params)
+        request(params, function get(err, res, json) {
+          cb(err, api, jar, res, json, done)
+        })
       })
     })
   }

@@ -17,6 +17,14 @@ function Users(db, opts) {
   this.accounts = accountdown(db)
 }
 
+Users.prototype.authorize = function(params, userData, cb) {
+  // only allow users to edit their own data
+  if (params.id) {
+    if (params.id !== userData.user.handle) return cb(new Error('action not allowed'))
+  }
+  cb(null, userData)
+}
+
 Users.prototype.get = function(opts, cb) {
   var self = this
   if (!opts.id) return this.getAll(opts, cb)
@@ -58,7 +66,7 @@ Users.prototype.put = function(data, opts, cb) {
   this.accounts.put(opts.id, data, function(err) {
     if (err) return cb(err)
     data.id = opts.id
-    cb(null, data)
+    cb(null, {created: false, data: data})
   })
 }
 

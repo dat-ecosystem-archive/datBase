@@ -34,7 +34,7 @@ module.exports.onlyUpdateCurrentUser = function(test, common) {
             }
           }, function (err, res, json) {
             t.ifError(err, 'no error')
-            t.equals(res.statusCode, 403, '403')
+            t.equals(res.statusCode, 401, '401')
             t.equals(json.status, 'error', 'throws error message return')
             done()
           })
@@ -46,21 +46,20 @@ module.exports.onlyUpdateCurrentUser = function(test, common) {
 
 module.exports.cantCreateUser = function(test, common) {
   var data = {
-    handle: 'karissa',
-    password: 'blahpassword'
+    handle: 'pizza'
   }
   test('cant create a user through POST api', function(t) {
     common.testPOST(t, '/api/users', data,
-      function (err, api, res, json, done) {
+      function (err, api, jar, res, json, done) {
         t.ifError(err)
         t.equals(json.status, 'error', 'returns error in status message')
-
         request({
           method: 'GET',
           uri: 'http://localhost:' + api.options.PORT + '/api/users/',
         }, function (err, res, json) {
           t.ifError(err)
-          t.equals(json.data.length, 0, 'user not created')
+          t.equals(res.statusCode, 200, '200')
+          t.equals(json.data.length, 1, 'user not created')
           done()
         })
       }

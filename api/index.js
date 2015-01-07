@@ -121,7 +121,7 @@ Server.prototype.createRoutes = function (options) {
     if (id) params.id = id
       
     ensurePermissions(req, res, opts, function(err) {
-      if (err) return disallow(res)
+      if (err) return unauthorized(res)
       model.handler.dispatch(req, params, function(err, data) {
         if (err) {
           var code = 400
@@ -140,11 +140,16 @@ Server.prototype.createRoutes = function (options) {
           return
         }
       
+        // if put or post then `data` should look like {created: bool, data: row}
         if (method === 'put' || method === 'post') {
-          res.statusCode = 201
+          res.statusCode = data.created ? 201 : 200
           // TODO should we treat validation errors as a 200 or a 4xx?
-          if (data.status && data.status === 'error') res.statusCode = 200
-          response.json(data).pipe(res)
+          if (data.status && data.status === 'error') {
+            res.statusCode = 200
+            response.json(data).pipe(res)
+            return
+          }
+          response.json(data.data).pipe(res)
           return
         }
 
@@ -174,11 +179,12 @@ Server.prototype.createRoutes = function (options) {
 
         // otherwise require account for access
         if (profileErr) return cb(new Error('action not allowed'))
-          
-        if (opts.params.id) {
-          if (opts.params.id !== profile.handle) return cb(new Error('action not allowed'))
-        }
+
+        // check if model has specific authorization rules and use those
+        var model = self.models[opts.params.model]
+        if (model && model.authorize) return model.authorize(opts.params, userData, cb)
         
+        // otherwise return the userData
         return cb(null, userData)
       })
     })
@@ -206,8 +212,8 @@ Server.prototype.createModels = function(opts) {
   return models
 }
 
-function disallow(res) {
-  var code = 403
+function unauthorized(res) {
+  var code = 401
   res.statusCode = code
   response.json({status: 'error', error: 'action not allowed'}).pipe(res)
 }
