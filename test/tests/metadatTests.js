@@ -44,62 +44,62 @@ module.exports.createMetadat = function (test, common) {
     )
   });
 
-  test('query by url or owner_id', function (t) {
-    var data = extend({}, TEST_DAT) // clone
-    common.testPOST(t, '/api/metadat', data,
-      function (err, api, jar, res, json, done) {
-        data.url = 'http://testing-queries.com'
-        data.owner_id = 'mafintosh'
-
-        request({
-          method: 'POST',
-          jar: jar,
-          uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-          json: data,
-        }, function (err, res, json) {
-          t.ifError(err)
-          t.equal(json.url, data.url)
-          
-          request({
-            method: 'GET',
-            jar: jar,
-            uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-            json: data
-          }, function (err, res, json) {
-            t.ifError(err)
-            t.equal(json.data.length, 2, 'querying for all returns 2')
-          })
-
-          request({
-            method: 'GET',
-            jar: jar,
-            uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-            json: data,
-            qs: {
-              url: data.url
-            }
-          }, function (err, res, json) {
-            t.ifError(err)
-            t.equal(json.url, data.url, 'querying for url')
-          })
-
-          request({
-            method: 'GET',
-            jar: jar,
-            uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-            json: data,
-            qs: {
-              owner_id: data.owner_id
-            }
-          }, function (err, res, json) {
-            t.ifError(err)
-            t.equal(json.owner_id, data.owner_id, 'querying for owner id')
-            done()
-          })
-        })
-      }
-    )
-  })
+  // test('query by url or owner_id', function (t) {
+  //   var data = extend({}, TEST_DAT) // clone
+  //   common.testPOST(t, '/api/metadat', data,
+  //     function (err, api, jar, res, json, done) {
+  //       data.url = 'http://testing-queries.com'
+  //       data.owner_id = 'mafintosh'
+  //
+  //       request({
+  //         method: 'POST',
+  //         jar: jar,
+  //         uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+  //         json: data,
+  //       }, function (err, res, json) {
+  //         t.ifError(err)
+  //         t.equal(json.url, data.url)
+  //
+  //         request({
+  //           method: 'GET',
+  //           jar: jar,
+  //           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+  //           json: data
+  //         }, function (err, res, json) {
+  //           t.ifError(err)
+  //           t.equal(json.data.length, 2, 'querying for all returns 2')
+  //         })
+  //
+  //         request({
+  //           method: 'GET',
+  //           jar: jar,
+  //           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+  //           json: data,
+  //           qs: {
+  //             url: data.url
+  //           }
+  //         }, function (err, res, json) {
+  //           t.ifError(err)
+  //           t.equal(json.url, data.url, 'querying for url')
+  //         })
+  //
+  //         request({
+  //           method: 'GET',
+  //           jar: jar,
+  //           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+  //           json: data,
+  //           qs: {
+  //             owner_id: data.owner_id
+  //           }
+  //         }, function (err, res, json) {
+  //           t.ifError(err)
+  //           t.equal(json.owner_id, data.owner_id, 'querying for owner id')
+  //           done()
+  //         })
+  //       })
+  //     }
+  //   )
+  // })
 
   // test('adding a dat name that already exists for this user', function (t) {
   //    var data = extend({}, TEST_DAT) // clone
