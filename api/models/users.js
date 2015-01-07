@@ -1,7 +1,7 @@
 var util = require('util')
 var concat = require('concat-stream')
+var validator = require('is-my-json-valid')
 var accountdown = require('accountdown')
-var accountdownBasicAuth = require('accountdown-basic')
 var debug = require('debug')('users')
 var defaultSchema = require('./users.json')
 
@@ -12,19 +12,16 @@ function Users(db, opts) {
   if (!opts) opts = {}
   if (!opts.schema) opts.schema = defaultSchema
   this.options = opts
+  if (this.options.schema) this.validate = validator(this.options.schema)
   this.db = db
-  this.accounts = accountdown(db, {
-    login: {
-      basic: accountdownBasicAuth
-    }
-  })
+  this.accounts = accountdown(db)
 }
 
 Users.prototype.get = function(opts, cb) {
   var self = this
   if (!opts.id) return this.getAll(opts, cb)
   debug('get', opts)
-  this.accounts.get(opts.id, opts, function(err, row) {
+  this.accounts.get(opts.id, function(err, row) {
     if (err) return cb(err)
     cb(null, row)
   })
@@ -60,7 +57,7 @@ Users.prototype.put = function(data, opts, cb) {
   }
   this.accounts.put(opts.id, data, function(err) {
     if (err) return cb(err)
-    data.id = id
+    data.id = opts.id
     cb(null, data)
   })
 }
@@ -68,7 +65,7 @@ Users.prototype.put = function(data, opts, cb) {
 // do not allow POST for users
 Users.prototype.post = function(data, opts, cb) {
   debug('post', opts)
-  var err = new Error('action not allowed')
+  var err = new Error('creating users is not allowed')
   err.statusCode = 403
   setImmediate(function() {
     cb(err)

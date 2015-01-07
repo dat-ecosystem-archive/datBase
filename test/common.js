@@ -57,7 +57,7 @@ module.exports = function() {
           res.end(JSON.stringify({error: err.message}))
           return
         }
-        api.sessions.login(res, function(err, session) {
+        api.sessions.login(res, {id: user.handle}, function(err, session) {
           if (err) {
             res.statusCode = 500
             res.end(JSON.stringify({error: err.message}))

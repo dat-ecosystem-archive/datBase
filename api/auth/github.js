@@ -9,8 +9,8 @@ var defaults = require('../defaults.js')
 
 module.exports = Github
 
-function Github(models, auth, overrides) {
-  if (!(this instanceof Github)) return new Github(models, auth, overrides)
+function Github(models, sessions, overrides) {
+  if (!(this instanceof Github)) return new Github(models, sessions, overrides)
     
   var self = this
   
@@ -57,21 +57,21 @@ function Github(models, auth, overrides) {
         'message': err.message
       }).pipe(res)
 
-      getOrCreate(body, function (err) {
+      getOrCreate(body, function (err, newUser) {
         if (err) return response.json({
           'status': 'error',
           'message': err.message
         }).pipe(res)
         
         // delete current session (if one exists)
-        auth.delete(req, function(err) {
+        sessions.delete(req, function(err) {
           // ignore error
-          auth.login(res, function(err) {
+          // create session
+          sessions.login(res, {id: newUser.id}, function(err, session) {
             if (err) return response.json({
               'status': 'error',
               'message': err.message
             }).pipe(res)
-          
             debug('redirecting')
             redirecter(req, res, '/')
           })

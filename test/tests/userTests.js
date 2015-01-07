@@ -1,25 +1,46 @@
 var request = require('request').defaults({json: true})
+var jar = request.jar()
 var debug = require('debug')('test-users')
 
 module.exports.onlyUpdateCurrentUser = function(test, common) {
   test('only update the current user', function(t) {
-    common.testGET(t, '/auth/login',
-      function (err, api, res, json, done) {
+    common.getRegistry(t, function (err, api, done) {
+      if (err) t.ifError(err)
+      request({
+        url: 'http://localhost:' + api.options.PORT + "/auth/github/testlogin",
+        jar: jar,
+        json: true
+      },  function (err, res, data) {
         t.ifError(err, 'no error')
+        // edit self
         request({
           method: 'PUT',
-          uri: 'http://localhost:' + api.options.PORT + '/api/users/notme',
+          jar: jar,
+          uri: 'http://localhost:' + api.options.PORT + '/api/users/karissa',
           json: {
-            handle: 'notyou'
+            handle: 'bob'
           }
         }, function (err, res, json) {
           t.ifError(err, 'no error')
-          t.equals(res.statusCode, 403, '403')
-          t.equals(json.status, 'error', 'throws error message return')
-          done()
+          t.ok(res.statusCode, 200, '200')
+          t.deepEqual(json, {id: 'karissa', handle: 'bob'}, 'resp matches')
+          // edit someone else
+          request({
+            method: 'PUT',
+            jar: jar,
+            uri: 'http://localhost:' + api.options.PORT + '/api/users/notme',
+            json: {
+              handle: 'notyou'
+            }
+          }, function (err, res, json) {
+            t.ifError(err, 'no error')
+            t.equals(res.statusCode, 403, '403')
+            t.equals(json.status, 'error', 'throws error message return')
+            done()
+          })
         })
-      }
-    )
+      })
+    })
   })
 }
 

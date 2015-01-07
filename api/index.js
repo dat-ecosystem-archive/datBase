@@ -159,16 +159,28 @@ Server.prototype.createRoutes = function (options) {
   function ensurePermissions(req, res, opts, cb) {
     var method = req.method.toLowerCase()
   
-    // allow all GETs (assumes no side effects and no private data exposed over REST)
-    if (method === 'get') return setImmediate(cb)
-    
-    // otherwise assumes side-effects, so check the session
-    self.sessions.getSession(req, function(err, session) {
-      if (err) return cb(err)
-      if (!session) return setImmediate(function() {
-        cb(new Error('action not allowed'))
+    // check the session
+    self.sessions.getSession(req, function(sessionErr, session) {
+      if (sessionErr) {
+        if (method !== 'get') return cb(new Error('action not allowed'))
+        else return cb(null, {}) // let GETs through even if logged out
+      }
+      // get profile
+      self.models.users.get({id: session.data.id}, function (profileErr, profile) {
+        var userData =  {session: session, user: profile}
+        
+        // let GETs through
+        if (method === 'get') return cb(null, userData)
+
+        // otherwise require account for access
+        if (profileErr) return cb(new Error('action not allowed'))
+          
+        if (opts.params.id) {
+          if (opts.params.id !== profile.handle) return cb(new Error('action not allowed'))
+        }
+        
+        return cb(null, userData)
       })
-      cb()
     })
   }
 
