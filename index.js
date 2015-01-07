@@ -1,6 +1,6 @@
 var fs = require('fs')
 var response = require('response')
-var st = require("st")
+var st = require('st')
 
 var indexHTML = fs.readFileSync('./index.html')
 var Server = require('./api')

@@ -40,7 +40,10 @@ function Server(overrides) {
   self.sessions = cookieAuth({name: 'dathub'})
   self.models = self.createModels()
   self.router = self.createRoutes(self.options)
-  self.server = http.createServer(self.router.bind(self))
+  self.server = http.createServer(function(req, res) {
+    debug(req.method, req.url)
+    self.router(req, res)
+  })
 }
 
 Server.prototype.close = function(cb) {
@@ -56,7 +59,7 @@ Server.prototype.createRoutes = function (options) {
 
   var router = Router({
     errorHandler: function (req, res, err) {
-      console.trace(err)
+      console.trace('Router error', err)
       response.json({
         'status': 'error',
         'message': err.message
