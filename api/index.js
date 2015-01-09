@@ -37,7 +37,7 @@ function Server(overrides) {
     self.db = level(self.options.DAT_REGISTRY_DB)
   }
 
-  self.sessions = cookieAuth({name: 'dathub'})
+  self.sessions = cookieAuth({name: 'dathub', sessions: subdown(this.db, 'sessions')})
   self.models = self.createModels()
   self.router = self.createRoutes(self.options)
   self.server = http.createServer(function(req, res) {
@@ -77,15 +77,20 @@ Server.prototype.createRoutes = function (options) {
     github: githubAuth(this.models, this.sessions)
   }
     
-  router.addRoute('/auth/github/login', self.auth.github.oauth.login)
-  router.addRoute('/auth/github/callback', self.auth.github.oauth.callback)
+  router.addRoute('/auth/github/login', function(req, res, opts) {
+    self.auth.github.oauth.login(req, res)
+  })
+  router.addRoute('/auth/github/callback', function(req, res, opts) {
+    self.auth.github.oauth.callback(req, res)
+  })
   router.addRoute('/auth/logout', function(req, res, opts) {
     return self.sessions.logout(req, res)
   })
   router.addRoute('/auth/currentuser', function (req, res) {
     self.sessions.getSession(req, function(err, session) {
       if (session) {
-        self.models.users.get(session.session, function (err, user) {
+        var id = session.data.id
+        self.models.users.get({id: id}, function (err, user) {
           if (err) {
             response.json({
               'status': 'warning',

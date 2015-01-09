@@ -21,6 +21,21 @@ module.exports.loginUser = function(test, common) {
   })
 }
 
+module.exports.currentUser = function(test, common) {
+  test('get currently logged in user data', function(t) {
+    common.testGET(t, '/auth/currentuser', function (err, api, jar, res, json, done) {
+      t.ifError(err)
+      t.equals(json.status, 'success', 'success')
+      t.equals(json.user.handle, 'karissa', 'karissa')
+      t.equals(json.user.githubId, 633012, 'githubId')
+      t.ok(typeof json.user.data === 'object', 'data object')
+      done()
+    })
+  })
+}
+
+
 module.exports.all = function(test, common) {
   module.exports.loginUser(test, common);
+  module.exports.currentUser(test, common);
 }

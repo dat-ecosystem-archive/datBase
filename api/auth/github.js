@@ -57,7 +57,7 @@ function Github(models, sessions, overrides) {
         'message': err.message
       }).pipe(res)
 
-      getOrCreate(body, function (err, newUser) {
+      self.getOrCreate(body, function (err, newUser) {
         if (err) return response.json({
           'status': 'error',
           'message': err.message
@@ -67,7 +67,7 @@ function Github(models, sessions, overrides) {
         sessions.delete(req, function(err) {
           // ignore error
           // create session
-          sessions.login(res, {id: newUser.id}, function(err, session) {
+          sessions.login(res, {id: newUser.handle}, function(err, session) {
             if (err) return response.json({
               'status': 'error',
               'message': err.message
@@ -95,7 +95,6 @@ Github.prototype.getOrCreate = function(user, callback) {
     var newUser = {
       handle: user.login,
       githubId: user.id,
-      password: "password",
       data: {
         email: user.email,
         name: user.name,

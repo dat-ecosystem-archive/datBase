@@ -37,7 +37,7 @@
     "cookie-auth": "^2.4.0",
     "corsify": "^2.0.0",
     "dat-api-client": "^1.0.0",
-    "dathub-api-client": "^1.0.0",
+    "dathub-api-client": "^1.1.0",
     "debug": "^2.0.0",
     "extend": "^2.0.0",
     "github-oauth": "^0.2.0",

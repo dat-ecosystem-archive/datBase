@@ -19,7 +19,7 @@ module.exports = function() {
       jar: jar,
       json: true
     },  function (err, res, data) {
-      cb(err, jar)
+      cb(err, jar, res)
     })
   }
 
