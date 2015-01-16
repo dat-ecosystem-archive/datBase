@@ -1,4 +1,3 @@
-var debug = require('debug')('server')
 var createServer = require('./')
 
 var opts = {
@@ -7,9 +6,13 @@ var opts = {
   PORT: process.env['PORT'] || 5000
 }
 
-var api = createServer(opts)
-var port = api.options.PORT
+createServer(opts, function(err, api) {
+  if (err) throw err
+  
+  var port = api.options.PORT
 
-api.server.listen(port, function() {
-  debug('listening on port', port)
+  api.server.listen(port, function() {
+    console.log('listening on port', port)
+  })
+  
 })

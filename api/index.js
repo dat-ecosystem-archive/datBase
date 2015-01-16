@@ -13,6 +13,8 @@ var restParser = require('rest-parser')
 var response = require('response')
 var redirecter = require('redirecter')
 var cookieAuth = require('cookie-auth')
+var changesFeed = require('changes-feed')
+var changesdown = require('changesdown')
 var debug = require('debug')('server')
 
 var defaults = require('./defaults.js')
@@ -202,20 +204,31 @@ Server.prototype.createRoutes = function (options) {
 }
 
 Server.prototype.createModels = function(opts) {
-  var usersDb = subdown(this.db, 'users', {valueEncoding: 'json'})
-  var metadatDb = subdown(this.db, 'metadat', {valueEncoding: 'json'})
+  var self = this
+  
+  var usersSub = subdown(this.db, 'users')
+  var usersChanges = subdown(this.db, 'users-changes')
+  
+  var metadatSub = subdown(this.db, 'metadat')
+  var metadatChanges = subdown(this.db, 'metadat-changes')
+  
+  var usersFeed = changesFeed(usersChanges)
+  var metadatFeed = changesFeed(metadatChanges)
+  
+  var usersDb = changesdown(usersSub, usersFeed, {valueEncoding: 'json'})
+  var metadatDb = changesdown(metadatSub, metadatFeed, {valueEncoding: 'json'})
   
   var models = {
     users: users(usersDb, opts),
     metadat: metadat(metadatDb, opts)
   }
-  
+
   // initialize rest parsers for each model
   models.users.handler = restParser(models.users)
   models.metadat.handler = restParser(models.metadat)
-  
+
   // TODO replace with a more proper secondary indexing solution
-  models.users.byGithubId = subdown(this.db, 'githubId')
+  models.users.byGithubId = subdown(self.db, 'githubId')
   
   return models
 }

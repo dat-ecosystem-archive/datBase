@@ -29,7 +29,9 @@ module.exports.createMetadat = function (test, common) {
       }
     )
   });
+};
 
+module.exports.createInvalidField = function(test, common) {
   test('invalid field type', function(t) {
     var data = extend({}, TEST_DAT) // clone
     data.owner_id = 1
@@ -268,6 +270,7 @@ module.exports.updateMetadat = function (test, common) {
 
 module.exports.all = function(test, common) {
   module.exports.createMetadat(test, common);
+  module.exports.createInvalidField(test, common);
   module.exports.getMetadats(test, common);
   module.exports.getMetadatsEmpty(test, common);
   module.exports.updateMetadat(test, common);

@@ -5,7 +5,7 @@ var config = {
   'PORT': 5000,
   'DAT_REGISTRY_HOSTNAME': 'http://localhost',
   'DAT_REGISTRY_HOST': 'http://localhost:5000',
-  'DAT_REGISTRY_DB': path.join(__dirname, '..', 'data'),
+  'DAT_REGISTRY_DB': path.join(__dirname, '..', 'data', 'leveldb'),
 
   'GITHUB_CLIENT': undefined,
   'GITHUB_SECRET': undefined
