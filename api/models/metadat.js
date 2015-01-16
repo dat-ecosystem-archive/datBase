@@ -1,6 +1,6 @@
 var levelRest = require('../level-rest.js')
 var defaultSchema = require('./metadat.json')
-var indexer = require('../indexer.js')
+// var indexer = require('../indexer.js')
 
 module.exports = function(db, opts) {
   if (!opts) opts = {}
