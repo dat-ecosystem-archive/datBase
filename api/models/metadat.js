@@ -1,15 +1,14 @@
 var levelRest = require('../level-rest.js')
 var defaultSchema = require('./metadat.json')
-// var indexer = require('../indexer.js')
 
 module.exports = function(db, opts) {
   if (!opts) opts = {}
   if (!opts.schema) opts.schema = defaultSchema
 
   var model = levelRest(db, opts)
-  
-  // model.indexes = indexer(db, opts.schema)
     
+  model.schema = opts.schema
+      
   model.authorize = function(params, userData, cb) {
     // if it doesnt have an id we dont need to do custom authorization
     if (!params.id) return cb(null, userData)

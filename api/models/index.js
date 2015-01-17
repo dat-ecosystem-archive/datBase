@@ -5,6 +5,7 @@ var changesdown = require('changesdown')
 
 var metadat = require('./metadat.js')
 var users = require('./users.js')
+var indexer = require('../indexer.js')
 
 module.exports = function(db, opts) {
   var usersSub = subdown(db, 'users')
@@ -12,6 +13,8 @@ module.exports = function(db, opts) {
   
   var metadatSub = subdown(db, 'metadat')
   var metadatChanges = subdown(db, 'metadat-changes')
+  var metadatIndexDb = subdown(db, 'metadat-index')
+  var metadatStateDb = subdown(db, 'metadat-state')
   
   var usersFeed = changesFeed(usersChanges)
   var metadatFeed = changesFeed(metadatChanges)
@@ -23,7 +26,14 @@ module.exports = function(db, opts) {
     users: users(usersDb, opts),
     metadat: metadat(metadatDb, opts)
   }
-
+  
+  models.metadat.indexes = indexer({
+    schema: models.metadat.schema,
+    feed: metadatFeed,
+    db: metadatIndexDb,
+    state: metadatStateDb
+  })
+    
   // initialize rest parsers for each model
   models.users.handler = restParser(models.users)
   models.metadat.handler = restParser(models.metadat)

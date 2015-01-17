@@ -11,6 +11,7 @@ function Users(db, opts) {
   if (!(this instanceof Users)) return new Users(db, opts)
   if (!opts) opts = {}
   if (!opts.schema) opts.schema = defaultSchema
+  this.schema = opts.schema
   this.options = opts
   if (this.options.schema) this.validate = validator(this.options.schema)
   this.db = db
