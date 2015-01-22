@@ -1,52 +1,27 @@
-var RestModels = require('level-restful'),
-    timestamp = require('monotonic-timestamp')
-    util = require('util'),
-    jsonBody = require("body/json");
+var levelRest = require('../level-rest.js')
+var defaultSchema = require('./metadat.json')
 
-module.exports = MetaDat;
+module.exports = function(db, opts) {
+  if (!opts) opts = {}
+  if (!opts.schema) opts.schema = defaultSchema
 
-function MetaDat(db) {
-  // MetaDat is the metadata for a particular dat instance.
-  // id is the primary key, auto incremented by timestamp
-  fields = [
-    {
-      'name': 'owner_id',
-      'type': 'string',
-      'index': true
-    },
-    {
-      'name': 'description',
-      'type': 'string'
-    },
-    {
-      'name': 'name',
-      'type': 'string',
-      'index': true
-    },
-    {
-      'name': 'json',
-      'type': 'object'
-    },
-    {
-      'name': 'url',
-      'type': 'string',
-      'index': true
-    },
-    {
-      'name': 'license',
-      'type': 'string',
-      'optional': true,
-      'default': 'BSD'
-    }
-    // {
-    //   'name': 'schema',
-    //   'type': 'string',
-    //   'optional': true
-    // },
-  ]
-  opts = {}
-  RestModels.call(this, db, 'metadat', 'id', fields, opts);
+  var model = levelRest(db, opts)
+    
+  model.schema = opts.schema
+      
+  model.authorize = function(params, userData, cb) {
+    // if it doesnt have an id we dont need to do custom authorization
+    if (!params.id) return cb(null, userData)
+
+    // only allow users to edit their own data
+    model.get({id: params.id}, function(err, meta) {
+      // if not exists then skip authorization
+      if (err) return cb(null, userData)
+      // ensure only owner can edit
+      if (meta.owner_id !== userData.user.handle) return cb(new Error('action not allowed'))
+      else cb(null, userData)
+    })
+  }
+
+  return model
 }
-
-util.inherits(MetaDat, RestModels);
-MetaDat.prototype.keyfn = timestamp

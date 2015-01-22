@@ -101,7 +101,7 @@ module.exports =  function (data) {
             url: url
           }, function (err, json) {
             if (err || json) {
-              if (json.status == 'error') {
+              if (json.status == 'error' && json.error !== 'not found') {
                 return onURLError()
               }
               if (json.url == url) {

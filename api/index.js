@@ -2,106 +2,50 @@ var fs = require('fs')
 var path = require('path')
 var http = require('http')
 var extend = require('extend')
-var Router = require('routes-router')
-var jsonBody = require("body")
+var level = require('level-prebuilt')
+var subdown = require('subleveldown')
+var cookieAuth = require('cookie-auth')
 var debug = require('debug')('server')
-var levelSession = require('level-session')
-var redirecter = require('redirecter')
-var Ractive = require('ractive');
-var sendJson = require('send-data/json')
-var Corsify = require("corsify")
 
-var Auth = require('./auth/index.js')
 var defaults = require('./defaults.js')
+var githubAuth = require('./auth/github.js')
 var createModels = require('./models')
+var createRoutes = require('./routes')
 
 module.exports = Server
 
 function Server(overrides) {
   // allow either new Server() or just Server()
+  if (!(this instanceof Server)) return new Server(overrides)
   var self = this
-
-  if (!(self instanceof Server)) return new Server(overrides)
   self.options = extend({}, defaults, overrides)
-  self.models = createModels(self.options)
-  self.session = levelSession({
-    db: self.models.db,
-    cookieName: 'dat-registry'
-  })
-  self.router = self.createRoutes(self.options)
-
-  if (self.options.DEBUG) {
-    var cors = Corsify({
-      'Access-Control-Allow-Origin': 'http://localhost:8080'
-    })
-    self.server = http.createServer(cors(self.routeProvider.bind(self)))
+  
+  // allow custom db to be passed in
+  if (self.options.db) {
+    self.db = self.options.db
+  } else {
+    self.db = level(self.options.DAT_REGISTRY_DB)
   }
-  else {
-    self.server = http.createServer(self.routeProvider.bind(self))
-  }
+
+  self.sessions = cookieAuth({name: 'dathub', sessions: subdown(this.db, 'sessions')})
+  self.models = createModels(self.db)
+  self.auth = { github: githubAuth(this.models, this.sessions) }
+  self.router = createRoutes(self)
+  self.server = self.createServer()
 }
 
-Server.prototype.routeProvider = function(req, res) {
+Server.prototype.createServer = function() {
   var self = this
-  console.log(req.url)
-  self.session(req, res, function() {
-    req.session.get('userid', function(err, userid) {
-      if (!err) {
-        req.userid = userid
-      }
-      self.router(req, res)
-    })
+  return http.createServer(function(req, res) {
+    debug(req.method, req.url)
+    self.router(req, res)
   })
 }
 
-Server.prototype.createRoutes = function (options) {
+Server.prototype.close = function(cb) {
   var self = this
-
-  var router = Router({
-    errorHandler: function (req, res, err) {
-      console.trace(err)
-      sendJson(req, res, {
-        'status': 'error',
-        'message': err.message
-      })
-    },
-    notFound: function (req, res) {
-      res.end(fs.readFileSync('./index.html').toString())
-    }
+  self.db.close(function closedDb(err) {
+    if (err) return cb(err)
+    self.server.close(cb)
   })
-
-  // Authentication
-  var auth = Auth(this.models, options.auth)
-  router.addRoute('/auth/login', auth.login)
-  router.addRoute('/auth/callback', auth.callback)
-  router.addRoute('/auth/logout', auth.logout)
-  router.addRoute('/auth/currentuser', function (req, res) {
-    if (req.userid) {
-      self.models.users.get(req.userid, function (err, user) {
-        delete user['password']
-        sendJson(req, res, {
-          'status': 'success',
-          'user': user
-        });
-      })
-    } else {
-      sendJson(req, res, {
-        'status': 'warning',
-        'message': 'No current user.'
-      });
-    }
-  })
-
-  // Wire up API endpoints
-  router.addRoute('/api/:model/:id?', function(req, res, opts, cb) {
-    var id = parseInt(opts.params.id) || opts.params.id || ''
-    var model = self.models[opts.params.model]
-    if (!model) {
-      return cb(new Error('no model'))
-    }
-    model.dispatch(req, res, id, cb)
-  })
-
-  return router
 }
-

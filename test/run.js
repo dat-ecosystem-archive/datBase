@@ -9,7 +9,8 @@ function test(name, testFunction) {
 var testFiles = [
   'authTests.js',
   'userTests.js',
-  'metadatTests.js'
+  'metadatTests.js',
+  'indexerTests.js'
 ]
 
 var tests = []
@@ -23,7 +24,7 @@ var specificTestFile = process.argv[2]
 var specificTest = process.argv[3]
 
 if (specificTestFile) {
-  var testModule = require(path.join(__dirname, specificTestFile))
+  var testModule = require(path.join(process.cwd(), specificTestFile))
   if (specificTest) testModule[specificTest](test, common)
   else testModule.all(test, common)
 } else {

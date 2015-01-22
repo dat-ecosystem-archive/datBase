@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "handle": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    }
+  }
+}

@@ -16,7 +16,7 @@ module.exports = function (data) {
         if (err) {
           ractive.set('metadats', [])
         }
-        ractive.set('metadats', metadats)
+        ractive.set('metadats', metadats.data)
       })
     }
   }
