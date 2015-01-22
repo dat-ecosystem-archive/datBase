@@ -7,7 +7,8 @@ module.exports.storeBatch = function(test, common) {
         {type: 'del', key: 'nope'}
       ]
       api.models.metadat.db.batch(batch, function(err) {
-        t.ok(true)
+        if (err) t.ifErr(err)
+        t.ok(true, 'did not crash')
         done()
       })
     })

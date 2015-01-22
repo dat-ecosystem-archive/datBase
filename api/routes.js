@@ -1,6 +1,7 @@
+var url = require('url')
 var Router = require('routes-router')
 var response = require('response')
-
+var debug = require('debug')('routes')
 var authorize = require('./authorize')
 
 module.exports = function createRoutes(server) {
@@ -74,7 +75,15 @@ module.exports = function createRoutes(server) {
       
     authorize(server, req, res, opts, function(err) {
       if (err) return unauthorized(res)
-      model.handler.dispatch(req, params, function(err, data) {
+      
+      if (method === 'get') {
+        var query = getSecondaryQuery(req, model, params)
+        if (query) return secondaryQuery(req, model, query, respond)
+      }
+      
+      model.handler.dispatch(req, params, respond)
+      
+      function respond(err, data) {
         if (err) {
           var code = 400
           if (err.notFound) code = 404
@@ -83,15 +92,15 @@ module.exports = function createRoutes(server) {
           response.json({status: 'error', error: err.message}).pipe(res)
           return
         }
-      
+
         if (!data) data = {status: 'error', error: 'no data returned'}
-            
+      
         if (method === 'get' || method === 'delete') {
           res.statusCode = 200
           response.json(data).pipe(res)
           return
         }
-      
+
         // if put or post then `data` should look like {created: bool, data: row}
         if (method === 'put' || method === 'post') {
           res.statusCode = data.created ? 201 : 200
@@ -108,7 +117,7 @@ module.exports = function createRoutes(server) {
         // should never get here
         debug('unknown model method', method)
         res.end()
-      })      
+      }
     })
     
   })
@@ -120,4 +129,48 @@ function unauthorized(res) {
   var code = 401
   res.statusCode = code
   response.json({status: 'error', error: 'action not allowed'}).pipe(res)
+}
+
+function secondaryQuery(req, model, query, cb) {
+  if (query instanceof Error) return cb(query)
+  var indexer = model.indexes[query.key]
+  debug('finding by', query.key, 'with value', query.value)
+  indexer.findOne(query.value, function(err, id) {
+    if (err) return cb(err)
+    if (!id) {
+      var err = new Error('not found')
+      err.notFound = true
+      return cb(err)
+    }
+    var params = {id: id}
+    model.handler.dispatch(req, params, cb)
+  })
+}
+
+// only one secondary query dimension at a time is currently supported
+function getSecondaryQuery(req, model, params) {
+  var parsed = url.parse(req.url, true)
+  var query = parsed.query
+  if (!query) return false
+  var keys = Object.keys(query)
+  if (!keys && keys.length === 0) return false
+  var queryObj = false
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i]
+    var val = query[key]
+    var indexer = model.indexes[key]
+    // only allow queries on indexed properties
+    if (indexer) {
+      // if it already exists then there are > 1 query dimensions
+      if (queryObj) {
+        queryObj = new Error('multiple query parameters specified when only one is allowed')
+        break
+      }
+      queryObj = {
+        "key": key,
+        "value": val
+      }
+    }
+  }
+  return queryObj
 }

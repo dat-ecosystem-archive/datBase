@@ -1,4 +1,5 @@
 var request = require('request').defaults({json: true})
+var series = require('run-series')
 var extend = require('extend')
 var debug = require('debug')('test-metadat')
 
@@ -31,6 +32,114 @@ module.exports.createMetadat = function (test, common) {
   });
 };
 
+module.exports.query = function(test, common) {
+  test('query by url or owner_id', function (t) {
+    var data = extend({}, TEST_DAT) // clone
+    common.testPOST(t, '/api/metadat', data,
+      function (err, api, jar, res, json, done) {
+        data.url = 'http://testing-queries.com'
+        data.owner_id = 'mafintosh'
+
+        request({
+          method: 'POST',
+          jar: jar,
+          uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+          json: data,
+        }, function (err, res, json) {
+          t.ifError(err)
+          t.equal(json.url, data.url)
+          
+          var fns = [
+            function(next) {
+              request({
+                method: 'GET',
+                jar: jar,
+                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+                json: data
+              }, function (err, res, json) {
+                t.ifError(err)
+                t.equal(json.data.length, 2, 'querying for all returns 2')
+                next()
+              })
+            },
+            function(next) {
+              request({
+                method: 'GET',
+                jar: jar,
+                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+                json: data,
+                qs: {
+                  url: data.url
+                }
+              }, function (err, res, json) {
+                t.ifError(err)
+                t.equal(json.url, data.url, 'querying for url')
+                next()
+              })
+            },
+            function(next) {
+              request({
+                method: 'GET',
+                jar: jar,
+                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+                json: data,
+                qs: {
+                  url: data.url,
+                  owner_id: data.owner_id
+                }
+              }, function (err, res, json) {
+                t.ifError(err)
+                t.equal(res.statusCode, 400, '400 when querying for multiple properties')
+                next()
+              })
+            },
+            function(next) {
+              request({
+                method: 'GET',
+                jar: jar,
+                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+                json: data,
+                qs: {
+                  owner_id: data.owner_id
+                }
+              }, function (err, res, json) {
+                t.ifError(err)
+                t.equal(json.owner_id, data.owner_id, 'querying for owner id')
+                next()
+              })
+            }
+          ]
+          
+          series(fns, function(err) {
+            if (err) t.ifErr(err)
+            done()
+          })
+        })
+      }
+    )
+  })
+}
+
+// module.exports.duplicate = function(test, common) {
+//   test('adding a dat name that already exists for this user', function (t) {
+//      var data = extend({}, TEST_DAT) // clone
+//     common.testPOST(t, '/api/metadat', data,
+//       function (err, api, jar, res, json, done) {
+//         request({
+//           method: 'POST',
+//           jar: jar,
+//           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+//           json: data
+//         }, function (err, res, json) {
+//           t.ifError(err)
+//           console.log(json)
+//           t.equal(res.statusCode, 200, 'returns 200')
+//           done()
+//         })
+//       })
+//   })
+// }
+
 module.exports.createInvalidField = function(test, common) {
   test('invalid field type', function(t) {
     var data = extend({}, TEST_DAT) // clone
@@ -45,80 +154,6 @@ module.exports.createInvalidField = function(test, common) {
       }
     )
   });
-
-  // test('query by url or owner_id', function (t) {
-  //   var data = extend({}, TEST_DAT) // clone
-  //   common.testPOST(t, '/api/metadat', data,
-  //     function (err, api, jar, res, json, done) {
-  //       data.url = 'http://testing-queries.com'
-  //       data.owner_id = 'mafintosh'
-  //
-  //       request({
-  //         method: 'POST',
-  //         jar: jar,
-  //         uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-  //         json: data,
-  //       }, function (err, res, json) {
-  //         t.ifError(err)
-  //         t.equal(json.url, data.url)
-  //
-  //         request({
-  //           method: 'GET',
-  //           jar: jar,
-  //           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-  //           json: data
-  //         }, function (err, res, json) {
-  //           t.ifError(err)
-  //           t.equal(json.data.length, 2, 'querying for all returns 2')
-  //         })
-  //
-  //         request({
-  //           method: 'GET',
-  //           jar: jar,
-  //           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-  //           json: data,
-  //           qs: {
-  //             url: data.url
-  //           }
-  //         }, function (err, res, json) {
-  //           t.ifError(err)
-  //           t.equal(json.url, data.url, 'querying for url')
-  //         })
-  //
-  //         request({
-  //           method: 'GET',
-  //           jar: jar,
-  //           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-  //           json: data,
-  //           qs: {
-  //             owner_id: data.owner_id
-  //           }
-  //         }, function (err, res, json) {
-  //           t.ifError(err)
-  //           t.equal(json.owner_id, data.owner_id, 'querying for owner id')
-  //           done()
-  //         })
-  //       })
-  //     }
-  //   )
-  // })
-
-  // test('adding a dat name that already exists for this user', function (t) {
-  //    var data = extend({}, TEST_DAT) // clone
-  //   common.testPOST(t, '/api/metadat', data,
-  //     function (err, api, jar, res, json, done) {
-
-  //       request({
-  //         method: 'POST',
-  //         uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-  //         json: data
-  //       }, function (err, res, json) {
-  //         t.ifError(err)
-  //         t.equal(res.statusCode, 200, 'returns 200')
-  //         done()
-  //       })
-  //     })
-  // })
 
   test('missing required field returns error', function(t) {
     var data = extend({}, TEST_DAT) // clone
@@ -270,6 +305,8 @@ module.exports.updateMetadat = function (test, common) {
 
 module.exports.all = function(test, common) {
   module.exports.createMetadat(test, common);
+  module.exports.query(test, common);
+  // module.exports.duplicate(test, common);
   module.exports.createInvalidField(test, common);
   module.exports.getMetadats(test, common);
   module.exports.getMetadatsEmpty(test, common);
