@@ -36,9 +36,14 @@ LevelREST.prototype.getAll = function(opts, cb) {
     return cb(new Error(msg))
   }
   debug('getAll', opts)
-  var getStream = this.db.createValueStream(opts)
+  var getStream = this.db.createReadStream(opts)
   getStream.on('error', cb)
   getStream.pipe(concat(function concatenator(rows) {
+    rows = rows.map(function(row) {
+      var data = row.value
+      data.id = row.key
+      return data
+    })
     cb(null, {data: rows})
   }))
 }
