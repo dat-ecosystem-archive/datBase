@@ -6,13 +6,9 @@ var opts = {
   PORT: process.env['PORT'] || 5000
 }
 
-createServer(opts, function(err, api) {
-  if (err) throw err
-  
-  var port = api.options.PORT
+var api = createServer(opts)
+var port = api.options.PORT
 
-  api.server.listen(port, function() {
-    console.log('listening on port', port)
-  })
-  
+api.server.listen(port, function() {
+  console.log('listening on port', port)
 })
