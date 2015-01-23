@@ -135,15 +135,9 @@ function secondaryQuery(req, model, query, cb) {
   if (query instanceof Error) return cb(query)
   var indexer = model.indexes[query.key]
   debug('finding by', query.key, 'with value', query.value)
-  indexer.findOne(query.value, function(err, id) {
+  indexer.find(query.value, function(err, rows) {
     if (err) return cb(err)
-    if (!id) {
-      var err = new Error('not found')
-      err.notFound = true
-      return cb(err)
-    }
-    var params = {id: id}
-    model.handler.dispatch(req, params, cb)
+    cb(null, rows)
   })
 }
 
