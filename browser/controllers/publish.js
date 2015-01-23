@@ -101,10 +101,10 @@ module.exports =  function (data) {
             url: url
           }, function (err, json) {
             if (err || json) {
-              if (json.status == 'error' && json.error !== 'not found') {
+              if (json.status == 'error') {
                 return onURLError()
               }
-              if (json.url == url) {
+              if (json.length > 0 && json[0].url == url) {
                 onURLError()
                 ractive.set('existingDat', json)
                 return
