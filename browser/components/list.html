@@ -8,7 +8,7 @@
         </a>
       </h2>
       <p>{{this.description}}</p>
-      <button on-click="toggleMetadat">Toggle</button>
+      <button on-click="toggleMetadat(metadat)">Toggle</button>
       {{#if metadat.closed}}
       <div class="preview-frame">
         <iframe src="{{metadat.url}}"></iframe>
@@ -19,4 +19,3 @@
     </div>
   </div>
 {{/each}}
-</div>

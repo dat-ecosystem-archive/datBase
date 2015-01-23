@@ -27,6 +27,7 @@ function render(ctx, next) {
     template: ctx.ractive.template,
     data: ctx.ractive.data,
     partials: ctx.ractive.partials,
+    components: ctx.ractive.components,
     onrender: function () {
       $('a:not(.no-page)').click(function(e){
         var href = $(this).attr('href')
