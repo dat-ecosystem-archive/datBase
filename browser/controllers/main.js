@@ -1,6 +1,7 @@
 var Ractive = require('ractive');
 var $ = jQuery = require('jquery');
 var bootstrap = require('bootstrap');
+var xhr = require('xhr')
 
 var gravatar = require('../common/gravatar.js')
 var dathubClient = require('../hub');
@@ -35,9 +36,21 @@ function render(user) {
     onrender: function () {
       var ractive = this
 
+      ractive.on('logout', function (event) {
+        xhr({
+          uri: '/auth/logout',
+          json: true
+        }, function (err, resp, json) {
+          if (json.loggedOut === true) {
+            window.location.reload()
+          }
+        })
+      })
+
       if (user) {
         gravatar('.content-card-small-avatar')
       }
+
       $('[data-toggle="tooltip"]').tooltip()
     }
   })

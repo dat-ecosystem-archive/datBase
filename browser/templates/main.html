@@ -22,7 +22,7 @@
         <ul class="dropdown-menu" role="menu">
           <li><a href="/profile/{{user.handle}}">Profile</a></li>
           <li><a href="/settings">Settings</a></li>
-          <li><a href="/auth/logout" class="no-page">Logout</a></li>
+          <li><a on-click="logout" class="no-page">Logout</a></li>
         </ul>
       </div>
       {{else}}
