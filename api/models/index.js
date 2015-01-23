@@ -31,7 +31,8 @@ module.exports = function(db, opts) {
     schema: models.metadat.schema,
     feed: metadatFeed,
     db: metadatIndexDb,
-    state: metadatStateDb
+    state: metadatStateDb,
+    model: models.metadat
   })
     
   // initialize rest parsers for each model

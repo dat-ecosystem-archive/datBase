@@ -13,8 +13,12 @@ module.exports = function(opts) {
     // only create indexers for properties marked
     // as 'index: true' in the schema
     if (!prop.index) return
-    var indexDb = indexers[key] = indexer(opts.db, key)
-    
+    var indexDb = indexers[key] = indexer(opts.db, key, {
+      map: function (key, cb) {
+        opts.model.db.get(key, cb)
+      }
+    })
+
     var processor = changeProcessor({
       db: opts.state,
       feed: opts.feed,

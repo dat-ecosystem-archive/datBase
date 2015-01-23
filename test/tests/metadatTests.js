@@ -48,8 +48,20 @@ module.exports.query = function(test, common) {
         }, function (err, res, json) {
           t.ifError(err)
           t.equal(json.url, data.url)
-          
+
           var fns = [
+            function(next) {
+              data.url = 'http://testing-queries2.com'
+              request({
+                method: 'POST',
+                jar: jar,
+                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+                json: data
+              }, function (err, res, json) {
+                t.ifError(err)
+                next()
+              })
+            },
             function(next) {
               request({
                 method: 'GET',
@@ -58,7 +70,7 @@ module.exports.query = function(test, common) {
                 json: data
               }, function (err, res, json) {
                 t.ifError(err)
-                t.equal(json.data.length, 2, 'querying for all returns 2')
+                t.equal(json.data.length, 3, 'querying for all returns 3')
                 next()
               })
             },
@@ -73,7 +85,8 @@ module.exports.query = function(test, common) {
                 }
               }, function (err, res, json) {
                 t.ifError(err)
-                t.equal(json.url, data.url, 'querying for url')
+                t.equal(json.length, 1, 'should give us one value')
+                t.equal(json[0].url, data.url, 'querying for url')
                 next()
               })
             },
@@ -104,12 +117,13 @@ module.exports.query = function(test, common) {
                 }
               }, function (err, res, json) {
                 t.ifError(err)
-                t.equal(json.owner_id, data.owner_id, 'querying for owner id')
+                t.equal(json.length, 2, 'secondary query returns multiple results')
+                t.equal(json[0].owner_id, data.owner_id, 'querying for owner id')
                 next()
               })
             }
           ]
-          
+
           series(fns, function(err) {
             if (err) t.ifErr(err)
             done()
