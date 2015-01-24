@@ -10,7 +10,8 @@ function LevelREST(db, options) {
   options = options || {}
   this.db = db
   this.options = options
-  if (options.schema) this.validate = validator(options.schema)
+  this.schema = options.schema
+  if (this.schema) this.validate = validator(options.schema)
   this.generateId = options.generateId || function() {
     return uuid()
   }.bind(this)
@@ -58,11 +59,11 @@ LevelREST.prototype.put = function(data, opts, cb) {
   debug('put', data, opts)
   if (!this.validate(data)) {
     var errors = this.validate.errors
-    return cb(null, {status: "error", errors: errors})
+    return cb(null, {status: "error", message: 'Fails schema validation', errors: errors})
   }
   var id = opts.id
   delete opts.id
-  
+
   // check if row already exists (for e.g. 200 or 201)
   this.db.get(id, opts, function(err, row) {
     var exists = !!row
