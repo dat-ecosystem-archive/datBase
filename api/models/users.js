@@ -62,7 +62,7 @@ Users.prototype.put = function(data, opts, cb) {
   debug('put', data, opts)
   if (!this.validate(data)) {
     var errors = this.validate.errors
-    return cb(null, {status: "error", errors: errors})
+    return cb(null, {status: "error", message: "Fails schema validation", errors: errors})
   }
   this.accounts.put(opts.id, data, function(err) {
     if (err) return cb(err)

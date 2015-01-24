@@ -186,9 +186,10 @@ module.exports =  function (data) {
         dathubClient.metadats.create(metadat, function (err, metadat) {
           if (err) {
             ractive.set('submitError', true)
-            window.ractive.message('error', err.message)
+            window.ractive.message('error', err)
             return
           }
+
           // looks like a success
           ractive.set('submitError', false)
           setState('finish')

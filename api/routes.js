@@ -65,7 +65,7 @@ module.exports = function createRoutes(server) {
 
     if (!model) {
       res.statusCode = 400
-      response.json({error: 'Model not found'}).pipe(res)
+      response.json({status: 'error', message: 'Model not found'}).pipe(res)
       return
     }
 
@@ -89,11 +89,11 @@ module.exports = function createRoutes(server) {
           if (err.notFound) code = 404
           if (err.statusCode) code = err.statusCode
           res.statusCode = code
-          response.json({status: 'error', error: err.message}).pipe(res)
+          response.json({status: 'error', message: err.message}).pipe(res)
           return
         }
 
-        if (!data) data = {status: 'error', error: 'no data returned'}
+        if (!data) data = {status: 'error', message: 'no data returned'}
 
         if (method === 'get' || method === 'delete') {
           res.statusCode = 200

@@ -58,11 +58,11 @@ LevelREST.prototype.put = function(data, opts, cb) {
   debug('put', data, opts)
   if (!this.validate(data)) {
     var errors = this.validate.errors
-    return cb(null, {status: "error", errors: errors})
+    return cb(null, {status: "error", message: 'Fails schema validation', errors: errors})
   }
   var id = opts.id
   delete opts.id
-  
+
   // check if row already exists (for e.g. 200 or 201)
   this.db.get(id, opts, function(err, row) {
     var exists = !!row
