@@ -5,24 +5,7 @@ var enterMeansSubmit = require('enter-means-submit');
 
 var main = require('./controllers/main.js')
 var routes = require('./routes.js')
-
-var templateHelpers = Ractive.defaults.data
-
-templateHelpers.prettyJSON = function (json) {
-  return JSON.stringify(json, undefined, 2);
-}
-
-templateHelpers.errorClass = function (state) {
-  return this.get(state) ? 'has-error' : '';
-}
-
-templateHelpers.loadingClass = function() {
-  return this.get('loading') ? 'btn-disabled' : 'btn-success';
-}
-
-templateHelpers.loadingText = function (text) {
-  return this.get('loading') ? 'Loading' : text
-}
+var helpers = require('./helpers.js')
 
 var init = {
   ctx: function (ctx, next) {
@@ -44,6 +27,7 @@ function render(ctx, next) {
     template: ctx.ractive.template,
     data: ctx.ractive.data,
     partials: ctx.ractive.partials,
+    components: ctx.ractive.components,
     onrender: function () {
       $('a:not(.no-page)').click(function(e){
         var href = $(this).attr('href')

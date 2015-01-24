@@ -7,8 +7,8 @@ module.exports = function (data) {
   return {
     data: data,
     template: require('../templates/pages/profile.html'),
-    partials: {
-      listMetadats: require('../templates/metadat/list.html')
+    components: {
+      listMetadats: require('../components/list.js')
     },
     onrender: function () {
       var ractive = this

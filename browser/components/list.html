@@ -7,13 +7,14 @@
           <img src="/static/img/dat-hex-small.png" class="small-dat-title-icon" />{{this.owner_id}}/{{this.name}}
         </a>
       </h2>
-      <p>{{this.description}}</p>
-      <p class="version">v{{this.json.version}}</p>
     </div>
-    <div class="info">
-      {{#if this.json.rows}}
-        <p>{{this.json.rows}} rows at {{this.json.approximateSize.rows}}<p>
-      {{/if}}
+    <p>{{this.description}}</p>
+    <!--
+    <button on-click="toggleMetadat">Toggle</button>
+    <div class="{{this.open ? 'open' : ''}} vertical-slider preview-frame">
+      <iframe src="{{this.url}}"></iframe>
     </div>
+    -->
   </div>
 {{/each}}
+</div>

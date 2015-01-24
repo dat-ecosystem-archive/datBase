@@ -19,19 +19,19 @@ module.exports = function createRoutes(server) {
       res.end('not found')
     }
   })
-    
+
   router.addRoute('/auth/github/login', function(req, res, opts) {
     server.auth.github.oauth.login(req, res)
   })
-  
+
   router.addRoute('/auth/github/callback', function(req, res, opts) {
     server.auth.github.oauth.callback(req, res)
   })
-  
+
   router.addRoute('/auth/logout', function(req, res, opts) {
     return server.sessions.logout(req, res)
   })
-  
+
   router.addRoute('/auth/currentuser', function (req, res) {
     server.sessions.getSession(req, function(err, session) {
       if (session) {
@@ -62,27 +62,27 @@ module.exports = function createRoutes(server) {
     res.setHeader('content-type', 'application/json')
     var id = opts.params.id
     var model = server.models[opts.params.model]
-    
+
     if (!model) {
       res.statusCode = 400
       response.json({error: 'Model not found'}).pipe(res)
-      return 
+      return
     }
-    
+
     var method = req.method.toLowerCase()
     var params = {}
     if (id) params.id = id
-      
+
     authorize(server, req, res, opts, function(err) {
       if (err) return unauthorized(res)
-      
+
       if (method === 'get') {
         var query = getSecondaryQuery(req, model, params)
         if (query) return secondaryQuery(req, model, query, respond)
       }
-      
+
       model.handler.dispatch(req, params, respond)
-      
+
       function respond(err, data) {
         if (err) {
           var code = 400
@@ -94,7 +94,7 @@ module.exports = function createRoutes(server) {
         }
 
         if (!data) data = {status: 'error', error: 'no data returned'}
-      
+
         if (method === 'get' || method === 'delete') {
           res.statusCode = 200
           response.json(data).pipe(res)
@@ -119,7 +119,7 @@ module.exports = function createRoutes(server) {
         res.end()
       }
     })
-    
+
   })
 
   return router
