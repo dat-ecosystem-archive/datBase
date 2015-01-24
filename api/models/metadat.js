@@ -1,15 +1,17 @@
 var levelRest = require('../level-rest.js')
 var defaultSchema = require('./metadat.json')
+var extend = require('extend')
 
 module.exports = function(db, opts) {
   if (!opts) opts = {}
   if (!opts.schema) opts.schema = defaultSchema
 
   var model = levelRest(db, opts)
-    
-  model.schema = opts.schema
-      
-  model.authorize = function(params, userData, cb) {
+
+  var metadat = {}
+  extend(metadat, model) // inheritance
+
+  metadat.authorize = function(params, userData, cb) {
     // if it doesnt have an id we dont need to do custom authorization
     if (!params.id) return cb(null, userData)
 
@@ -23,5 +25,21 @@ module.exports = function(db, opts) {
     })
   }
 
-  return model
+  metadat.put = function (data, opts, cb) {
+    var self = this
+    self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
+      if (err) cb(err)
+      if (rows.length > 0) {
+        for (i in rows) {
+          var row = rows[i]
+          if (row.name == data.name) {
+            return cb(null, {status: 'error', message: 'You have already published a dat with that name'})
+          }
+        }
+      }
+      model.put(data, opts, cb)
+    })
+  }
+
+  return metadat
 }

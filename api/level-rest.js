@@ -10,7 +10,8 @@ function LevelREST(db, options) {
   options = options || {}
   this.db = db
   this.options = options
-  if (options.schema) this.validate = validator(options.schema)
+  this.schema = options.schema
+  if (this.schema) this.validate = validator(options.schema)
   this.generateId = options.generateId || function() {
     return uuid()
   }.bind(this)
