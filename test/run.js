@@ -10,6 +10,7 @@ var testFiles = [
   'authTests.js',
   'userTests.js',
   'metadatTests.js',
+  'searchTests.js',
   'indexerTests.js'
 ]
 

@@ -3,6 +3,8 @@ var Router = require('routes-router')
 var response = require('response')
 var debug = require('debug')('routes')
 var authorize = require('./authorize')
+var sqliteSearch = require('sqlite-search')
+var path = require('path')
 
 module.exports = function createRoutes(server) {
   var router = Router({
@@ -56,6 +58,29 @@ module.exports = function createRoutes(server) {
         }).pipe(res)
       }
     })
+  })
+
+  var searchOpts = {
+    path: path.join(__dirname, '..', "dat.sqlite"),
+    primaryKey: 'name',
+    columns: ["name", "description"]
+  }
+
+  sqliteSearch(searchOpts, function(err, searcher) {
+    if (err) console.error('error!', err)
+
+    router.addRoute('/search', function (req, res, opts) {
+      res.setHeader('content-type', 'application/json')
+      var parsed = url.parse(req.url, true)
+      var query = parsed.query
+
+      // TODO: search all columns
+      query.field = 'description'
+      query.formatType = 'object'
+
+      searcher.createSearchStream(query).pipe(res)
+    })
+
   })
 
   router.addRoute('/api/:model/:id?', function(req, res, opts) {
