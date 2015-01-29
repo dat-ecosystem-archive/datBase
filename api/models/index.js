@@ -5,7 +5,9 @@ var changesdown = require('changesdown')
 
 var metadat = require('./metadat.js')
 var users = require('./users.js')
+var defaults = require('../defaults.js')
 var indexer = require('../indexer.js')
+var searchIndexer = require('../searchIndexers.js')
 
 module.exports = function(db, opts) {
   var usersSub = subdown(db, 'users')
@@ -33,6 +35,12 @@ module.exports = function(db, opts) {
     db: metadatIndexDb,
     state: metadatStateDb,
     model: models.metadat
+  })
+
+  searchIndexer({
+    reader: metadatFeed,
+    columns: ['name', 'description'],
+    path: defaults.DAT_SEARCH_DB
   })
 
   // initialize rest parsers for each model

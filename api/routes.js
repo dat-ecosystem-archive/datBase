@@ -2,9 +2,10 @@ var url = require('url')
 var Router = require('routes-router')
 var response = require('response')
 var debug = require('debug')('routes')
-var authorize = require('./authorize')
 var sqliteSearch = require('sqlite-search')
-var path = require('path')
+
+var authorize = require('./authorize')
+var defaults = require('./defaults.js')
 
 module.exports = function createRoutes(server) {
   var router = Router({
@@ -61,7 +62,7 @@ module.exports = function createRoutes(server) {
   })
 
   var searchOpts = {
-    path: path.join(__dirname, '..', "dat.sqlite"),
+    path: defaults.DAT_SEARCH_DB,
     primaryKey: 'name',
     columns: ["name", "description"]
   }
