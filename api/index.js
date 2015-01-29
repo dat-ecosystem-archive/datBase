@@ -19,7 +19,7 @@ function Server(overrides) {
   if (!(this instanceof Server)) return new Server(overrides)
   var self = this
   self.options = extend({}, defaults, overrides)
-  
+
   // allow custom db to be passed in
   if (self.options.db) {
     self.db = self.options.db

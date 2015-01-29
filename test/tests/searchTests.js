@@ -1,5 +1,5 @@
 var request = require('request').defaults({json: true})
-var debug = require('debug')('test-search ')
+var debug = require('debug')('test-search')
 var qs = require('querystring')
 var extend = require('extend')
 
@@ -30,12 +30,13 @@ module.exports.searchMetadatDescription = function (test, common) {
           method: 'GET',
           uri: 'http://localhost:' + api.options.PORT + '/search',
           qs: {
-            query: 'a lot of different characters'
+            query: 'characters'
           }
         }, function (err, res, json) {
           t.ifError(err)
           t.equal(res.statusCode, 200, 'search returns 200')
-          t.ok(json.rows.length === 1, 'search returns one item')
+          debug('search results', json)
+          t.ok(json.rows && json.rows.length === 1, 'search returns one item')
           done()
         })
       }

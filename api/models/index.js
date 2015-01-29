@@ -38,7 +38,7 @@ module.exports = function(db, opts) {
   })
 
   searchIndexer({
-    schema: models.metadat.schema,
+    columns: ['key', 'description'],
     state: metadatStateDb,
     feed: metadatFeed,
     db: metadatIndexDb,

@@ -12,7 +12,7 @@ var testUser = require('./testUser.json')
 module.exports = function() {
   var common = {}
   common.testPrefix = ''
-  
+
   common.login = function(api, cb) {
     request({
       url: 'http://localhost:' + api.options.PORT + "/auth/github/testlogin",
@@ -69,7 +69,7 @@ module.exports = function() {
     defaults.DEBUG = true
     var api = Server(defaults)
     var port = api.options.PORT
-    
+
     api.router.addRoute('/auth/github/testlogin', function(req, res, params) {
       debug('testlogin!')
       api.auth.github.getOrCreate(testUser, function(err, user) {
@@ -99,7 +99,9 @@ module.exports = function() {
 
       function destroy() {
         rimraf(defaults.DAT_REGISTRY_DB, function () {
-          closeTheThings()
+          rimraf(defaults.DAT_SEARCH_DB, function () {
+            closeTheThings()
+          })
         });
       }
 

@@ -5,20 +5,13 @@ var changeProcessor = require('level-change-processor')
 var indexer = require('level-indexer')
 var changesdown = require('changesdown')
 var runSeries = require('run-series')
+var debug = require('debug')('search-indexer')
 
 module.exports = function (opts) {
   var searchIndexer = {
     path: opts.path,
-    columns: ['key']
+    columns: opts.columns
   }
-
-  Object.keys(opts.schema.properties).map(function(key) {
-    var prop = opts.schema.properties[key]
-    // only create indexers for properties marked
-    // as 'fullText: true' in the schema
-    if (!prop.fullText) return
-    searchIndexer.columns.push(key)
-  })
 
   sqliteSearch(searchIndexer, function(err, searcher) {
     if (err) return console.error('err', err)
@@ -63,6 +56,7 @@ module.exports = function (opts) {
       }
 
       function deleteCurrentIndex(key, cb) {
+        debug('search indexer deleting', key)
         var statement = 'DELETE FROM ' + searcher.name + ' WHERE ' + 'key = ?'
         searcher.db.run(statement, key, function(err) {
           if (err) return cb(err)
@@ -71,6 +65,7 @@ module.exports = function (opts) {
       }
 
       function storeNewIndex(key, val, cb) {
+        debug('search indexer writing', key, val)
         val['key'] = key
         writer.write(val, function(err) {
           if (err) return cb(err)

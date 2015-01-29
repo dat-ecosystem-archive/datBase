@@ -63,8 +63,8 @@ module.exports = function createRoutes(server) {
 
   var searchOpts = {
     path: defaults.DAT_SEARCH_DB,
-    primaryKey: 'name',
-    columns: ["name", "description"]
+    primaryKey: 'key',
+    columns: ["key", "name", "description"]
   }
 
   sqliteSearch(searchOpts, function(err, searcher) {
@@ -78,6 +78,7 @@ module.exports = function createRoutes(server) {
       // TODO: search all columns
       query.field = 'description'
       query.formatType = 'object'
+      debug('searching for', query)
 
       searcher.createSearchStream(query).pipe(res)
     })
