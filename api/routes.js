@@ -61,28 +61,17 @@ module.exports = function createRoutes(server) {
     })
   })
 
-  var searchOpts = {
-    path: defaults.DAT_SEARCH_DB,
-    primaryKey: 'key',
-    columns: ["key", "name", "description"]
-  }
+  router.addRoute('/search', function (req, res, opts) {
+    res.setHeader('content-type', 'application/json')
+    var parsed = url.parse(req.url, true)
+    var query = parsed.query
 
-  sqliteSearch(searchOpts, function(err, searcher) {
-    if (err) console.error('error!', err)
+    // TODO: search all columns
+    query.field = 'description'
+    query.formatType = 'object'
+    debug('searching for', query)
 
-    router.addRoute('/search', function (req, res, opts) {
-      res.setHeader('content-type', 'application/json')
-      var parsed = url.parse(req.url, true)
-      var query = parsed.query
-
-      // TODO: search all columns
-      query.field = 'description'
-      query.formatType = 'object'
-      debug('searching for', query)
-
-      searcher.createSearchStream(query).pipe(res)
-    })
-
+    server.models.metadat.searcher.createSearchStream(query).pipe(res)
   })
 
   router.addRoute('/api/:model/:id?', function(req, res, opts) {

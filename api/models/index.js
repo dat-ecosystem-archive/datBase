@@ -2,6 +2,7 @@ var subdown = require('subleveldown')
 var restParser = require('rest-parser')
 var changesFeed = require('changes-feed')
 var changesdown = require('changesdown')
+var sqliteSearch = require('sqlite-search')
 
 var metadat = require('./metadat.js')
 var users = require('./users.js')
@@ -37,12 +38,22 @@ module.exports = function(db, opts) {
     model: models.metadat
   })
 
-  searchIndexer({
-    columns: ['key', 'description'],
-    state: metadatStateDb,
-    feed: metadatFeed,
-    db: metadatIndexDb,
-    path: defaults.DAT_SEARCH_DB
+  var searchOpts = {
+    path: defaults.DAT_SEARCH_DB,
+    primaryKey: 'key',
+    columns: ["key", "name", "description"]
+  }
+
+  sqliteSearch(searchOpts, function(err, searcher) {
+    if (err) console.error('error!', err)
+    models.metadat.searcher = searcher
+    searchIndexer({
+      searcher: searcher,
+      state: metadatStateDb,
+      feed: metadatFeed,
+      db: metadatIndexDb,
+      path: defaults.DAT_SEARCH_DB
+    })
   })
 
   // initialize rest parsers for each model
