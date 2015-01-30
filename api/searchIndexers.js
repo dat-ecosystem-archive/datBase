@@ -49,7 +49,7 @@ module.exports = function (opts) {
 
     function deleteCurrentIndex(key, cb) {
       debug('search indexer deleting', key)
-      var statement = 'DELETE FROM ' + opts.searcher.name + ' WHERE ' + 'key = ?'
+      var statement = 'DELETE FROM ' + opts.searcher.name + ' WHERE ' + 'id = ?'
       opts.searcher.db.run(statement, key, function(err) {
         if (err) return cb(err)
         cb()
@@ -58,7 +58,7 @@ module.exports = function (opts) {
 
     function storeNewIndex(key, val, cb) {
       debug('search indexer writing', key, val)
-      val['key'] = key
+      val['id'] = key
       writer.write(val, function(err) {
         if (err) return cb(err)
         cb()
