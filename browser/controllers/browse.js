@@ -12,6 +12,11 @@ module.exports = function (data) {
     onrender: function () {
       var ractive = this
 
+      window.ractive.on('metadats', function (metadats) {
+        console.log('updating metaats', metadats)
+        ractive.set('metadats', metadats)
+      })
+
       dathubClient.metadats.all(function (err, metadats) {
         if (err) {
           ractive.set('metadats', [])
