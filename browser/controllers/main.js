@@ -2,7 +2,7 @@ var Ractive = require('ractive')
 var $ = jQuery = require('jquery')
 var bootstrap = require('bootstrap')
 var xhr = require('xhr')
-var qs = require('querystring')
+var page = require('page')
 
 var gravatar = require('../common/gravatar.js')
 var dathubClient = require('../hub')
@@ -49,13 +49,10 @@ function render(user) {
 
       ractive.on('search', function (event) {
         var query = ractive.get('searchQuery')
-        xhr({
-          method: 'GET',
-          uri: '/search?' + qs.stringify({query: query}),
-          json: true,
-        }, function (err, res, json) {
-          ractive.fire('metadats', json.rows)
-        })
+        if (window.location.pathname.indexOf('/browse') === 0) {
+          ractive.fire('browse.search', query)
+        }
+        else page('/browse/' + query)
       })
 
       if (user) {

@@ -1,4 +1,6 @@
 var debug = require('debug')('browse')
+var qs = require('querystring')
+var xhr = require('xhr')
 
 var dathubClient = require('../hub')
 
@@ -11,18 +13,41 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
+      var allMetadats = []
 
-      window.ractive.on('metadats', function (metadats) {
-        console.log('updating metaats', metadats)
-        ractive.set('metadats', metadats)
-      })
+      function setResults(results) {
+        console.log('updating metadats', results)
+        ractive.set('metadats', results)
+      }
 
-      dathubClient.metadats.all(function (err, metadats) {
-        if (err) {
-          ractive.set('metadats', [])
+      function search(query) {
+        xhr({
+          method: 'GET',
+          uri: '/search?' + qs.stringify({query: query}),
+          json: true,
+        }, function (err, res, json) {
+          setResults(json.rows)
+        })
+      }
+
+      function getResults(query) {
+        if (query) search(query)
+        else {
+          dathubClient.metadats.all(function (err, metadats) {
+            if (err) {
+              setResults([])
+            }
+            setResults(metadats.data)
+          })
         }
-        ractive.set('metadats', metadats.data)
+      }
+
+      getResults(data.query)
+
+      window.ractive.on('browse.search', function (query) {
+        getResults(query)
       })
+
     }
   }
 }
