@@ -60,7 +60,7 @@
     "routes-router": "^4.1.1",
     "run-series": "^1.0.2",
     "st": "^0.5.2",
-    "subleveldown": "^1.0.6"
+    "subleveldown": "^2.0.0"
   },
   "devDependencies": {
     "autoless": "^0.1.5",
