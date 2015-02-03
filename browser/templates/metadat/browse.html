@@ -1,7 +1,12 @@
 <div class="app-page">
   <div class="app-text-container">
-    <h1>Browse</h1>
+    <h1>Search</h1>
+    {{#if metadats.length > 0}}
       <listMetadats metadats="{{metadats}}" />
+    {{else}}
+      <p>We couldn't find any dats matching '{{query}}'.</p>
+    <img src="/static/img/lost_cat.jpg" />
+    {{/if}}
     </div>
   </div>
 </div>
