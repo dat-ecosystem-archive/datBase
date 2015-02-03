@@ -21,6 +21,7 @@ module.exports = function (data) {
       }
 
       function search(query) {
+        window.ractive.set('searchQuery', query)
         xhr({
           method: 'GET',
           uri: '/search?' + qs.stringify({query: query}),
