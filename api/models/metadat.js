@@ -1,4 +1,4 @@
-var levelRest = require('../level-rest.js')
+var levelRest = require('level-rest-parser')
 var defaultSchema = require('./metadat.json')
 var extend = require('extend')
 

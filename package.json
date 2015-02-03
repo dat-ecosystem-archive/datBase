@@ -49,6 +49,7 @@
     "level-change-processor": "^1.0.0",
     "level-indexer": "^2.0.0",
     "level-prebuilt": "^0.18.0",
+    "level-rest-parser": "^2.0.0",
     "nodemon": "^1.2.1",
     "page": "^1.4.1",
     "ractive": "^0.6.1",
