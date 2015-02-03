@@ -16,19 +16,29 @@ module.exports = function (data) {
       var allMetadats = []
 
       function setResults(results) {
-        console.log('updating metadats', results)
         ractive.set('metadats', results)
+      }
+
+      var nextUrl = null
+
+      function setNext(next) {
+        nextUrl = next
       }
 
       function search(query) {
         window.ractive.set('searchQuery', query)
         ractive.set('query', query)
+        var limit = 1
         xhr({
           method: 'GET',
-          uri: '/search?' + qs.stringify({query: query}),
+          uri: '/search?' + qs.stringify({
+            query: query,
+            limit: limit
+          }),
           json: true,
         }, function (err, res, json) {
           setResults(json.rows)
+          setNext(json.next)
         })
       }
 

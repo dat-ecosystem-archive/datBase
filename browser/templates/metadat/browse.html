@@ -5,8 +5,12 @@
       <listMetadats metadats="{{metadats}}" />
     {{else}}
       <p>We couldn't find any dats matching '{{query}}'.</p>
-    <img src="/static/img/lost_cat.jpg" />
+      <img src="/static/img/lost_cat.jpg" />
     {{/if}}
     </div>
+
+    {{#if nextUrl}}
+    <a href="{{nextUrl}}">next</a>
+    {{/if}}
   </div>
 </div>
