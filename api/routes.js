@@ -66,8 +66,7 @@ module.exports = function createRoutes(server) {
     var parsed = url.parse(req.url, true)
     var query = parsed.query
 
-    // TODO: search all columns
-    query.field = 'description'
+    query.field = 'fulltext'
     query.formatType = 'object'
     debug('searching for', query)
 

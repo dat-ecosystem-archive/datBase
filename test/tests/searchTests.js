@@ -98,7 +98,37 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
               t.ifError(err)
               t.equal(res.statusCode, 200, 'search returns 200')
               debug('search results', json)
-              t.ok(json.rows && json.rows.length === 1, 'search returns one item')
+              t.ok(json.rows && json.rows.length === 1, 'search description')
+              next()
+            })
+          },
+          function (next) {
+            request({
+              method: 'GET',
+              uri: 'http://localhost:' + api.options.PORT + '/search',
+              qs: {
+                query: 'a different dat!'
+              }
+            }, function (err, res, json) {
+              t.ifError(err)
+              t.equal(res.statusCode, 200, 'search returns 200')
+              debug('search results', json)
+              t.ok(json.rows && json.rows.length === 1, 'search name')
+              next()
+            })
+          },
+          function (next) {
+            request({
+              method: 'GET',
+              uri: 'http://localhost:' + api.options.PORT + '/search',
+              qs: {
+                query: 'karissa a different dat!'
+              }
+            }, function (err, res, json) {
+              t.ifError(err)
+              t.equal(res.statusCode, 200, 'search returns 200')
+              debug('search results', json)
+              t.ok(json.rows && json.rows.length === 1, 'search of multiple columns')
               next()
             })
           },

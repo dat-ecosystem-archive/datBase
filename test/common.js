@@ -102,7 +102,7 @@ module.exports = function() {
           rimraf(defaults.DAT_SEARCH_DB, function () {
             closeTheThings()
           })
-        });
+        })
       }
 
       function closeTheThings() {

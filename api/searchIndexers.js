@@ -58,7 +58,17 @@ module.exports = function (opts) {
 
     function storeNewIndex(key, val, cb) {
       debug('search indexer writing', key, val)
+      var fulltext = ''
+
+      opts.searcher.columns.forEach(function (k) {
+        var searchable = val[k]
+        if (searchable) {
+          fulltext = fulltext.concat(' ' + searchable)
+        }
+      })
+
       val['id'] = key
+      val['fulltext'] = fulltext
       writer.write(val, function(err) {
         if (err) return cb(err)
         cb()
