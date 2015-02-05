@@ -9,8 +9,11 @@ var Server = require('../api')
 var defaults = require('../api/defaults.js')
 var testUser = require('./testUser.json')
 
-module.exports = function() {
+module.exports = function(opts) {
   var common = {}
+  if (!opts) opts = {}
+  opts.debug = opts.debug || false
+
   common.testPrefix = ''
 
   common.login = function(api, cb) {
@@ -97,7 +100,9 @@ module.exports = function() {
     function done() {
       setTimeout(destroy, 100) // fixes weird test errors on travis-ci
 
-      function destroy() {
+      function destroy(debug) {
+        if (debug || opts.debug) return closeTheThings()
+
         rimraf(defaults.DAT_REGISTRY_DB, function () {
           rimraf(defaults.DAT_SEARCH_DB, function () {
             closeTheThings()
@@ -108,7 +113,7 @@ module.exports = function() {
       function closeTheThings() {
         api.close(function(err) {
           if (err) console.error('test db close err', err)
-          if (t.end) t.end()
+          if (t && t.end) t.end()
         })
       }
 
