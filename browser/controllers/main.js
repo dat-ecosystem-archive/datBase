@@ -1,10 +1,11 @@
-var Ractive = require('ractive');
-var $ = jQuery = require('jquery');
-var bootstrap = require('bootstrap');
+var Ractive = require('ractive')
+var $ = jQuery = require('jquery')
+var bootstrap = require('bootstrap')
 var xhr = require('xhr')
+var page = require('page')
 
 var gravatar = require('../common/gravatar.js')
-var dathubClient = require('../hub');
+var dathubClient = require('../hub')
 
 module.exports = function(ctx, next) {
   dathubClient.users.currentUser(function (err, user) {
@@ -24,7 +25,6 @@ function render(user) {
     },
     message: function (type, text) {
       var ractive = this
-
       ractive.set('message', {
         type: type,
         text: text
@@ -45,6 +45,14 @@ function render(user) {
             window.location.reload()
           }
         })
+      })
+
+      ractive.on('search', function (event) {
+        var query = ractive.get('searchQuery')
+        if (window.location.pathname.indexOf('/browse') === 0) {
+          ractive.fire('browse.search', query)
+        }
+        else page('/browse/' + query)
       })
 
       if (user) {

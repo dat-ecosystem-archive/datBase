@@ -59,8 +59,11 @@
     "rest-parser": "^1.0.5",
     "routes-router": "^4.1.1",
     "run-series": "^1.0.2",
+    "sqlite-search": "^4.1.0",
     "st": "^0.5.2",
-    "subleveldown": "^2.0.0"
+    "subleveldown": "^2.0.0",
+    "through2": "^0.6.3",
+    "xhr": "^2.0.1"
   },
   "devDependencies": {
     "autoless": "^0.1.5",

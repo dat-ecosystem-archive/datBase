@@ -35,6 +35,7 @@ module.exports = {
   browse: function (ctx, next) {
     ctx.ractive = require('./controllers/browse.js')({
       user: ctx.state.user,
+      query: ctx.params.query
     })
     next()
   }

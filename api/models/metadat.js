@@ -25,7 +25,7 @@ module.exports = function(db, opts) {
     })
   }
 
-  metadat.put = function (data, opts, cb) {
+  metadat.post = function (data, opts, cb) {
     var self = this
     self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
       if (err) cb(err)
@@ -37,7 +37,7 @@ module.exports = function(db, opts) {
           }
         }
       }
-      model.put(data, opts, cb)
+      model.post(data, opts, cb)
     })
   }
 

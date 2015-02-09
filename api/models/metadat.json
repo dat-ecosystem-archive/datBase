@@ -8,7 +8,8 @@
     },
     "description": {
       "type": "string",
-      "required": true
+      "required": true,
+      "fulltext": true
     },
     "name": {
       "type": "string",
@@ -25,7 +26,7 @@
       "index": true
     },
     "license": {
-      "type": "string"    
+      "type": "string"
     }
   }
 }

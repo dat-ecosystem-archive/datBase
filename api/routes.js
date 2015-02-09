@@ -2,7 +2,10 @@ var url = require('url')
 var Router = require('routes-router')
 var response = require('response')
 var debug = require('debug')('routes')
+var sqliteSearch = require('sqlite-search')
+
 var authorize = require('./authorize')
+var defaults = require('./defaults.js')
 
 module.exports = function createRoutes(server) {
   var router = Router({
@@ -58,9 +61,22 @@ module.exports = function createRoutes(server) {
     })
   })
 
+  router.addRoute('/search', function (req, res, opts) {
+    res.setHeader('content-type', 'application/json')
+    var parsed = url.parse(req.url, true)
+    var query = parsed.query
+
+    query.field = 'fulltext'
+    query.formatType = 'object'
+    debug('searching for', query)
+
+    server.models.metadat.searcher.createSearchStream(query).pipe(res)
+  })
+
   router.addRoute('/api/:model/:id?', function(req, res, opts) {
     res.setHeader('content-type', 'application/json')
     var id = opts.params.id
+    var query = url.parse(req.url, true).query
     var model = server.models[opts.params.model]
 
     if (!model) {
@@ -70,18 +86,20 @@ module.exports = function createRoutes(server) {
     }
 
     var method = req.method.toLowerCase()
-    var params = {}
-    if (id) params.id = id
+    var responseOpts = {}
+    if (id) responseOpts.id = id
+    console.log(query)
+    if (query.limit) responseOpts.limit = parseInt(query.limit)
 
     authorize(server, req, res, opts, function(err) {
       if (err) return unauthorized(res)
 
       if (method === 'get') {
-        var query = getSecondaryQuery(req, model, params)
+        var query = getSecondaryQuery(req, model, responseOpts)
         if (query) return secondaryQuery(req, model, query, respond)
       }
 
-      model.handler.dispatch(req, params, respond)
+      model.handler.dispatch(req, responseOpts, respond)
 
       function respond(err, data) {
         if (err) {

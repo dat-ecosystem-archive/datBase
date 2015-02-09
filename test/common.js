@@ -9,10 +9,13 @@ var Server = require('../api')
 var defaults = require('../api/defaults.js')
 var testUser = require('./testUser.json')
 
-module.exports = function() {
+module.exports = function(opts) {
   var common = {}
+  if (!opts) opts = {}
+  opts.debug = opts.debug || false
+
   common.testPrefix = ''
-  
+
   common.login = function(api, cb) {
     request({
       url: 'http://localhost:' + api.options.PORT + "/auth/github/testlogin",
@@ -69,7 +72,7 @@ module.exports = function() {
     defaults.DEBUG = true
     var api = Server(defaults)
     var port = api.options.PORT
-    
+
     api.router.addRoute('/auth/github/testlogin', function(req, res, params) {
       debug('testlogin!')
       api.auth.github.getOrCreate(testUser, function(err, user) {
@@ -97,16 +100,20 @@ module.exports = function() {
     function done() {
       setTimeout(destroy, 100) // fixes weird test errors on travis-ci
 
-      function destroy() {
+      function destroy(debug) {
+        if (debug || opts.debug) return closeTheThings()
+
         rimraf(defaults.DAT_REGISTRY_DB, function () {
-          closeTheThings()
-        });
+          rimraf(defaults.DAT_SEARCH_DB, function () {
+            closeTheThings()
+          })
+        })
       }
 
       function closeTheThings() {
         api.close(function(err) {
           if (err) console.error('test db close err', err)
-          if (t.end) t.end()
+          if (t && t.end) t.end()
         })
       }
 

@@ -7,7 +7,7 @@ var TEST_DAT = {
   'owner_id': 'karissa',
   'name': 'test entry',
   'description': 'i am a description',
-  'url': 'http://dat-data.dathub.org',
+  'url': 'http://localhost:6461',
   'json': {
     'name': 'some-name',
     'version': 1.3

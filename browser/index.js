@@ -40,10 +40,7 @@ function render(ctx, next) {
       ctx.ractive.onrender.call(this)
     }
   });
-
 }
-
-
 
 function requiresAuth(ctx, next) {
   if (!ctx.state.user) {
@@ -56,7 +53,8 @@ function requiresAuth(ctx, next) {
 page('*',               init.ctx)
 page('/',               routes.splash);
 page('/about',          routes.about);
-page('/browse',         routes.browse);
+page('/browse',  routes.browse);
+page('/browse/:query',  routes.browse);
 
 page('/settings',       requiresAuth, routes.settings);
 page('/publish',        requiresAuth, routes.publish);
