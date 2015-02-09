@@ -4,7 +4,7 @@ var xhr = require('xhr')
 
 var dathubClient = require('../hub')
 
-var DEFAULT_PAGE_LIMIT = 1;
+var DEFAULT_PAGE_LIMIT = 50;
 var DEFAULT_OFFSET = 0;
 
 // This page handles displaying search and browse of metadats

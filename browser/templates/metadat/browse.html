@@ -4,7 +4,7 @@
 
     {{#if metadats.length > 0}}
       <listMetadats metadats="{{metadats}}" />
-      {{#if hasNext}} <button on-click="next">next</button>{{/if}}
+      {{#if hasNext}} <button class="btn btn-success" on-click="next">next</button>{{/if}}
     {{else}}
       <p>We couldn't find any dats matching '{{query}}'.</p>
       <img src="/static/img/lost_cat.jpg" />
