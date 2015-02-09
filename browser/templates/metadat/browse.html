@@ -1,6 +1,6 @@
 <div class="app-page">
   <div class="app-text-container">
-    <h1>results</h1>
+    <h1>results {{#if query}} of '{{query}}'{{/if}}</h1>
 
     {{#if metadats.length > 0}}
       <listMetadats metadats="{{metadats}}" />
