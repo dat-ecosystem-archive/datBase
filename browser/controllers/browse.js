@@ -33,9 +33,14 @@ module.exports = function (data) {
         //   what to do with the results on return.
         //   cb(err, res, json)
 
+        // This code syncs the top-level ractive (main.html) search box with the results in browse.
+        // TODO: is there a more componentable way to do this? (karissa)
         window.ractive.set('searchQuery', query)
         ractive.set('query', query)
-        console.log('searching')
+        window.ractive.observe('searchQuery', function (newValue, oldValue) {
+          ractive.set('query', newValue)
+        })
+
 
         if (!cb) {
           cb = function (err, res, json) {
