@@ -7,13 +7,15 @@
 
       <h1>{{user.handle}}</h1>
 
-      <p>{{user.data.bio}}</p>
-
       <p>{{user.data.location}}</p>
 
       <p><a href="{{user.data.blog}}" target="_blank">{{user.data.blog}}</a></p>
 
       <p>{{user.data.email}}</p>
+
+      {{#if user.data.bio}}
+        <p>{{user.data.bio}}</p>
+      {{/if}}
 
     </div>
     <div class="repo-info col-sm-8">

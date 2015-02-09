@@ -1,16 +1,15 @@
 <div class="app-page">
   <div class="app-text-container">
-    <h1>Search</h1>
+    <h1>results</h1>
+
     {{#if metadats.length > 0}}
       <listMetadats metadats="{{metadats}}" />
+      {{#if hasNext}} <button on-click="next">next</button>{{/if}}
     {{else}}
       <p>We couldn't find any dats matching '{{query}}'.</p>
       <img src="/static/img/lost_cat.jpg" />
     {{/if}}
     </div>
 
-    {{#if nextUrl}}
-    <a href="{{nextUrl}}">next</a>
-    {{/if}}
   </div>
 </div>
