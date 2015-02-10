@@ -40,8 +40,8 @@ module.exports = function(db, opts) {
 
   var searchOpts = {
     path: defaults.DAT_SEARCH_DB,
-    primaryKey: 'id',
-    columns: ["id", "name", "owner_id", "description", "fulltext"]
+    primaryKey: "id",
+    columns: ["id", "name", "owner_id", "description"]
   }
 
   sqliteSearch(searchOpts, function(err, searcher) {

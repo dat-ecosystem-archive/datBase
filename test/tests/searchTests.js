@@ -29,7 +29,7 @@ module.exports.searchMetadatDescription = function (test, common) {
         t.equal(json.name, data.name, 'create returns corrent name')
         request({
           method: 'GET',
-          uri: 'http://localhost:' + api.options.PORT + '/search',
+          uri: 'http://localhost:' + api.options.PORT + '/search/description',
           qs: {
             query: 'characters'
           }
@@ -61,7 +61,7 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
           function (next) {
             request({
               method: 'GET',
-              uri: 'http://localhost:' + api.options.PORT + '/search',
+              uri: 'http://localhost:' + api.options.PORT + '/search/description',
               qs: {
                 query: 'characters'
               }
@@ -90,7 +90,7 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
           function (next) {
             request({
               method: 'GET',
-              uri: 'http://localhost:' + api.options.PORT + '/search',
+              uri: 'http://localhost:' + api.options.PORT + '/search/description',
               qs: {
                 query: 'description changed'
               }
@@ -105,7 +105,7 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
           function (next) {
             request({
               method: 'GET',
-              uri: 'http://localhost:' + api.options.PORT + '/search',
+              uri: 'http://localhost:' + api.options.PORT + '/search/name',
               qs: {
                 query: 'a different dat!'
               }
@@ -114,21 +114,6 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
               t.equal(res.statusCode, 200, 'search returns 200')
               debug('search results', json)
               t.ok(json.rows && json.rows.length === 1, 'search name')
-              next()
-            })
-          },
-          function (next) {
-            request({
-              method: 'GET',
-              uri: 'http://localhost:' + api.options.PORT + '/search',
-              qs: {
-                query: 'karissa a different dat!'
-              }
-            }, function (err, res, json) {
-              t.ifError(err)
-              t.equal(res.statusCode, 200, 'search returns 200')
-              debug('search results', json)
-              t.ok(json.rows && json.rows.length === 1, 'search of multiple columns')
               next()
             })
           },

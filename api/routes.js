@@ -3,6 +3,7 @@ var Router = require('routes-router')
 var response = require('response')
 var debug = require('debug')('routes')
 var sqliteSearch = require('sqlite-search')
+var concat = require('concat-stream')
 
 var authorize = require('./authorize')
 var defaults = require('./defaults.js')
@@ -61,14 +62,13 @@ module.exports = function createRoutes(server) {
     })
   })
 
-  router.addRoute('/search', function (req, res, opts) {
+  router.addRoute('/search/:field', function (req, res, opts) {
     res.setHeader('content-type', 'application/json')
     var parsed = url.parse(req.url, true)
     var query = parsed.query
 
-    query.field = 'fulltext'
+    query.field = opts.params.field
     query.formatType = 'object'
-    debug('searching for', query)
 
     server.models.metadat.searcher.createSearchStream(query).pipe(res)
   })
