@@ -10,6 +10,12 @@ var TEST_DAT = {
   'description': 'i am a description. this is a very long discription with a '+
                 'lot of different characters and things you might be interested in searching for. how fun',
   'url': 'http://dat-data.dathub.org',
+  'datasets': [
+    {name:'organizations'},
+    {name:'demographic_model_output'},
+    {name:'organizer_models'}
+  ],
+  'readme': '',
   'json': {
     'name': 'some-name',
     'version': 1.3

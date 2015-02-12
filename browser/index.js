@@ -59,6 +59,7 @@ page('/browse/:query',  routes.browse);
 page('/settings',       requiresAuth, routes.settings);
 page('/publish',        requiresAuth, routes.publish);
 
+page('/profile',        routes.profile);
 page('/profile/:handle',routes.profile);
 page('/view/:id',       routes.view);
 

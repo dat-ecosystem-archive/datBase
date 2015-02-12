@@ -63,7 +63,8 @@
     "st": "^0.5.2",
     "subleveldown": "^2.0.0",
     "through2": "^0.6.3",
-    "xhr": "^2.0.1"
+    "xhr": "^2.0.1",
+    "zeroclipboard": "^2.2.0"
   },
   "devDependencies": {
     "autoless": "^0.1.5",

@@ -1,20 +1,35 @@
 <div class="app-page">
   <div class="app-text-container">
-    <h1><a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}</h1>
-    <p>{{metadat.description}}</p>
 
-    <div class="col-sm-12">
-      <h2>URL</h2>
-      <div >
-        <a href="{{metadat.url}}" target="_blank">{{metadat.url}}</a>
+    <div class="row">
+      <div class="col-sm-8 metadat-info">
+        <h1><a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}</h1>
+        <p>{{metadat.description}}</p>
       </div>
 
-      <div class="preview-frame">
-        <iframe src="{{metadat.url}}"></iframe>
-        <h2>Info</h2>
-        <div class="json"><pre class="col-sm-12">{{prettyJSON(metadat.json)}}</pre></div>
+      <div class="col-sm-4">
+        <h5 class="mono">dat clone</h5>
+        <input type="text" class="copy-text" value="{{metadat.url}}" />
       </div>
+    </div>
 
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="datasets">
+          <ul>
+          {{#each metadat.datasets}}
+            <li>
+              <a href="dataset">{{this.name}}</a>
+            </li>
+          {{/each}}
+          </ul>
+        </div>
+        <div class="readme">
+          {{metadat.readme}}
+        </div>
+      </div>
+      <div class="col-sm-4">
+      </div>
     </div>
   </div>
 </div>

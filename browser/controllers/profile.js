@@ -1,4 +1,5 @@
 var debug = require('debug')('profile');
+var page = require('page')
 
 var dathub = require('../hub');
 var gravatar = require('../common/gravatar.js')
@@ -12,6 +13,12 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
+
+      if (!data.handle) {
+        if (data.user) return page('/profile/' + data.user.handle)
+        else return page('/')
+      }
+
       dathub.users.get(data.handle, function (err, user) {
         if (err) return cb(err)
         ractive.set('user', user)

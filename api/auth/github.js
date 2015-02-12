@@ -11,9 +11,9 @@ module.exports = Github
 
 function Github(models, sessions, overrides) {
   if (!(this instanceof Github)) return new Github(models, sessions, overrides)
-    
+
   var self = this
-  
+
   var options = {
     githubClient: defaults['GITHUB_CLIENT'],
     githubSecret: defaults['GITHUB_SECRET'],
@@ -22,11 +22,11 @@ function Github(models, sessions, overrides) {
     callbackURI: '/auth/github/callback',
     scope: 'user' // optional, default scope is set to user
   }
-  
+
   this.options = extend({}, options, overrides)
   this.models = models
   this.oauth = githubOAuth(this.options)
-  
+
   this.oauth.on('error', function(err) {
     console.error('there was a login error', err)
   })
@@ -51,7 +51,7 @@ function Github(models, sessions, overrides) {
         status: dataResponse.statusCode,
         body: body
       })
-      
+
       if (err) return response.json({
         'status': 'error',
         'message': err.message
@@ -62,7 +62,7 @@ function Github(models, sessions, overrides) {
           'status': 'error',
           'message': err.message
         }).pipe(res)
-        
+
         // delete current session (if one exists)
         sessions.delete(req, function(err) {
           // ignore error
@@ -73,9 +73,9 @@ function Github(models, sessions, overrides) {
               'message': err.message
             }).pipe(res)
             debug('redirecting')
-            redirecter(req, res, '/')
+            redirecter(req, res, '/profile')
           })
-        }) 
+        })
       })
     }
   })
@@ -119,7 +119,7 @@ Github.prototype.getOrCreate = function(user, callback) {
       })
     })
   })
-  
+
   function getByGithubId(id, cb) {
     self.models.users.byGithubId.get(id, function (err, userId) {
       if (err) return cb(err)

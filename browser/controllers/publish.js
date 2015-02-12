@@ -181,6 +181,7 @@ module.exports =  function (data) {
       ractive.on('submitOK', function (event) {
         // save the metadat
         var metadat = ractive.get('metadat')
+        metadat.readme = '# ' + metadat.name + '\n\n## How can I use this dataset?'
 
         // alright lets do it!
         dathubClient.metadats.create(metadat, function (err, metadat) {
