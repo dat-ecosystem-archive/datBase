@@ -1,38 +1,82 @@
 <div class="jumbotron-info">
-  <div class="container">
     <div class="row">
       <div class="col-md-6">
         <h1 class="jumbotron-title">Open data, collaborated</h1>
         <div class="jumbotron-horizontal-rule"></div>
         <div class="jumbotron-description">Dat is an open source project that provides a streaming interface between every file format and data storage backend.</div>
-        <a href="#content">What can Dat do?</a>
-      </div>
-      <div class="col-md-6 jumbotron-video">
-        <iframe width="420" height="315" src="https://www.youtube.com/embed/tP_6N7mMKok" frameborder="0" allowfullscreen></iframe>
+        <a href="#content">What is dat?</a>
       </div>
     </div>
-  </div>
 </div>
 
-<div class="content-title">Dat Client</div>
+<div class="content-title">Import</div>
 <div class="content-horizontal-rule"></div>
-<div class="content-sub-container content-feature-cards">
-  <div class="content-feature-card">
-    <img src="/static/img/dat-hex-1.png">
-    <div class="content-card-title">Streaming</div>
-    <div class="content-card-subtitle">Everything in dat is built using streaming + non-blocking components so that you can work with large datasets and get immediate, real-time results without running out of RAM.</div>
-  </div>
-  <div class="content-feature-card">
-    <img src="/static/img/dat-hex-2.png">
-    <div class="content-card-title">Made with Modules</div>
-    <div class="content-card-subtitle">Dat stores data locally, but you can easily configure it to store its tabular data in the database of your choice (e.g. PostgreSQL) and its files in external file stores (e.g. Google Drive).</div>
-  </div>
-  <div class="content-feature-card">
-    <img src="/static/img/dat-hex-3.png">
-    <div class="content-card-title">REST and CLI</div>
-    <div class="content-card-subtitle">You can stream data in and out of dat from the command line using any program that can write to stdin (e.g. R, Python, Ruby, etc) or you can use dat's built in HTTP REST API.</div>
-  </div>
+<div class="content-sub-container content-code-intro row">
+    <p>Add tabular data into dat from any backend or file format. anything that can be converted to newline-delimited json or csv can be put into a dat.</p>
+    <pre>dat init
+$ dat add dataset cities
+$ dat add rows cities values_per_city.csv --separator='\t'
+$ psql -c "COPY (SELECT * from us_cities) TO STDOUT AS CSV" | dat cities add rows</pre>
 </div>
+
+
+
+<div class="content-title">Version</div>
+<div class="content-horizontal-rule"></div>
+<div class="content-sub-container content-code-intro">
+  <p>As your data changes, dat tracks what changed (and who changed it). version the data by row or simply version the entire file.</p>
+
+<pre>$ dat add files cities us_cities_viz.png data.pickle model_data.tar.gz
+Added to dat at c2342d.
+
+$ dat add files cities us_cities_viz.png
+This will override us_cities_viz.png at c2342d (y/n): y
+maxogden updated us_cities_viz.png to be253f on Sat Jan 17, 9:33pm
+
+$ psql --execute "SELECT * from us_cities" --export-csv | dat cities add rows
+This wil update 3,434,245 rows. OK? (y/n): y
+maxogden updated 3,434,245 rows on Sat Jan 17, 9:43pm</pre>
+</div>
+
+<div class="content-title">Publish</div>
+<div class="content-horizontal-rule"></div>
+<div class="content-sub-container content-code-intro">
+
+<p>Get a streaming REST api for free -- data can go in and out of dat as easily as a curl command, or use the experimental python and R libraries. Do the analysis, but this time with the right data. pull the data to your local machine at a particular point in history.</p>
+
+<pre>$ dat-server listen
+Listening on http://localhost:6461
+
+$ curl http://localhost:6461/api/rows
+{ “population”: 609456,  “key”: “Portland, OR, USA”, “version”: c324df1}
+{ “population”: 406253,  “key”: “Oakland, CA, USA”, “version”: ab1bd2}
+{ “population”: 885400,  “key”: “Austin, TX, USA”, “version”: f31db4}
+..etc
+
+$ dat clone http://citiesdata.us.gov/c2342d
+Elapsed      : 0 s
+Pulled       : 101.78 kB (101.78 kB/s)
+ - changes : 447
+ - blobs   : 0
+
+Clone from remote has completed.
+Checked out c2342d
+
+$ cd citiesdata.us.gov
+$ dat datasets
+alternative_models
+cities
+economy_factors
+
+$ dat cities files
+data.pickle
+model_data.tar.gz
+us_cities_viz.png
+</pre>
+</div>
+
+
+
 <div class="content-title">Sponsors and supporters</div>
 <div class="content-horizontal-rule"></div>
 <div class="content-sub-container content-logos">
