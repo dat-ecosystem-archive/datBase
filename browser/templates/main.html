@@ -2,16 +2,18 @@
   <div class="banner-text">{{message.text}}</div>
 </div>
 <div class="header">
-  <div class="header-nav">
+  <div class="header-nav container">
     <div class="header-nav-links">
       <ul class="header-nav-list">
         {{#if user}}
         <li><a href="/publish">Publish</a></li>
-        {{else}}
-        <li><span data-toggle="tooltip" data-placement="bottom" title="You must login to publish">Publish</span></li>
-        {{/if}}
+        <li><a href="/docs">Docs</a></li>
         <li><a href="/browse">Browse</a></li>
-        <li><a href="/about">About</a></li>
+        {{else}}
+        <li><a href="/docs">Docs</a></li>
+        <li><a href="/browse">Browse</a></li>
+        <li><a href="/blog">Blog</a></li>
+        {{/if}}
       </ul>
       {{#if user}}
       <div class="btn-group">
@@ -33,6 +35,7 @@
     </div>
     <div class="header-left">
         <a href="/"><div class="header-logo">dat</div></a>
+        {{#if user}}
       <div class="header-search-box">
         <div class="input-group form">
           <input class="form-control" type="search" value="{{searchQuery}}" placeholder="Search">
@@ -41,11 +44,12 @@
           </span>
         </div>
       </div>
+      {{/if}}
     </div>
   </div>
 </div>
 
-<div id="content" class="content">
+<div id="content" class="container">
 </div>
 
 <div class="footer">
@@ -64,6 +68,7 @@
       <ul class="footer-nav-list">
         <li><span class="rsaquo">&rsaquo;</span><a href="/about">About</a></li>
         <li><span class="rsaquo">&rsaquo;</span><a href="/docs">Docs</a></li>
+        <li><span class="rsaquo">&rsaquo;</span><a href="/blog">Blog</a></li>
       </ul>
     </div>
     <div class="footer-column">

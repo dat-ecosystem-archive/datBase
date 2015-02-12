@@ -22,13 +22,10 @@
 }
 
 .header-info, .jumbotron-info {
-  padding-top: @header-height;
   background-image: url('/static/img/header-abstract.png');
   background-repeat: no-repeat;
   background-color: #fff;
   background-position: 120% -10px;
-  padding-left: @side-margin;
-  border-bottom: 1px solid @light-border;
   padding-bottom: 10px;
 }
 
@@ -46,11 +43,14 @@
   max-width: 250px;
   width: 25%;
   float: left;
-  margin: 20px;
+  margin: 10px 30px;
 }
-a {
-  transition: all 0.25s ease;
+
+.header {
+  background-color: @white-background;
+  border-bottom: 1px solid @white-border;
 }
+
 .header a,
 .header a:visited {
   color: @header-link;
@@ -64,14 +64,13 @@ a {
   display: inline-block;
   font-weight: 600;
   float: left;
-  font-size: 36px;
+  font-size: 32px;
   background-image: url('/static/img/dat-hex-small.png');
-  background-size: 40px;
+  background-size: 35px;
   background-repeat: no-repeat;
   padding-left: 50px;
   background-position: 0px 8px;
-  margin-left: 150px;
-  margin-top: 8px;
+  margin-top: 2px;
 }
 
 .profile {
@@ -81,21 +80,15 @@ a {
 
 .header-nav {
   height: @header-height;
-  position: absolute;
   padding: 0px 20px;
   min-width: 930px;
-  top: 0;
-  left: 0;
-  right: 0;
   opacity: 0.9;
-  background-color: @white-background;
   font-weight: 700;
   color: @dark-blue;
-  font-size: 20px;
-  border-bottom: 1px solid @white-border;
+  font-size: 18px;
 }
+
 .header-nav-links {
-  margin-right: 60px;
   float: right;
 }
 .header-nav-list {

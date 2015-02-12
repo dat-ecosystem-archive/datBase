@@ -2,10 +2,11 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   margin: 0;
   padding: 0;
+  background-color: @white-background;
 }
 .button {
   display: inline-block;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: white;
   background-color: @button-bg;
@@ -16,9 +17,10 @@ body {
   background-color: @buttong-bg-hover;
 }
 
-.jumbotron-title:extend(h1) {
-  padding-top: 40px;
+.jumbotron-info {
+  padding: 40px;
 }
+
 .jumbotron-horizontal-rule {
   width: 100%;
   max-width: 64px;
@@ -26,6 +28,11 @@ body {
   background: #bfc3c8;
   margin: 5px 0;
 }
+
+.jumbotron-video {
+  text-align: center;
+}
+
 .jumbotron-description {
   width: 100%;
   max-width: 525px;
