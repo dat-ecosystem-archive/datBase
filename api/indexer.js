@@ -25,7 +25,10 @@ module.exports = function(opts) {
     // because only the key is stored in the index
     var indexDb = indexers[key] = indexer(opts.db, key, {
       map: function (key, cb) {
-        opts.model.db.get(key, cb)
+        opts.model.db.get(key, function (err, row) {
+          row['id'] = key
+          cb(err, row)
+        })
       }
     })
 
