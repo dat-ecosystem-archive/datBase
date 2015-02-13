@@ -1,20 +1,25 @@
 <div class="app-page">
   <div class="app-text-container">
 
-    {{#if metadat.owner_id == user.handle}}
-      <button class="btn" on-click="edit">Edit</button>
-    {{/if}}
-    <h1><a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}</h1>
-    <div class="row">
+    <!-- header -->
+    <h1>
+      <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}
+      {{#if metadat.owner_id == user.handle}}
+        <a class="caption no-page" href="#" on-click="editDescription">Edit</a>
+      {{/if}}
+      </h1>
+    <div class="row metadat-info">
       <div class="col-sm-10">
-        <p>{{metadat.description}}</p>
+        <p>{{metadat.description}}<br> <span class="caption">{{metadat.json.approximateSize.rows}}</span></p>
       </div>
-      <p class="caption">version: {{metadat.json.version}}</p>
-      <p class="caption">row size: {{metadat.json.approximateSize.rows}}</p>
     </div>
 
     <div class="row">
+      <!-- center dashboard-->
+
       <div class="col-sm-8">
+
+        <!-- datasets -->
         <div class="datasets app-bg-box">
           <h5 class="app-bg-box-header">Datasets</h5>
           <div class="app-bg-box-content">
@@ -25,26 +30,63 @@
                   <a href="dataset">{{this.name}}</a>
                 </p>
                 <p></p>
-
               </li>
             {{/each}}
             </ul>
           </div>
         </div>
+
         <div class="readme app-bg-box">
-          <h5 class="app-bg-box-header">Readme</h5>
-          <div class="app-bg-box-content">
-            {{metadat.readme}}
-          </div>
+        <!-- edit readme -->
+          {{#if editingReadme}}
+            <h5 class="app-bg-box-header tabs">
+
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#write" aria-controls="write" role="tab" data-toggle="tab">Editing readme</a>
+              </li>
+              <li role="presentation">
+                <a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview changes</a>
+              </li>
+              <button class="btn btn-success no-page" on-click="saveReadme">Save</button>
+            </ul>
+            </h5>
+
+
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="write">
+                <textarea id="readme-edit" value="{{metadat.readme}}" class="app-bg-box-content markdown-edit"></textarea>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="preview">
+                <div class="app-bg-box-content markdown-display">
+                  {{{ markdownify(metadat.readme)}}}
+                </div>
+              </div>
+            </div>
+
+            {{else}}
+            <!-- view readme -->
+            <h5 class="app-bg-box-header">Readme
+              <a class="caption no-page" href="#" on-click="editReadme">Edit</a>
+            </h5>
+            <div class="app-bg-box-content">
+              {{{ markdownify(metadat.readme)}}}
+            </div>
+          {{/if}}
         </div>
       </div>
-      <div class="col-sm-4">
 
+      <!-- right sidebar -->
+      <div class="col-sm-4">
         <div class="app-bg-box">
           <div class="app-bg-box-content">
-            <h5 class="mono">dat clone</h5>
-            <input type="text" class="copy-text" value="{{metadat.url}}" />
+            {{metadat.json.version}}
           </div>
+        </div>
+
+        <div class="app-bg-box-content">
+          <h5 class="mono">dat clone
+          <input type="text" class="copy-text" value="{{metadat.url}}" /></h5>
         </div>
 
       </div>

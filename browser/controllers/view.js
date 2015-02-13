@@ -21,6 +21,20 @@ module.exports = function (data) {
         // copyButton.setAttribute('data-clipboard-text', metadat.url);
         var zeroClipboardClient = new ZeroClipboard(document.getElementById("copy-button"));
       })
+
+      ractive.on('editReadme', function (event) {
+        ractive.set('editingReadme', true)
+        event.original.preventDefault()
+      })
+
+      ractive.on('saveReadme', function (event) {
+        var metadat = ractive.get('metadat')
+        dathubClient.metadats.update(metadatId, metadat, function (err, metadat) {
+          if (err) console.error(err)
+          ractive.set('editingReadme', false)
+        })
+        event.original.preventDefault()
+      })
     }
   }
 }

@@ -50,6 +50,7 @@
     "level-indexer": "^2.0.0",
     "level-prebuilt": "^0.18.0",
     "level-rest-parser": "^2.0.0",
+    "markdown-it": "^3.0.6",
     "nodemon": "^1.2.1",
     "page": "^1.4.1",
     "ractive": "^0.6.1",

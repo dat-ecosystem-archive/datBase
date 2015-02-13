@@ -10,7 +10,7 @@
   min-width: 545px;
   max-width: 1040px;
   h1 {
-    margin-top: 0px;
+    margin: 0px;
     font-size: 1.5em;
     line-height: 1.5em;
     font-weight: 100;
@@ -19,8 +19,8 @@
 
 .app-bg-box {
   border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-top: 20px;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
   .caption { float: right; }
 }
 
@@ -28,12 +28,47 @@
   margin: 0px;
   padding: 10px;
   background-color: @light-background;
+  border-bottom: 1px solid #eee;
+
+  button.btn-success {
+    float: right;
+    padding: 6px 12px;
+    margin-top: -6px;
+  }
+  &.tabs {
+    padding: 0px;
+
+    button.btn-success {
+      padding: 5px 35px;
+      margin-top: 4px;
+      margin-right: 5px;
+    }
+  }
 }
 
 .app-bg-box-content {
   padding: 10px;
 }
-.caption {
-  color: @dark-text;
-  font-size: 12px;
+
+.caption-box {
+  text-align: right;
+  border-top: 1px solid #eee;
+}
+
+/** bootstrap navigation tabs **/
+.nav-tabs {
+  background-color: @light-background;
+  border-bottom: none;
+  li {
+    margin-right: 0px;
+    border-radius: 0px;
+    font-size: 14px;
+    &.active a {
+      border: none;
+    }
+    a {
+      border: none !important;
+      border-radius: none;
+    }
+  }
 }
