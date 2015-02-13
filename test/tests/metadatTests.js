@@ -15,8 +15,13 @@ var TEST_DAT = {
   ],
   'readme': '',
   'json': {
-    'name': 'some-name',
-    'version': 1.3
+    dat: "Hello",
+    version: "6.9.6",
+    changes: 8,
+    rows: 5,
+    approximateSize: {
+      rows: "1.57 kB"
+    }
   },
   'license': 'BSD-2',
 }
