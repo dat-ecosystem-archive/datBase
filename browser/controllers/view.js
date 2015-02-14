@@ -22,16 +22,20 @@ module.exports = function (data) {
         var zeroClipboardClient = new ZeroClipboard(document.getElementById("copy-button"));
       })
 
-      ractive.on('editReadme', function (event) {
-        ractive.set('editingReadme', true)
+      function updateMetadat(cb) {
+        var metadat = ractive.get('metadat')
+        dathubClient.metadats.update(metadatId, metadat, cb)
+      }
+
+      ractive.on('edit.*', function (event) {
+        ractive.set(event.name, true)
         event.original.preventDefault()
       })
 
-      ractive.on('saveReadme', function (event) {
-        var metadat = ractive.get('metadat')
-        dathubClient.metadats.update(metadatId, metadat, function (err, metadat) {
+      ractive.on('save', function (event, whatChanged) {
+        updateMetadat(function (err, metadat) {
           if (err) console.error(err)
-          ractive.set('editingReadme', false)
+          ractive.set('edit.' + whatChanged, false)
         })
         event.original.preventDefault()
       })

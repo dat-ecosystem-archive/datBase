@@ -3,14 +3,28 @@
 
     <!-- header -->
     <h1>
-      <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}
-      {{#if metadat.owner_id == user.handle}}
-        <a class="caption no-page" href="#" on-click="editDescription">Edit</a>
-      {{/if}}
-      </h1>
+      <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
+        {{#if edit.info}}
+          <input class="edit-info" type="text" value="{{metadat.name}}" />
+        {{else}}
+          {{metadat.name}}
+          {{#if metadat.owner_id == user.handle}}
+            <a class="caption no-page" href="#" on-click="edit.info">Edit</a>
+          {{/if}}
+        {{/if}}
+    </h1>
+
     <div class="row metadat-info">
       <div class="col-sm-10">
-        <p>{{metadat.description}}<br> <span class="caption">{{metadat.json.approximateSize.rows}}</span></p>
+        {{#if edit.info}}
+          <p>
+            <input class="edit-info" type="text" value="{{metadat.description}}" />
+            <button class="btn btn-success" on-click="save:'info'">Save</button>
+          </p>
+        {{else}}
+          <p>{{metadat.description}}</p>
+        {{/if}}
+        <span class="caption">{{metadat.json.approximateSize.rows}}</span>
       </div>
     </div>
 
@@ -38,7 +52,7 @@
 
         <div class="readme app-bg-box">
         <!-- edit readme -->
-          {{#if editingReadme}}
+          {{#if edit.readme}}
             <h5 class="app-bg-box-header tabs">
 
             <ul class="nav nav-tabs" role="tablist">
@@ -48,7 +62,7 @@
               <li role="presentation">
                 <a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview changes</a>
               </li>
-              <button class="btn btn-success no-page" on-click="saveReadme">Save</button>
+              <button class="btn btn-success no-page" on-click="save:'readme'">Save</button>
             </ul>
             </h5>
 
@@ -67,7 +81,7 @@
             {{else}}
             <!-- view readme -->
             <h5 class="app-bg-box-header">Readme
-              <a class="caption no-page" href="#" on-click="editReadme">Edit</a>
+              <a class="caption no-page" href="#" on-click="edit.readme">Edit</a>
             </h5>
             <div class="app-bg-box-content">
               {{{ markdownify(metadat.readme)}}}
@@ -79,11 +93,11 @@
       <!-- right sidebar -->
       <div class="col-sm-4">
         <div class="app-bg-box">
+          <h5 class="app-bg-box-header">Version</h5>
           <div class="app-bg-box-content">
             {{metadat.json.version}}
           </div>
         </div>
-
         <div class="app-bg-box-content">
           <h5 class="mono">dat clone
           <input type="text" class="copy-text" value="{{metadat.url}}" /></h5>
