@@ -11,7 +11,12 @@ module.exports = function (data) {
       var ractive = this
       var metadatId = data.metadatId
 
-      dathubClient.metadats.getById(metadatId, function (err, metadat) {
+      function updateMetadat(cb) {
+        var metadat = ractive.get('metadat')
+        dathubClient.metadats.update(metadatId, metadat, cb)
+      }
+
+      dathubClient.metadats.getById(metadatId, function (err, resp, metadat) {
         if (err) {
           window.ractive.message('error', err.message)
           return
@@ -22,18 +27,13 @@ module.exports = function (data) {
         var zeroClipboardClient = new ZeroClipboard(document.getElementById("copy-button"));
       })
 
-      function updateMetadat(cb) {
-        var metadat = ractive.get('metadat')
-        dathubClient.metadats.update(metadatId, metadat, cb)
-      }
-
       ractive.on('edit.*', function (event) {
         ractive.set(event.name, true)
         event.original.preventDefault()
       })
 
       ractive.on('save', function (event, whatChanged) {
-        updateMetadat(function (err, metadat) {
+        updateMetadat(function (err, resp, metadat) {
           if (err) console.error(err)
           ractive.set('edit.' + whatChanged, false)
         })

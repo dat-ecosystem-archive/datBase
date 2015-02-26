@@ -9,7 +9,7 @@ module.exports = function (data) {
       var ractive = this
 
       ractive.on('submit', function (event) {
-        dathubClient.users.update(ractive.get('user'), function (err) {
+        dathubClient.users.update(ractive.get('user'), function (err, resp) {
           if (!err) {
             window.ractive.set('message', {
               'type': 'success',

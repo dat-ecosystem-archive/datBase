@@ -99,7 +99,7 @@ module.exports =  function (data) {
         if (isUrl(url)) {
           dathubClient.metadats.query({
             url: url
-          }, function (err, json) {
+          }, function (err, resp, json) {
             if (err || json) {
               if (json.status == 'error') {
                 return onURLError()
@@ -184,7 +184,7 @@ module.exports =  function (data) {
         metadat.readme = '# ' + metadat.name + '\n\n## How can I use this dataset?'
 
         // alright lets do it!
-        dathubClient.metadats.create(metadat, function (err, metadat) {
+        dathubClient.metadats.create(metadat, function (err, resp, metadat) {
           if (err) {
             ractive.set('submitError', true)
             window.ractive.message('error', err)

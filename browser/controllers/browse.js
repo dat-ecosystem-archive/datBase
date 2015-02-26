@@ -6,6 +6,7 @@ var dathubClient = require('../hub')
 
 var DEFAULT_PAGE_LIMIT = 50;
 var DEFAULT_OFFSET = 0;
+var SEARCH_FIELDS = ['name', 'description', 'owner_id']
 
 // This page handles displaying search and browse of metadats
 
@@ -22,49 +23,42 @@ module.exports = function (data) {
 
       ractive.set('limit', DEFAULT_PAGE_LIMIT)
       ractive.set('offset', DEFAULT_OFFSET)
+      ractive.set('metadats', [])
 
       function setResults(results) {
-        ractive.set('metadats', results)
+        var metadats = ractive.get('metadats')
+        ractive.set('metadats', metadats.concat(results))
       }
 
       function search(query, cb) {
-        // Search the metadats for a given search query.
-        // cb: function (optional)
-        //   what to do with the results on return.
-        //   cb(err, res, json)
-
-        // This code syncs the top-level ractive (main.html) search box with the results in browse.
-        // TODO: is there a more componentable way to do this? (karissa)
+        ractive.set('metadats', [])
         window.ractive.set('searchQuery', query)
         ractive.set('query', query)
-        window.ractive.observe('searchQuery', function (newValue, oldValue) {
-          ractive.set('query', newValue)
-        })
-
 
         if (!cb) {
           cb = function (err, res, json) {
-            // TODO: handle error
+            if (err) console.error(err)
             setResults(json.rows)
             ractive.set('hasNext', true)
           }
         }
 
-        xhr({
-          method: 'GET',
-          uri: '/search?' + qs.stringify({
-            query: query,
-            limit: ractive.get('limit'),
-            offset: ractive.get('offset')
-          }),
-          json: true,
-        }, cb)
+        var opts = {
+          query: query,
+          limit: ractive.get('limit'),
+          offset: ractive.get('offset')
+        }
+        for (idx in SEARCH_FIELDS) {
+          var field = SEARCH_FIELDS[idx]
+          dathubClient.metadats.searchByField(field, opts, cb)
+        }
       }
+
 
       function getResults(query) {
         if (query) search(query)
         else {
-          dathubClient.metadats.all(function (err, metadats) {
+          dathubClient.metadats.all(function (err, resp, metadats) {
             if (err) {
               setResults([])
             }
