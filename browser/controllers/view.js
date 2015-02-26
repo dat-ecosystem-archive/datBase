@@ -11,11 +11,6 @@ module.exports = function (data) {
       var ractive = this
       var metadatId = data.metadatId
 
-      function updateMetadat(cb) {
-        var metadat = ractive.get('metadat')
-        dathubClient.metadats.update(metadatId, metadat, cb)
-      }
-
       dathubClient.metadats.getById(metadatId, function (err, resp, metadat) {
         if (err) {
           window.ractive.message('error', err.message)
@@ -34,7 +29,8 @@ module.exports = function (data) {
       })
 
       ractive.on('save', function (event, whatChanged) {
-        updateMetadat(function (err, resp, metadat) {
+        var metadat = ractive.get('metadat')
+        dathubClient.metadats.update(metadatId, metadat, function (err, resp, metadat) {
           if (err) console.error(err)
           ractive.set('edit.' + whatChanged, false)
         })
