@@ -28,6 +28,7 @@ module.exports = function (data) {
       })
 
       ractive.on('edit.*', function (event) {
+        // event.name one of 'description', 'readme'
         ractive.set(event.name, true)
         event.original.preventDefault()
       })
