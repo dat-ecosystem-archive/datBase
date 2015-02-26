@@ -37,7 +37,7 @@
     "concat-stream": "^1.4.7",
     "cookie-auth": "^2.4.0",
     "dat-api-client": "^1.0.0",
-    "dathub-api-client": "^1.2.0",
+    "dathub-api-client": "^2.0.0",
     "debug": "^2.0.0",
     "enter-means-submit": "^1.0.1",
     "extend": "^2.0.0",
