@@ -2,14 +2,15 @@ var debug = require('debug')('browse')
 var qs = require('querystring')
 var xhr = require('xhr')
 
+var RactiveSet = require('../common/RactiveSet.js')
 var dathubClient = require('../hub')
 
 var DEFAULT_PAGE_LIMIT = 50;
 var DEFAULT_OFFSET = 0;
 var SEARCH_FIELDS = ['name', 'description', 'owner_id']
 
-// This page handles displaying search and browse of metadats
 
+// This page handles displaying search and browse of metadats
 module.exports = function (data) {
   return {
     data: data,
@@ -19,29 +20,15 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
-      var allMetadats = []
+      var metadatSet = new RactiveSet(ractive, 'metadats')
 
       ractive.set('limit', DEFAULT_PAGE_LIMIT)
       ractive.set('offset', DEFAULT_OFFSET)
-      ractive.set('metadats', [])
-
-      function setResults(results) {
-        var metadats = ractive.get('metadats')
-        ractive.set('metadats', metadats.concat(results))
-      }
 
       function search(query, cb) {
-        ractive.set('metadats', [])
+        metadatSet.clear()
         window.ractive.set('searchQuery', query)
         ractive.set('query', query)
-
-        if (!cb) {
-          cb = function (err, res, json) {
-            if (err) console.error(err)
-            setResults(json.rows)
-            ractive.set('hasNext', true)
-          }
-        }
 
         var opts = {
           query: query,
@@ -54,40 +41,48 @@ module.exports = function (data) {
         }
       }
 
-
-      function getResults(query) {
-        if (query) search(query)
-        else {
-          dathubClient.metadats.all(function (err, resp, metadats) {
-            if (err) {
-              setResults([])
-            }
-            setResults(metadats.data)
-            ractive.set('offset', DEFAULT_OFFSET)
-          })
-        }
-      }
-
       ractive.on('next', function () {
         // todo: get total results so you know when to stop
         var offset = ractive.get('offset')
-        ractive.set('offset',  offset + ractive.get('limit'))
+        var limit = ractive.get('limit')
+
+        // set new offset
+        ractive.set('offset',  offset + limit)
+
+        // search with new params
         search(data.query, function (err, res, json) {
           if (json.rows.length === 0) {
             ractive.set('offset', offset)
             ractive.set('hasNext', false)
           } else {
-            setResults(json.rows)
+            metadatSet.addItems(json.rows)
           }
         })
       })
 
+      // the window.ractive fires this event because the search
+      // box is in the parent, the 'main.js' ractive
       window.ractive.on('browse.search', function (query) {
-        getResults(query)
+        search(query, function (err, res, json) {
+          if (err) console.error(err)
+          metadatSet.addItems(json.rows)
+          ractive.set('hasNext', true)
+        })
       })
 
-      getResults(data.query)
-
+      // ON PAGE LOAD, if there's a query already, search it, else
+      // show all of the metadats
+      if (data.query) {
+        window.ractive.fire('browse.search', data.query)
+      }
+      else {
+        dathubClient.metadats.all(function (err, resp, metadats) {
+          if (err) console.error(err)
+          metadatSet.clear()
+          metadatSet.addItems(metadats.data)
+          ractive.set('offset', DEFAULT_OFFSET)
+        })
+      }
     }
   }
 }

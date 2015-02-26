@@ -36,7 +36,7 @@ module.exports = function (data) {
 
       dathub.metadats.query({
         owner_id: data.handle
-      }, function (err, metadats) {
+      }, function (err, resp, metadats) {
         ractive.set('metadats', metadats)
       })
 
