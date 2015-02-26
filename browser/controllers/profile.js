@@ -28,7 +28,7 @@ module.exports = function (data) {
         else return page('/')
       }
 
-      dathub.users.get(data.handle, function (err, user) {
+      dathub.users.get(data.handle, function (err, resp, user) {
         if (err) return cb(err)
         ractive.set('user', user)
         gravatar('.content-card-large-avatar')
