@@ -50,18 +50,20 @@ function requiresAuth(ctx, next) {
   next()
 }
 
-page('*',               init.ctx)
-page('/',               routes.splash);
-page('/about',          routes.about);
-page('/browse',  routes.browse);
-page('/browse/:query',  routes.browse);
+page('*',                       init.ctx)
+page('/',                       routes.splash);
+page('/about',                  routes.about);
+page('/browse',                 routes.browse);
+page('/browse/:query',          routes.browse);
 
-page('/settings',       requiresAuth, routes.settings);
-page('/publish',        requiresAuth, routes.publish);
+page('/settings',               requiresAuth, routes.settings);
+page('/publish',                requiresAuth, routes.publish);
 
-page('/profile',        routes.profile);
-page('/profile/:handle',routes.profile);
-page('/view/:id',       routes.view);
+page('/profile',                routes.profile);
+page('/profile/:handle',        routes.profile);
+
+page('/view/:id',               routes.view);
+page('/view/:id/dataset/:name', routes.dataset);
 
 page('*',             render)
 page({click: false});

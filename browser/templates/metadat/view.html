@@ -39,12 +39,16 @@
           <div class="app-bg-box-content">
             <ul>
             {{#each metadat.datasets}}
+              {{#if this.viewing}}
+
+              {{else}}
               <li>
                 <p>
-                  <a href="dataset">{{this.name}}</a>
+                  <a on-click="imadataset(this)">{{this.name}}</a>
                 </p>
                 <p></p>
               </li>
+              {{/if}}
             {{/each}}
             </ul>
           </div>

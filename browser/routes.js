@@ -33,6 +33,13 @@ module.exports = {
     })
     next()
   },
+  dataset: function (ctx, next) {
+    ctx.ractive = require('./controllers/dataset.js')({
+      user: ctx.state.user,
+      metadatId: ctx.params.id,
+      datasetName: ctx.params.name
+    })
+  },
   browse: function (ctx, next) {
     ctx.ractive = require('./controllers/browse.js')({
       user: ctx.state.user,
