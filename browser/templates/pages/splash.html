@@ -13,10 +13,9 @@
 <div class="content-horizontal-rule"></div>
 <div class="content-sub-container content-code-intro row">
     <p>Add tabular data into dat from any backend or file format. anything that can be converted to newline-delimited json or csv can be put into a dat.</p>
-    <pre>dat init
-$ dat add dataset cities
-$ dat add rows cities values_per_city.csv --separator='\t'
-$ psql -c "COPY (SELECT * from us_cities) TO STDOUT AS CSV" | dat cities add rows</pre>
+    <pre>$ dat init
+$ dat add rows values_per_city.csv --separator='\t'
+$ sql2csv -c "SELECT * from us_cities" | dat add rows</pre>
 </div>
 
 
@@ -26,15 +25,15 @@ $ psql -c "COPY (SELECT * from us_cities) TO STDOUT AS CSV" | dat cities add row
 <div class="content-sub-container content-code-intro">
   <p>As your data changes, dat tracks what changed (and who changed it). version the data by row or simply version the entire file.</p>
 
-<pre>$ dat add files cities us_cities_viz.png data.pickle model_data.tar.gz
+<pre>$ dat add files  us_cities_viz.png data.pickle model_data.tar.gz
 Added to dat at c2342d.
 
-$ dat add files cities us_cities_viz.png
+$ dat add files  us_cities_viz.png
 This will override us_cities_viz.png at c2342d (y/n): y
-maxogden updated us_cities_viz.png to be253f on Sat Jan 17, 9:33pm
+*maxogden updated us_cities_viz.png to be253f on Sat Jan 17, 9:33pm*
 
-$ psql --execute "SELECT * from us_cities" --export-csv | dat cities add rows
-This wil update 3,434,245 rows. OK? (y/n): y
+$ sql2csv -c "SELECT * from us_cities"  | dat add rows
+This will update 3,434,245 rows. OK? (y/n): y
 maxogden updated 3,434,245 rows on Sat Jan 17, 9:43pm</pre>
 </div>
 
