@@ -3,7 +3,7 @@ Dathub
 
 [![build status](https://secure.travis-ci.org/karissa/dathub.png)](http://travis-ci.org/karissa/dathub)
 
-This is a web client that will let you publish and collaborate your data. It is *not* a data hosting service.
+This is a web client that will let you publish and collaborate with your data. It is *not* a data hosting service.
 
 See the website at http://dat-data.com for more information.
 
