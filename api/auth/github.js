@@ -73,7 +73,7 @@ function Github(models, sessions, overrides) {
               'message': err.message
             }).pipe(res)
             debug('redirecting')
-            redirecter(req, res, '/profile')
+            redirecter(req, res, '/profile/' + newUser.handle)
           })
         })
       })

@@ -99,7 +99,7 @@ module.exports =  function (data) {
         if (isUrl(url)) {
           dathubClient.metadats.query({
             url: url
-          }, function (err, resp, json) {
+          }, function (err, json) {
             if (err || json) {
               if (json.status == 'error') {
                 return onURLError()
@@ -130,7 +130,7 @@ module.exports =  function (data) {
           url: url
         })
         // call the dat
-        client.info(function (err, resp, json) {
+        client.info(function (err, json) {
           ractive.set('loading', false)
           if (err) {
             console.error(err.message)
@@ -162,7 +162,7 @@ module.exports =  function (data) {
           pass: ractive.get('adminPassword')
         })
 
-        client.session(function (err, resp, json) {
+        client.session(function (err, json) {
           ractive.set('loading', false)
 
           if (err) {
@@ -184,7 +184,7 @@ module.exports =  function (data) {
         metadat.readme = '# ' + metadat.name + '\n\n## How can I use this dataset?'
 
         // alright lets do it!
-        dathubClient.metadats.create(metadat, function (err, resp, metadat) {
+        dathubClient.metadats.create(metadat, function (err, metadat) {
           if (err) {
             ractive.set('submitError', true)
             window.ractive.message('error', err)

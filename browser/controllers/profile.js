@@ -17,7 +17,6 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
-
       // if sent to /profile without /:handle
       if (!data.handle) {
 
@@ -28,7 +27,7 @@ module.exports = function (data) {
         else return page('/')
       }
 
-      dathub.users.get(data.handle, function (err, resp, user) {
+      dathub.users.get(data.handle, function (err, user) {
         if (err) return cb(err)
         ractive.set('user', user)
         gravatar('.content-card-large-avatar')
@@ -36,7 +35,7 @@ module.exports = function (data) {
 
       dathub.metadats.query({
         owner_id: data.handle
-      }, function (err, resp, metadats) {
+      }, function (err, metadats) {
         ractive.set('metadats', metadats)
       })
 

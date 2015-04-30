@@ -63,7 +63,7 @@ module.exports = function (data) {
       // the window.ractive fires this event because the search
       // box is in the parent, the 'main.js' ractive
       window.ractive.on('browse.search', function (query) {
-        search(query, function (err, res, json) {
+        search(query, function (err, json) {
           if (err) console.error(err)
           metadatSet.addItems(json.rows)
           ractive.set('hasNext', true)
@@ -76,7 +76,7 @@ module.exports = function (data) {
         window.ractive.fire('browse.search', data.query)
       }
       else {
-        dathubClient.metadats.all(function (err, resp, metadats) {
+        dathubClient.metadats.all(function (err, metadats) {
           if (err) console.error(err)
           metadatSet.clear()
           metadatSet.addItems(metadats.data)
