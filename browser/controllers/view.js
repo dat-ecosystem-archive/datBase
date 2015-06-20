@@ -1,5 +1,4 @@
 var debug = require('debug')('view')
-var ZeroClipboard = require('zeroclipboard')
 
 var dathubClient = require('../hub')
 
@@ -17,9 +16,6 @@ module.exports = function (data) {
           return
         }
         self.set('metadat', metadat)
-        var copyButton = document.getElementById("copy-button");
-        // copyButton.setAttribute('data-clipboard-text', metadat.url);
-        var zeroClipboardClient = new ZeroClipboard(document.getElementById("copy-button"));
       })
 
       self.on('edit', function (event) {
