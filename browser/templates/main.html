@@ -15,16 +15,11 @@
       </div>
       <div class="three columns u-pull-right">
         {{#if user}}
-        <div class="btn-group">
-          <div class="btn content-card-small-avatar"
-               data-user="{{user.data.login}}"
-               data-toggle="dropdown"></div>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="/profile/{{user.handle}}">Profile</a></li>
-            <li><a href="/settings">Settings</a></li>
-            <li><a on-click="logout" class="no-page">Logout</a></li>
-          </ul>
-        </div>
+          <div class="boop?">
+          <a href="/profile/{{user.handle}}"><div class="content-card-small-avatar"
+               data-user="{{user.data.login}}"></div></a>
+               </div>
+          <a on-click="logout" class="no-page">Logout</a>
         {{else}}
         <a class="no-page" href="/auth/github/login/" >
           <div class="button button-primary">Login with GitHub</div>

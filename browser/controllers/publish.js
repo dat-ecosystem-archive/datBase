@@ -233,7 +233,7 @@ module.exports =  function (data) {
       }
 
       function onPreviewSuccess(json) {
-        ractive.set('metadat.json', json)
+        ractive.set('metadat.status', json.status)
         ractive.set('metadat.name', json.name)
         ractive.set('metadat.description', json.description)
         ractive.set('metadat.publisher', json.publisher)
@@ -246,7 +246,7 @@ module.exports =  function (data) {
         ractive.set('authorizeError', false)
         ractive.set('adminPassword', null)
         ractive.set('adminUsername', null)
-        ractive.set('metadat.json', null)
+        ractive.set('metadat.status', null)
         ractive.set('existingDat', null)
         setState('begin')
       }

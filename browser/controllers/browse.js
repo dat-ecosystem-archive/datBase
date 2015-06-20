@@ -27,7 +27,7 @@ module.exports = function (data) {
 
       function search(query, cb) {
         metadatSet.clear()
-        window.self.set('searchQuery', query)
+        window.ractive.set('searchQuery', query)
         self.set('query', query)
 
         var opts = {

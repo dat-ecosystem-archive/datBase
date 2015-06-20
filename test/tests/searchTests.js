@@ -16,10 +16,7 @@ var TEST_DAT = {
     {name:'organizer_models'}
   ],
   'readme': '',
-  'json': {
-    'name': 'some-name',
-    'version': 1.3
-  },
+  'status': {"transaction":false,"checkout":false,"modified":"2015-06-19T00:05:32.088Z","datasets":2,"rows":2,"files":0,"versions":2,"size":224,"version":"425a8265bbd4442ec1b8dd7aea712cf579abe5cfb6995b3a34b01cb0e415e23a"}
   'license': 'BSD-2',
 }
 
