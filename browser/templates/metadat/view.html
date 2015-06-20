@@ -35,41 +35,7 @@
       <!-- center dashboard-->
 
       <div class="eight columns">
-
-        <!-- datasets -->
-        <div class="row header">
-          <h3>Datasets</h3>
-        </div>
-        <div class="">
-          <ul>
-          {{#each metadat.datasets}}
-            <li>
-              <p>
-                <a on-click="imadataset(this)">{{this.name}}</a>
-              </p>
-              <p></p>
-            </li>
-          {{/each}}
-          </ul>
-        </div>
-      </div>
-
-      <!-- right sidebar -->
-      <div class="four columns">
-        <div class="row header">
-          <h3>Status</h3>
-        </div>
-          <p>Version: {{metadat.status.version}}</p>
-          <p>Datasets: {{metadat.status.datasets}}</p>
-          <p>Rows: {{metadat.status.rows}}</p>
-          <p>Versions: {{metadat.status.versions}}</p>
-          <p>Size: {{metadat.status.size}}</p>
-          <p>Last updated: {{metadat.status.modified}}</p>
-      </div>
-    </div>
-
-    <div class="row readme">
-      <!-- edit readme -->
+        <!-- edit readme -->
         <div class="row header">
           <div class="two columns">
             <h3>Readme</h3>
@@ -92,6 +58,21 @@
             </div>
           </div>-->
         </div>
+
+      </div>
+
+      <!-- right sidebar -->
+      <div class="four columns">
+        <div class="row header">
+          <h3>Status</h3>
+        </div>
+          <p>Version: {{metadat.status.version}}</p>
+          <p>Datasets: {{metadat.status.datasets}}</p>
+          <p>Rows: {{metadat.status.rows}}</p>
+          <p>Versions: {{metadat.status.versions}}</p>
+          <p>Size: {{metadat.status.size}}</p>
+          <p>Last updated: {{metadat.status.modified}}</p>
+      </div>
     </div>
 
 </div>
