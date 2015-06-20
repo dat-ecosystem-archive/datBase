@@ -19,21 +19,21 @@ module.exports = function (data) {
       listMetadats: require('../components/list.js')
     },
     onrender: function () {
-      var ractive = this
-      var metadatSet = new RactiveSet(ractive, 'metadats')
+      var self = this
+      var metadatSet = new RactiveSet(self, 'metadats')
 
-      ractive.set('limit', DEFAULT_PAGE_LIMIT)
-      ractive.set('offset', DEFAULT_OFFSET)
+      self.set('limit', DEFAULT_PAGE_LIMIT)
+      self.set('offset', DEFAULT_OFFSET)
 
       function search(query, cb) {
         metadatSet.clear()
-        window.ractive.set('searchQuery', query)
-        ractive.set('query', query)
+        window.self.set('searchQuery', query)
+        self.set('query', query)
 
         var opts = {
           query: query,
-          limit: ractive.get('limit'),
-          offset: ractive.get('offset')
+          limit: self.get('limit'),
+          offset: self.get('offset')
         }
         for (idx in SEARCH_FIELDS) {
           var field = SEARCH_FIELDS[idx]
@@ -41,19 +41,19 @@ module.exports = function (data) {
         }
       }
 
-      ractive.on('next', function () {
+      self.on('next', function () {
         // todo: get total results so you know when to stop
-        var offset = ractive.get('offset')
-        var limit = ractive.get('limit')
+        var offset = self.get('offset')
+        var limit = self.get('limit')
 
         // set new offset
-        ractive.set('offset',  offset + limit)
+        self.set('offset',  offset + limit)
 
         // search with new params
         search(data.query, function (err, res, json) {
           if (json.rows.length === 0) {
-            ractive.set('offset', offset)
-            ractive.set('hasNext', false)
+            self.set('offset', offset)
+            self.set('hasNext', false)
           } else {
             metadatSet.addItems(json.rows)
           }
@@ -66,7 +66,7 @@ module.exports = function (data) {
         search(query, function (err, json) {
           if (err) console.error(err)
           metadatSet.addItems(json.rows)
-          ractive.set('hasNext', true)
+          self.set('hasNext', true)
         })
       })
 
@@ -80,7 +80,7 @@ module.exports = function (data) {
           if (err) console.error(err)
           metadatSet.clear()
           metadatSet.addItems(metadats.data)
-          ractive.set('offset', DEFAULT_OFFSET)
+          self.set('offset', DEFAULT_OFFSET)
         })
       }
     }

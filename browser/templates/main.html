@@ -1,77 +1,52 @@
-<div class="banner {{message.type}}">
+<div class="row banner {{message.type}}">
   <div class="banner-text">{{message.text}}</div>
 </div>
 <div class="header">
-  <div class="header-nav container">
-    <div class="header-nav-links">
-      <ul class="header-nav-list">
-        {{#if user}}
-        <li><a href="/publish">Publish</a></li>
-        <li><a href="/docs">Docs</a></li>
-        <li><a href="/browse">Browse</a></li>
-        {{else}}
-        <li><a href="/docs">Docs</a></li>
-        <li><a href="/browse">Browse</a></li>
-        <li><a href="/blog">Blog</a></li>
-        {{/if}}
-      </ul>
-      {{#if user}}
-      <div class="btn-group">
-        <div class="btn content-card-small-avatar"
-             data-user="{{user.data.login}}"
-             data-toggle="dropdown"></div>
-
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="/profile/{{user.handle}}">Profile</a></li>
-          <li><a href="/settings">Settings</a></li>
-          <li><a on-click="logout" class="no-page">Logout</a></li>
-        </ul>
+  <div class="container">
+    <div class="row">
+      <div class="three columns">
+        <a href="/"><div class="header-logo">publicbits</div></a>
       </div>
-      {{else}}
-      <a class="no-page" href="/auth/github/login/" >
-        <div class="button"><span class="octocat"></span>Login with GitHub</div>
-      </a>
-      {{/if}}
-    </div>
-    <div class="header-left">
-        <a href="/"><div class="header-logo">dat</div></a>
-        {{#if user}}
-      <div class="header-search-box">
+      <div class="six columns">
         <div class="input-group form">
           <input class="form-control" type="search" value="{{searchQuery}}" placeholder="Search">
-          <span class="input-group-btn">
-            <button type="submit" on-click="search" class="btn"><span class="fui-search"></span></button>
-          </span>
+          <button type="submit" on-click="search" class="button">go</button>
         </div>
       </div>
-      {{/if}}
+      <div class="three columns u-pull-right">
+        {{#if user}}
+        <div class="btn-group">
+          <div class="btn content-card-small-avatar"
+               data-user="{{user.data.login}}"
+               data-toggle="dropdown"></div>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/profile/{{user.handle}}">Profile</a></li>
+            <li><a href="/settings">Settings</a></li>
+            <li><a on-click="logout" class="no-page">Logout</a></li>
+          </ul>
+        </div>
+        {{else}}
+        <a class="no-page" href="/auth/github/login/" >
+          <div class="button button-primary">Login with GitHub</div>
+        </a>
+        {{/if}}
+      </div>
     </div>
   </div>
 </div>
-
-<div id="content" class="container">
+<div id="content" class="container padded">
 </div>
-
-<div class="footer">
-  <div class="footer-directory">
-    <div class="footer-column">
+<div class="row footer">
+  <div class="row footer-directory container padded">
+    <div class="two columns">
       <div class="footer-heading">Explore</div>
       <div class="footer-horizontal-rule"></div>
       <ul class="footer-nav-list">
-        <li><span class="rsaquo">&rsaquo;</span><a href="/team">Team</a></li>
-        <li><span class="rsaquo">&rsaquo;</span><a href="http://www.stickermule.com/marketplace/1892-dat-2-hexagon-sticker-v2">Get Stickers</a></li>
+        <li><a href="http://www.stickermule.com/marketplace/1892-dat-2-hexagon-sticker-v2"> Get Stickers</a></li>
+        <li><a href="/blog"> Blog</a></li>
       </ul>
     </div>
-    <div class="footer-column">
-      <div class="footer-heading">Learn</div>
-      <div class="footer-horizontal-rule"></div>
-      <ul class="footer-nav-list">
-        <li><span class="rsaquo">&rsaquo;</span><a href="/about">About</a></li>
-        <li><span class="rsaquo">&rsaquo;</span><a href="/docs">Docs</a></li>
-        <li><span class="rsaquo">&rsaquo;</span><a href="/blog">Blog</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
+    <div class="two columns">
       <div class="footer-heading">Connect</div>
       <div class="footer-horizontal-rule"></div>
       <ul class="footer-nav-list">
@@ -79,7 +54,7 @@
         <li><a href="https://github.com/maxogden/dat"><span class="octocat-green"></span>GitHub</a></li>
       </ul>
     </div>
-    <div class="footer-column">
+    <div class="six columns">
       <div class="footer-heading">Support</div>
       <div class="footer-horizontal-rule"></div>
       <div class="code-container">
@@ -89,10 +64,8 @@
       <div class="footer-subtitle">Support dat by donating Bitcoins to our address above.</div>
       <div class="footer-subtitle">You can also <a href="https://coinbase.com/checkouts/4c07b345e596636fbd6b269abbf1689f" target="_blank">donate with Coinbase</a>.</div>
     </div>
-
-
   </div>
-  <div class="footer-credits">
-    <span class="footer-emphasized">dat</span> &bull; 2014 &bull; styleguide by <a href="https://github.com/flipside-org">flipside</a> &bull; page source on <a href="https://github.com/datproject/dat-registry">github</a>. Freezing Rain designed by <a href="http://www.thenounproject.com/OliM">OliM</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
+  <div class="row centered container">
+    <span class="footer-emphasized">dat</span> &bull; 2014 &bull; page source on <a href="https://github.com/karissa/dathub">github</a>. Freezing Rain designed by <a href="http://www.thenounproject.com/OliM">OliM</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
   </div>
 </div>

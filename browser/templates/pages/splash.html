@@ -1,91 +1,20 @@
-<div class="jumbotron-info">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h1 class="jumbotron-title">Versioned data, collaborated</h1>
-        <div class="jumbotron-horizontal-rule"></div>
-        <div class="jumbotron-description">Dat is an open source project for building automated, reproducible data pipelines that sync.</div>
-        <a href="#content">What can Dat do?</a>
-      </div>
-      <!--
-      <div class="col-md-6 jumbotron-video">
-        <iframe width="420" height="315" src="https://www.youtube.com/embed/tP_6N7mMKok" frameborder="0" allowfullscreen></iframe>
-      </div>
-      -->
-    </div>
-  </div>
+<div class="row">
+<h1>Collaborate your data</h1>
+
+<h2>What is this?</h2>
+<p>What do we mean by 'collaborate' your data? Right now, your data isn't very collaborated. It might be on dropbox or drive, but then its hard to track changes. If you're lucky, its on github -- but then it probably gets mixed in with all your code edits, or it slows down your commands.</p>
+<p>All we want to do is create a place where data can be shared, forked, updated, merged, and used freely by anyone. You host your data and tell everyone a bit about it. We help you keep things together and organized. Collaborated.</p>
+
+<h2>Hey wait a sec, Are you storing my data? What do you do with it?</h2>
+<p>No, we don't host your data. That'd be hella expensive, yo. We're a <a href="http://usopendata.org">non profit</a>. At a bare minimum, this is just a metadata tracker and mirror for datasets.</p>
+
+<h2>So, I can just edit anyone's data?</h2>
+<p>You can fork their data by cloning it and hosting on your own server. Request to change people's data, and if they like it, they can approve it. Cool.</p>
+
+<h2>How do I start?</h2>
+<p>You should use <a href="http://dat-data.com">dat</a> to publish your datasets. We like it probably cause we built it.</p>
+
+<h2>Cool, dude</h2>
+<p>I kno rte</p>
 </div>
 
-<div class="content-title">Import</div>
-<div class="content-horizontal-rule"></div>
-<div class="content-sub-container content-code-intro row">
-    <p>Add tabular data into dat from any backend or file format. anything that can be converted to newline-delimited json or csv can be put into a dat.</p>
-    <pre>$ dat init
-$ dat add rows values_per_city.csv --separator='\t'
-$ sql2csv -c "SELECT * from us_cities" | dat add rows</pre>
-</div>
-
-
-
-<div class="content-title">Version</div>
-<div class="content-horizontal-rule"></div>
-<div class="content-sub-container content-code-intro">
-  <p>As your data changes, dat tracks what changed (and who changed it). version the data by row or simply version the entire file.</p>
-
-<pre>$ dat add files  us_cities_viz.png data.pickle model_data.tar.gz
-Added to dat at c2342d.
-
-$ dat add files  us_cities_viz.png
-This will override us_cities_viz.png at c2342d (y/n): y
-*maxogden updated us_cities_viz.png to be253f on Sat Jan 17, 9:33pm*
-
-$ sql2csv -c "SELECT * from us_cities"  | dat add rows
-This will update 3,434,245 rows. OK? (y/n): y
-maxogden updated 3,434,245 rows on Sat Jan 17, 9:43pm</pre>
-</div>
-
-<div class="content-title">Publish</div>
-<div class="content-horizontal-rule"></div>
-<div class="content-sub-container content-code-intro">
-
-<p>Get a streaming REST api for free -- data can go in and out of dat as easily as a curl command, or use the experimental python and R libraries. Do the analysis, but this time with the right data. pull the data to your local machine at a particular point in history.</p>
-
-<pre>$ dat-server listen
-Listening on http://localhost:6461
-
-$ curl http://localhost:6461/api/rows
-{ “population”: 609456,  “key”: “Portland, OR, USA”, “version”: c324df1}
-{ “population”: 406253,  “key”: “Oakland, CA, USA”, “version”: ab1bd2}
-{ “population”: 885400,  “key”: “Austin, TX, USA”, “version”: f31db4}
-..etc
-
-$ dat clone http://citiesdata.us.gov/c2342d
-Elapsed      : 0 s
-Pulled       : 101.78 kB (101.78 kB/s)
- - changes : 447
- - blobs   : 0
-
-Clone from remote has completed.
-Checked out c2342d
-
-$ cd citiesdata.us.gov
-$ dat datasets
-alternative_models
-cities
-economy_factors
-
-$ dat cities files
-data.pickle
-model_data.tar.gz
-us_cities_viz.png
-</pre>
-</div>
-
-
-<div class="content-title">Sponsors and supporters</div>
-<div class="content-horizontal-rule"></div>
-<div class="content-sub-container content-logos">
-  <a href="http://www.sloan.org/major-program-areas/digital-information-technology/data-and-computational-research/"><img src="/static/img/sloan.png"></a>
-  <a href="http://www.knightfoundation.org/grants/201346305/"><img src="/static/img/knight.png"></a>
-  <a href="http://usodi.org/"><img src="/static/img/usodi.png"></a>
-</div>

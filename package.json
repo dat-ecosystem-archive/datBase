@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
-    "server": "nodemon server.js -e js,css,html -i data/ -i static/",
+    "server": "nodemon --watch static/css --watch static/js/ server.js",
     "test": "node test/run.js | tap-spec",
     "watch": "watchify -t ractivate browser/index.js -o static/js/bundle.js",
-    "watch-css": "autoless static/styles"
+    "watch-css": "autoless static/css"
   },
   "repository": {
     "type": "git",
