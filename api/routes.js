@@ -66,9 +66,11 @@ module.exports = function createRoutes(server) {
     res.setHeader('content-type', 'application/json')
     var parsed = url.parse(req.url, true)
     var query = parsed.query
+    debug('request in ', parsed)
 
     query.field = opts.params.field
     query.formatType = 'object'
+    debug('searching for ', query)
 
     server.models.metadat.searcher.createSearchStream(query).pipe(res)
   })

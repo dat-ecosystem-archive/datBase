@@ -11,10 +11,17 @@
       "required": true,
       "fulltext": true
     },
+    "readme": {
+      "type": "string",
+      "required": true
+    },
     "name": {
       "type": "string",
       "required": true,
       "index": true
+    },
+    "datasets": {
+      "type": "array"
     },
     "json": {
       "type": "object",

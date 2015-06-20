@@ -1,0 +1,75 @@
+@import "variables";
+@import "footer";
+@import "headers";
+@import "responsive";
+
+#content {
+  min-height: 500px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.content-card-small-avatar {
+  @size: 50px;
+  background-color: #fff;
+  width: @size;
+  height: @size;
+  background-size: @size;
+  border: 4px solid white;
+  box-shadow: 1px 1px #eee;
+  float: left;
+}
+
+/** skeleton overrides **/
+.button.button-primary {
+  background-color: @green;
+  border-color: @green;
+  &:hover {
+    background-color: darken(@green, 10%);
+    border-color: darken(@green, 10%);
+  }
+}
+
+a {
+  color: @green;
+  &:hover {
+    color: darken(@green, 10%);
+    cursor: pointer;
+  }
+}
+
+input:focus {
+  border: 1px solid @green;
+}
+
+.container.padded {
+  padding-top: 30px;
+}
+
+/** banners **/
+@banner-height: 30px;
+.banner {
+  color: @off-white;
+  position: fixed;
+  top: -@banner-height;
+  -webkit-transition: all .5s; /* For Safari 3.1 to 6.0 */
+  transition: all .5s;
+  width: 100%;
+  height: @banner-height;
+  z-index: 999999;
+
+  &.success {
+    top: 0px;
+    background-color: @green;
+  }
+  &.error {
+    top: 0px;
+    background-color: @error;
+  }
+}
+
+.banner-text {
+  text-align: center;
+}

@@ -1,3 +1,5 @@
+@header-height: 60px;
+
 .heading(@size) {
   font-size: @size;
   line-height: @size + 0.5rem;
@@ -30,6 +32,7 @@
 }
 
 .header-info {
+  padding-top: 10px;
   h1 {
     max-width: 900px;
     width: 65%;
@@ -38,17 +41,11 @@
   }
 }
 
-.header-search-box {
-  min-width: 100px;
-  max-width: 250px;
-  width: 25%;
-  float: left;
-  margin: 10px 30px;
-}
-
 .header {
   background-color: @white-background;
   border-bottom: 1px solid @white-border;
+  line-height: @header-height;
+  text-align: center;
 }
 
 .header a,
@@ -64,12 +61,7 @@
   display: inline-block;
   font-weight: 600;
   float: left;
-  font-size: 32px;
-  background-image: url('/static/img/dat-hex-small.png');
-  background-size: 35px;
-  background-repeat: no-repeat;
-  padding-left: 50px;
-  background-position: 0px 8px;
+  font-size: 38px;
   margin-top: 2px;
 }
 
@@ -81,7 +73,6 @@
 .header-nav {
   height: @header-height;
   padding: 0px 20px;
-  min-width: 930px;
   opacity: 0.9;
   font-weight: 700;
   color: @dark-blue;

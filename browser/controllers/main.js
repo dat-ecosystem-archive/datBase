@@ -24,19 +24,19 @@ function render(user) {
       user: user
     },
     message: function (type, text) {
-      var ractive = this
-      ractive.set('message', {
+      var self = this
+      self.set('message', {
         type: type,
         text: text
       })
       setTimeout(function() {
-        ractive.set('message', null)
+        self.set('message', null)
       }, 2000)
     },
     onrender: function () {
-      var ractive = this
+      var self = this
 
-      ractive.on('logout', function (event) {
+      self.on('logout', function (event) {
         xhr({
           uri: '/auth/logout',
           json: true
@@ -47,10 +47,10 @@ function render(user) {
         })
       })
 
-      ractive.on('search', function (event) {
-        var query = ractive.get('searchQuery')
+      self.on('search', function (event) {
+        var query = self.get('searchQuery')
         if (window.location.pathname.indexOf('/browse') === 0) {
-          ractive.fire('browse.search', query)
+          self.fire('browse.search', query)
         }
         else page('/browse/' + query)
       })

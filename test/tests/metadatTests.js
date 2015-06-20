@@ -5,12 +5,23 @@ var debug = require('debug')('test-metadat')
 
 var TEST_DAT = {
   'owner_id': 'karissa',
-  'name': 'test entry',
-  'description': 'i am a description',
+  'name': 'Political organizations by state',
+  'description': 'Political organizations by state with demographic information and various measures of success.',
   'url': 'http://localhost:6461',
+  'datasets': [
+    {name:'organizations'},
+    {name:'demographic_model_output'},
+    {name:'organizer_models'}
+  ],
+  'readme': '',
   'json': {
-    'name': 'some-name',
-    'version': 1.3
+    dat: "Hello",
+    version: "6.9.6",
+    changes: 8,
+    rows: 5,
+    approximateSize: {
+      rows: "1.57 kB"
+    }
   },
   'license': 'BSD-2',
 }

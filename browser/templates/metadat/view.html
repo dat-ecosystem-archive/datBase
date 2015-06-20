@@ -1,20 +1,97 @@
 <div class="app-page">
-  <div class="app-text-container">
-    <h1><a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}</h1>
-    <p>{{metadat.description}}</p>
+      {{#if metadat.owner_id == user.handle}}
+        {{#if editing}}
+          <button class="button button-primary u-pull-right" on-click="save">Save all changes</button>
+        {{else}}
+          <a class="u-pull-right caption no-page" href="#" on-click="edit"><div class="button">Edit</div></a>
+        {{/if}}
+      {{/if}}
+    <!-- header -->
+    <h2>
+      <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
+        {{#if editing}}
+          <input class="edit-info" type="text" value="{{metadat.name}}" />
+        {{else}}
+          {{metadat.name}}
+        {{/if}}
+    </h2>
 
-    <div class="col-sm-12">
-      <h2>URL</h2>
-      <div >
-        <a href="{{metadat.url}}" target="_blank">{{metadat.url}}</a>
-      </div>
-
-      <div class="preview-frame">
-        <iframe src="{{metadat.url}}"></iframe>
-        <h2>Info</h2>
-        <div class="json"><pre class="col-sm-12">{{prettyJSON(metadat.json)}}</pre></div>
-      </div>
-
+    <div class="row metadat-info">
+      {{#if editing}}
+        <p>
+          <input class="ten columns edit-info" type="text" value="{{metadat.description}}" />
+        </p>
+      {{else}}
+        <p>{{metadat.description}}</p>
+      {{/if}}
     </div>
-  </div>
+    <div class="row">
+      <h5 class="mono">
+      <input type="text" disabled class="copy-text" value="dat clone {{metadat.url}}" /></h5>
+    </div>
+
+
+    <div class="row">
+      <!-- center dashboard-->
+
+      <div class="eight columns">
+
+        <!-- datasets -->
+        <div class="row header">
+          <h3>Datasets</h3>
+        </div>
+        <div class="">
+          <ul>
+          {{#each metadat.datasets}}
+            <li>
+              <p>
+                <a on-click="imadataset(this)">{{this.name}}</a>
+              </p>
+              <p></p>
+            </li>
+          {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- right sidebar -->
+      <div class="four columns">
+        <div class="row header">
+          <h3>Status</h3>
+        </div>
+          <p>Version: {{metadat.status.version}}</p>
+          <p>Datasets: {{metadat.status.datasets}}</p>
+          <p>Rows: {{metadat.status.rows}}</p>
+          <p>Versions: {{metadat.status.versions}}</p>
+          <p>Size: {{metadat.status.size}}</p>
+          <p>Last updated: {{metadat.status.modified}}</p>
+      </div>
+    </div>
+
+    <div class="row readme">
+      <!-- edit readme -->
+        <div class="row header">
+          <div class="two columns">
+            <h3>Readme</h3>
+          </div>
+        </div>
+        <div class="row">
+          {{#if editing}}
+          <div class="six columns" id="write">
+            <textarea value="{{metadat.readme}}" class="markdown-edit"></textarea>
+          </div>
+          {{else}}
+          <div class="row readme-view">
+            {{{ markdownify(metadat.readme)}}}
+          </div>
+          {{/if}}
+          <!--
+          <div class="six columns" id="preview">
+            <div class="markdown-display">
+              {{{ markdownify(metadat.readme)}}}
+            </div>
+          </div>-->
+        </div>
+    </div>
+
 </div>

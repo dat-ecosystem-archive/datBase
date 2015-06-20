@@ -1,5 +1,5 @@
 var Ractive = require('ractive');
-
+var md = require('markdown-it')()
 var templateHelpers = Ractive.defaults.data
 
 templateHelpers.prettyJSON = function (json) {
@@ -16,5 +16,9 @@ templateHelpers.loadingClass = function() {
 
 templateHelpers.loadingText = function (text) {
   return this.get('loading') ? 'Loading' : text
+}
+
+templateHelpers.markdownify = function (text) {
+  return md.render(text)
 }
 

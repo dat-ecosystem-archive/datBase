@@ -15,7 +15,8 @@ module.exports = {
   },
   profile: function (ctx, next) {
     ctx.ractive = require('./controllers/profile.js')({
-      handle: ctx.params.handle
+      handle: ctx.params.handle,
+      user: ctx.state.user
     })
     next();
   },
@@ -31,6 +32,13 @@ module.exports = {
       metadatId: ctx.params.id
     })
     next()
+  },
+  dataset: function (ctx, next) {
+    ctx.ractive = require('./controllers/dataset.js')({
+      user: ctx.state.user,
+      metadatId: ctx.params.id,
+      datasetName: ctx.params.name
+    })
   },
   browse: function (ctx, next) {
     ctx.ractive = require('./controllers/browse.js')({

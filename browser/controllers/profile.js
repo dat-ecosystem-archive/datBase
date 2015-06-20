@@ -1,7 +1,12 @@
 var debug = require('debug')('profile');
+var page = require('page')
 
 var dathub = require('../hub');
 var gravatar = require('../common/gravatar.js')
+
+// Controller for:
+// /profile
+// /profile/:handle
 
 module.exports = function (data) {
   return {
@@ -12,6 +17,16 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
+      // if sent to /profile without /:handle
+      if (!data.handle) {
+
+        // if logged in
+        if (data.user) return page('/profile/' + data.user.handle)
+
+        // redirect to home if didn't supply a user and not logged in
+        else return page('/')
+      }
+
       dathub.users.get(data.handle, function (err, user) {
         if (err) return cb(err)
         ractive.set('user', user)

@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
-    "server": "nodemon server.js -e js,css,html -i data/ -i static/",
+    "server": "nodemon --watch static/css --watch static/js/ server.js",
     "test": "node test/run.js | tap-spec",
     "watch": "watchify -t ractivate browser/index.js -o static/js/bundle.js",
-    "watch-css": "autoless static/styles"
+    "watch-css": "autoless static/css"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "concat-stream": "^1.4.7",
     "cookie-auth": "^2.4.0",
     "dat-api-client": "^1.0.0",
-    "dathub-api-client": "^1.2.0",
+    "dathub-api-client": "^2.0.0",
     "debug": "^2.0.0",
     "enter-means-submit": "^1.0.1",
     "extend": "^2.0.0",
@@ -50,6 +50,7 @@
     "level-indexer": "^2.0.0",
     "level-prebuilt": "^0.18.0",
     "level-rest-parser": "^2.0.0",
+    "markdown-it": "^3.0.6",
     "nodemon": "^1.2.1",
     "page": "^1.4.1",
     "ractive": "^0.6.1",
@@ -63,7 +64,8 @@
     "st": "^0.5.2",
     "subleveldown": "^2.0.0",
     "through2": "^0.6.3",
-    "xhr": "^2.0.1"
+    "xhr": "^2.0.1",
+    "zeroclipboard": "^2.2.0"
   },
   "devDependencies": {
     "autoless": "^0.1.5",

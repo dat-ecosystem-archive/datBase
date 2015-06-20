@@ -130,7 +130,7 @@ module.exports =  function (data) {
           url: url
         })
         // call the dat
-        client.info(function (err, resp, json) {
+        client.info(function (err, json) {
           ractive.set('loading', false)
           if (err) {
             console.error(err.message)
@@ -162,7 +162,7 @@ module.exports =  function (data) {
           pass: ractive.get('adminPassword')
         })
 
-        client.session(function (err, resp, json) {
+        client.session(function (err, json) {
           ractive.set('loading', false)
 
           if (err) {
@@ -181,6 +181,7 @@ module.exports =  function (data) {
       ractive.on('submitOK', function (event) {
         // save the metadat
         var metadat = ractive.get('metadat')
+        metadat.readme = '# ' + metadat.name + '\n\n## How can I use this dataset?'
 
         // alright lets do it!
         dathubClient.metadats.create(metadat, function (err, metadat) {
@@ -232,7 +233,7 @@ module.exports =  function (data) {
       }
 
       function onPreviewSuccess(json) {
-        ractive.set('metadat.json', json)
+        ractive.set('metadat.status', json.status)
         ractive.set('metadat.name', json.name)
         ractive.set('metadat.description', json.description)
         ractive.set('metadat.publisher', json.publisher)
@@ -245,7 +246,7 @@ module.exports =  function (data) {
         ractive.set('authorizeError', false)
         ractive.set('adminPassword', null)
         ractive.set('adminUsername', null)
-        ractive.set('metadat.json', null)
+        ractive.set('metadat.status', null)
         ractive.set('existingDat', null)
         setState('begin')
       }
