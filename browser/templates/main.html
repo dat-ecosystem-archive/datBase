@@ -9,8 +9,11 @@
       </div>
       <div class="six columns">
         <div class="input-group form">
-          <input class="form-control" type="search" value="{{searchQuery}}" placeholder="Search">
-          <button type="submit" on-click="search" class="button">go</button>
+          <input class="form-control" type="search" value="{{searchQuery}}" placeholder="type something..">
+          <button type="submit" on-click="search" class="button">Search</button>
+          {{#if user}}
+          <a href="/publish" class="no-page"><div class="button button-primary">Publish</div></a>
+          {{/if}}
         </div>
       </div>
       <div class="three columns u-pull-right">

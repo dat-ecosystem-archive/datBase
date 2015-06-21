@@ -37,6 +37,7 @@ module.exports = function (data) {
         }
         for (idx in SEARCH_FIELDS) {
           var field = SEARCH_FIELDS[idx]
+          debug('field', field)
           dathubClient.metadats.searchByField(field, opts, cb)
         }
       }
