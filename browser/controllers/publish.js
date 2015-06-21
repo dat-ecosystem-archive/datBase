@@ -155,10 +155,6 @@ module.exports =  function (data) {
         self.set('submitError', false)
       })
 
-      self.observe('metadat.url', function (newVal, old, keyPath) {
-        beginState()
-      })
-
       /** Stateful functions **/
 
       function onURLError() {
