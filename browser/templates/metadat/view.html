@@ -1,11 +1,12 @@
 <div class="app-page">
-      {{#if metadat.owner_id == user.handle}}
-        {{#if editing}}
-          <button class="button button-primary" on-click="save">Save all changes</button>
-        {{else}}
-          <a class="caption no-page" href="#" on-click="edit"><div class="button">Edit</div></a>
-        {{/if}}
+    {{#if metadat.owner_id == user.handle}}
+      {{#if editing}}
+        <button class="u-pull-right button button-primary" on-click="save">Save all changes</button>
+      {{else}}
+        <a class="u-pull-right caption no-page" href="#" on-click="edit"><div class="button">Edit</div></a>
       {{/if}}
+    {{/if}}
+
     <!-- header -->
     <h2>
       <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /

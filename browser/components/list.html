@@ -9,6 +9,7 @@
   </thead>
   <tbody>
     {{#each metadats}}
+    <tr>
       <td>
         <a href="/view/{{this.id}}">
           <img src="/static/img/dat-hex-small.png" class="img-small" />{{this.owner_id}}/{{this.name}}
@@ -21,6 +22,7 @@
       <td>{{this.status.rows}}</td>
       <td>{{this.status.files}}</td>
       <td>{{this.status.versions}}</td>
+    </tr>
     {{/each}}
   </tbody>
 </table>

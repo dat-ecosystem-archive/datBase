@@ -37,29 +37,9 @@ module.exports = function (data) {
         }
         for (idx in SEARCH_FIELDS) {
           var field = SEARCH_FIELDS[idx]
-          debug('field', field)
           dathubClient.metadats.searchByField(field, opts, cb)
         }
       }
-
-      self.on('next', function () {
-        // todo: get total results so you know when to stop
-        var offset = self.get('offset')
-        var limit = self.get('limit')
-
-        // set new offset
-        self.set('offset',  offset + limit)
-
-        // search with new params
-        search(data.query, function (err, resp, json) {
-          if (json.length === 0) {
-            self.set('offset', offset)
-            self.set('hasNext', false)
-        } else {
-          metadatSet.addItems(json.rows)
-          }
-        })
-      })
 
       // the window.ractive fires this event because the search
       // box is in the parent, the 'main.js' ractive
@@ -67,7 +47,6 @@ module.exports = function (data) {
         search(query, function (err, resp, json) {
           if (err) console.error(err)
           metadatSet.addItems(json.rows)
-          self.set('hasNext', true)
         })
       })
 
