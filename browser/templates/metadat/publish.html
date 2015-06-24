@@ -1,18 +1,8 @@
-<div class="app-page" data-spy="scroll" data-target=".breadcrumbs-nav">
+<div class="app-page" data-spy="scroll">
   <div class="app-text-container">
     <h1>publish</h1>
 
     <div class="form-horizontal breadcrumbs-content" role="form">
-
-      {{#if finished}}
-
-      <div id="finish">
-        <a href="/view/{{metadat.id}}">Click here if your dat doesn't open</a>
-      </div>
-
-      {{else}}
-
-
       <div class="preview form row">
           <div class="row">
             <p>
@@ -29,9 +19,8 @@
           </div>
         <div class="{{errorClass('urlError')}}">
           <div class="row">
-            <label for="metadatURL" class="two columns control-label">where at?</label>
             <input type="text" class="eight columns" id="metadatURL"
-                placeholder="http://" value="{{metadat.url}}" />
+                placeholder="ssh:// or http://" value="{{metadat.url}}" />
           </div>
         </div>
       </div>
@@ -45,7 +34,7 @@
 
         <div class="row {{errorClass('submitError')}}">
           <label for="inputDescription" class="two columns control-label">Description</label>
-            <textarea class="eight columns" id="inputDescription"
+            <textarea class="six columns" id="inputDescription"
               value="{{metadat.description}}"></textarea>
         </div>
       </div>
@@ -55,7 +44,7 @@
           <label class="two columns">Username</label>
           <div class="eight columns">
             <input type="text" id="inputHandle"
-              placeholder="Enter your username..." value="{{adminUsername}}" />
+              placeholder="Enter your username..." value="{{username}}" />
           </div>
         </div>
 
@@ -63,34 +52,18 @@
           <label for="inputPass" class="two columns">Password</label>
           <div class="eight columns">
             <input type="password" class="form-control" id="inputPass"
-              placeholder="Enter your password..."  value="{{adminPassword}}" />
+              placeholder="Enter your password..."  value="{{password}}" />
             <p class="help-block">
               <a href="https://github.com/maxogden/dat/blob/master/docs/forgot-password.md" target="_blank">Did you forget? It's ok.</a>
             </p>
 
-            <button type="submit" on-click="authorizeOK"
-              class="button button-primary {{loadingClass()}}">
-               {{ loadingText('Preview >>') }}
-            </button>
+        <button type="submit" on-click="submitOK"
+          class="button button-primary {{loadingClass()}}">
+           {{ loadingText('Publish') }}
+        </button>
           </div>
         </div>
       </div>
-        {{#if submit}}
-          <hr class="form-divider">
-            <button type="submit" on-click="submitOK"
-              class="button button-primary {{loadingClass()}}">
-               {{ loadingText('Publish') }}
-            </button>
-            <div class="preview-frame">
-            <iframe src="{{metadat.url}}"></iframe>
-            <div class="json">
-              <pre class="col-sm-12">
-                {{prettyJSON(metadat.json)}}
-              </pre>
-            </div>
-        </div>
-        {{/if}}
     </div>
-    {{/if}}
   </div>
 </div>

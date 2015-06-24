@@ -8,7 +8,7 @@ var gravatar = require('../common/gravatar.js')
 var dathubClient = require('../hub')
 
 module.exports = function(ctx, next) {
-  dathubClient.users.currentUser(function (err, user) {
+  dathubClient.users.currentUser(function (err, resp, user) {
     if (err) ctx.state.user = null
     ctx.state.user = user
     render(user)

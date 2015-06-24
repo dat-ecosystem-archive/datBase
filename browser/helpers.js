@@ -1,4 +1,4 @@
-var Ractive = require('ractive');
+var Ractive = require('ractive')
 var md = require('markdown-it')()
 var templateHelpers = Ractive.defaults.data
 
@@ -11,7 +11,7 @@ templateHelpers.errorClass = function (state) {
 }
 
 templateHelpers.loadingClass = function() {
-  return this.get('loading') ? 'btn-disabled' : 'btn-success';
+  return this.get('loading') ? 'button-disabled' : '';
 }
 
 templateHelpers.loadingText = function (text) {

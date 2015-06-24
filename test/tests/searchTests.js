@@ -1,6 +1,7 @@
 var request = require('request').defaults({json: true})
 var debug = require('debug')('test-search')
 var qs = require('querystring')
+var tmp = require('os').tmpdir()
 var extend = require('extend')
 var series = require('run-series')
 
@@ -9,26 +10,18 @@ var TEST_DAT = {
   'name': 'test entry',
   'description': 'i am a description. this is a very long discription with a '+
                 'lot of different characters and things you might be interested in searching for. how fun',
-  'url': 'http://dat-data.dathub.org',
-  'datasets': [
-    {name:'organizations'},
-    {name:'demographic_model_output'},
-    {name:'organizer_models'}
-  ],
+  'url': tmp,
   'readme': '',
-  'json': {
-    "name": "some name",
-    "status": {
-      "transaction":false,
-      "checkout":false,
-      "modified":"2015-06-19T00:05:32.088Z",
-      "datasets":2,
-      "rows":2,
-      "files":0,
-      "versions":2,
-      "size":224,
-      "version":"425a8265bbd4442ec1b8dd7aea712cf579abe5cfb6995b3a34b01cb0e415e23a"
-    },
+  "status": {
+    "transaction":false,
+    "checkout":false,
+    "modified":"2015-06-19T00:05:32.088Z",
+    "datasets":2,
+    "rows":2,
+    "files":0,
+    "versions":2,
+    "size":224,
+    "version":"425a8265bbd4442ec1b8dd7aea712cf579abe5cfb6995b3a34b01cb0e415e23a"
   },
   'license': 'BSD-2',
 }

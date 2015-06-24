@@ -75,7 +75,7 @@ module.exports = function createRoutes(server) {
     server.models.metadat.searcher.createSearchStream(query).pipe(res)
   })
 
-  router.addRoute('/api/:model/:id?', function(req, res, opts) {
+  router.addRoute('/api/:model/:id?', function (req, res, opts) {
     res.setHeader('content-type', 'application/json')
     var id = opts.params.id
     var query = url.parse(req.url, true).query
@@ -103,7 +103,7 @@ module.exports = function createRoutes(server) {
 
       model.handler.dispatch(req, responseOpts, respond)
 
-      function respond(err, data) {
+      function respond (err, data) {
         if (err) {
           var code = 400
           if (err.notFound) code = 404

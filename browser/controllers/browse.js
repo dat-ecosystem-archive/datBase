@@ -51,7 +51,7 @@ module.exports = function (data) {
         self.set('offset',  offset + limit)
 
         // search with new params
-        search(data.query, function (err, res, json) {
+        search(data.query, function (err, resp, json) {
           if (json.rows.length === 0) {
             self.set('offset', offset)
             self.set('hasNext', false)
@@ -77,7 +77,7 @@ module.exports = function (data) {
         window.ractive.fire('browse.search', data.query)
       }
       else {
-        dathubClient.metadats.all(function (err, metadats) {
+        dathubClient.metadats.all(function (err, resp, metadats) {
           if (err) console.error(err)
           metadatSet.clear()
           metadatSet.addItems(metadats.data)

@@ -23,7 +23,7 @@
     "datasets": {
       "type": "array"
     },
-    "json": {
+    "status": {
       "type": "object",
       "required": true
     },

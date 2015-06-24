@@ -1,33 +1,44 @@
 var request = require('request').defaults({json: true})
 var series = require('run-series')
 var extend = require('extend')
+var spawn = require('tape-spawn')
+var tmp = require('os').tmpdir()
+var rimraf = require('rimraf')
 var debug = require('debug')('test-metadat')
 
 var TEST_DAT = {
   'owner_id': 'karissa',
   'name': 'Political organizations by state',
   'description': 'Political organizations by state with demographic information and various measures of success.',
-  'url': 'http://localhost:6461',
-  'datasets': [
-    {name:'organizations'},
-    {name:'demographic_model_output'},
-    {name:'organizer_models'}
-  ],
+  'url': tmp,
   'readme': '',
-  'json': {
-    dat: "Hello",
-    version: "6.9.6",
-    changes: 8,
-    rows: 5,
-    approximateSize: {
-      rows: "1.57 kB"
-    }
-  },
   'license': 'BSD-2',
 }
 
+var status
+
 module.exports.createMetadat = function (test, common) {
-  test('creates a new Metadat via POST', function(t) {
+  test('create dat', function (t) {
+    var st = spawn(t, 'dat init', {cwd: tmp})
+    st.end()
+  })
+
+  test('put data in dat', function (t) {
+    var st = spawn(t, 'echo "foo,bar\n3,4" | dat import -d test -', {cwd: tmp})
+    st.stderr.match(/Done importing data/)
+    st.end()
+  })
+
+  test('get status', function (t) {
+    var st = spawn(t, 'dat status --json', {cwd : tmp})
+    st.stdout.match(function (output){
+      status = JSON.parse(output)
+      return true
+    })
+    st.end()
+  })
+
+  test('creates a new Metadat via POST', function (t) {
     var data = extend({}, TEST_DAT) // clone
 
     common.testPOST(t, '/api/metadat', data,
@@ -64,6 +75,7 @@ module.exports.duplicate = function(test, common) {
       })
   })
 }
+
 module.exports.query = function(test, common) {
   test('query by url or owner_id', function (t) {
     var data = extend({}, TEST_DAT) // clone
@@ -72,7 +84,6 @@ module.exports.query = function(test, common) {
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
         t.equal(json.owner_id, data.owner_id)
-        data.url = 'http://testing-queries.com'
         data.owner_id = 'mafintosh'
 
         request({
@@ -87,20 +98,6 @@ module.exports.query = function(test, common) {
 
           var fns = [
             function(next) {
-              data.name = 'another'
-              data.url = 'http://testing-queries2.com'
-              request({
-                method: 'POST',
-                jar: jar,
-                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-                json: data
-              }, function (err, res, json) {
-                t.ifError(err)
-                t.equal(json.url, data.url)
-                next()
-              })
-            },
-            function(next) {
               request({
                 method: 'GET',
                 jar: jar,
@@ -108,23 +105,7 @@ module.exports.query = function(test, common) {
                 json: data
               }, function (err, res, json) {
                 t.ifError(err)
-                t.equal(json.data.length, 3, 'querying for all returns 3')
-                next()
-              })
-            },
-            function(next) {
-              request({
-                method: 'GET',
-                jar: jar,
-                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-                json: data,
-                qs: {
-                  url: data.url
-                }
-              }, function (err, res, json) {
-                t.ifError(err)
-                t.equal(json.length, 1, 'should give us one value')
-                t.equal(json[0] && json[0].url, data.url, 'querying for url')
+                t.equal(json.data.length, 2, 'querying for all returns 2')
                 next()
               })
             },
@@ -155,7 +136,7 @@ module.exports.query = function(test, common) {
                 }
               }, function (err, res, json) {
                 t.ifError(err)
-                t.equal(json.length, 2, 'secondary query returns multiple results')
+                t.equal(json.length, 1, 'secondary query returns results')
                 t.equal(json[0].owner_id, data.owner_id, 'querying for owner id')
                 next()
               })
@@ -257,20 +238,22 @@ module.exports.getMetadats = function (test, common) {
     var data = extend({}, TEST_DAT) // clone
     common.testPOST(t, '/api/metadat', data, function (err, api, jar, res, json, done) {
       t.ifError(err)
+
       t.equal(res.statusCode, 201, 'create returns 201')
       t.equal(json.name, data.name, 'returns name')
       t.equal(json.owner_id, data.owner_id, 'returns ownerid')
       t.equal(json.url, data.url, 'returns url')
       t.equal(json.license, data.license, 'returns license')
-      debug('debugin', json)
-      var metaDatUrl = 'http://localhost:' + api.options.PORT + '/api/metadat/' + json.id
-      var metaDatsUrl = 'http://localhost:' + api.options.PORT + '/api/metadat'
-      request(metaDatUrl, function (err, res, json) {
+
+      request('http://localhost:' + api.options.PORT + '/api/metadat/' + json.id, function (err, res, json) {
         t.ifError(err)
+
         t.equal(res.statusCode, 200, 'returns 200')
         data.id = json.id
+        data.status = status
         t.deepEqual(json, data, 'deepequal that json')
-        request(metaDatsUrl, function (err, res, json) {
+
+        request('http://localhost:' + api.options.PORT + '/api/metadat', function (err, res, json) {
           t.ifError(err)
           t.equal(res.statusCode, 200, 'returns 200')
           t.equal(json.data.length, 1, 'length for 1 metadat')
@@ -294,6 +277,7 @@ module.exports.updateMetadat = function (test, common) {
         t.equal(json.owner_id, data.owner_id, 'owner id equal')
         t.equal(json.url, data.url, 'url equal')
         t.equal(json.license, data.license, 'license equal')
+        data.status = json.status
         debug('debugin', json)
 
         data.name = 'test entry MODIFIED!'

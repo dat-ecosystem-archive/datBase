@@ -1,6 +1,11 @@
 var levelRest = require('level-rest-parser')
-var defaultSchema = require('./metadat.json')
 var extend = require('extend')
+var transports = require('transport-stream')
+var concat = require('concat-stream')
+var url = require('url')
+var debug = require('debug')('api/metadat')
+
+var defaultSchema = require('./metadat.json')
 
 module.exports = function(db, opts) {
   if (!opts) opts = {}
@@ -27,17 +32,51 @@ module.exports = function(db, opts) {
 
   metadat.post = function (data, opts, cb) {
     var self = this
-    self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
-      if (err) cb(err)
-      if (rows.length > 0) {
-        for (i in rows) {
-          var row = rows[i]
-          if (row.name == data.name) {
-            return cb(null, {status: 'error', message: 'You have already published a dat with that name'})
+
+    var u = url.parse(data.url)
+    if (u.protocol === 'ssh' || u.protocol === 'http') {
+      u.auth = data.username + ':' + data.password
+      var res = url.format(u)
+      var source = res.substring(0, res.indexOf(u.path)) + ':' + u.path
+    }
+    else var source = data.url
+
+    // remove sensitive data
+    delete data.username
+    delete data.password
+
+    debug('creating transport to', source)
+    var stream = transports({
+      command: 'dat status --json'
+    })(source)
+
+    stream.pipe(concat(function (buf) {
+      var status = JSON.parse(buf.toString())
+      if (status.error) {
+        return console.error(status.message)
+      }
+      data.status = status
+
+      self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
+        if (err) return cb(err)
+        if (rows.length > 0) {
+          for (i in rows) {
+            var row = rows[i]
+            if (row.name == data.name) {
+              return cb(new Error('You have already published a dat with that name'))
+            }
           }
         }
+        console.log(data)
+        model.post(data, opts, cb)
+      })
+    }))
+
+    stream.on('error', function (err) {
+      if (err.level === 'client-authentication') {
+        return cb(new Error('Username or password is incorrect.'))
       }
-      model.post(data, opts, cb)
+      return cb(err)
     })
   }
 

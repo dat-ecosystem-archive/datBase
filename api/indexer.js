@@ -26,8 +26,9 @@ module.exports = function(opts) {
     var indexDb = indexers[key] = indexer(opts.db, key, {
       map: function (key, cb) {
         opts.model.db.get(key, function (err, row) {
+          if (err) return cb(err)
           row['id'] = key
-          cb(err, row)
+          cb(null, row)
         })
       }
     })
