@@ -1,20 +1,26 @@
-<div class="browse-metadats">
-{{#each metadats}}
-  <div class="metadat">
-    <div class="title">
-      <h1>
+<table class="u-full-width">
+  <thead>
+    <th>dat</th>
+    <th>size</th>
+    <th>datasets</th>
+    <th>rows</th>
+    <th>files</th>
+    <th>versions</th>
+  </thead>
+  <tbody>
+    {{#each metadats}}
+      <td>
         <a href="/view/{{this.id}}">
-          <img src="/static/img/dat-hex-small.png" class="small-dat-title-icon" />{{this.owner_id}}/{{this.name}}
+          <img src="/static/img/dat-hex-small.png" class="img-small" />{{this.owner_id}}/{{this.name}}
         </a>
-      </h1>
-    </div>
-    <p>{{this.description}}</p>
-    <!--
-    <button on-click="toggleMetadat">Toggle</button>
-    <div class="{{this.open ? 'open' : ''}} vertical-slider preview-frame">
-      <iframe src="{{this.url}}"></iframe>
-    </div>
-    -->
-  </div>
-{{/each}}
-</div>
+        <br>
+        {{this.description}}
+      </td>
+      <td>{{this.status.size}}</td>
+      <td>{{this.status.datasets}}</td>
+      <td>{{this.status.rows}}</td>
+      <td>{{this.status.files}}</td>
+      <td>{{this.status.versions}}</td>
+    {{/each}}
+  </tbody>
+</table>

@@ -52,11 +52,11 @@ module.exports = function (data) {
 
         // search with new params
         search(data.query, function (err, resp, json) {
-          if (json.rows.length === 0) {
+          if (json.length === 0) {
             self.set('offset', offset)
             self.set('hasNext', false)
-          } else {
-            metadatSet.addItems(json.rows)
+        } else {
+          metadatSet.addItems(json.rows)
           }
         })
       })
@@ -64,7 +64,7 @@ module.exports = function (data) {
       // the window.ractive fires this event because the search
       // box is in the parent, the 'main.js' ractive
       window.ractive.on('browse.search', function (query) {
-        search(query, function (err, json) {
+        search(query, function (err, resp, json) {
           if (err) console.error(err)
           metadatSet.addItems(json.rows)
           self.set('hasNext', true)

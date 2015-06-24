@@ -27,15 +27,15 @@ module.exports = function (data) {
         else return page('/')
       }
 
-      dathub.users.get(data.handle, function (err, user) {
+      dathub.users.get(data.handle, function (err, resp, user) {
         if (err) return cb(err)
         ractive.set('user', user)
-        gravatar('.content-card-large-avatar')
+        gravatar('.content-card-small-avatar')
       })
 
       dathub.metadats.query({
         owner_id: data.handle
-      }, function (err, metadats) {
+      }, function (err, resp, metadats) {
         ractive.set('metadats', metadats)
       })
 

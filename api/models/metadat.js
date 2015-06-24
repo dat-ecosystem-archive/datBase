@@ -34,7 +34,7 @@ module.exports = function(db, opts) {
     var self = this
 
     var u = url.parse(data.url)
-    if (u.protocol === 'ssh' || u.protocol === 'http') {
+    if (u.protocol === 'ssh:' || u.protocol === 'http:') {
       u.auth = data.username + ':' + data.password
       var res = url.format(u)
       var source = res.substring(0, res.indexOf(u.path)) + ':' + u.path

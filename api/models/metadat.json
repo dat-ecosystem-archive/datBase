@@ -25,7 +25,8 @@
     },
     "status": {
       "type": "object",
-      "required": true
+      "required": true,
+      "index": true
     },
     "url": {
       "type": "string",
