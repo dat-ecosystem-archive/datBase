@@ -1,6 +1,5 @@
 var Ractive = require('ractive')
 
-
 var MetadatList = Ractive.extend({
   template: require('./list.html'),
   onrender: function () {

@@ -92,7 +92,7 @@ module.exports = function(opts) {
 
         runSeries(fns, cb)
       }
-
+            
       function deleteCurrentIndex(key, cb) {
         // first check if we have an index for this key
         reverseIndex.get(key, function(err, currentIndexKey) {

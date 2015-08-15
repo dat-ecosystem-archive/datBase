@@ -5,7 +5,7 @@
   <div class="container">
     <div class="row">
       <div class="three columns">
-        <a href="/"><div class="header-logo">publicbits</div></a>
+        <a href="/"><div class="header-logo">dathub</div></a>
       </div>
       <div class="six columns">
         <div class="input-group form">
@@ -19,9 +19,11 @@
       <div class="three columns u-pull-right">
         {{#if user}}
           <div class="boop?">
-          <a href="/profile/{{user.handle}}"><div class="content-card-small-avatar"
-               data-user="{{user.data.login}}"></div></a>
-               </div>
+            <a href="/profile/{{user.handle}}">
+              <div class="content-card-small-avatar"
+                 data-user="{{user.data.login}}"></div>
+            </a>
+           </div>
           <a on-click="logout" class="no-page">Logout</a>
         {{else}}
         <a class="no-page" href="/auth/github/login/" >
@@ -32,33 +34,9 @@
     </div>
   </div>
 </div>
+
 <div id="content" class="container padded">
 </div>
-<div class="footer">
-  <div class="row footer-directory container padded">
-    <div class="two columns">
-      <div class="footer-horizontal-rule"></div>
-      <ul class="footer-nav-list">
-        <li><a class="no-page" href="http://www.stickermule.com/marketplace/1892-dat-2-hexagon-sticker-v2"> Get Stickers</a></li>
-        <li><a href="/blog"> Blog</a></li>
-      </ul>
-    </div>
-    <div class="two columns">
-      <div class="footer-horizontal-rule"></div>
-      <ul class="footer-nav-list">
-        <li><a class="no-page" href="https://twitter.com/dat_project"><span class="twitter-green"></span>Twitter</a></li>
-        <li><a class="no-page" href="https://github.com/maxogden/dat"><span class="octocat-green"></span>GitHub</a></li>
-      </ul>
-    </div>
-    <div class="five columns u-pull-right">
-      <div class="code-container">
-        <span class="bitcoin"></span>
-        19DqLuAssLa2XpVd8GabgMBCFTjXPYTbbV
-      </div>
-    </div>
-  </div>
   <div class="row centered centered container">
-    <hr>
-    <span class="footer-emphasized">publicbits</span> &bull; 2015 &bull; page source on <a href="https://github.com/karissa/dathub">github</a>.
+    <span class="footer-emphasized">dathub</span> &bull; 2015 &bull; page source on <a href="https://github.com/karissa/dathub">github</a>.
   </div>
-</div>

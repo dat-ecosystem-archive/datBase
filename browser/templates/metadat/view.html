@@ -24,6 +24,7 @@
         {{metadat.description}}
       {{/if}}
     </div>
+
     <div class="row">
       <h5 class="mono">
       <input type="text" disabled class="eight columns copy-text" value="dat clone {{metadat.url}}" /></h5>
@@ -31,15 +32,14 @@
 
     <div class="row">
       <!-- center dashboard-->
-
-      <div class="eight columns">
+      <div class="eight columns content-box">
         <!-- edit readme -->
         <div class="row header">
           <div class="two columns">
-            <h4>Readme</h4>
+            <h5>Readme</h5>
           </div>
         </div>
-        <div class="row">
+        <div class="row content">
           {{#if editing}}
           <div class="six columns" id="write">
             <textarea value="{{metadat.readme}}" rows="30" columns="100"></textarea>
@@ -50,21 +50,29 @@
           </div>
           {{/if}}
         </div>
-
       </div>
-
       <!-- right sidebar -->
-      <div class="four columns">
+
+      <div class="four columns content-box">
+        <div class="row">
+          <a href="/fork/{{metadat.id}}" class="button">Fork</a>
+          <a href="/pr/{{metadat.id}}" class="button">Propose Change</a>
+        </div>
+
         <div class="row header">
           <div class="two columns">
-            <h4>Status</h4>
+            <h5>Status</h5>
           </div>
         </div>
-          <p>Datasets: {{metadat.status.datasets}}</p>
-          <p>Rows: {{metadat.status.rows}}</p>
-          <p>Versions: {{metadat.status.versions}}</p>
-          <p>Size: {{metadat.status.size}}</p>
-          <p>Last updated: {{metadat.status.modified}}</p>
+        <div class="row content">
+          <p><strong>Datasets:</strong> {{metadat.status.datasets}}</p>
+          <p><strong>Rows:</strong> {{metadat.status.rows}}</p>
+          <p><strong>Versions:</strong> {{metadat.status.versions}}</p>
+          <p><strong>Size:</strong> {{metadat.status.size}}</p>
+          <p><strong>Last updated:</strong> {{metadat.status.modified}}</p>
+        </div>
+
+
       </div>
     </div>
 
