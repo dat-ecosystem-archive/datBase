@@ -27,17 +27,16 @@ module.exports = {
     next();
   },
   view: function (ctx, next) {
-    ctx.ractive = require('./controllers/view.js')({
+    ctx.ractive = require('./components/dat-view')({
       user: ctx.state.user,
       metadatId: ctx.params.id
     })
     next()
   },
-  dataset: function (ctx, next) {
-    ctx.ractive = require('./controllers/dataset.js')({
+  admin: function (ctx, next) {
+    ctx.ractive = require('./controllers/admin.js')({
       user: ctx.state.user,
       metadatId: ctx.params.id,
-      datasetName: ctx.params.name
     })
   },
   browse: function (ctx, next) {

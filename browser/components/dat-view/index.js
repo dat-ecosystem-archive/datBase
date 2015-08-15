@@ -1,11 +1,11 @@
 var debug = require('debug')('view')
 
-var dathubClient = require('../hub')
+var dathubClient = require('../../hub')
 
 module.exports = function (data) {
   return {
     data: data,
-    template: require('../templates/metadat/view.html'),
+    template: require('./index.html'),
     onrender: function () {
       var self = this
       var metadatId = data.metadatId

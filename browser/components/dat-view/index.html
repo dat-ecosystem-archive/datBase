@@ -24,12 +24,6 @@
         {{metadat.description}}
       {{/if}}
     </div>
-
-    <div class="row">
-      <h5 class="mono">
-      <input type="text" disabled class="eight columns copy-text" value="dat clone {{metadat.url}}" /></h5>
-    </div>
-
     <div class="row">
       <!-- center dashboard-->
       <div class="eight columns content-box">
@@ -54,6 +48,10 @@
       <!-- right sidebar -->
 
       <div class="four columns content-box">
+        <div class="row">
+          <h5 class="mono">
+          <input type="text" disabled class="eight columns copy-text" value="{{metadat.url}}" /></h5>
+        </div>
         <div class="row">
           <a href="/fork/{{metadat.id}}" class="button">Fork</a>
           <a href="/pr/{{metadat.id}}" class="button">Propose Change</a>
