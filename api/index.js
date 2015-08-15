@@ -14,7 +14,7 @@ var createRoutes = require('./routes')
 
 module.exports = Server
 
-function Server(overrides) {
+function Server (overrides) {
   // allow either new Server() or just Server()
   if (!(this instanceof Server)) return new Server(overrides)
   var self = this

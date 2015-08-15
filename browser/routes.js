@@ -34,10 +34,11 @@ module.exports = {
     next()
   },
   admin: function (ctx, next) {
-    ctx.ractive = require('./controllers/admin.js')({
+    ctx.ractive = require('./components/admin')({
       user: ctx.state.user,
       metadatId: ctx.params.id,
     })
+    next()
   },
   browse: function (ctx, next) {
     ctx.ractive = require('./controllers/browse.js')({

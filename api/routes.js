@@ -41,6 +41,7 @@ module.exports = function createRoutes(server) {
       if (session) {
         var id = session.data.id
         server.models.users.get({id: id}, function (err, user) {
+          user.admin = server.options.ADMINS.indexOf(user.handle) !=- -1
           if (err) {
             response.json({
               'status': 'warning',

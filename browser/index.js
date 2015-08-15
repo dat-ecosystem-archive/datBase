@@ -21,7 +21,7 @@ var init = {
   }
 }
 
-function render(ctx, next) {
+function render (ctx, next) {
   var ractive = new Ractive({
     el: "#content",
     template: ctx.ractive.template,
@@ -42,8 +42,16 @@ function render(ctx, next) {
   });
 }
 
-function requiresAuth(ctx, next) {
+function requiresAuth (ctx, next) {
   if (!ctx.state.user) {
+    ctx.ractive.template = require('./templates/pages/restricted.html');
+    return render(ctx, next)
+  }
+  next()
+}
+
+function requiresAdmin (ctx, next) {
+  if (!ctx.state.user.admin) {
     ctx.ractive.template = require('./templates/pages/restricted.html');
     return render(ctx, next)
   }
@@ -59,11 +67,12 @@ page('/browse/:query',          routes.browse);
 page('/settings',               requiresAuth, routes.settings);
 page('/publish',                requiresAuth, routes.publish);
 
+page('/admin',                  requiresAuth, requiresAdmin, routes.admin);
+
 page('/profile',                routes.profile);
 page('/profile/:handle',        routes.profile);
 
 page('/view/:id',               routes.view);
-page('/view/:id/dataset/:name', routes.dataset);
 
 page('*',             render)
 page({click: false});

@@ -21,4 +21,3 @@ templateHelpers.loadingText = function (text) {
 templateHelpers.markdownify = function (text) {
   return md.render(text)
 }
-

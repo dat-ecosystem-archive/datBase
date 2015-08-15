@@ -8,7 +8,8 @@ var config = {
   'DAT_REGISTRY_DB': path.join(__dirname, '..', 'data'),
   'DAT_SEARCH_DB': path.join(__dirname, '..', "dat.sqlite"),
   'GITHUB_CLIENT': undefined,
-  'GITHUB_SECRET': undefined
+  'GITHUB_SECRET': undefined,
+  'ADMINS': []
 }
 
 // override the settings with env vars for multi-deploy scenarios

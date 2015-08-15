@@ -1,7 +1,7 @@
 {
-  "admins": [
+  "ADMINS": [
     { "github_username": null }
   ],
-  "port": 5000
+  "PORT": 5000
 }
 
