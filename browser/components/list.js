@@ -9,7 +9,7 @@ var MetadatList = Ractive.extend({
       metadat.open = !metadat.open
     });
   },
-  data: { metadats: [] }
+  data: function () { return { metadats: [] } }
 });
 
 module.exports = MetadatList

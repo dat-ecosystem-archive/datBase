@@ -1,6 +1,8 @@
 var debug = require('debug')('browse')
 var qs = require('querystring')
 var xhr = require('xhr')
+var from = require('from2')
+var through = require('through2')
 
 var RactiveSet = require('../common/RactiveSet.js')
 var dathubClient = require('../hub')
@@ -25,9 +27,8 @@ module.exports = function (data) {
       self.set('limit', DEFAULT_PAGE_LIMIT)
       self.set('offset', DEFAULT_OFFSET)
 
-      function search(query, cb) {
+      function search (query) {
         metadatSet.clear()
-        window.ractive.set('searchQuery', query)
         self.set('query', query)
 
         var opts = {
@@ -35,32 +36,45 @@ module.exports = function (data) {
           limit: self.get('limit'),
           offset: self.get('offset')
         }
-        for (idx in SEARCH_FIELDS) {
-          var field = SEARCH_FIELDS[idx]
-          dathubClient.metadats.searchByField(field, opts, cb)
-        }
+
+        var stream = from.obj(SEARCH_FIELDS).pipe(through.obj(function (field, blah, cb) {
+          self.set('loading', true)
+          dathubClient.metadats.searchByField(field, opts, function (err, resp, json) {
+            if (err) return cb(err)
+            metadatSet.addItems(json.rows)
+            cb()
+          })
+        }))
+
+        stream.on('error', function (err) {
+          alert('there was an error. plz open a github issue <3')
+          console.error(err)
+        })
+
+        stream.on('end', function () {
+          console.log('end')
+          self.set('loading', false)
+        })
+
       }
 
-      // the window.ractive fires this event because the search
-      // box is in the parent, the 'main.js' ractive
-      window.ractive.on('browse.search', function (query) {
-        search(query, function (err, resp, json) {
-          if (err) console.error(err)
-          metadatSet.addItems(json.rows)
-        })
+      self.on('search', function (event) {
+        search(self.get('queryText'))
       })
 
       // ON PAGE LOAD, if there's a query already, search it, else
       // show all of the metadats
       if (data.query) {
-        window.ractive.fire('browse.search', data.query)
+        search(data.query)
       }
       else {
+        self.set('loading', true)
         dathubClient.metadats.all(function (err, resp, metadats) {
           if (err) console.error(err)
           metadatSet.clear()
           metadatSet.addItems(metadats.data)
           self.set('offset', DEFAULT_OFFSET)
+          self.set('loading', false)
         })
       }
     }

@@ -6,6 +6,6 @@ module.exports = function (selector) {
     var peep = peeps[i]
     var username = peep.getAttribute('data-user')
     if (!username) continue
-    peep.setAttribute('style', "background-image: url('https://github.com/" + username + ".png')")
+    peep.setAttribute('src', 'https://github.com/' + username + '.png')
   }
 }

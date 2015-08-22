@@ -1,20 +1,38 @@
+<div class="top-header">
+  profile
+  <div class="top-header__buttons">
+
+    {{#if loggedin}}
+      {{#if editing}}
+        <a class="caption" on-click="save">
+          <div class="button button-primary">Save</div>
+        </a>
+      {{else}}
+        <a class="caption" on-click="edit">
+          <div class="button ">Edit</div>
+        </a>
+      {{/if}}
+        <a class="caption" on-click="logout">
+          <div class="button">Logout</div>
+        </a>
+    {{/if}}
+  </div>
+</div>
+
 <div class="app-page">
   <div class="app-text-container">
-
     <div class="row">
-      <div class="content-card-small-avatar"
-           data-user="{{user.data.login}}"></div>
-
-      <h1>{{user.handle}}</h1>
-      <p>{{user.data.email}}<br> {{user.data.location}}
-      <br>
-      <a class="no-page" href="{{user.data.blog}}" target="_blank">{{user.data.blog}}</a></p>
-
-      {{#if user.data.bio}}
-        <p>{{user.data.bio}}</p>
-      {{/if}}
-
+      <img class="content-card-avatar medium"
+           data-user="{{profile.data.login}}" />
+      <p>{{profile.data.login}}<br>
+      {{profile.data.email}}<br>
+      {{profile.data.location}}<br>
+      <a class="no-page" href="{{profile.data.blog}}" target="_blank">
+        {{profile.data.blog}}</a>
+      <br>{{profile.data.bio}}
+      </p>
     </div>
+
     <div class="row">
       <listMetadats metadats="{{metadats}}"></listMetadats>
     </div>

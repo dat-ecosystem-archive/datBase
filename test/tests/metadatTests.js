@@ -19,7 +19,7 @@ var status
 
 module.exports.createMetadat = function (test, common) {
   test('create dat', function (t) {
-    var st = spawn(t, 'dat init', {cwd: tmp})
+    var st = spawn(t, 'dat init --no-prompt', {cwd: tmp})
     st.end()
   })
 

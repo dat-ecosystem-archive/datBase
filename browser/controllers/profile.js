@@ -1,5 +1,6 @@
 var debug = require('debug')('profile');
 var page = require('page')
+var xhr = require('xhr')
 
 var dathub = require('../hub');
 var gravatar = require('../common/gravatar.js')
@@ -17,26 +18,36 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
+      ractive.set('loggedin', data.user && (data.user.handle === data.handle))
       // if sent to /profile without /:handle
       if (!data.handle) {
-
         // if logged in
         if (data.user) return page('/profile/' + data.user.handle)
-
         // redirect to home if didn't supply a user and not logged in
         else return page('/')
       }
 
       dathub.users.get(data.handle, function (err, resp, user) {
         if (err) return cb(err)
-        ractive.set('user', user)
-        gravatar('.content-card-small-avatar')
+        ractive.set('profile', user)
+        gravatar('.content-card-avatar')
       })
 
       dathub.metadats.query({
         owner_id: data.handle
       }, function (err, resp, metadats) {
         ractive.set('metadats', metadats)
+      })
+
+      ractive.on('logout', function (event) {
+        xhr({
+          uri: '/auth/logout',
+          json: true
+        }, function (err, resp, json) {
+          if (json.loggedOut === true) {
+            window.location.reload()
+          }
+        })
       })
 
     }

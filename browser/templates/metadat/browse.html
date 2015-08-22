@@ -1,20 +1,21 @@
 <div class="top-header">
-  <div class="input-group search-header form row">
-    <input class="search-header__form-control form-control" type="search" value="{{searchQuery}}" placeholder="search">
+  browse
+  <div class="top-header__buttons input-group search-header form row">
+    <input class="form-control" type="search" value="{{queryText}}" placeholder="search">
     <button type="submit" on-click="search" class="button">go</button>
   </div>
 </div>
 <div class="app-page">
   <div class="app-text-container">
     {{#if query}}
-      <h1>results for '{{query}}'</h1>
-    {{else}}
-      <h1>browse</h1>
+      <p>results for '{{query}}'</p>
     {{/if}}
 
     {{#if metadats.length > 0}}
       <listMetadats metadats="{{metadats}}"></listMetadats>
       {{#if hasNext}} <button class="button button-primary" on-click="next">next</button>{{/if}}
+    {{elseif loading}}
+      <p>loading...</p>
     {{else}}
       <p>We couldn't find any dats matching '{{query}}'.</p>
       <img src="/static/img/lost_cat.jpg" />

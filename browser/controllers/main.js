@@ -7,7 +7,9 @@ var page = require('page')
 var gravatar = require('../common/gravatar.js')
 var dathubClient = require('../hub')
 
-module.exports = function(ctx, next) {
+var tabs = require('tabs');
+
+module.exports = function (ctx, next) {
   dathubClient.users.currentUser(function (err, resp, user) {
     if (err) ctx.state.user = null
     ctx.state.user = user
@@ -15,8 +17,10 @@ module.exports = function(ctx, next) {
     window.ractive = new Ractive({
       el: '#main',
       template: require('../templates/main.html'),
-      data: {
-        user: user
+      data: function () {
+        return {
+          user: user
+        }
       },
       message: function (type, text) {
         var self = this
@@ -47,25 +51,6 @@ module.exports = function(ctx, next) {
 
         /** EVENTS **/
 
-        self.on('logout', function (event) {
-          xhr({
-            uri: '/auth/logout',
-            json: true
-          }, function (err, resp, json) {
-            if (json.loggedOut === true) {
-              window.location.reload()
-            }
-          })
-        })
-
-        self.on('search', function (event) {
-          var query = self.get('searchQuery')
-          if (window.location.pathname.indexOf('/browse') === 0) {
-            self.fire('browse.search', query)
-          }
-          else page('/browse/' + query)
-        })
-
         self.on('toggle-sidebar', function (event) {
           var sidebar = self.get('sidebar')
           self.set('sidebar', !sidebar)
@@ -74,8 +59,12 @@ module.exports = function(ctx, next) {
         /** END EVENTS **/
 
         if (user) {
-          gravatar('.content-card-small-avatar')
+          gravatar('.content-card-avatar')
         }
+
+        $('.tab-container').map(function (i, el) {
+          tabs($(el))
+        })
 
         $('[data-toggle="tooltip"]').tooltip()
       }

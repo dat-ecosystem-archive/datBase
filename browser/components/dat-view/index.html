@@ -1,16 +1,17 @@
 <div class="top-header">
+  <div class="top-header__buttons">
   {{#if metadat.owner_id == user.handle}}
     {{#if editing}}
-      <a class="u-pull-right caption" on-click="save">
+      <a class="caption" on-click="save">
         <div class="button button-primary">Save</div>
       </a>
     {{else}}
-      <a class="u-pull-right caption" on-click="edit">
-        <div class="button">Edit</div>
+      <a class="caption" on-click="edit">
+        <div class="button ">Edit</div>
       </a>
     {{/if}}
   {{/if}}
-
+  </div>
   <!-- header -->
   <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
   {{#if editing}}
@@ -19,6 +20,7 @@
     {{metadat.name}}
   {{/if}}
 </div>
+
 <div class="app-page view-metadat">
   <div class="row view-info">
     {{#if editing}}
@@ -28,6 +30,9 @@
     {{/if}}
   </div>
 
+    <div class="row">
+      <pre>dat clone {{metadat.url}}</pre>
+    </div>
   <div class="row">
     <table class="u-full-width">
       <thead>
@@ -50,19 +55,27 @@
   </div>
 
   <div class="row">
-    <input type="text" disabled class="twelve columns copy-text mono" value="{{metadat.url}}" />
-  </div>
-  <div class="row">
     <!-- center dashboard-->
     <div class="twelve columns content-box">
       <!-- edit readme -->
       <div class="row content">
         {{#if editing}}
-        <div class="six columns" id="write">
-          <textarea value="{{metadat.readme}}" rows="30" columns="100"></textarea>
+        <div class="tab-container">
+          <div class="tabs">
+            <a class="tab active">Edit</a>
+            <a class="tab">Preview</a>
+          </div>
+          <div class="tab-panes twelve columns">
+            <div class="tab-pane active">
+              <textarea value="{{metadat.readme}}" class="twelve columns"></textarea>
+            </div>
+            <div class="tab-pane">
+              <div class="markdown twelve columns">{{{ markdownify(metadat.readme)}}}</div>
+            </div>
+          </div>
         </div>
         {{else}}
-        <div class="row readme-view">
+        <div class="row markdown">
           {{{ markdownify(metadat.readme)}}}
         </div>
         {{/if}}
