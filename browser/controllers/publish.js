@@ -59,7 +59,7 @@ module.exports =  function (data) {
           })
         })
 
-        event.original.preventDefault();
+        event.original.preventDefault()
       })
 
 
