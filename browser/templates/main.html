@@ -1,42 +1,42 @@
 <div class="row banner {{message.type}}">
   <div class="banner-text">{{message.text}}</div>
 </div>
-<div class="header">
-  <div class="container">
-    <div class="row">
-      <div class="three columns">
-        <a href="/"><div class="header-logo">dathub</div></a>
-      </div>
-      <div class="six columns">
-        <div class="input-group form">
-          <input class="form-control" type="search" value="{{searchQuery}}" placeholder="type something..">
-          <button type="submit" on-click="search" class="button">Search</button>
-          {{#if user}}
-          <a href="/publish" class="no-page"><div class="button button-primary">Publish</div></a>
-          {{/if}}
-        </div>
-      </div>
-      <div class="three columns u-pull-right">
-        {{#if user}}
-          <div class="boop?">
-            <a href="/profile/{{user.handle}}">
-              <div class="content-card-small-avatar"
-                 data-user="{{user.data.login}}"></div>
-            </a>
-           </div>
-          <a on-click="logout" class="no-page">Logout</a>
-        {{else}}
-        <a class="no-page" href="/auth/github/login/" >
-          <div class="button button-primary">Login with GitHub</div>
-        </a>
-        {{/if}}
-      </div>
-    </div>
+
+<div class="sidebar {{sidebar}}">
+  <div class="sidebar__header">
+    <a href="/"><div class="header-logo">dathub</div></a>
   </div>
+
+  <ul class="sidebar__nav">
+  {{#if user}}
+    <a href="/profile/{{user.handle}}">
+      <li>
+        <div class="content-card-small-avatar" data-user="{{user.data.login}}"></div>
+        {{user.data.login}}
+      </li>
+    </a>
+    {{/if}}
+    {{#if !user}}
+    <a class="no-page" href="/auth/github/login/">
+      <li>
+        Login with GitHub
+      </li>
+    </a>
+    {{/if}}
+    <a href="/browse"><li>Browse</li></a>
+    <a href="/publish"><li>Publish</li></a>
+    {{#if user.admin}}
+    <a href="/admin"><li>Admin</li></a>
+    {{/if}}
+  </ul>
+
+  <div class="sidebar__footer">
+    <a href="http://github.com/karissa/dathub"><span class="octocat-green"></span></a>
+    <a href="http://twitter.com/dat_project"><span class="twitter-green"></span></a>
+    <a href="/about">?</a>
+  </div>
+
 </div>
 
-<div id="content" class="container padded">
+<div id="content">
 </div>
-  <div class="row centered centered container">
-    <span class="footer-emphasized">dathub</span> &bull; 2015 &bull; page source on <a href="https://github.com/karissa/dathub">github</a>.
-  </div>

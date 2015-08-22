@@ -6,10 +6,9 @@
            data-user="{{user.data.login}}"></div>
 
       <h1>{{user.handle}}</h1>
-
-      <p>{{user.data.email}}. {{user.data.location}}</p>
-
-      <p><a class="no-page" href="{{user.data.blog}}" target="_blank">{{user.data.blog}}</a></p>
+      <p>{{user.data.email}}<br> {{user.data.location}}
+      <br>
+      <a class="no-page" href="{{user.data.blog}}" target="_blank">{{user.data.blog}}</a></p>
 
       {{#if user.data.bio}}
         <p>{{user.data.bio}}</p>

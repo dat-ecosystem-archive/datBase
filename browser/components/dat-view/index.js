@@ -16,11 +16,12 @@ module.exports = function (data) {
           return
         }
         self.set('metadat', metadat)
+        window.ractive.set('metadat', metadat)
       })
 
       self.on('edit', function (event) {
         self.set('editing', true)
-        event.original.preventDefault()
+        if (event) event.original.preventDefault()
       })
 
       self.on('save', function (event, whatChanged) {
@@ -29,7 +30,6 @@ module.exports = function (data) {
           if (err) console.error(err)
           self.set('editing', false)
         })
-        event.original.preventDefault()
       })
     }
   }

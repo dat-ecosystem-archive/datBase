@@ -2,7 +2,6 @@ var Ractive = require('ractive');
 var page = require('page');
 var $ = jQuery = require('jquery');
 var enterMeansSubmit = require('enter-means-submit');
-
 var main = require('./controllers/main.js')
 var routes = require('./routes.js')
 var helpers = require('./helpers.js')
@@ -59,7 +58,7 @@ function requiresAdmin (ctx, next) {
 }
 
 page('*',                       init.ctx)
-page('/',                       routes.splash);
+page('/',                       routes.browse);
 page('/about',                  routes.about);
 page('/browse',                 routes.browse);
 page('/browse/:query',          routes.browse);

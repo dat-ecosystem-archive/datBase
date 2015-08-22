@@ -1,77 +1,73 @@
-<div class="app-page">
-    {{#if metadat.owner_id == user.handle}}
-      {{#if editing}}
-        <button class="u-pull-right button button-primary" on-click="save">Save all changes</button>
-      {{else}}
-        <a class="u-pull-right caption no-page" href="#" on-click="edit"><div class="button">Edit</div></a>
-      {{/if}}
+<div class="top-header">
+  {{#if metadat.owner_id == user.handle}}
+    {{#if editing}}
+      <a class="u-pull-right caption" on-click="save">
+        <div class="button button-primary">Save</div>
+      </a>
+    {{else}}
+      <a class="u-pull-right caption" on-click="edit">
+        <div class="button">Edit</div>
+      </a>
     {{/if}}
+  {{/if}}
 
-    <!-- header -->
-    <h2>
-      <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
+  <!-- header -->
+  <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
+  {{#if editing}}
+    <input class="edit-info" type="text" value="{{metadat.name}}" />
+  {{else}}
+    {{metadat.name}}
+  {{/if}}
+</div>
+<div class="app-page view-metadat">
+  <div class="row view-info">
+    {{#if editing}}
+      <input class="ten columns edit-info" type="text" value="{{metadat.description}}" />
+    {{else}}
+      {{metadat.description}}
+    {{/if}}
+  </div>
+
+  <div class="row">
+    <table class="u-full-width">
+      <thead>
+        <th>size</th>
+        <th>datasets</th>
+        <th>rows</th>
+        <th>files</th>
+        <th>versions</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{metadat.status.size}}</td>
+          <td>{{metadat.status.datasets}}</td>
+          <td>{{metadat.status.rows}}</td>
+          <td>{{metadat.status.files}}</td>
+          <td>{{metadat.status.versions}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row">
+    <input type="text" disabled class="twelve columns copy-text mono" value="{{metadat.url}}" />
+  </div>
+  <div class="row">
+    <!-- center dashboard-->
+    <div class="twelve columns content-box">
+      <!-- edit readme -->
+      <div class="row content">
         {{#if editing}}
-          <input class="edit-info" type="text" value="{{metadat.name}}" />
+        <div class="six columns" id="write">
+          <textarea value="{{metadat.readme}}" rows="30" columns="100"></textarea>
+        </div>
         {{else}}
-          {{metadat.name}}
+        <div class="row readme-view">
+          {{{ markdownify(metadat.readme)}}}
+        </div>
         {{/if}}
-    </h2>
-
-    <div class="row metadat-info">
-      {{#if editing}}
-        <input class="ten columns edit-info" type="text" value="{{metadat.description}}" />
-      {{else}}
-        {{metadat.description}}
-      {{/if}}
-    </div>
-    <div class="row">
-      <!-- center dashboard-->
-      <div class="eight columns content-box">
-        <!-- edit readme -->
-        <div class="row header">
-          <div class="two columns">
-            <h5>Readme</h5>
-          </div>
-        </div>
-        <div class="row content">
-          {{#if editing}}
-          <div class="six columns" id="write">
-            <textarea value="{{metadat.readme}}" rows="30" columns="100"></textarea>
-          </div>
-          {{else}}
-          <div class="row readme-view">
-            {{{ markdownify(metadat.readme)}}}
-          </div>
-          {{/if}}
-        </div>
-      </div>
-      <!-- right sidebar -->
-
-      <div class="four columns content-box">
-        <div class="row">
-          <h5 class="mono">
-          <input type="text" disabled class="eight columns copy-text" value="{{metadat.url}}" /></h5>
-        </div>
-        <div class="row">
-          <a href="/fork/{{metadat.id}}" class="button">Fork</a>
-          <a href="/pr/{{metadat.id}}" class="button">Propose Change</a>
-        </div>
-
-        <div class="row header">
-          <div class="two columns">
-            <h5>Status</h5>
-          </div>
-        </div>
-        <div class="row content">
-          <p><strong>Datasets:</strong> {{metadat.status.datasets}}</p>
-          <p><strong>Rows:</strong> {{metadat.status.rows}}</p>
-          <p><strong>Versions:</strong> {{metadat.status.versions}}</p>
-          <p><strong>Size:</strong> {{metadat.status.size}}</p>
-          <p><strong>Last updated:</strong> {{metadat.status.modified}}</p>
-        </div>
-
-
       </div>
     </div>
 
+  </div>
 </div>
