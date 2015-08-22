@@ -72,6 +72,7 @@
   "devDependencies": {
     "autoless": "^0.1.5",
     "browserify": "^7.0.0",
+    "dat": "^7.0.4",
     "ractivate": "^0.2.0",
     "rimraf": "^2.2.8",
     "run-series": "^1.0.2",
