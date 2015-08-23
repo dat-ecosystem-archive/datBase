@@ -89,6 +89,9 @@ module.exports = function(db, opts) {
         if (err.level === 'client-authentication') {
           return cb(new Error('Username or password is incorrect.'))
         }
+        if (err.message.indexOf('ENOENT') > -1) {
+          return cb(new Error('Could not find a dat there!'))
+        }
         return cb(err)
       })
     }

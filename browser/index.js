@@ -34,7 +34,7 @@ function render (ctx, next) {
         e.preventDefault()
       })
 
-      enterMeansSubmit(document.getElementsByClassName("form"))
+      enterMeansSubmit(document.getElementsByClassName('form'))
 
       ctx.ractive.onrender.call(this)
     }
