@@ -43,7 +43,7 @@ module.exports =  function (data) {
             }
           }
 
-          data.readme = '# ' + data.name + '\n\n## How can I use this dataset?'
+          data.readme = '# readme for ' + data.name + '\n\n'
           data.username = self.get('username')
           data.password = self.get('password')
 

@@ -2,7 +2,7 @@
   publish a new dat
 </div>
 
-<div class="app-page" data-spy="scroll">
+<div class="app-page">
   <div class="app-text-container">
     <div class="form-horizontal breadcrumbs-content" role="form">
       <div class="preview form row">
@@ -40,8 +40,10 @@
               value="{{metadat.description}}"></textarea>
         </div>
       </div>
+
       <!-- authorize -->
-      <div class="authorize form">
+      {{#if authorize}}
+      <div class="authorize form ">
         <div class="row {{errorClass('authorizeError')}}">
           <label class="two columns">Username</label>
           <div class="eight columns">
@@ -55,17 +57,15 @@
           <div class="eight columns">
             <input type="password" class="form-control" id="inputPass"
               placeholder="Enter your password..."  value="{{password}}" />
-            <p class="help-block">
-              <a href="https://github.com/maxogden/dat/blob/master/docs/forgot-password.md" target="_blank">Did you forget? It's ok.</a>
-            </p>
-
-        <button type="submit" on-click="submitOK"
-          class="button button-primary {{loadingClass()}}">
-           {{ loadingText('Publish') }}
-        </button>
           </div>
         </div>
       </div>
+      {{/if}}
+
+      <button type="submit" on-click="submitOK"
+        class="button button-primary {{loadingClass()}}">
+         Publish
+      </button>
     </div>
   </div>
 </div>

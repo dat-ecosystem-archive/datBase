@@ -34,7 +34,7 @@ function Server (overrides) {
   self.server = self.createServer()
 }
 
-Server.prototype.createServer = function() {
+Server.prototype.createServer = function () {
   var self = this
   return http.createServer(function(req, res) {
     debug(req.method, req.url)
@@ -42,9 +42,9 @@ Server.prototype.createServer = function() {
   })
 }
 
-Server.prototype.close = function(cb) {
+Server.prototype.close = function (cb) {
   var self = this
-  self.db.close(function closedDb(err) {
+  self.db.close(function closedDb (err) {
     if (err) return cb(err)
     self.server.close(cb)
   })

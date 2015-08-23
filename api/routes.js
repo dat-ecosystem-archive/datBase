@@ -94,7 +94,7 @@ module.exports = function createRoutes(server) {
     console.log(query)
     if (query.limit) responseOpts.limit = parseInt(query.limit)
 
-    authorize(server, req, res, opts, function(err) {
+    authorize(server, req, res, opts, function (err) {
       if (err) return unauthorized(res)
 
       if (method === 'get') {

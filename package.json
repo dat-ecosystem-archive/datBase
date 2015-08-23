@@ -44,6 +44,7 @@
     "from2": "^2.1.0",
     "github-oauth": "^0.2.0",
     "hat": "0.0.3",
+    "hyperquest": "^1.2.0",
     "is-my-json-valid": "^1.4.0",
     "is-url": "^1.1.0",
     "jquery": "^2.1.1",
