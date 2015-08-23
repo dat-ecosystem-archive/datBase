@@ -3,7 +3,7 @@ var extend = require('extend')
 var transports = require('transport-stream')
 var concat = require('concat-stream')
 var url = require('url')
-var hyperquest = require('hyperquest');
+var hyperquest = require('hyperquest')
 var debug = require('debug')('api/metadat')
 
 var defaultSchema = require('./metadat.json')
@@ -45,21 +45,18 @@ module.exports = function(db, opts) {
     delete data.username
     delete data.password
 
-    if (u.protocol === 'ssh:') {
+    if (u.protocol === 'http:') {
+      debug('creating hyperquest to', source)
+      var stream = hyperquest(source)
+    } else {
       debug('creating transport to', source)
       var stream = transports({
         command: 'dat status --json'
       })(source)
-    } else {
-      debug('creating http request for', source)
-      var stream = hyperquest(source)
     }
 
-    stream.pipe(concat(onstatus))
-
-    var onstatus = function (buf) {
+    stream.pipe(concat(function (buf) {
       var status = JSON.parse(buf.toString())
-      debug('status', status)
       if (status.error) {
         return console.error(status.message)
       }
@@ -78,7 +75,7 @@ module.exports = function(db, opts) {
         console.log(data)
         model.post(data, opts, cb)
       })
-    }
+    }))
 
     stream.on('error', function (err) {
       if (err.level === 'client-authentication') {
