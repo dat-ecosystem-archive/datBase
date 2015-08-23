@@ -34,55 +34,64 @@ module.exports = function(db, opts) {
   metadat.post = function (data, opts, cb) {
     var self = this
 
-    var u = url.parse(data.url)
-    if (u.protocol === 'ssh:' || u.protocol === 'http:') {
-      if (data.username) u.auth = data.username + ':' + data.password
-      var source = url.format(u)
-    }
-    else var source = data.url
+    self.indexes['url'].find(data.url, function (err, rows) {
+      if (err) return cb(err)
+      if (rows.length > 0) return cb(new Error('Someone has already published a dat with that url'))
+      doit()
+    })
 
-    // remove sensitive data
-    delete data.username
-    delete data.password
-
-    if (u.protocol === 'http:') {
-      debug('creating hyperquest to', source)
-      var stream = hyperquest(source)
-    } else {
-      debug('creating transport to', source)
-      var stream = transports({
-        command: 'dat status --json'
-      })(source)
-    }
-
-    stream.pipe(concat(function (buf) {
-      var status = JSON.parse(buf.toString())
-      if (status.error) {
-        return console.error(status.message)
+    function doit () {
+      var u = url.parse(data.url)
+      if (u.protocol === 'ssh:' || u.protocol === 'http:') {
+        if (data.username) u.auth = data.username + ':' + data.password
+        var source = url.format(u)
+      } else {
+        var source = data.url
       }
-      data.status = status
 
-      self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
-        if (err) return cb(err)
-        if (rows.length > 0) {
-          for (i in rows) {
-            var row = rows[i]
-            if (row.name == data.name) {
-              return cb(new Error('You have already published a dat with that name'))
+      // remove sensitive data
+      delete data.username
+      delete data.password
+
+      if (u.protocol === 'http:') {
+        debug('creating hyperquest to', source)
+        var stream = hyperquest(source)
+      } else {
+        debug('creating transport to', source)
+        var stream = transports({
+          command: 'dat status --json'
+        })(source)
+      }
+
+      stream.pipe(concat(function (buf) {
+        var status = JSON.parse(buf.toString())
+        if (status.error) {
+          return console.error(status.message)
+        }
+        data.status = status
+
+        self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
+          if (err) return cb(err)
+          if (rows.length > 0) {
+            for (i in rows) {
+              var row = rows[i]
+              if (row.name == data.name) {
+                return cb(new Error('You have already published a dat with that name'))
+              }
             }
           }
-        }
-        console.log(data)
-        model.post(data, opts, cb)
-      })
-    }))
+          console.log(data)
+          model.post(data, opts, cb)
+        })
+      }))
 
-    stream.on('error', function (err) {
-      if (err.level === 'client-authentication') {
-        return cb(new Error('Username or password is incorrect.'))
-      }
-      return cb(err)
-    })
+      stream.on('error', function (err) {
+        if (err.level === 'client-authentication') {
+          return cb(new Error('Username or password is incorrect.'))
+        }
+        return cb(err)
+      })
+    }
   }
 
   return metadat

@@ -61,6 +61,7 @@ module.exports.duplicate = function(test, common) {
       function (err, api, jar, res, json, done) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'returns 201')
+        data.url = 'anotherurl.com'
 
         request({
           method: 'POST',
@@ -69,6 +70,30 @@ module.exports.duplicate = function(test, common) {
           json: data
         }, function (err, res, json) {
           t.ifError(err)
+          t.equal(json.status, 'error', 'json status returns error')
+          done()
+        })
+      })
+  })
+}
+
+module.exports.duplicateURL = function(test, common) {
+  test('adding a dat url that already exists', function (t) {
+    var data = extend({}, TEST_DAT) // clone
+    common.testPOST(t, '/api/metadat', data,
+      function (err, api, jar, res, json, done) {
+        t.ifError(err)
+        t.equal(res.statusCode, 201, 'returns 201')
+        data.name = 'duplicate URL name'
+
+        request({
+          method: 'POST',
+          jar: jar,
+          uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
+          json: data
+        }, function (err, res, json) {
+          t.ifError(err)
+          console.log(json)
           t.equal(json.status, 'error', 'json status returns error')
           done()
         })
@@ -85,6 +110,7 @@ module.exports.query = function(test, common) {
       function (err, api, jar, res, json, done) {
         t.equal(json.owner_id, data.owner_id)
         data.owner_id = 'mafintosh'
+        data.url = 'http://npm.dathub.org'
 
         request({
           method: 'POST',
@@ -321,12 +347,13 @@ module.exports.updateMetadat = function (test, common) {
 }
 
 module.exports.all = function(test, common) {
-  module.exports.createMetadat(test, common);
-  module.exports.query(test, common);
-  module.exports.createInvalidField(test, common);
-  module.exports.getMetadats(test, common);
-  module.exports.getMetadatsEmpty(test, common);
-  module.exports.updateMetadat(test, common);
-  module.exports.duplicate(test, common);
-  module.exports.deleteMetadat(test, common);
+  module.exports.createMetadat(test, common)
+  module.exports.query(test, common)
+  module.exports.createInvalidField(test, common)
+  module.exports.getMetadats(test, common)
+  module.exports.getMetadatsEmpty(test, common)
+  module.exports.updateMetadat(test, common)
+  module.exports.duplicate(test, common)
+  module.exports.duplicateURL(test, common)
+  module.exports.deleteMetadat(test, common)
 }
