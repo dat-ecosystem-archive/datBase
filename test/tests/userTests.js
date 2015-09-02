@@ -48,7 +48,7 @@ module.exports.cantCreateUser = function(test, common) {
   var data = {
     handle: 'pizza'
   }
-  test('cant create a user through POST api', function(t) {
+  test('cant create a user through POST api', function (t) {
     common.testPOST(t, '/api/users', data,
       function (err, api, jar, res, json, done) {
         t.ifError(err)

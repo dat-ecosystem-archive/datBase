@@ -1,46 +1,41 @@
+<div class="top-header">
+  profile settings
+</div>
+
 <div class="app-page">
   <div class="app-text-container">
-    <h1>{{user.handle}}</h1>
 
-    <form id="form" class="form-horizontal" on-submit="submit">
+    <form class="form" on-submit="submit">
 
-      <div class="form-group">
-        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-6">
-          <input type="email" class="form-control" id="inputEmail" value="{{user.data.email}}"  />
-          <p class="help-block">This is public information!</p>
-        </div>
+      <div class="row">
+        <label for="inputEmail" class="two columns control-label">Username</label>
+
+        <div class="six columns">{{user.handle}}</div>
       </div>
 
-      <div class="form-group">
-        <label for="inputLocation" class="col-sm-2 control-label">Location</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="inputLocation" value="{{user.data.location}}"  />
-          <p class="help-block">Also public.</p>
-        </div>
+      <div class="row">
+        <label for="inputEmail" class="two columns control-label">Email</label>
+          <input type="email" class="six columns" id="inputEmail" value="{{user.data.email}}"  />
       </div>
 
-      <div class="form-group">
-        <label for="inputWebsite" class="col-sm-2 control-label">Website</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="inputWebsite" value="{{user.data.blog}}"  />
-          <p class="help-block">Let people know where to find you.</p>
-        </div>
+      <div class="row">
+        <label for="inputLocation" class="two columns control-label">Location</label>
+          <input type="text" class="six columns" id="inputLocation" value="{{user.data.location}}"  />
       </div>
 
-      <div class="form-group">
-        <label for="inputBio" class="col-sm-2 control-label">Bio</label>
-        <div class="col-sm-6">
-          <textarea class="form-control" id="inputBio" value="{{user.data.bio}}">
+      <div class="row">
+        <label for="inputWebsite" class="two columns control-label">Website</label>
+          <input type="text" class="six columns" id="inputWebsite" value="{{user.data.blog}}"  />
+      </div>
+
+      <div class="row">
+        <label for="inputBio" class="two columns control-label">Bio</label>
+          <textarea class="six columns" id="inputBio" value="{{user.data.bio}}">
           </textarea>
-          <p class="help-block">Who are you and why are you using dat?</p>
-        </div>
       </div>
 
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-6">
-          <button type="submit" class="btn btn-success">Save</button>
-        </div>
+        <button type="submit" class="button button-primary">Save</button>
       </div>
     </form>
   </div>

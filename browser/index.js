@@ -63,13 +63,13 @@ page('/about',                  routes.about);
 page('/browse',                 routes.browse);
 page('/browse/:query',          routes.browse);
 
-page('/settings',               requiresAuth, routes.settings);
 page('/publish',                requiresAuth, routes.publish);
 
 page('/admin',                  requiresAuth, requiresAdmin, routes.admin);
 
 page('/profile',                routes.profile);
 page('/profile/:handle',        routes.profile);
+page('/settings',               requiresAuth, routes.settings);
 
 page('/view/:id',               routes.view);
 

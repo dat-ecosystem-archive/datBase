@@ -64,7 +64,10 @@ module.exports = function(db, opts) {
       }
 
       stream.pipe(concat(function (buf) {
-        var status = JSON.parse(buf.toString())
+        var result = JSON.parse(buf.toString())
+        if (result.status) status = result.status
+        else status = result
+
         if (status.error) {
           return console.error(status.message)
         }

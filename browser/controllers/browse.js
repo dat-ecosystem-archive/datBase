@@ -29,6 +29,7 @@ module.exports = function (data) {
 
       function search (query) {
         metadatSet.clear()
+        query = '*' + query + '*'
         self.set('query', query)
 
         var opts = {
@@ -47,12 +48,12 @@ module.exports = function (data) {
         }))
 
         stream.on('error', function (err) {
-          alert('there was an error. plz open a github issue <3')
+          alert('there was an error. Please open a github issue!')
           console.error(err)
         })
 
         stream.on('end', function () {
-          console.log('end')
+
           self.set('loading', false)
         })
 

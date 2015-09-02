@@ -1,11 +1,11 @@
 <div class="top-header">
   browse
-  <div class="top-header__buttons input-group search-header form row">
+</div>
+<div class="app-page">
+  <div class="input-group search-header form row">
     <input class="form-control" type="search" value="{{queryText}}" placeholder="search">
     <button type="submit" on-click="search" class="button">go</button>
   </div>
-</div>
-<div class="app-page">
   <div class="app-text-container">
     {{#if query}}
       <p>results for '{{query}}'</p>

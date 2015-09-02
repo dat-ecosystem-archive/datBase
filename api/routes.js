@@ -152,7 +152,7 @@ function unauthorized(res) {
   response.json({status: 'error', error: 'action not allowed'}).pipe(res)
 }
 
-function secondaryQuery(req, model, query, cb) {
+function secondaryQuery (req, model, query, cb) {
   if (query instanceof Error) return cb(query)
   var indexer = model.indexes[query.key]
   debug('finding by', query.key, 'with value', query.value)

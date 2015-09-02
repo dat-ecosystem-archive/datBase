@@ -7,8 +7,8 @@
           <div class="button button-primary">Save</div>
         </a>
       {{else}}
-        <a class="caption" on-click="edit">
-          <div class="button ">Edit</div>
+        <a class="caption" href="/settings">
+          <div class="button">Settings</div>
         </a>
       {{/if}}
         <a class="caption" on-click="logout">
@@ -22,8 +22,8 @@
   <div class="app-text-container">
     <div class="row">
       <img class="content-card-avatar medium"
-           data-user="{{profile.data.login}}" />
-      <p>{{profile.data.login}}<br>
+           data-user="{{profile.handle}}" />
+      <p>{{profile.handle}}<br>
       {{profile.data.email}}<br>
       {{profile.data.location}}<br>
       <a class="no-page" href="{{profile.data.blog}}" target="_blank">

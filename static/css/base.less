@@ -4,6 +4,11 @@
 @import "sidebar";
 @import "responsive";
 
+body {
+  font-size: 1.75em;
+  font-weight: 400;
+  font-family: "Source Sans Pro", sans-serif;
+}
 #main {
   display: flex;
   position: absolute;
@@ -93,6 +98,9 @@ input:focus {
 }
 
 /** skeleton overrides **/
+.button {
+  font-size: 13px;
+}
 .button.button-primary {
   background-color: @green;
   border-color: @green;

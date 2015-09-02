@@ -7,7 +7,7 @@ module.exports = function (data) {
     template: require('../templates/pages/settings.html'),
     onrender: function () {
       var ractive = this
-
+      console.log(ractive.get('user'))
       ractive.on('submit', function (event) {
         dathubClient.users.update(ractive.get('user'), function (err, resp, json) {
           if (!err) {

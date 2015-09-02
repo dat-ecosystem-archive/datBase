@@ -101,8 +101,7 @@ Github.prototype.getOrCreate = function(user, callback) {
         location: user.location,
         bio: user.bio,
         blog: user.blog,
-        company: user.company,
-        login: user.login
+        company: user.company
       }
     }
     debug('creating new user', newUser)
