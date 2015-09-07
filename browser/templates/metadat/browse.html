@@ -1,16 +1,13 @@
 <div class="top-header">
   browse
 </div>
+
 <div class="app-page">
   <div class="input-group search-header form row">
     <input class="form-control" type="search" value="{{queryText}}" placeholder="search">
     <button type="submit" on-click="search" class="button">go</button>
   </div>
   <div class="app-text-container">
-    {{#if query}}
-      <p>results for '{{query}}'</p>
-    {{/if}}
-
     {{#if metadats.length > 0}}
       <listMetadats metadats="{{metadats}}"></listMetadats>
       {{#if hasNext}} <button class="button button-primary" on-click="next">next</button>{{/if}}

@@ -4,11 +4,12 @@ var transports = require('transport-stream')
 var concat = require('concat-stream')
 var url = require('url')
 var hyperquest = require('hyperquest')
+var datPing = require('dat-ping')
 var debug = require('debug')('api/metadat')
 
 var defaultSchema = require('./metadat.json')
 
-module.exports = function(db, opts) {
+module.exports = function (db, opts) {
   if (!opts) opts = {}
   if (!opts.schema) opts.schema = defaultSchema
 
@@ -41,36 +42,11 @@ module.exports = function(db, opts) {
     })
 
     function doit () {
-      var u = url.parse(data.url)
-      if (u.protocol === 'ssh:' || u.protocol === 'http:') {
-        if (data.username) u.auth = data.username + ':' + data.password
-        var source = url.format(u)
-      } else {
-        var source = data.url
-      }
-
-      // remove sensitive data
-      delete data.username
-      delete data.password
-
-      if (u.protocol === 'http:') {
-        debug('creating hyperquest to', source)
-        var stream = hyperquest(source)
-      } else {
-        debug('creating transport to', source)
-        var stream = transports({
-          command: 'dat status --json'
-        })(source)
-      }
-
-      stream.pipe(concat(function (buf) {
-        var result = JSON.parse(buf.toString())
-        if (result.status) status = result.status
-        else status = result
-
-        if (status.error) {
-          return console.error(status.message)
-        }
+      datPing(data.url, function (err, status) {
+        if (err) return cb(new Error('Can\'t find a dat there!'))
+        // remove sensitive data
+        delete data.username
+        delete data.password
         data.status = status
 
         self.indexes['owner_id'].find(data.owner_id, function (err, rows) {

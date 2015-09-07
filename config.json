@@ -3,6 +3,6 @@
     { "github_username": null }
   ],
   "PORT": 5000,
-  "DAT_CREATE": "sh dat_create.sh $NAME"
+  "CREATE_DAT": "./create_dat <NAME>"
 }
 

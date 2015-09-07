@@ -1,51 +1,48 @@
 <div class="top-header">
-  publish a new dat
+  Publish a new dat
 </div>
 
 <div class="app-page">
   <div class="app-text-container">
     <div class="form-horizontal breadcrumbs-content" role="form">
       <div class="preview form row">
-          <div class="row">
-            <p>
-              {{#if existingDat}}
-                Looks like that dat already exists. <a href="/view/{{existingDat.id}}">Go to the dat.</a>
-              {{else}}
-                {{#if urlError}}
-                  Looks like that dat doesn't exist or we can't reach it. Are you sure that the URL is right?
-                {{else}}
-                  Don't have one? <a href="https://github.com/maxogden/dat/blob/master/docs/getting-started.md" target="_blank">Don't worry, it just takes a minute.</a>
-                {{/if}}
-              {{/if}}
-            </p>
-          </div>
-        <div class="{{errorClass('urlError')}}">
-          <div class="row">
-          <label for="inputName" class="two columns control-label">URL</label>
-          <input type="text" class="eight columns" id="metadatURL"
-                placeholder="ssh:// or http://" value="{{metadat.url}}" />
-          </div>
+        <div class="row">
+        <label for="inputName" class="two columns control-label">URL</label>
+        <input type="text" class="eight columns" id="metadatURL"
+              placeholder="ssh:// or http://" value="{{metadat.url}}" />
         </div>
       </div>
 
       <div class="authorize form row">
-        <div class="{{errorClass('submitError')}} row">
+        <div class="row">
           <label for="inputName" class="two columns control-label">Name</label>
             <input type="text" class="six columns" id="inputName"
               value="{{metadat.name}}"  />
         </div>
 
-        <div class="row {{errorClass('submitError')}}">
+        <div class="row">
           <label for="inputDescription" class="two columns control-label">Description</label>
             <textarea class="six columns" id="inputDescription"
               value="{{metadat.description}}"></textarea>
         </div>
       </div>
 
+      <h1>FAQ</h1>
+
+      <div class="row">
+        <h2>How do I create a dat server?</h2>
+        <p>{{{markdownify(help)}}}</p>
+      </div>
+
+      <div class="row">
+        <h3>How do I publish a dat from the command line?</h3>
+        <p></p>
+      </div>
+
       <!-- authorize -->
       {{#if authorize}}
-      <div class="authorize form ">
-        <div class="row {{errorClass('authorizeError')}}">
+      <div class="authorize form">
+        <div class="row">
           <label class="two columns">Username</label>
           <div class="eight columns">
             <input type="text" id="inputHandle"
@@ -53,7 +50,7 @@
           </div>
         </div>
 
-        <div class="row {{errorClass('authorizeError')}}">
+        <div class="row">
           <label for="inputPass" class="two columns">Password</label>
           <div class="eight columns">
             <input type="password" class="form-control" id="inputPass"

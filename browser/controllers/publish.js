@@ -1,6 +1,8 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
+var fs = require('fs')
 
+var help = fs.createReadStream('../publish-help.md').toString()
 var metadats = require('../hub').metadats
 
 module.exports =  function (data) {
@@ -9,19 +11,18 @@ module.exports =  function (data) {
     template: require('../templates/metadat/publish.html'),
     onrender: function () {
       var self = this
-      var dat = null;
       var user = data.user
+
+      self.set('help', help)
+
       self.set('metadat', {
         url: '',
         owner_id: user.handle
       })
 
       self.set('loading', false)
-      self.set('urlError', false)
-      self.set('authorizeError', false)
       self.set('password', null)
       self.set('username', null)
-      self.set('existingDat', null)
 
       /** Submit **/
 
@@ -32,29 +33,14 @@ module.exports =  function (data) {
         metadats.query({
           url: data.url
         }, function (err, json) {
-          if (err || json) {
-            if (json.status == 'error') {
-              return onURLError()
-            }
-            if (json.length > 0 && json[0].url == url) {
-              onURLError()
-              self.set('existingDat', json)
-              return
-            }
-          }
+          if (err || (json && json.status === 'error')) return onerror(err)
 
           data.readme = '# readme for ' + data.name + '\n\n'
           data.username = self.get('username')
           data.password = self.get('password')
 
           metadats.create(data, function (err, resp, metadat) {
-            if (err) {
-              self.set('submitError', true)
-              window.ractive.message('error', err.message)
-              return
-            }
-
-            self.set('submitError', false)
+            if (err) return onerror(err)
             window.location.href = '/view/' + metadat.id;
           })
         })
@@ -67,18 +53,13 @@ module.exports =  function (data) {
 
       self.observe('username password', function (newVal, old, keyPath) {
         self.set('loading', false)
-        self.set('authorizeError', false)
-      })
-
-      self.observe('metadat.name metadat.description', function (newVal, old, keyPath) {
-        self.set('submitError', false)
       })
 
       /** Stateful functions **/
 
-      function onURLError() {
-        self.set('urlError', true)
+      function onerror (err) {
         self.set('loading', false)
+        window.ractive.message('error', err.message)
       }
     }
   }

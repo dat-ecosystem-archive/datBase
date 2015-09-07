@@ -21,6 +21,7 @@ var init = {
 }
 
 function render (ctx, next) {
+  
   var ractive = new Ractive({
     el: "#content",
     template: ctx.ractive.template,
@@ -39,6 +40,7 @@ function render (ctx, next) {
       ctx.ractive.onrender.call(this)
     }
   });
+  
 }
 
 function requiresAuth (ctx, next) {
@@ -71,7 +73,7 @@ page('/profile',                routes.profile);
 page('/profile/:handle',        routes.profile);
 page('/settings',               requiresAuth, routes.settings);
 
-page('/view/:id',               routes.view);
+page('/view/:id',               routes.view)
 
 page('*',             render)
-page({click: false});
+page({click: false})

@@ -1,6 +1,8 @@
 var debug = require('debug')('browse')
 var qs = require('querystring')
 var xhr = require('xhr')
+$ = jQuery = require('jQuery')
+var tablesorter = require('tablesorter')
 var from = require('from2')
 var through = require('through2')
 
@@ -31,6 +33,7 @@ module.exports = function (data) {
         metadatSet.clear()
         query = '*' + query + '*'
         self.set('query', query)
+        window.location.search = '?query=' + encodeURIComponent(query)
 
         var opts = {
           query: query,
@@ -38,25 +41,26 @@ module.exports = function (data) {
           offset: self.get('offset')
         }
 
-        var stream = from.obj(SEARCH_FIELDS).pipe(through.obj(function (field, blah, cb) {
+        var stream = from.obj(SEARCH_FIELDS).pipe(through.obj(function (field, blah, next) {
           self.set('loading', true)
           dathubClient.metadats.searchByField(field, opts, function (err, resp, json) {
-            if (err) return cb(err)
+            if (err) return next(err)
             metadatSet.addItems(json.rows)
-            cb()
+            next()
           })
         }))
 
         stream.on('error', function (err) {
           alert('there was an error. Please open a github issue!')
           console.error(err)
-        })
-
-        stream.on('end', function () {
-
           self.set('loading', false)
         })
 
+        stream.on('end', function () {
+          // all items have been loaded
+          self.set('loading', false)
+          $('#list-metadats').trigger('sortReset')
+        })
       }
 
       self.on('search', function (event) {
@@ -76,6 +80,9 @@ module.exports = function (data) {
           metadatSet.addItems(metadats.data)
           self.set('offset', DEFAULT_OFFSET)
           self.set('loading', false)
+          $('#list-metadats').tablesorter({
+            theme: 'dropbox'
+          })
         })
       }
     }
