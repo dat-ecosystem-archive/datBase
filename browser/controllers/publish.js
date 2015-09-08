@@ -1,8 +1,6 @@
 var isUrl = require('is-url')
 var debug = require('debug')('publish')
-var fs = require('fs')
 
-var help = fs.createReadStream('../publish-help.md').toString()
 var metadats = require('../hub').metadats
 
 module.exports =  function (data) {

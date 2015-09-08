@@ -43,7 +43,7 @@ module.exports = function (db, opts) {
 
     function doit () {
       datPing(data.url, function (err, status) {
-        if (err) return cb(new Error('Can\'t find a dat there!'))
+        if (err) return onerror(err)
         // remove sensitive data
         delete data.username
         delete data.password
@@ -62,9 +62,9 @@ module.exports = function (db, opts) {
           console.log(data)
           model.post(data, opts, cb)
         })
-      }))
+      })
 
-      stream.on('error', function (err) {
+      function onerror (err) {
         if (err.level === 'client-authentication') {
           return cb(new Error('Username or password is incorrect.'))
         }
@@ -72,7 +72,7 @@ module.exports = function (db, opts) {
           return cb(new Error('Could not find a dat there!'))
         }
         return cb(err)
-      })
+      }
     }
   }
 

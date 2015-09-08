@@ -13,7 +13,6 @@ var DEFAULT_PAGE_LIMIT = 50;
 var DEFAULT_OFFSET = 0;
 var SEARCH_FIELDS = ['name', 'description', 'owner_id']
 
-
 // This page handles displaying search and browse of metadats
 module.exports = function (data) {
   return {
