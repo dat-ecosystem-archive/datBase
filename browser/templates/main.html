@@ -2,41 +2,28 @@
   <div class="banner-text">{{message.text}}</div>
 </div>
 
-<div class="sidebar {{sidebar}}">
-  <div class="sidebar__header">
-    <a href="/"><div class="header-logo">dathub</div></a>
-  </div>
-
-  <ul class="sidebar__nav">
+<div class="top-header">
+  <a href="/"><div class="header-logo">dathub</div></a>
+  <div class="top-header__buttons">
   {{#if user}}
     <a href="/profile/{{user.handle}}">
-      <li>
-        <img class="content-card-avatar small" data-user="{{user.handle}}" />
-        {{user.handle}}
-      </li>
+       <img class="content-card-avatar small" data-user="{{user.handle}}" />
     </a>
     {{/if}}
     {{#if !user}}
     <a class="no-page" href="/auth/github/login/">
-      <li>
-        Login with GitHub
-      </li>
+        <div class="button">Login with GitHub</div>
     </a>
     {{/if}}
-    <a href="/browse"><li>Browse</li></a>
-    <a href="/publish"><li>Publish</li></a>
-    {{#if user.admin}}
-    <a href="/admin"><li>Admin</li></a>
-    {{/if}}
-  </ul>
-
-  <div class="sidebar__footer">
-    <a href="http://github.com/karissa/dathub"><span class="octocat-green"></span></a>
-    <a href="http://twitter.com/dat_project"><span class="twitter-green"></span></a>
-    <a href="/about">?</a>
+    <a href="/publish"><div class="button button-primary">+</div></a>
   </div>
 
 </div>
 
 <div id="content">
+</div>
+<div class="footer">
+  <a href="http://github.com/karissa/dathub"><span class="octocat-green"></span></a>
+  <a href="http://twitter.com/dat_project"><span class="twitter-green"></span></a>
+  <a href="/about">?</a>
 </div>

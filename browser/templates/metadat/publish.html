@@ -1,9 +1,7 @@
-<div class="top-header">
-  Publish a new dat
-</div>
 
 <div class="app-page">
   <div class="app-text-container">
+    <h1>Publish</h1>
     <div class="form-horizontal breadcrumbs-content" role="form">
       <div class="preview form row">
         <div class="row">
@@ -11,32 +9,6 @@
         <input type="text" class="eight columns" id="metadatURL"
               placeholder="ssh:// or http://" value="{{metadat.url}}" />
         </div>
-      </div>
-
-      <div class="authorize form row">
-        <div class="row">
-          <label for="inputName" class="two columns control-label">Name</label>
-            <input type="text" class="six columns" id="inputName"
-              value="{{metadat.name}}"  />
-        </div>
-
-        <div class="row">
-          <label for="inputDescription" class="two columns control-label">Description</label>
-            <textarea class="six columns" id="inputDescription"
-              value="{{metadat.description}}"></textarea>
-        </div>
-      </div>
-
-      <h1>FAQ</h1>
-
-      <div class="row">
-        <h2>How do I create a dat server?</h2>
-        <p>{{{markdownify(help)}}}</p>
-      </div>
-
-      <div class="row">
-        <h3>How do I publish a dat from the command line?</h3>
-        <p></p>
       </div>
 
       <!-- authorize -->
@@ -65,5 +37,16 @@
          Publish
       </button>
     </div>
+
+
+      <div class="row">
+        <h2>How do I create a dat server?</h2>
+      </div>
+
+      <div class="row">
+        <h2>How do I publish a dat from the command line?</h2>
+        <p></p>
+      </div>
+
   </div>
 </div>

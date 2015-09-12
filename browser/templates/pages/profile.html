@@ -1,25 +1,15 @@
-<div class="top-header">
-  profile
-  <div class="top-header__buttons">
+
+<div class="app-page">
+  <div class="app-text-container">
+  <h1>profile</h1>
     {{#if loggedin}}
-      {{#if editing}}
-        <a class="caption" on-click="save">
-          <div class="button button-primary">Save</div>
-        </a>
-      {{else}}
         <a class="caption" href="/settings">
           <div class="button">Settings</div>
         </a>
-      {{/if}}
         <a class="caption" on-click="logout">
           <div class="button">Logout</div>
         </a>
     {{/if}}
-  </div>
-</div>
-
-<div class="app-page">
-  <div class="app-text-container">
     <div class="row">
       <img class="content-card-avatar medium"
            data-user="{{profile.handle}}" />
