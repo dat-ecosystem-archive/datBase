@@ -24,6 +24,7 @@ module.exports = function (data) {
         dathubClient.metadats.refresh(metadatId, function (err, resp, metadat) {
           if (err) return window.ractive.message('error', err.message)
           self.set('refreshing', false)
+          self.set('metadat', metadat)
         })
       })
     }

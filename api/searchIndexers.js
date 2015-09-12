@@ -9,11 +9,6 @@ var debug = require('debug')('search-indexer')
 module.exports = function (opts) {
   var writer = opts.searcher.createWriteStream()
 
-  // var keyIndexerStatement = "CREATE UNIQUE INDEX key_index on " + searcher.name + " (key)"
-
-  // searcher.db.run(keyIndexerStatement, function (err) {
-  //   if (err) return console.error('err', err)
-
   var processor = changeProcessor({
     db: opts.state,
     feed: opts.feed,
@@ -21,20 +16,14 @@ module.exports = function (opts) {
     key: 'latest-search-state'
   })
 
-  // })
-
   function worker(change, cb) {
     if (!Buffer.isBuffer(change.value)) return cb(new Error(change.change + ' was not Buffer'))
 
     var decoded = changesdown.decode(change.value)
 
-    if (decoded.key) {
-      var keyString = decoded.key.toString()
-    }
+    if (decoded.key) var keyString = decoded.key.toString()
 
-    if (decoded.value) {
-      var val = JSON.parse(decoded.value)
-    }
+    if (decoded.value) var val = JSON.parse(decoded.value)
 
     if (decoded.type === 'put') {
       deleteCurrentIndex(keyString, function(err) {

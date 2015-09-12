@@ -44,14 +44,9 @@ module.exports =  function (data) {
         event.original.preventDefault()
       })
 
-
-      /** Observers to reset error states **/
-
       self.observe('username password', function (newVal, old, keyPath) {
         self.set('loading', false)
       })
-
-      /** Stateful functions **/
 
       function onerror (err) {
         self.set('loading', false)

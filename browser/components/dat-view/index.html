@@ -1,15 +1,12 @@
 <div class="top-header">
   <div class="top-header__buttons">
   {{metadat.updated_date}}
-
+  {{metadat.indicator}}
   {{#if metadat.owner_id == user.handle}}
-    {{#if refreshing}}
-      <div class="button">...</div>
-    {{else}}
+
       <a class="caption" on-click="refresh">
         <div class="button">Refresh</div>
       </a>
-    {{/if}}
   {{/if}}
   </div>
   <!-- header -->
@@ -52,7 +49,7 @@
       <!-- edit readme -->
       <div class="row content">
         <div class="row markdown">
-          {{{ markdownify(metadat.readme)}}}
+          {{{ markdownify(metadat.readme) }}}
         </div>
       </div>
     </div>
