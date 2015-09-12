@@ -35,6 +35,9 @@
     },
     "license": {
       "type": "string"
+    },
+    "indicator": {
+      "type": "string"
     }
   }
 }

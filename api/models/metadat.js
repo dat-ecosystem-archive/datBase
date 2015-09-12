@@ -36,10 +36,7 @@ module.exports = function (db, opts) {
     if (data.refresh) {
       model.get({id: data.id}, function (err, data) {
         if (err) return cb(err)
-        ping(data, opts, function (err, data) {
-          if (err) return cb(err)
-          model.put(data, opts, cb)
-        })
+        refresh(data, opts, cb)
       })
     }
     else model.put(data, opts, cb)
@@ -61,35 +58,33 @@ module.exports = function (db, opts) {
             }
           }
         }
-
-        ping(data, opts, function (err, data) {
-          if (err) return cb(err)
-          model.post(data, opts, cb)
-        })
+        refresh(data, opts, cb)
       })
     })
   }
 
-  function ping (data, opts, cb) {
-    datPing(data.url, function (err, status) {
-      if (err) return onerror(err)
-      // remove sensitive data
-      delete data.username
-      delete data.password
-      data.status = status
-      console.log('new data:', data)
-      cb(data)
+  function refresh (metadat, opts, cb) {
+    datPing(metadat.url, function (err, status) {
+      if (err) {
+        if (err.message.indexOf('ENOENT') > -1 || err.message.indexOf('ECONNREFUSED') > -1) {
+          metadat.indicator = 'red'
+          return model.put(metadat, opts, cb)
+        }
+        if (err.level === 'client-authentication') err.message = 'Authentification failed.'
+        metadat.indicator = 'yellow'
+        model.put(metadat, opts, function () {
+          return cb(err)
+        })
+      }
+      if (!metadat.name || !metadat.description) {
+        return cb(new Error('Requires a name and description.'))
+      }
+      metadat.status = status
+      metadat.indicator = 'green'
+      console.log('new metadat:', metadat)
+      return model.put(metadat, opts, cb)
     })
 
-    function onerror (err) {
-      if (err.level === 'client-authentication') {
-        return cb(new Error('Username or password is incorrect.'))
-      }
-      if (err.message.indexOf('ENOENT') > -1) {
-        return cb(new Error('Could not find a dat there!'))
-      }
-      return cb(err)
-    }
   }
 
   return metadat
