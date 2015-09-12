@@ -1,33 +1,25 @@
 <div class="top-header">
   <div class="top-header__buttons">
+  {{metadat.updated_date}}
+
   {{#if metadat.owner_id == user.handle}}
-    {{#if editing}}
-      <a class="caption" on-click="save">
-        <div class="button button-primary">Save</div>
-      </a>
+    {{#if refreshing}}
+      <div class="button">...</div>
     {{else}}
-      <a class="caption" on-click="edit">
-        <div class="button ">Edit</div>
+      <a class="caption" on-click="refresh">
+        <div class="button">Refresh</div>
       </a>
     {{/if}}
   {{/if}}
   </div>
   <!-- header -->
   <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
-  {{#if editing}}
-    <input class="edit-info" type="text" value="{{metadat.name}}" />
-  {{else}}
     {{metadat.name}}
-  {{/if}}
 </div>
 
 <div class="app-page view-metadat">
   <div class="row view-info">
-    {{#if editing}}
-      <input class="ten columns edit-info" type="text" value="{{metadat.description}}" />
-    {{else}}
       {{metadat.description}}
-    {{/if}}
   </div>
 
     <div class="row">
@@ -59,26 +51,9 @@
     <div class="twelve columns content-box">
       <!-- edit readme -->
       <div class="row content">
-        {{#if editing}}
-        <div class="tab-container">
-          <div class="tabs">
-            <a class="tab active">Edit</a>
-            <a class="tab">Preview</a>
-          </div>
-          <div class="tab-panes twelve columns">
-            <div class="tab-pane active">
-              <textarea value="{{metadat.readme}}" class="twelve columns"></textarea>
-            </div>
-            <div class="tab-pane">
-              <div class="markdown twelve columns">{{{ markdownify(metadat.readme)}}}</div>
-            </div>
-          </div>
-        </div>
-        {{else}}
         <div class="row markdown">
           {{{ markdownify(metadat.readme)}}}
         </div>
-        {{/if}}
       </div>
     </div>
 

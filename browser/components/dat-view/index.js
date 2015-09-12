@@ -10,28 +10,20 @@ module.exports = function (data) {
     onrender: function () {
       var self = this
       var metadatId = data.metadatId
+      self.set('refreshing', false)
 
       dathubClient.metadats.getById(metadatId, function (err, resp, metadat) {
-        if (err) {
-          window.ractive.message('error', err.message)
-          return
-        }
+        if (err) return window.ractive.message('error', err.message)
         self.set('metadat', metadat)
         window.ractive.set('metadat', metadat)
       })
 
-      self.on('edit', function (event) {
-        self.set('editing', true)
-
-        tabs(document.querySelector('.tab-container'))
-        if (event) event.original.preventDefault()
-      })
-
-      self.on('save', function (event, whatChanged) {
+      self.on('refresh', function (event) {
         var metadat = self.get('metadat')
-        dathubClient.metadats.update(metadatId, metadat, function (err, resp, metadat) {
-          if (err) console.error(err)
-          self.set('editing', false)
+        self.set('refreshing', true)
+        dathubClient.metadats.update(metadatId, null, function (err, resp, metadat) {
+          if (err) return window.ractive.message('error', err.message)
+          self.set('refreshing', false)
         })
       })
     }
