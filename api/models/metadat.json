@@ -36,7 +36,10 @@
     "license": {
       "type": "string"
     },
-    "indicator": {
+    "error": {
+      "type": "object"
+    },
+    "last_updated": {
       "type": "string"
     }
   }

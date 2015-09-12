@@ -30,9 +30,9 @@ module.exports = function (data) {
 
       function search (query) {
         metadatSet.clear()
+        if (!query) return
         query = '*' + query + '*'
         self.set('query', query)
-        window.location.search = '?query=' + encodeURIComponent(query)
 
         var opts = {
           query: query,

@@ -27,6 +27,21 @@ module.exports = function (data) {
           self.set('metadat', metadat)
         })
       })
+
+      self.on('edit', function (event) {
+        self.set('editing', true)
+
+        tabs(document.querySelector('.tab-container'))
+        if (event) event.original.preventDefault()
+      })
+
+      self.on('save', function (event, whatChanged) {
+        var metadat = self.get('metadat')
+        dathubClient.metadats.update(metadatId, metadat, function (err, resp, metadat) {
+          if (err) console.error(err)
+          self.set('editing', false)
+        })
+      })
     }
   }
 }

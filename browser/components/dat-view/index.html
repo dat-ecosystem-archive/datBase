@@ -1,23 +1,50 @@
-<div class="top-header">
-  <div class="top-header__buttons">
-  {{metadat.updated_date}}
-  {{metadat.indicator}}
-  {{#if metadat.owner_id == user.handle}}
+<div class="app-page view-metadat">
+  <h1>
+  {{#if editing}}
+    <input class="edit-info" type="text" value="{{metadat.name}}" />
+  {{else}}
+    {{metadat.name}}
+  {{/if}}
+  </h1>
+  <div class="row">
+    <p>
+    {{#if editing}}
+      <input class="ten columns edit-info" type="text" value="{{metadat.description}}" />
+    {{else}}
+      {{metadat.description}}
+    {{/if}}
+    </p>
+    </div>
 
-      <a class="caption" on-click="refresh">
-        <div class="button">Refresh</div>
+  <div class="row">
+  {{#if metadat.owner_id == user.handle}}
+   {{#if editing}}
+      <a class="caption" on-click="save">
+        <div class="button button-primary">Save</div>
       </a>
+    {{else}}
+      <a class="caption" on-click="edit">
+        <div class="button ">Edit</div>
+      </a>
+    {{/if}}
+    <a class="caption" on-click="refresh">
+      <div class="button">Refresh</div>
+    </a>
   {{/if}}
   </div>
-  <!-- header -->
-  <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
-    {{metadat.name}}
-</div>
-
-<div class="app-page view-metadat">
   <div class="row view-info">
-      {{metadat.description}}
+    <p>published by <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a>, checked {{metadat.last_updated}}
+    </p>
   </div>
+
+  <div class="row">
+    {{#if metadat.error}}
+      <div class="error">:(</div>
+    {{else}}
+      <div class="no-error">:)</div>
+    {{/if}}
+  </div>
+
 
     <div class="row">
       <pre>dat clone {{metadat.url}}</pre>
@@ -25,34 +52,37 @@
   <div class="row">
     <table class="u-full-width">
       <thead>
-        <th>size</th>
         <th>datasets</th>
+        <th>size</th>
         <th>rows</th>
         <th>files</th>
         <th>versions</th>
+        <th>modified</th>
       </thead>
       <tbody>
         <tr>
+          <td>{{metadat.status.datasets.length}}</td>
           <td>{{metadat.status.size}}</td>
-          <td>{{metadat.status.datasets}}</td>
           <td>{{metadat.status.rows}}</td>
           <td>{{metadat.status.files}}</td>
           <td>{{metadat.status.versions}}</td>
+          <td>{{metadat.status.modified}}</td>
         </tr>
       </tbody>
     </table>
   </div>
+ <!--
 
   <div class="row">
-    <!-- center dashboard-->
     <div class="twelve columns content-box">
-      <!-- edit readme -->
       <div class="row content">
         <div class="row markdown">
           {{{ markdownify(metadat.readme) }}}
         </div>
       </div>
     </div>
-
   </div>
+
+    -->
+
 </div>

@@ -36,7 +36,10 @@ module.exports = function (db, opts) {
     if (data.refresh) {
       model.get({id: data.id}, function (err, data) {
         if (err) return cb(err)
-        refresh(data, opts, cb)
+        refresh(data, opts, function (err, metadat) {
+          // we dont care about the error, it is updated in the status
+          model.put(metadat, opts, cb)
+        })
       })
     }
     else model.put(data, opts, cb)
@@ -58,31 +61,42 @@ module.exports = function (db, opts) {
             }
           }
         }
-        refresh(data, opts, cb)
+        refresh(data, opts, function (err, metadat) {
+          if (err) return cb(err)
+
+          if (!metadat.name || !metadat.description) {
+            return cb(new Error('Requires a name and description.'))
+          }
+
+          model.post(metadat, opts, cb)
+        })
       })
     })
   }
 
+  function unreachable (err) {
+    return (err.message.indexOf('ENOENT') > -1 || err.message.indexOf('ECONNREFUSED') > -1)
+  }
+
+  function authentication (err) {
+    return (err.level === 'client-authentication')
+  }
+
   function refresh (metadat, opts, cb) {
-    datPing(metadat.url, function (err, status) {
+    datPing(metadat.url, {pretty: true}, function (err, status) {
       if (err) {
-        if (err.message.indexOf('ENOENT') > -1 || err.message.indexOf('ECONNREFUSED') > -1) {
-          metadat.indicator = 'red'
-          return model.put(metadat, opts, cb)
+        if (authentication(err)) {
+          err.message = 'Authentification failed.'
         }
-        if (err.level === 'client-authentication') err.message = 'Authentification failed.'
-        metadat.indicator = 'yellow'
-        model.put(metadat, opts, function () {
-          return cb(err)
-        })
+        else if (unreachable(err)) {
+          err.message = 'Dat unreachable.'
+        }
       }
-      if (!metadat.name || !metadat.description) {
-        return cb(new Error('Requires a name and description.'))
-      }
-      metadat.status = status
-      metadat.indicator = 'green'
+      metadat.error = err || undefined
+      if (!err) metadat.status = status
+      metadat.last_updated = new Date().toISOString()
       console.log('new metadat:', metadat)
-      return model.put(metadat, opts, cb)
+      return cb(err, metadat)
     })
 
   }

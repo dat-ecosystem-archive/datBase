@@ -5,23 +5,27 @@
     <th>datasets</th>
     <th>rows</th>
     <th>files</th>
-    <th>versions</th>
+    <th>checked</th>
+    <th>modified</th>
   </thead>
   <tbody>
     {{#each metadats}}
     <tr>
       <td>
         <a href="/view/{{this.id}}">
-          <img src="/static/img/dat-hex-small.png" class="img-small" />{{this.owner_id}}/{{this.name}}
+          <img src="/static/img/dat-hex-small.png" class="img-small" />{{this.name}}
         </a>
         <br>
         {{this.description}}
+        <br>
+        {{this.url}}
       </td>
       <td>{{this.status.size}}</td>
-      <td>{{this.status.datasets}}</td>
+      <td>{{this.status.datasets.length}}</td>
       <td>{{this.status.rows}}</td>
       <td>{{this.status.files}}</td>
-      <td>{{this.status.versions}}</td>
+      <td>{{this.last_updated}}</td>
+      <td>{{this.status.modified}}</td>
     </tr>
     {{/each}}
   </tbody>

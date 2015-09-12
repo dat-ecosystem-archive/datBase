@@ -1,7 +1,9 @@
 
 <div class="app-page">
   <div class="app-text-container">
-  <h1>profile</h1>
+  <h1>
+      <img class="content-card-avatar medium"
+           data-user="{{profile.handle}}" />{{profile.handle}}</h1>
     {{#if loggedin}}
         <a class="caption" href="/settings">
           <div class="button">Settings</div>
@@ -11,15 +13,11 @@
         </a>
     {{/if}}
     <div class="row">
-      <img class="content-card-avatar medium"
-           data-user="{{profile.handle}}" />
-      <p>{{profile.handle}}<br>
       {{profile.data.email}}<br>
       {{profile.data.location}}<br>
       <a class="no-page" href="{{profile.data.blog}}" target="_blank">
         {{profile.data.blog}}</a>
       <br>{{profile.data.bio}}
-      </p>
     </div>
 
     <div class="row">
