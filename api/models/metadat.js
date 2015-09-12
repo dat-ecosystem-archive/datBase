@@ -43,21 +43,11 @@ module.exports = function (db, opts) {
 
     function doit () {
       datPing(data.url, function (err, status) {
-        if (err) {
-          if (err.level === 'client-authentication') {
-            return cb(new Error('Username or password is incorrect.'))
-          }
-          if (err.message.indexOf('ENOENT') > -1) {
-            return cb(new Error('Could not find a dat there!'))
-          }
-          return cb(err)
-        }
-
+        if (err) return onerror(err)
         // remove sensitive data
         delete data.username
         delete data.password
         data.status = status
-        data.readme = status.readme
 
         self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
           if (err) return cb(err)
@@ -69,11 +59,20 @@ module.exports = function (db, opts) {
               }
             }
           }
-          data.updated_date = Date.now()
           console.log(data)
           model.post(data, opts, cb)
         })
       })
+
+      function onerror (err) {
+        if (err.level === 'client-authentication') {
+          return cb(new Error('Username or password is incorrect.'))
+        }
+        if (err.message.indexOf('ENOENT') > -1) {
+          return cb(new Error('Could not find a dat there!'))
+        }
+        return cb(err)
+      }
     }
   }
 
