@@ -11,8 +11,6 @@ module.exports =  function (data) {
       var self = this
       var user = data.user
 
-      self.set('help', help)
-
       self.set('metadat', {
         url: '',
         owner_id: user.handle

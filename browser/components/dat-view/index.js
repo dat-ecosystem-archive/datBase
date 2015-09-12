@@ -21,7 +21,7 @@ module.exports = function (data) {
       self.on('refresh', function (event) {
         var metadat = self.get('metadat')
         self.set('refreshing', true)
-        dathubClient.metadats.update(metadatId, null, function (err, resp, metadat) {
+        dathubClient.metadats.refresh(metadatId, function (err, resp, metadat) {
           if (err) return window.ractive.message('error', err.message)
           self.set('refreshing', false)
         })

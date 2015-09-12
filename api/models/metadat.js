@@ -23,7 +23,7 @@ module.exports = function (db, opts) {
     if (!params.id) return cb(null, userData)
 
     // only allow users to edit their own data
-    model.get({id: params.id}, function(err, meta) {
+    model.get({id: params.id}, function (err, meta) {
       // if not exists then skip authorization
       if (err) return cb(null, userData)
       // ensure only owner can edit
@@ -32,47 +32,63 @@ module.exports = function (db, opts) {
     })
   }
 
+  metadat.put = function (data, opts, cb) {
+    if (data.refresh) {
+      model.get({id: data.id}, function (err, data) {
+        if (err) return cb(err)
+        ping(data, opts, function (err, data) {
+          if (err) return cb(err)
+          model.put(data, opts, cb)
+        })
+      })
+    }
+    else model.put(data, opts, cb)
+  }
+
   metadat.post = function (data, opts, cb) {
     var self = this
-
     self.indexes['url'].find(data.url, function (err, rows) {
       if (err) return cb(err)
       if (rows.length > 0) return cb(new Error('Someone has already published a dat with that url'))
-      doit()
-    })
 
-    function doit () {
-      datPing(data.url, function (err, status) {
-        if (err) return onerror(err)
-        // remove sensitive data
-        delete data.username
-        delete data.password
-        data.status = status
-
-        self.indexes['owner_id'].find(data.owner_id, function (err, rows) {
-          if (err) return cb(err)
-          if (rows.length > 0) {
-            for (i in rows) {
-              var row = rows[i]
-              if (row.name == data.name) {
-                return cb(new Error('You have already published a dat with that name'))
-              }
+      metadat.indexes['owner_id'].find(data.owner_id, function (err, rows) {
+        if (err) return cb(err)
+        if (rows.length > 0) {
+          for (i in rows) {
+            var row = rows[i]
+            if (row.name == data.name) {
+              return cb(new Error('You have already published a dat with that name'))
             }
           }
-          console.log(data)
+        }
+
+        ping(data, opts, function (err, data) {
+          if (err) return cb(err)
           model.post(data, opts, cb)
         })
       })
+    })
+  }
 
-      function onerror (err) {
-        if (err.level === 'client-authentication') {
-          return cb(new Error('Username or password is incorrect.'))
-        }
-        if (err.message.indexOf('ENOENT') > -1) {
-          return cb(new Error('Could not find a dat there!'))
-        }
-        return cb(err)
+  function ping (data, opts, cb) {
+    datPing(data.url, function (err, status) {
+      if (err) return onerror(err)
+      // remove sensitive data
+      delete data.username
+      delete data.password
+      data.status = status
+      console.log('new data:', data)
+      cb(data)
+    })
+
+    function onerror (err) {
+      if (err.level === 'client-authentication') {
+        return cb(new Error('Username or password is incorrect.'))
       }
+      if (err.message.indexOf('ENOENT') > -1) {
+        return cb(new Error('Could not find a dat there!'))
+      }
+      return cb(err)
     }
   }
 
