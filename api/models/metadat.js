@@ -83,7 +83,7 @@ module.exports = function (db, opts) {
   }
 
   function refresh (metadat, opts, cb) {
-    datPing(metadat.url, {pretty: true}, function (err, status) {
+    datPing(metadat.url, function (err, status) {
       if (err) {
         if (authentication(err)) {
           err.message = 'Authentification failed.'

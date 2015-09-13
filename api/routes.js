@@ -4,6 +4,9 @@ var response = require('response')
 var debug = require('debug')('routes')
 var sqliteSearch = require('sqlite-search')
 var concat = require('concat-stream')
+var pump = require('pump')
+var through = require('through2')
+var formatData = require('format-data')
 
 var authorize = require('./authorize')
 var defaults = require('./defaults.js')
@@ -70,10 +73,14 @@ module.exports = function createRoutes(server) {
     debug('request in ', parsed)
 
     query.field = opts.params.field
-    query.formatType = 'object'
     debug('searching for ', query)
-
-    server.models.metadat.searcher.createSearchStream(query).pipe(res)
+    var retrieve = through.obj(function (partialMetadat, enc, next) {
+      server.models.metadat.get({id: partialMetadat.id}, function (err, metadat) {
+        if (err) return next()
+        next(null, metadat)
+      })
+    })
+    pump(server.models.metadat.searcher.createSearchStream(query), retrieve, formatData('json'), res)
   })
 
   router.addRoute('/api/:model/:id?', function (req, res, opts) {

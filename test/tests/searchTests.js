@@ -108,6 +108,9 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
               t.equal(res.statusCode, 200, 'search returns 200')
               debug('search results', json)
               t.ok(json.rows && json.rows.length === 1, 'search description')
+              t.ok(json.rows[0].id)
+              data.id = json.rows[0].id
+              t.deepEqual(json.rows[0], data)
               next()
             })
           },
