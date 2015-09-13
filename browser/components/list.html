@@ -7,7 +7,6 @@
     <th>files</th>
     <th>checked</th>
     <th>modified</th>
-    <th>refresh</th>
   </thead>
   <tbody>
     {{#each metadats:i}}
@@ -27,7 +26,9 @@
       <td>{{this.status.files}}</td>
       <td>{{relativeDate(this.last_updated)}}</td>
       <td>{{relativeDate(this.status.modified)}}</td>
-      <td><a on-click="refresh:{{i}}" href="#">go</a></td>
+      {{#if this.owner_id === user.handle}}
+        <td><a on-click="refresh:{{i}}" href="#"><div class="button">refresh</div></a></td>
+      {{/if}}
     </tr>
     {{/each}}
   </tbody>

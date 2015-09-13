@@ -62,11 +62,11 @@
       <tbody>
         <tr>
           <td>{{metadat.status.datasets.length}}</td>
-          <td>{{metadat.status.size}}</td>
+          <td>{{prettyBytes(metadat.status.size)}}</td>
           <td>{{metadat.status.rows}}</td>
           <td>{{metadat.status.files}}</td>
-          <td>{{metadat.status.versions}}</td>
-          <td>{{metadat.status.modified}}</td>
+          <td>{{relateiveDate(metadat.status.versions)}}</td>
+          <td>{{relativeDate(metadat.status.modified)}}</td>
         </tr>
       </tbody>
     </table>
