@@ -29,8 +29,8 @@ module.exports = function (data) {
       self.set('offset', DEFAULT_OFFSET)
 
       function search (query) {
-        metadatSet.clear()
         if (!query) return
+        metadatSet.clear()
         query = '*' + query + '*'
         self.set('query', query)
 

@@ -80,7 +80,9 @@ module.exports = function createRoutes(server) {
         next(null, metadat)
       })
     })
-    pump(server.models.metadat.searcher.createSearchStream(query), retrieve, formatData('json'), res)
+    pump(server.models.metadat.searcher.createSearchStream(query), retrieve, formatData('json'), res, function (err) {
+      if (err) response.json({'status': 'error', 'message': err.message})
+    })
   })
 
   router.addRoute('/api/:model/:id?', function (req, res, opts) {
