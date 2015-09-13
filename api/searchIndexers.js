@@ -45,9 +45,10 @@ module.exports = function (opts) {
       })
     }
 
-    function storeNewIndex(key, val, cb) {
-      val['id'] = key
-      writer.write(val, function(err) {
+    function storeNewIndex(key, value, cb) {
+      debug('search indexer writing', key, value)
+      value['id'] = key
+      writer.write(value, function(err) {
         if (err) return cb(err)
         cb()
       })

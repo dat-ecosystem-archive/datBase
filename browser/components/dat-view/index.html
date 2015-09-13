@@ -1,4 +1,20 @@
 <div class="app-page view-metadat">
+  <div class="row u-pull-right">
+  {{#if metadat.owner_id == user.handle}}
+   {{#if editing}}
+      <a class="caption" on-click="save">
+        <div class="button button-primary">Save</div>
+      </a>
+    {{else}}
+      <a class="caption" on-click="edit">
+        <div class="button ">Edit</div>
+      </a>
+    {{/if}}
+    <a class="caption" on-click="refresh">
+      <div class="button">Refresh</div>
+    </a>
+  {{/if}}
+  </div>
   <h1>
   {{#if editing}}
     <input class="edit-info" type="text" value="{{metadat.name}}" />
@@ -15,40 +31,29 @@
     {{/if}}
     </p>
     </div>
-
-  <div class="row">
-  {{#if metadat.owner_id == user.handle}}
-   {{#if editing}}
-      <a class="caption" on-click="save">
-        <div class="button button-primary">Save</div>
-      </a>
-    {{else}}
-      <a class="caption" on-click="edit">
-        <div class="button ">Edit</div>
-      </a>
-    {{/if}}
-    <a class="caption" on-click="refresh">
-      <div class="button">Refresh</div>
-    </a>
-  {{/if}}
-  </div>
   <div class="row view-info">
     <p>published by <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a>, last checked {{relativeDate(metadat.last_updated)}}
     </p>
   </div>
-
-  <div class="row">
+  <div class="row dat-url">
+    <div class="mono">
+      {{#if metadat.error}}
+        <img src="/static/img/dat-hex-small-brown.png" />
+      {{else}}
+        <img src="/static/img/dat-hex-small.png" />
+      {{/if}}
+      dat clone {{metadat.url}}
+    </div>
+    <span class="indicator">
     {{#if metadat.error}}
-      <div class="error">:(</div>
+      This dat is not currently up and running. {{metadat.error.message}}
     {{else}}
-      <div class="no-error">:)</div>
+      This dat is currently up and running.
     {{/if}}
+    </span>
   </div>
 
 
-    <div class="row">
-      <pre>dat clone {{metadat.url}}</pre>
-    </div>
   <div class="row">
     <table class="u-full-width">
       <thead>
@@ -71,18 +76,32 @@
       </tbody>
     </table>
   </div>
- <!--
 
   <div class="row">
     <div class="twelve columns content-box">
       <div class="row content">
-        <div class="row markdown">
-          {{{ markdownify(metadat.readme) }}}
-        </div>
+      {{#if editing}}
+       <div class="tab-container">
+         <div class="tabs">
+           <a class="tab active">Edit</a>
+           <a class="tab">Preview</a>
+         </div>
+         <div class="tab-panes twelve columns">
+           <div class="tab-pane active">
+             <textarea value="{{metadat.readme}}" class="twelve columns"></textarea>
+           </div>
+           <div class="tab-pane">
+             <div class="markdown twelve columns">{{{ markdownify(metadat.readme)}}}</div>
+           </div>
+         </div>
+       </div>
+       {{else}}
+         <div class="row markdown">
+           {{{ markdownify(metadat.readme)}}}
+         </div>
+       {{/if}}
       </div>
     </div>
   </div>
-
-    -->
 
 </div>
