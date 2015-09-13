@@ -27,7 +27,7 @@
       <td>{{relativeDate(this.last_updated)}}</td>
       <td>{{relativeDate(this.status.modified)}}</td>
       {{#if this.owner_id === user.handle}}
-        <td><a on-click="refresh:{{i}}" href="#"><div class="button">refresh</div></a></td>
+        <td><a on-click="refresh:{{i}}" href="#"><div class="button"><img src="/static/img/refresh.png" /></div></a></td>
       {{/if}}
     </tr>
     {{/each}}
