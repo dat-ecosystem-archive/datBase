@@ -2,7 +2,6 @@ var debug = require('debug')('browse')
 var qs = require('querystring')
 var xhr = require('xhr')
 $ = jQuery = require('jQuery')
-var tablesorter = require('tablesorter')
 var from = require('from2')
 var through = require('through2')
 
@@ -31,8 +30,10 @@ module.exports = function (data) {
       function search (query) {
         if (!query) return
         metadatSet.clear()
+        self.set('loading', true)
         query = '*' + query + '*'
         self.set('query', query)
+        self.set('all', false)
 
         var opts = {
           query: query,
@@ -40,8 +41,7 @@ module.exports = function (data) {
           offset: self.get('offset')
         }
 
-        var stream = from.obj(SEARCH_FIELDS).pipe(through.obj(function (field, blah, next) {
-          self.set('loading', true)
+        var stream = from.obj(SEARCH_FIELDS).pipe(through.obj(function (field, enc, next) {
           dathubClient.metadats.searchByField(field, opts, function (err, resp, json) {
             if (err) return next(err)
             metadatSet.addItems(json.rows)
@@ -50,14 +50,18 @@ module.exports = function (data) {
         }))
 
         stream.on('error', function (err) {
-          alert('there was an error. Please open a github issue!')
+          alert('There was a epic failure. Please open a github issue with your browser\'s console output')
           console.error(err)
           self.set('loading', false)
         })
 
-        stream.on('end', function () {
+        stream.on('finish', function () {
           // all items have been loaded
           self.set('loading', false)
+          if (self.get('metadats').length === 0) {
+            window.ractive.message('warning', 'Could not find any matching queries.')
+            all()
+          }
           $('#list-metadats').trigger('sortReset')
         })
       }
@@ -68,10 +72,10 @@ module.exports = function (data) {
 
       // ON PAGE LOAD, if there's a query already, search it, else
       // show all of the metadats
-      if (data.query) {
-        search(data.query)
-      }
-      else {
+      if (data.query) search(data.query)
+      else all()
+
+      function all () {
         self.set('loading', true)
         dathubClient.metadats.all(function (err, resp, metadats) {
           if (err) console.error(err)
@@ -79,9 +83,7 @@ module.exports = function (data) {
           metadatSet.addItems(metadats.data)
           self.set('offset', DEFAULT_OFFSET)
           self.set('loading', false)
-          $('#list-metadats').tablesorter({
-            theme: 'dropbox'
-          })
+          self.set('all', true)
         })
       }
     }
