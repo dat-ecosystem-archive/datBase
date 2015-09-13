@@ -7,9 +7,10 @@
     <th>files</th>
     <th>checked</th>
     <th>modified</th>
+    <th>refresh</th>
   </thead>
   <tbody>
-    {{#each metadats}}
+    {{#each metadats:i}}
     <tr>
       <td>
         <a href="/view/{{this.id}}">
@@ -26,6 +27,7 @@
       <td>{{this.status.files}}</td>
       <td>{{relativeDate(this.last_updated)}}</td>
       <td>{{relativeDate(this.status.modified)}}</td>
+      <td><a on-click="refresh:{{i}}" href="#">go</a></td>
     </tr>
     {{/each}}
   </tbody>
