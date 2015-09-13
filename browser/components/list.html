@@ -20,12 +20,12 @@
         <br>
         {{this.url}}
       </td>
-      <td>{{this.status.size}}</td>
+      <td>{{prettyBytes(this.status.size)}}</td>
       <td>{{this.status.datasets.length}}</td>
       <td>{{this.status.rows}}</td>
       <td>{{this.status.files}}</td>
-      <td>{{this.last_updated}}</td>
-      <td>{{this.status.modified}}</td>
+      <td>{{relativeDate(this.last_updated)}}</td>
+      <td>{{relativeDate(this.status.modified)}}</td>
     </tr>
     {{/each}}
   </tbody>
