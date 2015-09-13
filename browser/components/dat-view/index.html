@@ -33,7 +33,7 @@
   {{/if}}
   </div>
   <div class="row view-info">
-    <p>published by <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a>, checked {{metadat.last_updated}}
+    <p>published by <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a>, last checked {{relativeDate(metadat.last_updated)}}
     </p>
   </div>
 
@@ -65,7 +65,7 @@
           <td>{{prettyBytes(metadat.status.size)}}</td>
           <td>{{metadat.status.rows}}</td>
           <td>{{metadat.status.files}}</td>
-          <td>{{relateiveDate(metadat.status.versions)}}</td>
+          <td>{{metadat.status.versions}}</td>
           <td>{{relativeDate(metadat.status.modified)}}</td>
         </tr>
       </tbody>
