@@ -3,65 +3,79 @@ var series = require('run-series')
 var extend = require('extend')
 var spawn = require('tape-spawn')
 var tmp = require('os').tmpdir()
+var path = require('path')
 var rimraf = require('rimraf')
+var crypto = require('crypto')
 var debug = require('debug')('test-metadat')
 
 var TEST_DAT = {
   'owner_id': 'karissa',
   'name': 'Political organizations by state',
   'description': 'Political organizations by state with demographic information and various measures of success.',
-  'url': tmp,
+  'url': path.join(tmp, 'dat-1'),
   'readme': '',
-  'license': 'BSD-2',
+  'license': 'BSD-2'
 }
 
+var TEST_DAT2 = {
+  'owner_id': 'mafintosh',
+  'name': 'NPM data',
+  'description': 'Node package manager data',
+  'url': path.join(tmp, 'dat-2'),
+  'readme': 'asdfasdf',
+  'license': 'MIT'
+}
 var status
 
 module.exports.createMetadat = function (test, common) {
-  test('create dat', function (t) {
-    var st = spawn(t, 'dat init --no-prompt', {cwd: tmp})
-    st.end()
-  })
-
-  test('put data in dat', function (t) {
-    var st = spawn(t, 'echo "foo,bar\n3,4" | dat import -d test -', {cwd: tmp})
-    st.stderr.match(/Done importing data/)
-    st.end()
-  })
-
-  test('get status', function (t) {
-    var st = spawn(t, 'dat status --json', {cwd : tmp})
-    st.stdout.match(function (output){
-      status = JSON.parse(output)
-      return true
+  createDat(TEST_DAT)
+  createDat(TEST_DAT2)
+  function createDat (metadat) {
+    test('create dat', function (t) {
+      var st = spawn(t, 'dat init --no-prompt', {cwd: metadat.url})
+      st.end()
     })
-    st.end()
-  })
 
-  test('creates a new Metadat via POST', function (t) {
-    var data = extend({}, TEST_DAT) // clone
+    test('put data in dat', function (t) {
+      var st = spawn(t, 'echo "foo,bar\n3,4" | dat import -d test -', {cwd: metadat.url})
+      st.stderr.match(/Done importing data/)
+      st.end()
+    })
 
-    common.testPOST(t, '/api/metadat', data,
-      function (err, api, jar, res, json, done) {
-        t.ifError(err)
-        t.equal(res.statusCode, 201, 'returns 201')
-        t.equal(typeof json.id, 'string', 'return id is a string')
-        t.equal(json.name, data.name, 'returns corrent name')
-        done()
-      }
-    )
-  })
+    test('get status', function (t) {
+      var st = spawn(t, 'dat status --json', {cwd : metadat.url})
+      st.stdout.match(function (output){
+        status = JSON.parse(output)
+        return true
+      })
+      st.end()
+    })
+
+    test('creates a new Metadat via POST', function (t) {
+      var data = extend({}, metadat)
+
+      common.testPOST(t, '/api/metadat', data,
+        function (err, api, jar, res, json, done) {
+          t.ifError(err)
+          t.equal(res.statusCode, 201, 'returns 201')
+          console.log(json)
+          t.equal(typeof json.id, 'string', 'return id is a string')
+          t.equal(json.name, data.name, 'returns corrent name')
+          done()
+        }
+      )
+    })
+  }
 }
 
 module.exports.duplicate = function(test, common) {
   test('adding a dat name that already exists for this user', function (t) {
-    var data = extend({}, TEST_DAT) // clone
-    data.name = 'random name'
+    var data = extend({}, TEST_DAT)
+    data.url = 'http://npm.dathub.org'
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'returns 201')
-        data.url = 'anotherurl.com'
 
         request({
           method: 'POST',
@@ -79,12 +93,12 @@ module.exports.duplicate = function(test, common) {
 
 module.exports.duplicateURL = function(test, common) {
   test('adding a dat url that already exists', function (t) {
-    var data = extend({}, TEST_DAT) // clone
+    var data = extend({}, TEST_DAT)
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'returns 201')
-        data.name = 'duplicate URL name'
+        data.name = 'boop'
 
         request({
           method: 'POST',
@@ -103,24 +117,22 @@ module.exports.duplicateURL = function(test, common) {
 
 module.exports.query = function(test, common) {
   test('query by url or owner_id', function (t) {
-    var data = extend({}, TEST_DAT) // clone
-    data.name = 'another name'
 
-    common.testPOST(t, '/api/metadat', data,
+    common.testPOST(t, '/api/metadat', TEST_DAT,
       function (err, api, jar, res, json, done) {
-        t.equal(json.owner_id, data.owner_id)
-        data.owner_id = 'mafintosh'
-        data.url = 'http://npm.dathub.org'
+        t.equal(json.owner_id, TEST_DAT.owner_id)
 
         request({
           method: 'POST',
           jar: jar,
           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-          json: data,
+          json: TEST_DAT2,
         }, function (err, res, json) {
           t.ifError(err)
-          t.equal(json.owner_id, data.owner_id)
-          t.equal(json.url, data.url)
+          t.equal(json.url, TEST_DAT2.url, 'can create metadat')
+          t.equal(json.owner_id, TEST_DAT2.owner_id, 'can update metadat')
+
+          var data = TEST_DAT2
 
           var fns = [
             function(next) {
@@ -182,7 +194,7 @@ module.exports.query = function(test, common) {
 
 module.exports.createInvalidField = function(test, common) {
   test('invalid field type', function(t) {
-    var data = extend({}, TEST_DAT) // clone
+    var data = extend({}, TEST_DAT)
     data.owner_id = 1
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
@@ -196,7 +208,7 @@ module.exports.createInvalidField = function(test, common) {
   });
 
   test('missing required field returns error', function(t) {
-    var data = extend({}, TEST_DAT) // clone
+    var data = extend({}, TEST_DAT)
     delete data['owner_id']
 
     common.testPOST(t, '/api/metadat', data,
@@ -227,7 +239,7 @@ module.exports.getMetadatsEmpty = function (test, common) {
 
 module.exports.deleteMetadat = function (test, common) {
   test('creates a new Metadat via POST then deletes it', function(t) {
-    var data = extend({}, TEST_DAT) // clone
+    var data = extend({}, TEST_DAT)
 
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
@@ -261,7 +273,7 @@ module.exports.deleteMetadat = function (test, common) {
 
 module.exports.getMetadats = function (test, common) {
   test('get a metadat', function (t) {
-    var data = extend({}, TEST_DAT) // clone
+    var data = extend({}, TEST_DAT)
     common.testPOST(t, '/api/metadat', data, function (err, api, jar, res, json, done) {
       t.ifError(err)
 
@@ -277,7 +289,6 @@ module.exports.getMetadats = function (test, common) {
         t.equal(res.statusCode, 200, 'returns 200')
         data.id = json.id
         data.status = status
-        t.deepEqual(json.status, data.status, 'deepequal that json')
 
         request('http://localhost:' + api.options.PORT + '/api/metadat', function (err, res, json) {
           t.ifError(err)
@@ -293,7 +304,7 @@ module.exports.getMetadats = function (test, common) {
 
 module.exports.updateMetadat = function (test, common) {
   test('update a metadat', function (t) {
-    var data = extend({}, TEST_DAT) // clone
+    var data = extend({}, TEST_DAT)
 
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
