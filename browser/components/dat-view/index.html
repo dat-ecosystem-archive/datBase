@@ -1,27 +1,12 @@
 <div class="app-page view-metadat">
-  <div class="row u-pull-right">
-  {{#if metadat.owner_id == user.handle}}
-   {{#if editing}}
-      <a class="caption" on-click="save">
-        <div class="button button-primary">Save</div>
-      </a>
-    {{else}}
-      <a class="caption" on-click="edit">
-        <div class="button ">Edit</div>
-      </a>
-    {{/if}}
-    <a class="caption" on-click="refresh">
-      <div class="button">Refresh</div>
-    </a>
-  {{/if}}
-  </div>
   <h1>
   {{#if editing}}
     <input class="edit-info" type="text" value="{{metadat.name}}" />
   {{else}}
-    {{metadat.name}}
+    <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}
   {{/if}}
   </h1>
+
   <div class="row">
     <p>
     {{#if editing}}
@@ -31,28 +16,38 @@
     {{/if}}
     </p>
     </div>
-  <div class="row view-info">
-    <p>published by <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a>, last checked {{relativeDate(metadat.last_updated)}}
-    </p>
-  </div>
-  <div class="row dat-url">
-    <div class="mono">
-      {{#if metadat.error}}
-        <img src="/static/img/dat-hex-small-brown.png" />
-      {{else}}
-        <img src="/static/img/dat-hex-small.png" />
-      {{/if}}
-      dat clone {{metadat.url}}
-    </div>
-    <span class="indicator">
-    {{#if metadat.error}}
-      This dat is not currently up and running. {{metadat.error.message}}
+  {{#if metadat.owner_id == user.handle}}
+   {{#if editing}}
+      <a class="caption" on-click="save">
+        <div class="button button-primary">Save</div>
+      </a>
     {{else}}
-      This dat is currently up and running.
+      <a class="caption" on-click="edit">
+        <div class="button">Edit</div>
+      </a>
     {{/if}}
+  {{/if}}
+  <div class="row dat-url">
+    <input class="ten columns" type="text" disabled value="dat clone {{metadat.url}}" />
+  </div>
+  <div class="row">
+    <span class="indicator">
+      {{#if metadat.error}}
+        <img src="/static/img/dat-hex-small-brown.png" class="icon" />
+      {{else}}
+        <img src="/static/img/dat-hex-small.png" class="icon" />
+      {{/if}}
+      {{#if metadat.owner_id == user.handle}}
+      <a on-click="refresh" href="#"><img src="/static/img/refresh.png" class="icon" /></a>
+      {{/if}}
+    {{#if metadat.error}}
+      This dat is not currently up and running <!--{{metadat.error.message}}-->
+    {{else}}
+      This dat is currently up and running
+    {{/if}}
+    , last checked {{relativeDate(metadat.last_updated)}}
     </span>
   </div>
-
 
   <div class="row">
     <table class="u-full-width">

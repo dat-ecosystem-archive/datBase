@@ -3,27 +3,23 @@
 </div>
 
 <div class="top-header">
-  <a href="/"><div class="header-logo">dathub</div></a>
-  <div class="top-header__buttons">
-  {{#if user}}
-    <a href="/profile/{{user.handle}}">
-       <img class="content-card-avatar small" data-user="{{user.handle}}" />
-    </a>
-    {{/if}}
-    {{#if !user}}
-    <a class="no-page" href="/auth/github/login/">
-        <div class="button">Login with GitHub</div>
-    </a>
-    {{/if}}
-    <a href="/publish"><div class="button button-primary">+</div></a>
-  </div>
-
-</div>
-<div class="container">
-  <div id="content" class="eleven columns"></div>
-</div>
-<div class="footer">
-  <a href="http://github.com/karissa/dathub"><span class="octocat-green"></span></a>
-  <a href="http://twitter.com/dat_project"><span class="twitter-green"></span></a>
+  <a href="/"><div class="header-logo">dat</div></a>
+  &nbsp; | &nbsp;
+  <a href="http://github.com/karissa/dathub" class="no-page"><span class="octocat-green"></span></a>
+  <a href="http://twitter.com/dat_project" class="no-page"><span class="twitter-green"></span></a>
   <a href="/about">?</a>
+    <div class="top-header__buttons">
+      <a href="/browse"><div class="button">browse</div></a>
+      {{#if user}}
+        <a href="/profile/{{user.handle}}"><div class="button">profile</div></a>
+        {{/if}}
+      {{#if !user}}
+      <a class="no-page" href="/auth/github/login/">
+          <div class="button">Login</div>
+      </a>
+      {{/if}}
+      <a href="/publish"><div class="button button-primary">publish +</div></a>
+    </div>
 </div>
+
+  <div id="content" class="eleven columns"></div>

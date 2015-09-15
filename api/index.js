@@ -2,7 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var http = require('http')
 var extend = require('extend')
-var level = require('level-prebuilt')
+var level = require('level')
 var subdown = require('subleveldown')
 var cookieAuth = require('cookie-auth')
 var debug = require('debug')('server')
@@ -21,11 +21,8 @@ function Server (overrides) {
   self.options = extend({}, defaults, overrides)
 
   // allow custom db to be passed in
-  if (self.options.db) {
-    self.db = self.options.db
-  } else {
-    self.db = level(self.options.DAT_REGISTRY_DB)
-  }
+  if (self.options.db) self.db = self.options.db
+  else self.db = level(self.options.DAT_REGISTRY_DB)
 
   self.sessions = cookieAuth({name: 'dathub', sessions: subdown(this.db, 'sessions')})
   self.models = createModels(self.db)

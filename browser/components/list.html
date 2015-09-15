@@ -1,34 +1,40 @@
 <table id="list-metadats" class="u-full-width tablesorter">
   <thead>
     <th>dat</th>
+    <th>status</th>
+    <th>checked</th>
+    <th>modified</th>
     <th>size</th>
     <th>datasets</th>
     <th>rows</th>
     <th>files</th>
-    <th>checked</th>
-    <th>modified</th>
   </thead>
   <tbody>
     {{#each metadats:i}}
     <tr>
       <td>
-        <a href="/view/{{this.id}}">
-          <img src="/static/img/dat-hex-small.png" class="img-small" />{{this.name}}
-        </a>
+        <a href="/view/{{this.id}}">{{this.owner_id}}/{{this.name}}</a>
         <br>
         {{this.description}}
         <br>
-        {{this.url}}
+        <input type="text" disabled value="{{this.url}}" />
       </td>
+        <td>
+          {{#if this.error}}
+            <img class="icon" src="/static/img/dat-hex-small-brown.png" />
+          {{else}}
+            <img class="icon" src="/static/img/dat-hex-small.png" />
+          {{/if}}
+      {{#if this.owner_id === user.handle}}
+        <a on-click="refresh:{{i}}" href="#"><img src="/static/img/refresh.png" class="icon" /></a>
+      {{/if}}
+        </td>
+      <td>{{relativeDate(this.last_updated)}}</td>
+      <td>{{relativeDate(this.status.modified)}}</td>
       <td>{{prettyBytes(this.status.size)}}</td>
       <td>{{this.status.datasets.length}}</td>
       <td>{{this.status.rows}}</td>
       <td>{{this.status.files}}</td>
-      <td>{{relativeDate(this.last_updated)}}</td>
-      <td>{{relativeDate(this.status.modified)}}</td>
-      {{#if this.owner_id === user.handle}}
-        <td><a on-click="refresh:{{i}}" href="#"><div class="button"><img src="/static/img/refresh.png" /></div></a></td>
-      {{/if}}
     </tr>
     {{/each}}
   </tbody>
