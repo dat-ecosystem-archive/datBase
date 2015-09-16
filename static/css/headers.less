@@ -50,34 +50,33 @@
   margin-bottom: 0px;
 }
 
-.header a,
-.header a:visited {
-  color: @header-link;
-  text-decoration: none;
-}
-.header a:hover {
-  text-decoration: underline;
-}
-
 .header-logo {
   font-size: 24px;
   line-height: 60px;
-  background-image: url('/static/img/dat-hex-small.png');
-  background-size: 28px;
-  background-repeat: no-repeat;
-  padding-left: 38px;
+  // background-image: url('/static/img/dat-hex-small.png');
+  // background-size: 28px;
+  // background-repeat: no-repeat;
+  // padding-left: 38px;
   background-position: 0px 14px;
   float: left;
 }
 
 .top-header  {
+  color: #fff;
+  a {
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+      color: @off-white;
+      cursor: pointer;
+    }
+  }
   height: 60px;
   line-height: @header-height;
   margin-bottom: 20px;
   padding: 0px 20px;
-  // background-color: @off-white;
-  border-bottom: 1px solid @light-grey;
-
+  background-color: @green;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.15);
   .top-header__buttons {
     float: right;
   }

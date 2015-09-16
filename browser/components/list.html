@@ -5,9 +5,6 @@
     <th>checked</th>
     <th>modified</th>
     <th>size</th>
-    <th>datasets</th>
-    <th>rows</th>
-    <th>files</th>
   </thead>
   <tbody>
     {{#each metadats:i}}
@@ -32,9 +29,6 @@
       <td>{{relativeDate(this.last_updated)}}</td>
       <td>{{relativeDate(this.status.modified)}}</td>
       <td>{{prettyBytes(this.status.size)}}</td>
-      <td>{{this.status.datasets.length}}</td>
-      <td>{{this.status.rows}}</td>
-      <td>{{this.status.files}}</td>
     </tr>
     {{/each}}
   </tbody>

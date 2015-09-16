@@ -8,16 +8,17 @@ body {
   font-size: 1.75em;
   font-weight: 400;
   font-family: "Source Sans Pro", sans-serif;
+  background-color: #f8f8f6;
 }
 
 #content {
   min-height: 500px;
+  padding: 40px;
   margin: auto;
   position: static;
-}
-
-.app-page {
-  padding: 0px 20px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 100%;
 }
 
 .centered {
@@ -54,7 +55,7 @@ body {
   width: 80%;
 }
 
-a {
+#content a {
   color: @green;
   &:hover {
     color: @dark-green;
@@ -120,23 +121,22 @@ input:focus {
 }
 
 /** skeleton overrides **/
-.button {
+.button, .button:hover, .button:active, .button:focus {
   font-size: 13px;
+  background-color: @off-white;
 }
 .button.button-primary {
   background-color: @green;
   border-color: @green;
-  &:hover {
-    background-color: darken(@green, 10%);
-    border-color: darken(@green, 10%);
+  &:hover, &:active, &:focus {
+    background-color: @dark-green;
+    border-color: @dark-green;
   }
 }
 
 .button.button-white {
-  background-color: @off-white;
   color: @dark-blue;
 }
-
 
 .tabs {
   line-height: 40px;
