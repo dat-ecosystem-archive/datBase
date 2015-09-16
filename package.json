@@ -56,6 +56,7 @@
     "level-indexer": "^2.0.0",
     "level-rest-parser": "^2.0.0",
     "markdown-it": "^3.0.6",
+    "minimist": "^1.2.0",
     "nodemon": "^1.2.1",
     "page": "^1.4.1",
     "pretty-bytes": "^2.0.1",
