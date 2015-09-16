@@ -1,5 +1,4 @@
 var debug = require('debug')('view')
-var tabs = require('tabs')
 
 var dathubClient = require('../../hub')
 
@@ -30,8 +29,6 @@ module.exports = function (data) {
 
       self.on('edit', function (event) {
         self.set('editing', true)
-
-        tabs(document.querySelector('.tab-container'))
         if (event) event.original.preventDefault()
       })
 

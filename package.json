@@ -31,7 +31,6 @@
   "homepage": "http://dat-data.com",
   "dependencies": {
     "accountdown": "^3.0.0",
-    "bootstrap": "^3.3.1",
     "changes-feed": "^1.0.0",
     "changesdown": "^2.2.0",
     "concat-stream": "^1.4.7",
@@ -40,6 +39,7 @@
     "dat-ping": "^1.0.2",
     "dathub-api-client": "^2.0.0",
     "debug": "^2.0.0",
+    "dom": "0.0.3",
     "enter-means-submit": "^1.0.1",
     "extend": "^2.0.0",
     "format-data": "^2.1.2",
@@ -50,7 +50,6 @@
     "hyperquest": "^1.2.0",
     "is-my-json-valid": "^1.4.0",
     "is-url": "^1.1.0",
-    "jquery": "^2.1.4",
     "level": "^1.3.0",
     "level-change-processor": "^1.0.0",
     "level-indexer": "^2.0.0",
@@ -72,8 +71,6 @@
     "sqlite-search": "^4.1.0",
     "st": "^0.5.2",
     "subleveldown": "^2.0.0",
-    "tablesorter": "^2.23.3",
-    "tabs": "^0.2.0",
     "through2": "^0.6.5",
     "transport-stream": "^1.3.1",
     "xhr": "^2.0.1"

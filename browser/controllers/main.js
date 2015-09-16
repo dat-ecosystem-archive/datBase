@@ -1,13 +1,9 @@
 var Ractive = require('ractive')
-var $ = jQuery = require('jquery')
-var bootstrap = require('bootstrap')
 var xhr = require('xhr')
 var page = require('page')
-
+var dom = require('dom')
 var gravatar = require('../common/gravatar.js')
 var dathubClient = require('../hub')
-
-var tabs = require('tabs');
 
 module.exports = function (ctx, next) {
   dathubClient.users.currentUser(function (err, resp, user) {
@@ -38,17 +34,6 @@ module.exports = function (ctx, next) {
         self.set('sidebar', true)
         self.set('path', ctx.path)
 
-        $('.sidebar__nav a:not(.no-link)').each(function (i, el) {
-          el = $(el)
-          var href = el.attr('href')
-          if (href === ctx.path) {
-            el.find('li').addClass('active')
-          }
-          else {
-            el.find('li').removeClass('active')
-          }
-        })
-
         /** EVENTS **/
 
         self.on('toggle-sidebar', function (event) {
@@ -59,14 +44,9 @@ module.exports = function (ctx, next) {
         /** END EVENTS **/
 
         if (user) {
-          gravatar('.content-card-avatar')
+          gravatar(dom('.content-card-avatar'))
         }
 
-        $('.tab-container').map(function (i, el) {
-          tabs($(el))
-        })
-
-        $('[data-toggle="tooltip"]').tooltip()
       }
     })
     next()

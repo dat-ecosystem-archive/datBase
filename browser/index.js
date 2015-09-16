@@ -1,6 +1,6 @@
 var Ractive = require('ractive');
 var page = require('page');
-var $ = jQuery = require('jquery');
+var dom = require('dom')
 var enterMeansSubmit = require('enter-means-submit');
 var main = require('./controllers/main.js')
 var routes = require('./routes.js')
@@ -21,7 +21,7 @@ var init = {
 }
 
 function render (ctx, next) {
-  
+
   var ractive = new Ractive({
     el: "#content",
     template: ctx.ractive.template,
@@ -29,8 +29,8 @@ function render (ctx, next) {
     partials: ctx.ractive.partials,
     components: ctx.ractive.components,
     onrender: function () {
-      $('a:not(.no-page)').click(function(e){
-        var href = $(this).attr('href')
+      dom('a:not(.no-page)').click(function(e){
+        var href = this.getAttribute('href')
         page(href)
         e.preventDefault()
       })
@@ -40,7 +40,7 @@ function render (ctx, next) {
       ctx.ractive.onrender.call(this)
     }
   });
-  
+
 }
 
 function requiresAuth (ctx, next) {
