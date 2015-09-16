@@ -1,45 +1,51 @@
 <div class="app-page">
-  <h1>Publish a new dat</h1>
-    <div class="form-horizontal breadcrumbs-content" role="form">
-      <div class="preview form row">
-        <div class="row">
-        <label for="inputName" class="two columns control-label">URL</label>
-        <input type="text" class="eight columns" id="metadatURL"
-              placeholder="ssh:// or http://" value="{{metadat.url}}" />
+    <h1>I need one</h1>
+    <a href="/create/host" class="no-page">
+      <div class="button">
+        Create a new dat
+      </div>
+    </a>
+
+    <hr>
+    <div class="row">
+      <h1>I have one</h1>
+      <div class="form-horizontal breadcrumbs-content" role="form">
+        <div class="preview form row eight columns">
+          <input type="text" class="eight columns" id="metadatURL"
+          placeholder="ssh:// or http://" value="{{metadat.url}}" />
+          <!-- authorize -->
+          {{#if authorize}}
+          <div class="authorize form">
+            <div class="row">
+              <label class="two columns">Username</label>
+              <div class="eight columns">
+                <input type="text" id="inputHandle"
+                placeholder="Enter your username..." value="{{username}}" />
+              </div>
+            </div>
+
+            <div class="row">
+              <label for="inputPass" class="two columns">Password</label>
+              <div class="eight columns">
+                <input type="password" class="form-control" id="inputPass"
+                placeholder="Enter your password..."  value="{{password}}" />
+              </div>
+            </div>
+          </div>
+          {{/if}}
+
+          <button type="submit" on-click="submitOK"
+          class="button button-primary">Publish</button>
         </div>
       </div>
-
-      <!-- authorize -->
-      {{#if authorize}}
-      <div class="authorize form">
-        <div class="row">
-          <label class="two columns">Username</label>
-          <div class="eight columns">
-            <input type="text" id="inputHandle"
-              placeholder="Enter your username..." value="{{username}}" />
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="inputPass" class="two columns">Password</label>
-          <div class="eight columns">
-            <input type="password" class="form-control" id="inputPass"
-              placeholder="Enter your password..."  value="{{password}}" />
-          </div>
-        </div>
-      </div>
-      {{/if}}
-
-      <button type="submit" on-click="submitOK"
-        class="button button-primary">
-         Publish
-      </button>
     </div>
     <hr>
-      <div class="row">
-        <h1>References</h1>
-        <ul>
-          <li>How do I create a dat server?</li>
-          <li>How do I publish a dat from the command line?</li>
-      </div>
+
+    <div class="row">
+      <h1>References</h1>
+      <ul>
+        <li>How do I create a dat server?</li>
+        <li>How do I publish a dat from the command line?</li>
+      </ul>
+    </div>
 </div>

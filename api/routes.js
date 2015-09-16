@@ -7,6 +7,7 @@ var concat = require('concat-stream')
 var pump = require('pump')
 var through = require('through2')
 var formatData = require('format-data')
+var execspawn = require('execspawn');
 
 var authorize = require('./authorize')
 var defaults = require('./defaults.js')
@@ -64,6 +65,14 @@ module.exports = function createRoutes(server) {
         }).pipe(res)
       }
     })
+  })
+
+  router.addRoute('/create/:type', function (req, res, opts) {
+    if (opts.params.type === 'host') {
+      var cmd = execspawn(server.options.CREATE_DAT + ' ' + opts.name)
+      cmd.stderr.pipe(process.stderr)
+      cmd.stdout.pipe(process.stdout)
+    }
   })
 
   router.addRoute('/search/:field', function (req, res, opts) {
