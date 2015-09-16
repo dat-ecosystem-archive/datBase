@@ -1,32 +1,13 @@
 <div class="app-page view-metadat">
   <h1>
-  {{#if editing}}
-    <input class="edit-info" type="text" value="{{metadat.name}}" />
-  {{else}}
     <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}
-  {{/if}}
   </h1>
 
   <div class="row">
     <p>
-    {{#if editing}}
-      <input class="ten columns edit-info" type="text" value="{{metadat.description}}" />
-    {{else}}
       {{metadat.description}}
-    {{/if}}
     </p>
     </div>
-  {{#if metadat.owner_id == user.handle}}
-   {{#if editing}}
-      <a class="caption" on-click="save">
-        <div class="button button-primary">Save</div>
-      </a>
-    {{else}}
-      <a class="caption" on-click="edit">
-        <div class="button">Edit</div>
-      </a>
-    {{/if}}
-  {{/if}}
   <div class="row dat-url">
     <input class="ten columns" type="text" disabled value="dat clone {{metadat.url}}" />
   </div>
@@ -75,26 +56,9 @@
   <div class="row">
     <div class="twelve columns content-box">
       <div class="row content">
-      {{#if editing}}
-       <div class="tab-container">
-         <div class="tabs">
-           <a class="tab active">Edit</a>
-           <a class="tab">Preview</a>
-         </div>
-         <div class="tab-panes twelve columns">
-           <div class="tab-pane active">
-             <textarea value="{{metadat.readme}}" class="twelve columns"></textarea>
-           </div>
-           <div class="tab-pane">
-             <div class="markdown twelve columns">{{{ markdownify(metadat.readme)}}}</div>
-           </div>
-         </div>
-       </div>
-       {{else}}
          <div class="row markdown">
            {{{ markdownify(metadat.readme)}}}
          </div>
-       {{/if}}
       </div>
     </div>
   </div>
