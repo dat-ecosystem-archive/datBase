@@ -29,10 +29,12 @@ function render (ctx, next) {
     partials: ctx.ractive.partials,
     components: ctx.ractive.components,
     onrender: function () {
-      dom('a:not(.no-page)').click(function(e){
-        var href = this.getAttribute('href')
-        page(href)
-        e.preventDefault()
+      dom('a:not(.no-page)').each(function (element) {
+        element[0].onclick = function (event){
+          var href = this.getAttribute('href')
+          page(href)
+          event.preventDefault()
+        }
       })
 
       enterMeansSubmit(document.getElementsByClassName('form'))

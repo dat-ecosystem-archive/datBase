@@ -30,7 +30,7 @@ module.exports = function (data) {
       dathub.users.get(data.handle, function (err, resp, user) {
         if (err) return cb(err)
         ractive.set('profile', user)
-        gravatar(dom('.content-card-avatar'))
+        gravatar('.content-card-avatar')
       })
 
       dathub.metadats.query({

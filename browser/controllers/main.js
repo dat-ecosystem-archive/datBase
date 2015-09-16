@@ -34,17 +34,13 @@ module.exports = function (ctx, next) {
         self.set('sidebar', true)
         self.set('path', ctx.path)
 
-        /** EVENTS **/
-
         self.on('toggle-sidebar', function (event) {
           var sidebar = self.get('sidebar')
           self.set('sidebar', !sidebar)
         })
 
-        /** END EVENTS **/
-
         if (user) {
-          gravatar(dom('.content-card-avatar'))
+          gravatar('.content-card-avatar')
         }
 
       }
