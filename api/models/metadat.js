@@ -64,8 +64,6 @@ module.exports = function (db, opts) {
         refresh(data, opts, function (err, metadat) {
           if (err) return cb(err)
 
-          metadat.name = metadat.status.dat.name
-          metadat.description = metadat.status.dat.description || metadat.name
           if (!metadat.name || !metadat.description) {
             return cb(new Error('Requires a name and description.'))
           }
@@ -97,6 +95,8 @@ module.exports = function (db, opts) {
       metadat.error = err || undefined
       if (!err) metadat.status = status
       metadat.last_updated = new Date().toISOString()
+      metadat.description = metadat.status.dat.description || 'No description'
+      metadat.readme = metadat.status.dat.readme || '# No readme'
       console.log('new metadat:', metadat)
       return cb(err, metadat)
     })
