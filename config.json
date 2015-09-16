@@ -1,5 +1,4 @@
 {
-  "PORT": 5000,
   "CREATE_DAT": "./create <PATH>"
 }
 
