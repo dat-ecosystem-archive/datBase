@@ -64,6 +64,8 @@ module.exports = function (db, opts) {
         refresh(data, opts, function (err, metadat) {
           if (err) return cb(err)
 
+          metadat.name = metadat.status.dat.name
+          metadat.description = metadat.status.dat.description || metadat.name
           if (!metadat.name || !metadat.description) {
             return cb(new Error('Requires a name and description.'))
           }
