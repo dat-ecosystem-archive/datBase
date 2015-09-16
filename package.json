@@ -44,6 +44,7 @@
     "extend": "^2.0.0",
     "format-data": "^2.1.2",
     "from2": "^2.1.0",
+    "getport": "^0.1.0",
     "github-oauth": "^0.2.0",
     "hat": "0.0.3",
     "hyperquest": "^1.2.0",

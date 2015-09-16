@@ -1,6 +1,6 @@
 var createServer = require('./')
 var fs = require('fs')
-var getport = require('get-port')
+var getport = require('getport')
 
 var config = JSON.parse(fs.readFileSync('./config.json').toString())
 
@@ -13,7 +13,6 @@ var opts = {
 
 var api = createServer(opts)
 getport(5000, function (err, port) {
-
   var port = api.options.PORT || port
 
   api.server.listen(port, function (err) {
