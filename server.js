@@ -1,3 +1,4 @@
+var args = require('minimist')(process.argv.slice(2))
 var createServer = require('./')
 var fs = require('fs')
 var getport = require('getport')
@@ -7,7 +8,7 @@ var config = JSON.parse(fs.readFileSync('./config.json').toString())
 var opts = {
   GITHUB_CLIENT: config.GITHUB_CLIENT || process.env['GITHUB_CLIENT'],
   GITHUB_SECRET: config.GIHUB_SECRET || process.env['GITHUB_SECRET'],
-  PORT: config.PORT || process.env['PORT'],
+  PORT: args.port || config.PORT || process.env['PORT'],
   CREATE_DAT: config.CREATE_DAT || process.env['CREATE_DAT']
 }
 
