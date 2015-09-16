@@ -1,7 +1,7 @@
 var debug = require('debug')('browse')
 var qs = require('querystring')
 var xhr = require('xhr')
-$ = jQuery = require('jQuery')
+$ = jQuery = require('jquery')
 var from = require('from2')
 var through = require('through2')
 
