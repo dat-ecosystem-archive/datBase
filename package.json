@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "a place to pubilsh and collaborate your datasets.",
   "main": "index.js",
+  "bin": {
+    "dathub": "server.js"
+  },
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
     "server": "nodemon --watch static/css --watch static/js/ server.js",
@@ -68,7 +71,6 @@
     "response": "^0.14.0",
     "rest-parser": "^1.0.5",
     "routes-router": "^4.1.1",
-    "run-series": "^1.0.2",
     "sqlite-search": "^4.1.0",
     "st": "^0.5.2",
     "subleveldown": "^2.0.0",
