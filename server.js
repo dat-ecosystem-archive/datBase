@@ -2,17 +2,11 @@ var args = require('minimist')(process.argv.slice(2))
 var createServer = require('./')
 var fs = require('fs')
 var getport = require('getport')
-var defaults = require('./api/defaults.js')
-var config = JSON.parse(fs.readFileSync('./config.json').toString())
 
-for (var key in defaults) {
-  var val = process.env[key]
-  if (val) config[key] = val
-}
+var opts = {}
+if (args.port) opts.PORT = args.port
 
-if (args.port) config.PORT = args.port
-
-var api = createServer(config)
+var api = createServer(opts)
 getport(5000, function (err, port) {
   var port = api.options.PORT || port
 
