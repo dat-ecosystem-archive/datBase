@@ -11,7 +11,8 @@
     "server": "nodemon --watch static/css --watch static/js/ server.js",
     "test": "node test/run.js | tap-spec",
     "watch": "watchify -t ractivate browser/index.js -o static/js/bundle.js",
-    "watch-css": "autoless static/css"
+    "watch-css": "autoless static/css",
+    "build": "autoless --no-watch static/css && browserify -t ractivate browser/index.js -o static/js/bundle.js"
   },
   "repository": {
     "type": "git",

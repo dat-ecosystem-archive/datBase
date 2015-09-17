@@ -7,36 +7,44 @@ This is a web client that will let you publish and collaborate with your data. I
 
 See the website at http://dat-data.com for more information.
 
+## Deployment
+
+1. Have node installed.
+
+1. Clone the repository.
+
+1. Check api/defaults.js and change those values to ones appropriate for your machine. You can also set environment variables with the same name.
+
+1. Setup
+
+```
+npm install
+npm run build
+```
+
+1. Run
+```
+node server.js [--port=port]
+```
+
 ## Develeper setup
 
-Install dependencies
-```bash
-$ npm install
-```
+Watch assets, recompiling them as they are edited during development, and run the server all in one command:
 
-Have github app keys in your environment (same environment that will run ```npm start```)
-```bash
-export GITHUB_CLIENT='client-key-here'
-export GITHUB_SECRET='secret-key-here'
 ```
-
-Run the server
-```bash
 $ npm start
 ```
 
-You can also run the file watchers and server individually if you prefer to have them in separate terminals:
+Run the file watchers and server individually if you prefer to have them in separate terminals:
 
-Watch your browserify and less bundles (in separate terminals)
-```bash
+```
 $ npm run watch
 ```
 
-```bash
+```
 $ npm run watch-css
 ```
 
-Run just the server:
 ```
 $ npm run server
 ```
