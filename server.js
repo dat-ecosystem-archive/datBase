@@ -5,14 +5,9 @@ var getport = require('getport')
 
 var config = JSON.parse(fs.readFileSync('./config.json').toString())
 
-var opts = {
-  GITHUB_CLIENT: config.GITHUB_CLIENT || process.env['GITHUB_CLIENT'],
-  GITHUB_SECRET: config.GIHUB_SECRET || process.env['GITHUB_SECRET'],
-  PORT: args.port || config.PORT || process.env['PORT'],
-  CREATE_DAT: config.CREATE_DAT || process.env['CREATE_DAT']
-}
+if (args.port) config.PORT = args.port
 
-var api = createServer(opts)
+var api = createServer(config)
 getport(5000, function (err, port) {
   var port = api.options.PORT || port
 

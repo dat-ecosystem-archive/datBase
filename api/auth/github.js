@@ -27,11 +27,11 @@ function Github(models, sessions, overrides) {
   this.models = models
   this.oauth = githubOAuth(this.options)
 
-  this.oauth.on('error', function(err) {
-    console.error('there was a login error', err)
+  this.oauth.on('error', function (err) {
+    throw err
   })
 
-  this.oauth.on('token', function(token, res, tokenResponse, req) {
+  this.oauth.on('token', function (token, res, tokenResponse, req) {
     var params = {
       url: 'https://api.github.com/user?access_token=' + token.access_token,
       headers: {
