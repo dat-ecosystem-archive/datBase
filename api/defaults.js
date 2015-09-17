@@ -8,6 +8,8 @@ var config = {
   'DAT_SEARCH_DB': path.join(__dirname, '..', "dat.sqlite"),
   'GITHUB_CLIENT': undefined,
   'GITHUB_SECRET': undefined,
+  'PORT': 5000,
+  'CREATE_DAT': './create',
   'ADMINS': []
 }
 

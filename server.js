@@ -5,12 +5,12 @@ var getport = require('getport')
 var defaults = require('./api/defaults.js')
 var config = JSON.parse(fs.readFileSync('./config.json').toString())
 
-if (args.port) config.PORT = args.port
-
 for (var key in defaults) {
   var val = process.env[key]
   if (val) config[key] = val
 }
+
+if (args.port) config.PORT = args.port
 
 var api = createServer(config)
 getport(5000, function (err, port) {
