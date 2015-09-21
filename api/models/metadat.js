@@ -7,18 +7,19 @@ var hyperquest = require('hyperquest')
 var datPing = require('dat-ping')
 var debug = require('debug')('api/metadat')
 
-var defaultSchema = require('./metadat.json')
+var schema = require('./metadat.json')
 
 module.exports = function (db, opts) {
   if (!opts) opts = {}
-  if (!opts.schema) opts.schema = defaultSchema
+  if (!opts.schema) opts.schema = schema
 
   var model = levelRest(db, opts)
 
   var metadat = {}
   extend(metadat, model) // inheritance
 
-  metadat.authorize = function(params, userData, cb) {
+  metadat.authorize = function (opts, userData, cb) {
+    var params = opts.params
     // if it doesnt have an id we dont need to do custom authorization
     if (!params.id) return cb(null, userData)
 

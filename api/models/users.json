@@ -3,10 +3,12 @@
   "properties": {
     "handle": {
       "type": "string",
-      "required": true
+      "required": true,
+      "index": true
     },
     "email": {
-      "type": "string"
+      "type": "string",
+      "index": true
     },
     "data": {
       "type": "object"

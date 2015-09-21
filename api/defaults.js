@@ -9,8 +9,7 @@ var config = {
   'GITHUB_CLIENT': undefined,
   'GITHUB_SECRET': undefined,
   'PORT': 5000,
-  'CREATE_DAT': './create',
-  'ADMINS': []
+  'ADMINS': ['karissa']
 }
 
 // override the settings with env vars for multi-deploy scenarios

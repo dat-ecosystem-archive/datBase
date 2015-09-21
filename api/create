@@ -1,2 +1,0 @@
-dat init --no-prompt --path=$0
-dat serve --path=$0

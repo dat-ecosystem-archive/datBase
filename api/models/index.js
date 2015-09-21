@@ -6,37 +6,23 @@ var sqliteSearch = require('sqlite-search')
 
 var metadat = require('./metadat.js')
 var users = require('./users.js')
+var tracker = require('./tracker.js')
+
 var defaults = require('../defaults.js')
 var indexer = require('../indexer.js')
 var searchIndexer = require('../searchIndexers.js')
 
+
+
 module.exports = function(db, opts) {
-  var usersSub = subdown(db, 'users')
-  var usersChanges = subdown(db, 'users-changes')
-
-  var metadatSub = subdown(db, 'metadat')
-  var metadatChanges = subdown(db, 'metadat-changes')
-  var metadatIndexDb = subdown(db, 'metadat-index')
-  var metadatStateDb = subdown(db, 'metadat-state')
-
-  var usersFeed = changesFeed(usersChanges)
-  var metadatFeed = changesFeed(metadatChanges)
-
-  var usersDb = changesdown(usersSub, usersFeed, {valueEncoding: 'json'})
-  var metadatDb = changesdown(metadatSub, metadatFeed, {valueEncoding: 'json'})
-
   var models = {
-    users: users(usersDb, opts),
-    metadat: metadat(metadatDb, opts)
+    users: createIndexedModel(users, 'users'),
+    metadat: createIndexedModel(metadat, 'metadat'),
+    tracker: createIndexedModel(tracker, 'tracker')
   }
 
-  models.metadat.indexes = indexer({
-    schema: models.metadat.schema,
-    feed: metadatFeed,
-    db: metadatIndexDb,
-    state: metadatStateDb,
-    model: models.metadat
-  })
+  // TODO: replace with inline index
+  models.users.byGithubId = subdown(db, 'githubId')
 
   var searchOpts = {
     path: defaults.DAT_SEARCH_DB,
@@ -49,19 +35,39 @@ module.exports = function(db, opts) {
     models.metadat.searcher = searcher
     searchIndexer({
       searcher: searcher,
-      state: metadatStateDb,
-      feed: metadatFeed,
-      db: metadatIndexDb,
+      state: models.metadat.state,
+      feed: models.metadat.feed,
+      db: models.metadat.indexdb,
       path: defaults.DAT_SEARCH_DB
     })
   })
 
-  // initialize rest parsers for each model
-  models.users.handler = restParser(models.users)
-  models.metadat.handler = restParser(models.metadat)
+  function createIndexedModel (createModel, name) {
+    var sub = subdown(db, name)
+    var changes = subdown(db, name + '-changes')
+    var indexdb = subdown(db, name + '-index')
+    var state = subdown(db, name + '-state')
+    var feed = changesFeed(changes)
+    var modeldb = changesdown(sub, feed, {valueEncoding: 'json'})
 
-  // TODO replace with a more proper secondary indexing solution
-  models.users.byGithubId = subdown(db, 'githubId')
+    var model = createModel(modeldb, opts)
+
+    model.indexes = indexer({
+      schema: model.schema,
+      feed: feed,
+      db: indexdb,
+      state: state,
+      model: model
+    })
+
+    model.indexdb = indexdb
+    model.state = state
+    model.feed = feed
+    model.handler = restParser(model)
+    return model
+  }
+
+
 
   return models
 }

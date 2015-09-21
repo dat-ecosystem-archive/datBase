@@ -7,25 +7,28 @@ var concat = require('concat-stream')
 var pump = require('pump')
 var through = require('through2')
 var formatData = require('format-data')
-var execspawn = require('execspawn');
 
 var authorize = require('./authorize')
 var defaults = require('./defaults.js')
 
+function onerror (req, res, err) {
+  console.trace('Router error', err)
+  response.json({
+    'status': 'error',
+    'message': err.message
+  }).pipe(res)
+}
+
+function on404 (req, res) {
+  debug('not found', req.url)
+  res.statusCode = 404
+  res.end('not found')
+}
+
 module.exports = function createRoutes(server) {
   var router = Router({
-    errorHandler: function (req, res, err) {
-      console.trace('Router error', err)
-      response.json({
-        'status': 'error',
-        'message': err.message
-      }).pipe(res)
-    },
-    notFound: function (req, res) {
-      debug('not found', req.url)
-      res.statusCode = 404
-      res.end('not found')
-    }
+    errorHandler: onerror,
+    notFound: on404
   })
 
   router.addRoute('/auth/github/login', function(req, res, opts) {
@@ -67,14 +70,6 @@ module.exports = function createRoutes(server) {
     })
   })
 
-  router.addRoute('/create/:type', function (req, res, opts) {
-    if (opts.params.type === 'host') {
-      var cmd = execspawn(server.options.CREATE_DAT + ' ' + opts.name)
-      cmd.stderr.pipe(process.stderr)
-      cmd.stdout.pipe(process.stdout)
-    }
-  })
-
   router.addRoute('/search/:field', function (req, res, opts) {
     res.setHeader('content-type', 'application/json')
     var parsed = url.parse(req.url, true)
@@ -109,8 +104,9 @@ module.exports = function createRoutes(server) {
     var method = req.method.toLowerCase()
     var responseOpts = {}
     if (id) responseOpts.id = id
-    console.log(query)
     if (query.limit) responseOpts.limit = parseInt(query.limit)
+
+    console.log(responseOpts)
 
     authorize(server, req, res, opts, function (err) {
       if (err) return unauthorized(res)
@@ -120,14 +116,13 @@ module.exports = function createRoutes(server) {
         if (query) return secondaryQuery(req, model, query, respond)
       }
 
-      model.handler.dispatch(req, responseOpts, respond)
+      return model.handler.dispatch(req, responseOpts, respond)
 
       function respond (err, data) {
         if (err) {
-          var code = 400
+          var code = 500
           if (err.notFound) code = 404
           if (err.statusCode) code = err.statusCode
-          res.statusCode = code
           response.json({status: 'error', message: err.message}).pipe(res)
           return
         }
@@ -143,9 +138,8 @@ module.exports = function createRoutes(server) {
         // if put or post then `data` should look like {created: bool, data: row}
         if (method === 'put' || method === 'post') {
           res.statusCode = data.created ? 201 : 200
-          // TODO should we treat validation errors as a 200 or a 4xx?
           if (data.status && data.status === 'error') {
-            res.statusCode = 200
+            res.statusCode = 500
             response.json(data).pipe(res)
             return
           }
@@ -164,7 +158,7 @@ module.exports = function createRoutes(server) {
   return router
 }
 
-function unauthorized(res) {
+function unauthorized (res) {
   var code = 401
   res.statusCode = code
   response.json({status: 'error', error: 'action not allowed'}).pipe(res)

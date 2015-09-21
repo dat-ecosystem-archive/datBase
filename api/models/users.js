@@ -3,14 +3,14 @@ var concat = require('concat-stream')
 var validator = require('is-my-json-valid')
 var accountdown = require('accountdown')
 var debug = require('debug')('users')
-var defaultSchema = require('./users.json')
+var schema = require('./users.json')
 
 module.exports = Users
 
-function Users(db, opts) {
+function Users (db, opts) {
   if (!(this instanceof Users)) return new Users(db, opts)
   if (!opts) opts = {}
-  if (!opts.schema) opts.schema = defaultSchema
+  if (!opts.schema) opts.schema = schema
   this.schema = opts.schema
   this.options = opts
   if (this.options.schema) this.validate = validator(this.options.schema)
@@ -18,10 +18,10 @@ function Users(db, opts) {
   this.accounts = accountdown(db)
 }
 
-Users.prototype.authorize = function(params, userData, cb) {
+Users.prototype.authorize = function (opts, userData, cb) {
   // only allow users to edit their own data
-  if (params.id) {
-    if (params.id !== userData.user.handle) return cb(new Error('action not allowed'))
+  if (opts.params.id) {
+    if (opts.params.id !== userData.user.handle) return cb(new Error('action not allowed'))
   }
   cb(null, userData)
 }

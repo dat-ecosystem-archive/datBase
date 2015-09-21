@@ -1,11 +1,20 @@
-<div class="top-header">admins only</div>
 <div class="app-page">
   <div class="twelve columns">
-    <p>Here, describe the build process for creating a dat. A user will see this text every time they want to publish a dat. 
-      This text should describe the process to create a dat on their own server.</p>
-    <p>Markdown is valid.</p>
-    <textarea id="create-dat" class="eleven columns" rows="300">
-        {{globals.build}}
-    </textarea>
+    <table>
+      <thead>
+        <th>url</th>
+        <th>actions</th>
+      </thead>
+      <tbody>
+        {{#each managers}}
+        <tr>
+          <td>{{this.url}}</td>
+          <td><a on-click="remove:this.url">x</a></td>
+        </tr>
+        {{/each}}
+      </tbody>
+  </table>
+    <input id="add-manager" value={{newManager}}>
+    <button class="button button-primary" on-click="add">Add</button>
   </div>
 </div>

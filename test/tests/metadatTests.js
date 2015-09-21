@@ -4,6 +4,7 @@ var extend = require('extend')
 var spawn = require('tape-spawn')
 var tmp = require('os').tmpdir()
 var path = require('path')
+var fs = require('fs')
 var rimraf = require('rimraf')
 var crypto = require('crypto')
 var debug = require('debug')('test-metadat')
@@ -31,6 +32,8 @@ module.exports.createMetadat = function (test, common) {
   createDat(TEST_DAT)
   createDat(TEST_DAT2)
   function createDat (metadat) {
+    if (fs.existsSync(metadat.url)) rimraf.sync(metadat.url)
+    fs.mkdirSync(metadat.url)
     test('create dat', function (t) {
       var st = spawn(t, 'dat init --no-prompt', {cwd: metadat.url})
       st.end()
@@ -159,7 +162,7 @@ module.exports.query = function(test, common) {
                 }
               }, function (err, res, json) {
                 t.ifError(err)
-                t.equal(res.statusCode, 400, '400 when querying for multiple properties')
+                t.equal(res.statusCode, 500, '500 when querying for multiple properties')
                 next()
               })
             },
@@ -199,7 +202,7 @@ module.exports.createInvalidField = function(test, common) {
     common.testPOST(t, '/api/metadat', data,
       function (err, api, jar, res, json, done) {
         t.ifError(err)
-        t.equal(res.statusCode, 200, 'returns 200')
+        t.equal(res.statusCode, 500, 'returns 500')
         t.equal(json.status, 'error', 'json.status is error')
         data.owner_id = 'karissa'
         done()
