@@ -1,9 +1,5 @@
 var levelRest = require('level-rest-parser')
 var extend = require('extend')
-var transports = require('transport-stream')
-var concat = require('concat-stream')
-var url = require('url')
-var hyperquest = require('hyperquest')
 var datPing = require('dat-ping')
 var debug = require('debug')('api/metadat')
 
@@ -55,9 +51,9 @@ module.exports = function (db, opts) {
       metadat.indexes['owner_id'].find(data.owner_id, function (err, rows) {
         if (err) return cb(err)
         if (rows.length > 0) {
-          for (i in rows) {
+          for (var i in rows) {
             var row = rows[i]
-            if (row.name == data.name) {
+            if (row.name === data.name) {
               return cb(new Error('You have already published a dat with that name'))
             }
           }
@@ -65,43 +61,23 @@ module.exports = function (db, opts) {
         refresh(data, opts, function (err, metadat) {
           if (err) return cb(err)
 
-          if (!metadat.name || !metadat.description) {
-            return cb(new Error('Requires a name and description.'))
-          }
-
           model.post(metadat, opts, cb)
         })
       })
     })
   }
 
-  function unreachable (err) {
-    return (err.message.indexOf('ENOENT') > -1 || err.message.indexOf('ECONNREFUSED') > -1)
-  }
-
-  function authentication (err) {
-    return (err.level === 'client-authentication')
-  }
-
   function refresh (metadat, opts, cb) {
     datPing(metadat.url, function (err, status) {
-      if (err) {
-        if (authentication(err)) {
-          err.message = 'Authentification failed.'
-        }
-        else if (unreachable(err)) {
-          err.message = 'Dat unreachable.'
-        }
-      }
-      metadat.error = err || undefined
-      if (!err) metadat.status = status
       metadat.last_updated = new Date().toISOString()
-      metadat.description = metadat.status.dat.description || 'No description'
-      metadat.readme = metadat.status.dat.readme || '# No readme'
-      console.log('new metadat:', metadat)
+      metadat.error = err || undefined
+      if (err) return cb(err, metadat)
+      metadat.status = status
+      metadat.name = metadat.status.dat.name || metadat.url
+      metadat.description = metadat.status.dat.description || ''
+      debug('new metadat:', metadat)
       return cb(err, metadat)
     })
-
   }
 
   return metadat

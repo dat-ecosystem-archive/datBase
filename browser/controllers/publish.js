@@ -1,9 +1,6 @@
-var isUrl = require('is-url')
-var debug = require('debug')('publish')
-
 var metadats = require('../hub').metadats
 
-module.exports =  function (data) {
+module.exports = function (data) {
   return {
     data: data,
     template: require('../templates/metadat/publish.html'),
@@ -31,13 +28,12 @@ module.exports =  function (data) {
         }, function (err, json) {
           if (err || (json && json.status === 'error')) return onerror(err)
 
-          data.readme = '# readme for ' + data.name + '\n\n'
           data.username = self.get('username')
           data.password = self.get('password')
 
           metadats.create(data, function (err, resp, metadat) {
             if (err) return onerror(err)
-            window.location.href = '/view/' + metadat.id;
+            window.location.href = '/view/' + metadat.id
           })
         })
 
@@ -50,6 +46,7 @@ module.exports =  function (data) {
 
       function onerror (err) {
         self.set('loading', false)
+        console.log('error', err)
         window.ractive.message('error', err.message)
       }
     }

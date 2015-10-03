@@ -1,35 +1,21 @@
-<table id="list-metadats" class="u-full-width">
-  <thead>
-    <th>dat</th>
-    <th>status</th>
-    <th>checked</th>
-    <th>modified</th>
-    <th>size</th>
-  </thead>
-  <tbody>
-    {{#each metadats:i}}
-    <tr>
-      <td>
-        <a href="/view/{{this.id}}">{{this.owner_id}}/{{this.name}}</a>
-        <br>
-        {{this.description}}
-        <br>
-        <input type="text" disabled value="{{this.url}}" />
-      </td>
-        <td>
-          {{#if this.error}}
-            <img class="icon" src="/static/img/dat-hex-small-brown.png" />
-          {{else}}
-            <img class="icon" src="/static/img/dat-hex-small.png" />
-          {{/if}}
-      {{#if this.owner_id === user.handle}}
-        <a on-click="refresh:{{i}}" href="#"><img src="/static/img/refresh.png" class="icon" /></a>
-      {{/if}}
-        </td>
-      <td>{{relativeDate(this.last_updated)}}</td>
-      <td>{{relativeDate(this.status.modified)}}</td>
-      <td>{{prettyBytes(this.status.size)}}</td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+<div class="u-full-width">
+  {{#each metadats:i}}
+  <div class="list-item">
+    {{#if this.error}}
+      <img class="icon" src="/static/img/dat-hex-small-brown.png" />
+    {{else}}
+      <img class="icon" src="/static/img/dat-hex-small.png" />
+    {{/if}}
+    <a href="/view/{{this.id}}">{{this.owner_id}}/{{this.name}}</a>
+    <br>
+    {{this.description}}
+    <br>
+    <input type="text" disabled value="{{this.url}}" />
+    {{relativeDate(this.last_updated)}}
+    {{relativeDate(this.status.modified)}}
+    {{prettyBytes(this.status.size)}}
+    {{#if this.owner_id === user.handle}}
+      <a on-click="refresh:{{i}}" href="#"><img src="/static/img/refresh.png" class="icon" /></a>
+    {{/if}}
+  {{/each}}
+</div>

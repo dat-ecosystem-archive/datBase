@@ -24,7 +24,7 @@ module.exports = function (ctx, next) {
           type: type,
           text: text
         })
-        setTimeout(function() {
+        setTimeout(function () {
           self.set('message', null)
         }, 2000)
       },

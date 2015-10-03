@@ -21,7 +21,6 @@ var init = {
 }
 
 function render (ctx, next) {
-
   var ractive = new Ractive({
     el: "#content",
     template: ctx.ractive.template,
