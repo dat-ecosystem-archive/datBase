@@ -7,8 +7,8 @@ var through = require('through2')
 var RactiveSet = require('../common/RactiveSet.js')
 var dathubClient = require('../hub')
 
-var DEFAULT_PAGE_LIMIT = 50;
-var DEFAULT_OFFSET = 0;
+var DEFAULT_PAGE_LIMIT = 50
+var DEFAULT_OFFSET = 0
 var SEARCH_FIELDS = ['name', 'description', 'owner_id']
 
 // This page handles displaying search and browse of metadats
@@ -49,7 +49,7 @@ module.exports = function (data) {
         }))
 
         stream.on('error', function (err) {
-          alert('There was a epic failure. Please open a github issue with your browser\'s console output')
+          alert("There was a epic failure. Please open a github issue with your browser's console output")
           console.error(err)
           self.set('loading', false)
         })

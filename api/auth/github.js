@@ -9,7 +9,7 @@ var defaults = require('../defaults.js')
 
 module.exports = Github
 
-function Github(models, sessions, overrides) {
+function Github (models, sessions, overrides) {
   if (!(this instanceof Github)) return new Github(models, sessions, overrides)
 
   var self = this
@@ -35,7 +35,7 @@ function Github(models, sessions, overrides) {
     var params = {
       url: 'https://api.github.com/user?access_token=' + token.access_token,
       headers: {
-          'User-Agent': 'datproject.dat-registry'
+        'User-Agent': 'datproject.dat-registry'
       },
       json: true
     }
@@ -46,32 +46,32 @@ function Github(models, sessions, overrides) {
       request(params, githubUserDataCallback)
     }
 
-    function githubUserDataCallback(err, dataResponse, body) {
+    function githubUserDataCallback (err, dataResponse, body) {
       debug('github user data response', {
         status: dataResponse.statusCode,
         body: body
       })
 
       if (err) return response.json({
-        'status': 'error',
-        'message': err.message
-      }).pipe(res)
-
-      self.getOrCreate(body, function (err, newUser) {
-        if (err) return response.json({
           'status': 'error',
           'message': err.message
         }).pipe(res)
 
+      self.getOrCreate(body, function (err, newUser) {
+        if (err) return response.json({
+            'status': 'error',
+            'message': err.message
+          }).pipe(res)
+
         // delete current session (if one exists)
-        sessions.delete(req, function(err) {
+        sessions.delete(req, function (err) {
           // ignore error
           // create session
-          sessions.login(res, {id: newUser.handle}, function(err, session) {
+          sessions.login(res, {id: newUser.handle}, function (err, session) {
             if (err) return response.json({
-              'status': 'error',
-              'message': err.message
-            }).pipe(res)
+                'status': 'error',
+                'message': err.message
+              }).pipe(res)
             debug('redirecting')
             redirecter(req, res, '/profile/' + newUser.handle)
           })
@@ -81,7 +81,7 @@ function Github(models, sessions, overrides) {
   })
 }
 
-Github.prototype.getOrCreate = function(user, callback) {
+Github.prototype.getOrCreate = function (user, callback) {
   var self = this
   // get or create user
   debug('getting user', user)
@@ -119,7 +119,7 @@ Github.prototype.getOrCreate = function(user, callback) {
     })
   })
 
-  function getByGithubId(id, cb) {
+  function getByGithubId (id, cb) {
     self.models.users.byGithubId.get(id, function (err, userId) {
       if (err) return cb(err)
       self.models.users.get({id: userId}, cb)

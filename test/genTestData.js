@@ -4,7 +4,7 @@ var common = require('./common.js')({
   debug: true
 })
 
-function test(name, testFunction) {
+function test (name, testFunction) {
   return tape(common.testPrefix + name, testFunction)
 }
 
@@ -19,6 +19,6 @@ for (i in testFiles) {
 
 // var finish = require(path.join(__dirname, 'tests', 'finish.js'))
 
-tests.map(function(t) {
+tests.map(function (t) {
   t.all(test, common)
 })

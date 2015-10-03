@@ -25,30 +25,30 @@ function on404 (req, res) {
   res.end('not found')
 }
 
-module.exports = function createRoutes(server) {
+module.exports = function createRoutes (server) {
   var router = Router({
     errorHandler: onerror,
     notFound: on404
   })
 
-  router.addRoute('/auth/github/login', function(req, res, opts) {
+  router.addRoute('/auth/github/login', function (req, res, opts) {
     server.auth.github.oauth.login(req, res)
   })
 
-  router.addRoute('/auth/github/callback', function(req, res, opts) {
+  router.addRoute('/auth/github/callback', function (req, res, opts) {
     server.auth.github.oauth.callback(req, res)
   })
 
-  router.addRoute('/auth/logout', function(req, res, opts) {
+  router.addRoute('/auth/logout', function (req, res, opts) {
     return server.sessions.logout(req, res)
   })
 
   router.addRoute('/auth/currentuser', function (req, res) {
-    server.sessions.getSession(req, function(err, session) {
+    server.sessions.getSession(req, function (err, session) {
       if (session) {
         var id = session.data.id
         server.models.users.get({id: id}, function (err, user) {
-          user.admin = server.options.ADMINS.indexOf(user.handle) !=- -1
+          user.admin = server.options.ADMINS.indexOf(user.handle) != - -1
           if (err) {
             response.json({
               'status': 'warning',
@@ -168,14 +168,14 @@ function secondaryQuery (req, model, query, cb) {
   if (query instanceof Error) return cb(query)
   var indexer = model.indexes[query.key]
   debug('finding by', query.key, 'with value', query.value)
-  indexer.find(query.value, function(err, rows) {
+  indexer.find(query.value, function (err, rows) {
     if (err) return cb(err)
     cb(null, rows)
   })
 }
 
 // only one secondary query dimension at a time is currently supported
-function getSecondaryQuery(req, model, params) {
+function getSecondaryQuery (req, model, params) {
   var parsed = url.parse(req.url, true)
   var query = parsed.query
   if (!query) return false
@@ -194,8 +194,8 @@ function getSecondaryQuery(req, model, params) {
         break
       }
       queryObj = {
-        "key": key,
-        "value": val
+        'key': key,
+        'value': val
       }
     }
   }

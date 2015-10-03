@@ -12,9 +12,7 @@ var defaults = require('../defaults.js')
 var indexer = require('../indexer.js')
 var searchIndexer = require('../searchIndexers.js')
 
-
-
-module.exports = function(db, opts) {
+module.exports = function (db, opts) {
   var models = {
     users: createIndexedModel(users, 'users'),
     metadat: createIndexedModel(metadat, 'metadat'),
@@ -26,11 +24,11 @@ module.exports = function(db, opts) {
 
   var searchOpts = {
     path: defaults.DAT_SEARCH_DB,
-    primaryKey: "id",
-    columns: ["id", "name", "owner_id", "description"]
+    primaryKey: 'id',
+    columns: ['id', 'name', 'owner_id', 'description']
   }
 
-  sqliteSearch(searchOpts, function(err, searcher) {
+  sqliteSearch(searchOpts, function (err, searcher) {
     if (err) console.error('error!', err)
     models.metadat.searcher = searcher
     searchIndexer({
@@ -66,8 +64,6 @@ module.exports = function(db, opts) {
     model.handler = restParser(model)
     return model
   }
-
-
 
   return models
 }

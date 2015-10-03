@@ -2,15 +2,15 @@ var request = require('request').defaults({json: true})
 var jar = request.jar()
 var debug = require('debug')('test-users')
 
-module.exports.onlyUpdateCurrentUser = function(test, common) {
-  test('only update the current user', function(t) {
+module.exports.onlyUpdateCurrentUser = function (test, common) {
+  test('only update the current user', function (t) {
     common.getRegistry(t, function (err, api, done) {
       if (err) t.ifError(err)
       request({
-        url: 'http://localhost:' + api.options.PORT + "/auth/github/testlogin",
+        url: 'http://localhost:' + api.options.PORT + '/auth/github/testlogin',
         jar: jar,
         json: true
-      },  function (err, res, data) {
+      }, function (err, res, data) {
         t.ifError(err, 'no error')
         // edit self
         request({
@@ -44,7 +44,7 @@ module.exports.onlyUpdateCurrentUser = function(test, common) {
   })
 }
 
-module.exports.cantCreateUser = function(test, common) {
+module.exports.cantCreateUser = function (test, common) {
   var data = {
     handle: 'pizza'
   }
@@ -67,7 +67,7 @@ module.exports.cantCreateUser = function(test, common) {
   })
 }
 
-module.exports.all = function(test, common) {
-  module.exports.onlyUpdateCurrentUser(test, common);
-  module.exports.cantCreateUser(test, common);
+module.exports.all = function (test, common) {
+  module.exports.onlyUpdateCurrentUser(test, common)
+  module.exports.cantCreateUser(test, common)
 }

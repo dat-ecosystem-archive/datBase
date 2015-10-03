@@ -30,12 +30,11 @@ module.exports = function (db, opts) {
   }
 
   metadat.put = function (data, opts, cb) {
-    // we dont allow users to put through the interface, just manually refresh
+    // we dont allow users to PUT through the API, only manually refresh for now
     if (data.refresh) {
       model.get({id: data.id}, function (err, data) {
         if (err) return cb(err)
-        refresh(data, opts, function (err, metadat) {
-          // we dont care about the error, it is updated in the status
+        refresh(data, opts, function (metadat) {
           model.put(metadat, opts, cb)
         })
       })
@@ -59,9 +58,8 @@ module.exports = function (db, opts) {
             }
           }
         }
-        refresh(data, opts, function (err, metadat) {
-          if (err) return cb(err)
-
+        refresh(data, opts, function (metadat) {
+          if (metadat.error) return cb(new Error(metadat.error))
           model.post(metadat, opts, cb)
         })
       })
@@ -71,13 +69,16 @@ module.exports = function (db, opts) {
   function refresh (metadat, opts, cb) {
     datPing(metadat.url, function (err, status) {
       metadat.last_updated = new Date().toISOString()
-      metadat.error = err || undefined
-      if (err) return cb(err, metadat)
+      metadat.error = err && err.message || undefined
+      if (err) {
+        debug('refresh error:', err, metadat)
+        return cb(metadat)
+      }
       metadat.status = status
       metadat.name = metadat.status.dat.name || metadat.url
       metadat.description = metadat.status.dat.description || ''
       debug('new metadat:', metadat)
-      return cb(err, metadat)
+      return cb(metadat)
     })
   }
 

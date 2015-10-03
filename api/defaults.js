@@ -5,7 +5,7 @@ var config = {
   'DAT_REGISTRY_HOSTNAME': 'http://localhost',
   'DAT_REGISTRY_HOST': 'http://localhost:5000',
   'DAT_REGISTRY_DB': path.join(__dirname, '..', 'data'),
-  'DAT_SEARCH_DB': path.join(__dirname, '..', "dat.sqlite"),
+  'DAT_SEARCH_DB': path.join(__dirname, '..', 'dat.sqlite'),
   'GITHUB_CLIENT': undefined,
   'GITHUB_SECRET': undefined,
   'PORT': 5000,

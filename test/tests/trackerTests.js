@@ -17,7 +17,7 @@ var TEST_TRACKER = {
 
 var status
 
-module.exports.create = function(test, common) {
+module.exports.create = function (test, common) {
   test('adding a dat tracker success', function (t) {
     var data = extend({}, TEST_TRACKER)
     common.testPOST(t, '/api/tracker', data, function (err, api, jar, res, json, done) {
@@ -41,9 +41,8 @@ module.exports.create = function(test, common) {
   })
 }
 
-
-module.exports.all = function(test, common) {
+module.exports.all = function (test, common) {
   module.exports.create(test, common)
-  //module.exports.delete(test, common)
-  //module.exports.update(test, common)
+// module.exports.delete(test, common)
+// module.exports.update(test, common)
 }

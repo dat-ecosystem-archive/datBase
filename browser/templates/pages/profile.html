@@ -12,8 +12,12 @@
         </a>
     {{/if}}
     <div class="row">
-      {{profile.data.email}}<br>
-      {{profile.data.location}}<br>
+      {{#if profile.data.email}}
+        {{profile.data.email}}<br>
+      {{/if}}
+      {{#if profile.data.location}}
+        {{profile.data.location}}<br>
+      {{/if}}
       <a class="no-page" href="{{profile.data.blog}}" target="_blank">
         {{profile.data.blog}}</a>
       <br>{{profile.data.bio}}

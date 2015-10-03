@@ -36,7 +36,7 @@
       "type": "string"
     },
     "error": {
-      "type": "object"
+      "type": "string"
     },
     "last_updated": {
       "type": "string"

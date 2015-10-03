@@ -1,8 +1,8 @@
-var debug = require('debug')('profile');
+var debug = require('debug')('profile')
 var page = require('page')
 var xhr = require('xhr')
 
-var dathub = require('../hub');
+var dathub = require('../hub')
 var gravatar = require('../common/gravatar.js')
 
 // Controller for:

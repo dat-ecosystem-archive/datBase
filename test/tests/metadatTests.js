@@ -42,8 +42,8 @@ module.exports.createMetadat = function (test, common) {
     })
 
     test('get status', function (t) {
-      var st = spawn(t, 'dat status --json', {cwd : metadat.url})
-      st.stdout.match(function (output){
+      var st = spawn(t, 'dat status --json', {cwd: metadat.url})
+      st.stdout.match(function (output) {
         status = JSON.parse(output)
         return true
       })
@@ -67,7 +67,7 @@ module.exports.createMetadat = function (test, common) {
   }
 }
 
-module.exports.duplicate = function(test, common) {
+module.exports.duplicate = function (test, common) {
   test('adding a dat name that already exists for this user', function (t) {
     var data = extend({}, TEST_DAT)
     data.url = 'http://npm.dathub.org'
@@ -90,7 +90,7 @@ module.exports.duplicate = function(test, common) {
   })
 }
 
-module.exports.duplicateURL = function(test, common) {
+module.exports.duplicateURL = function (test, common) {
   test('adding a dat url that already exists', function (t) {
     var data = extend({}, TEST_DAT)
     common.testPOST(t, '/api/metadat', data,
@@ -114,9 +114,8 @@ module.exports.duplicateURL = function(test, common) {
   })
 }
 
-module.exports.query = function(test, common) {
+module.exports.query = function (test, common) {
   test('query by url or owner_id', function (t) {
-
     common.testPOST(t, '/api/metadat', TEST_DAT,
       function (err, api, jar, res, json, done) {
         t.equal(json.owner_id, TEST_DAT.owner_id)
@@ -134,7 +133,7 @@ module.exports.query = function(test, common) {
           var data = TEST_DAT2
 
           var fns = [
-            function(next) {
+            function (next) {
               request({
                 method: 'GET',
                 jar: jar,
@@ -146,7 +145,7 @@ module.exports.query = function(test, common) {
                 next()
               })
             },
-            function(next) {
+            function (next) {
               request({
                 method: 'GET',
                 jar: jar,
@@ -164,7 +163,7 @@ module.exports.query = function(test, common) {
             }
           ]
 
-          series(fns, function(err) {
+          series(fns, function (err) {
             if (err) t.ifErr(err)
             done()
           })
@@ -174,9 +173,8 @@ module.exports.query = function(test, common) {
   })
 }
 
-
-module.exports.createInvalidField = function(test, common) {
-  test('invalid field type', function(t) {
+module.exports.createInvalidField = function (test, common) {
+  test('invalid field type', function (t) {
     var data = extend({}, TEST_DAT)
     data.owner_id = 1
     common.testPOST(t, '/api/metadat', data,
@@ -188,9 +186,9 @@ module.exports.createInvalidField = function(test, common) {
         done()
       }
     )
-  });
+  })
 
-  test('missing required field returns error', function(t) {
+  test('missing required field returns error', function (t) {
     var data = extend({}, TEST_DAT)
     delete data['owner_id']
 
@@ -202,7 +200,7 @@ module.exports.createInvalidField = function(test, common) {
         done()
       }
     )
-  });
+  })
 }
 
 module.exports.getMetadatsEmpty = function (test, common) {
@@ -221,7 +219,7 @@ module.exports.getMetadatsEmpty = function (test, common) {
 }
 
 module.exports.deleteMetadat = function (test, common) {
-  test('creates a new Metadat via POST then deletes it', function(t) {
+  test('creates a new Metadat via POST then deletes it', function (t) {
     var data = extend({}, TEST_DAT)
 
     common.testPOST(t, '/api/metadat', data,
@@ -250,8 +248,8 @@ module.exports.deleteMetadat = function (test, common) {
             }
           )
         }
-      )
-    })
+        )
+      })
   })
 }
 
@@ -285,7 +283,6 @@ module.exports.getMetadats = function (test, common) {
   })
 }
 
-
 module.exports.updateMetadat = function (test, common) {
   test('update a metadat', function (t) {
     var data = extend({}, TEST_DAT)
@@ -318,7 +315,7 @@ module.exports.updateMetadat = function (test, common) {
   })
 }
 
-module.exports.all = function(test, common) {
+module.exports.all = function (test, common) {
   module.exports.createMetadat(test, common)
   module.exports.query(test, common)
   module.exports.createInvalidField(test, common)

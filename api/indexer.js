@@ -12,10 +12,10 @@ var runSeries = require('run-series')
 // a secondary index with key=property and value=primaryKey,
 // a reverse index with key=primaryKey and value=property.
 
-module.exports = function(opts) {
+module.exports = function (opts) {
   var indexers = {}
 
-  Object.keys(opts.schema.properties).map(function(key) {
+  Object.keys(opts.schema.properties).map(function (key) {
     var prop = opts.schema.properties[key]
     // only create indexers for properties marked
     // as 'index: true' in the schema
@@ -44,7 +44,7 @@ module.exports = function(opts) {
     // used to check if we have an index for a key
     var reverseIndex = subleveldown(opts.db, 'reverse-' + key)
 
-    function worker(change, cb) {
+    function worker (change, cb) {
       if (!Buffer.isBuffer(change.value)) return cb(new Error(change.change + ' was not Buffer'))
 
       var decoded = changesdown.decode(change.value)
@@ -59,7 +59,7 @@ module.exports = function(opts) {
       }
 
       if (decoded.type === 'put') {
-        deleteCurrentIndex(keyString, function(err) {
+        deleteCurrentIndex(keyString, function (err) {
           if (err) return cb(err)
           storeNewIndex(keyString, val, newIndexKey, cb)
         })
@@ -70,13 +70,13 @@ module.exports = function(opts) {
       }
 
       if (decoded.type === 'batch') {
-        var fns = decoded.batch.map(function(obj) {
+        var fns = decoded.batch.map(function (obj) {
           var batchKey = obj.key.toString()
           if (obj.type === 'put') {
             var batchVal = JSON.parse(obj.value)
             var newBatchKey = indexDb.key(batchVal, batchKey)
-            return function task(done) {
-              deleteCurrentIndex(batchKey, function(err) {
+            return function task (done) {
+              deleteCurrentIndex(batchKey, function (err) {
                 if (err) return done(err)
                 storeNewIndex(batchKey, batchVal, newBatchKey, done)
               })
@@ -84,7 +84,7 @@ module.exports = function(opts) {
           }
 
           if (obj.type === 'del') {
-            return function task(done) {
+            return function task (done) {
               deleteCurrentIndex(batchKey, done)
             }
           }
@@ -93,16 +93,16 @@ module.exports = function(opts) {
         runSeries(fns, cb)
       }
 
-      function deleteCurrentIndex(key, cb) {
+      function deleteCurrentIndex (key, cb) {
         // first check if we have an index for this key
-        reverseIndex.get(key, function(err, currentIndexKey) {
+        reverseIndex.get(key, function (err, currentIndexKey) {
           if (err && !err.notFound) return cb(err)
           // if not we can skip the rest of this function
           if (err && err.notFound) return cb()
           // if we do then we have to delete both our index and our reverse index
-          opts.db.del(currentIndexKey, function(err) {
+          opts.db.del(currentIndexKey, function (err) {
             if (err) return cb(err)
-            reverseIndex.del(key, function(err) {
+            reverseIndex.del(key, function (err) {
               if (err) return cb(err)
               cb()
             })
@@ -110,9 +110,9 @@ module.exports = function(opts) {
         })
       }
 
-      function storeNewIndex(key, val, index, cb) {
+      function storeNewIndex (key, val, index, cb) {
         // store our index (keyed by `val`) and our reverse index (keyed by `key`)
-        indexDb.add(val, key, function(err) {
+        indexDb.add(val, key, function (err) {
           if (err) return cb(err)
           reverseIndex.put(key, index, cb)
         })

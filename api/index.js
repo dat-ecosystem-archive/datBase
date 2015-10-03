@@ -33,7 +33,7 @@ function Server (overrides) {
 
 Server.prototype.createServer = function () {
   var self = this
-  return http.createServer(function(req, res) {
+  return http.createServer(function (req, res) {
     debug(req.method, req.url)
     self.router(req, res)
   })

@@ -2,7 +2,7 @@ var tape = require('tape')
 var path = require('path')
 var common = require('./common.js')()
 
-function test(name, testFunction) {
+function test (name, testFunction) {
   return tape(common.testPrefix + name, testFunction)
 }
 
@@ -32,8 +32,8 @@ if (specificTestFile) {
   runAll()
 }
 
-function runAll() {
-  tests.map(function(t) {
+function runAll () {
+  tests.map(function (t) {
     t.all(test, common)
   })
 }

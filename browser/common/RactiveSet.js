@@ -1,6 +1,6 @@
 module.exports = RactiveSet
 
-function RactiveSet(ractive, key) {
+function RactiveSet (ractive, key) {
   this.ractive = ractive
   this.set = {}
   this.key = key

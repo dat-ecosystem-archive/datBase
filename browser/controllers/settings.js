@@ -1,4 +1,4 @@
-var dathubClient = require('../hub');
+var dathubClient = require('../hub')
 var debug = require('debug')('settings')
 
 module.exports = function (data) {
@@ -14,8 +14,8 @@ module.exports = function (data) {
             window.ractive.message('success', 'Profile updated successfully!')
           }
         })
-        event.original.preventDefault();
-      });
+        event.original.preventDefault()
+      })
     }
   }
 }
