@@ -56,43 +56,11 @@ module.exports.searchMetadatDescription = function (test, common) {
 
         var fns = [
           function (next) {
-            data.description = 'description changed'
-            request({
-              method: 'PUT',
-              jar: jar,
-              uri: 'http://localhost:' + api.options.PORT + '/api/metadat/' + json.id,
-              json: data,
-            }, function (err, res, json) {
-              t.ifError(err)
-              t.equal(res.statusCode, 200, 'update returns 200')
-              t.equal(json.description, data.description)
-              next()
-            })
-          },
-          function (next) {
-            request({
-              method: 'GET',
-              uri: 'http://localhost:' + api.options.PORT + '/search/description',
-              qs: {
-                query: 'description changed'
-              }
-            }, function (err, res, json) {
-              t.ifError(err)
-              t.equal(res.statusCode, 200, 'search returns 200')
-              debug('search results', json)
-              t.ok(json.rows && json.rows.length === 1, 'search description')
-              t.ok(json.rows[0].id)
-              data.id = json.rows[0].id
-              t.deepEqual(json.rows[0], data)
-              next()
-            })
-          },
-          function (next) {
             request({
               method: 'GET',
               uri: 'http://localhost:' + api.options.PORT + '/search/name',
               qs: {
-                query: 'a different dat!'
+                query: data.url
               }
             }, function (err, res, json) {
               t.ifError(err)

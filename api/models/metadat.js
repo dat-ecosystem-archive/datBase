@@ -24,12 +24,13 @@ module.exports = function (db, opts) {
       // if not exists then skip authorization
       if (err) return cb(null, userData)
       // ensure only owner can edit
-      if (meta.owner_id !== userData.user.handle) return cb(new Error('action not allowed'))
+      if (meta.owner_id !== userData.user.handle) return cb(new Error('Action not allowed.'))
       else cb(null, userData)
     })
   }
 
   metadat.put = function (data, opts, cb) {
+    // we dont allow users to put through the interface, just manually refresh
     if (data.refresh) {
       model.get({id: data.id}, function (err, data) {
         if (err) return cb(err)
@@ -39,7 +40,7 @@ module.exports = function (db, opts) {
         })
       })
     }
-    else model.put(data, opts, cb)
+    else cb(new Error('Action not allowed.'))
   }
 
   metadat.post = function (data, opts, cb) {

@@ -300,7 +300,19 @@ module.exports.updateMetadat = function (test, common) {
         t.equal(json.license, data.license, 'license equal')
         data.status = json.status
         debug('returned', json)
-        done()
+        data.name = 'goodbye mars'
+
+        request({
+          method: 'PUT',
+          jar: jar,
+          uri: 'http://localhost:' + api.options.PORT + '/api/metadat/' + json.id,
+          json: data
+        }, function (err, res, json) {
+          t.ifError(err)
+          t.equal(json.status, 'error')
+          t.true(json.message.match(/not allowed/))
+          done()
+        })
       }
     )
   })
