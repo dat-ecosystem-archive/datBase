@@ -124,7 +124,7 @@ module.exports.query = function (test, common) {
           method: 'POST',
           jar: jar,
           uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-          json: TEST_DAT2,
+          json: TEST_DAT2
         }, function (err, res, json) {
           t.ifError(err)
           t.equal(json.url, TEST_DAT2.url, 'can create metadat')

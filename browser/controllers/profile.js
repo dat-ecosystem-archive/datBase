@@ -28,7 +28,7 @@ module.exports = function (data) {
       }
 
       dathub.users.get(data.handle, function (err, resp, user) {
-        if (err) return cb(err)
+        if (err) return window.ractive.message('error', err.message)
         ractive.set('profile', user)
         gravatar('.content-card-avatar')
       })
@@ -36,6 +36,7 @@ module.exports = function (data) {
       dathub.metadats.query({
         owner_id: data.handle
       }, function (err, resp, metadats) {
+        if (err) return window.ractive.message('error', err.message)
         ractive.set('metadats', metadats)
       })
 
@@ -44,6 +45,7 @@ module.exports = function (data) {
           uri: '/auth/logout',
           json: true
         }, function (err, resp, json) {
+          if (err) return window.ractive.message('error', err.message)
           if (json.loggedOut === true) {
             window.location.reload()
           }
