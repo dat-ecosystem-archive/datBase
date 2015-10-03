@@ -26,8 +26,8 @@ var TEST_DAT = {
   'license': 'BSD-2',
 }
 
-module.exports.searchMetadatDescription = function (test, common) {
-  test('should be able to search for a metadats description', function(t) {
+module.exports.createMetadat = function (test, common) {
+  test('should be able to create a metadat', function(t) {
     var data = extend({}, TEST_DAT) // clone
 
     common.testPOST(t, '/api/metadat', data,
@@ -35,26 +35,14 @@ module.exports.searchMetadatDescription = function (test, common) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'create returns 201')
         t.equal(typeof json.id, 'string', 'create return id is a string')
-        t.equal(json.name, data.name, 'create returns corrent name')
-        request({
-          method: 'GET',
-          uri: 'http://localhost:' + api.options.PORT + '/search/description',
-          qs: {
-            query: 'characters'
-          }
-        }, function (err, res, json) {
-          t.ifError(err)
-          t.equal(res.statusCode, 200, 'search returns 200')
-          debug('search results', json)
-          t.ok(json.rows && json.rows.length === 1, 'search returns one item')
-          done()
-        })
+        t.equal(json.name, data.url, 'create returns corrent name')
+        done()
       }
     )
   })
 }
 
-module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
+module.exports.searchMetadatDescription = function (test, common) {
   test('should be able to search for a metadats description', function(t) {
     var data = extend({}, TEST_DAT) // clone
     data.name = 'a different dat! '
@@ -64,24 +52,9 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'create returns 201')
         t.equal(typeof json.id, 'string', 'create return id is a string')
-        t.equal(json.name, data.name, 'create returns corrent name')
+        t.equal(json.name, data.url, 'create returns correct name')
 
         var fns = [
-          function (next) {
-            request({
-              method: 'GET',
-              uri: 'http://localhost:' + api.options.PORT + '/search/description',
-              qs: {
-                query: 'characters'
-              }
-            }, function (err, res, json) {
-              t.ifError(err)
-              t.equal(res.statusCode, 200, 'search returns 200')
-              debug('search results', json)
-              t.ok(json.rows && json.rows.length === 1, 'search returns one item')
-              next()
-            })
-          },
           function (next) {
             data.description = 'description changed'
             request({
@@ -140,6 +113,6 @@ module.exports.searchMetadatDescriptionAfterChange = function (test, common) {
 }
 
 module.exports.all = function(test, common) {
+  module.exports.createMetadat(test, common);
   module.exports.searchMetadatDescription(test, common);
-  module.exports.searchMetadatDescriptionAfterChange(test, common);
 }

@@ -11,8 +11,6 @@ var debug = require('debug')('test-metadat')
 
 var TEST_DAT = {
   'owner_id': 'karissa',
-  'name': 'Political organizations by state',
-  'description': 'Political organizations by state with demographic information and various measures of success.',
   'url': path.join(tmp, 'dat-1'),
   'readme': '',
   'license': 'BSD-2'
@@ -20,8 +18,6 @@ var TEST_DAT = {
 
 var TEST_DAT2 = {
   'owner_id': 'mafintosh',
-  'name': 'NPM data',
-  'description': 'Node package manager data',
   'url': path.join(tmp, 'dat-2'),
   'readme': 'asdfasdf',
   'license': 'MIT'
@@ -63,7 +59,7 @@ module.exports.createMetadat = function (test, common) {
           t.equal(res.statusCode, 201, 'returns 201')
           console.log(json)
           t.equal(typeof json.id, 'string', 'return id is a string')
-          t.equal(json.name, data.name, 'returns corrent name')
+          t.equal(json.name, data.url, 'returns corrent name')
           done()
         }
       )
@@ -157,22 +153,6 @@ module.exports.query = function(test, common) {
                 uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
                 json: data,
                 qs: {
-                  url: data.url,
-                  owner_id: data.owner_id
-                }
-              }, function (err, res, json) {
-                t.ifError(err)
-                t.equal(res.statusCode, 500, '500 when querying for multiple properties')
-                next()
-              })
-            },
-            function(next) {
-              request({
-                method: 'GET',
-                jar: jar,
-                uri: 'http://localhost:' + api.options.PORT + '/api/metadat/',
-                json: data,
-                qs: {
                   owner_id: data.owner_id
                 }
               }, function (err, res, json) {
@@ -248,7 +228,7 @@ module.exports.deleteMetadat = function (test, common) {
       function (err, api, jar, res, json, done) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'returns 201')
-        t.equal(json.name, data.name, 'name is created')
+        t.equal(json.name, data.url, 'name is created')
 
         var metadatID = json.id
 
@@ -264,7 +244,8 @@ module.exports.deleteMetadat = function (test, common) {
           request('http://localhost:' + api.options.PORT + '/api/metadat/' + metadatID,
             function (err, res, json) {
               t.ifError(err)
-              t.equal(res.statusCode, 404, 'get returns 404')
+              t.equal(json.status, 'error')
+              t.true(json.message.match(/Key not found/))
               done()
             }
           )
@@ -281,7 +262,7 @@ module.exports.getMetadats = function (test, common) {
       t.ifError(err)
 
       t.equal(res.statusCode, 201, 'create returns 201')
-      t.equal(json.name, data.name, 'returns name')
+      t.equal(json.name, data.url, 'returns name')
       t.equal(json.owner_id, data.owner_id, 'returns ownerid')
       t.equal(json.url, data.url, 'returns url')
       t.equal(json.license, data.license, 'returns license')
@@ -313,48 +294,13 @@ module.exports.updateMetadat = function (test, common) {
       function (err, api, jar, res, json, done) {
         t.ifError(err)
         t.equal(res.statusCode, 201, 'created status')
-        t.equal(json.name, data.name, 'name equal')
+        t.equal(json.name, data.url, 'name equal')
         t.equal(json.owner_id, data.owner_id, 'owner id equal')
         t.equal(json.url, data.url, 'url equal')
         t.equal(json.license, data.license, 'license equal')
         data.status = json.status
-        debug('debugin', json)
-
-        data.name = 'test entry MODIFIED!'
-        request({
-          method: 'PUT',
-          jar: jar,
-          uri: 'http://localhost:' + api.options.PORT + '/api/metadat/' + json.id,
-          json: data
-        },
-          function (err, res, json) {
-            t.ifError(err)
-            t.equal(res.statusCode, 200, 'update returns 200')
-            data.id = json.id
-            t.equal(json.name, data.name, 'new name is correct')
-            t.deepEqual(json, data)
-
-            data.name = 'test entry MODIFIED 1 more time!!'
-            data.owner_id = 'mafintosh'
-
-            request({
-              method: 'PUT',
-              jar: jar,
-              uri: 'http://localhost:' + api.options.PORT + '/api/metadat/' + json.id,
-              json: data
-            },
-              function (err, res, json) {
-                t.ifError(err)
-                t.equal(res.statusCode, 200, 'status is 200')
-                data.id = json.id
-                t.equal(json.name, data.name, 'new name')
-                t.equal(json.owner_id, 'mafintosh', 'new owner name')
-                t.deepEqual(json, data, 'deepequal json correct')
-                done()
-              }
-            )
-          }
-        )
+        debug('returned', json)
+        done()
       }
     )
   })
