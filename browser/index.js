@@ -61,7 +61,7 @@ function requiresAdmin (ctx, next) {
 }
 
 page('*', init.ctx)
-page('/', routes.browse)
+page('/', routes.splash)
 page('/about', routes.about)
 page('/browse', routes.browse)
 page('/browse/:query', routes.browse)

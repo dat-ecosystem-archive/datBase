@@ -7,26 +7,26 @@
     <p>
       {{metadat.description}}
     </p>
-    </div>
+  </div>
   <div class="row dat-url">
     <input class="ten columns" type="text" disabled value="dat clone {{metadat.url}}" />
   </div>
   <div class="row">
     <span class="indicator">
       {{#if metadat.error}}
-        <img src="/static/img/dat-hex-small-brown.png" class="icon" />
+      <img src="/static/img/dat-hex-small-brown.png" class="icon" />
       {{else}}
-        <img src="/static/img/dat-hex-small.png" class="icon" />
+      <img src="/static/img/dat-hex-small.png" class="icon" />
       {{/if}}
       {{#if metadat.owner_id == user.handle}}
       <a on-click="refresh" href="#"><img src="/static/img/refresh.png" class="icon" /></a>
       {{/if}}
-    {{#if metadat.error}}
+      {{#if metadat.error}}
       This dat is not currently up and running <!--{{metadat.error.message}}-->
-    {{else}}
+      {{else}}
       This dat is currently up and running
-    {{/if}}
-    , last checked {{relativeDate(metadat.last_updated)}}
+      {{/if}}
+      , last checked {{relativeDate(metadat.last_updated)}}
     </span>
   </div>
 
@@ -56,9 +56,9 @@
   <div class="row">
     <div class="twelve columns content-box">
       <div class="row content">
-         <div class="row markdown">
-           {{{ markdownify(metadat.readme)}}}
-         </div>
+        <div class="row markdown">
+          {{{ markdownify(metadat.readme)}}}
+        </div>
       </div>
     </div>
   </div>
