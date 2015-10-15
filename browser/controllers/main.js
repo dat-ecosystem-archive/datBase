@@ -1,4 +1,4 @@
-var Ractive = require('ractive')
+var Ractive = require('ractive-toolkit')
 var xhr = require('xhr')
 var page = require('page')
 var dom = require('dom')

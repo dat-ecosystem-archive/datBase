@@ -1,4 +1,4 @@
-var Ractive = require('ractive')
+var Ractive = require('ractive-toolkit')
 var md = require('markdown-it')()
 var templateHelpers = Ractive.defaults.data
 

@@ -1,4 +1,4 @@
-var Ractive = require('ractive')
+var Ractive = require('ractive-toolkit')
 var dathubClient = require('../hub')
 
 var MetadatList = Ractive.extend({
