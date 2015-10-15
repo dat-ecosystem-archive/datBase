@@ -3,23 +3,19 @@
 </div>
 <div class="top-header">
   <div class="container">
-    <a href="/"><div class="header-logo">dat</div></a>
-    &nbsp; | &nbsp;
-    <a href="http://github.com/karissa/dathub" class="no-page"><span class="octocat"></span></a>
-    <a href="http://twitter.com/dat_project" class="no-page"><span class="twitter"></span></a>
-    <a href="/about">?</a>
-      <div class="top-header__buttons">
-        <a href="/browse"><div class="button">browse</div></a>
-        {{#if user}}
-          <a href="/profile/{{user.handle}}"><div class="button">profile</div></a>
-          {{/if}}
-        {{#if !user}}
-        <a class="no-page" href="/auth/github/login/">
-            <div class="button">Login</div>
-        </a>
-        {{/if}}
-        <a href="/publish"><div class="button">publish +</div></a>
-      </div>
+    <ul class="top-header__buttons u-pull-left">
+      <li><a href="/">dat</a></li>
+    </ul>
+    <ul class="top-header__buttons u-pull-right">
+      <li><a href="/browse">Browse</a></li>
+      {{#if user}}
+      <li><a href="/profile/{{user.handle}}">Profile</a></li>
+      {{/if}}
+      {{#if !user}}
+      <li><a class="no-page" href="/auth/github/login/">Login</a></li>
+      {{/if}}
+      <li><a href="/publish">Publish +</a></li>
+    </ul>
   </div>
 </div>
 <div class="container main">

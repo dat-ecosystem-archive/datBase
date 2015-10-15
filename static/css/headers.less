@@ -63,24 +63,27 @@
 
 .top-header  {
   color: #fff;
-  height: 60px;
-  line-height: @header-height;
   padding: 0px 20px;
   background-color: @green;
   box-shadow: 0 1px 5px rgba(0,0,0,0.15);
   a {
     color: #fff;
     text-decoration: none;
+    padding: 15px 10px;
+    position: relative;
+    display: block;
     &:hover {
-      color: @off-white;
+      background-color: @off-white;
+      color: @green;
       cursor: pointer;
     }
   }
-  .top-header__buttons {
-    float: right;
+  li {
+    float: left;
+    list-style: none;
+    margin-bottom: 0px;
   }
-
-  input, .button {
+  ul {
     margin-bottom: 0px;
   }
 }
