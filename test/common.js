@@ -1,8 +1,9 @@
-var path = require('path')
 var debug = require('debug')('test-common')
-var st = require('st')
+var extend = require('extend')
 var request = require('request').defaults({json: true})
 var rimraf = require('rimraf')
+var spawn = require('tape-spawn')
+var fs = require('fs')
 var jar = request.jar()
 
 var Server = require('../api')
@@ -49,7 +50,7 @@ module.exports = function (opts) {
       if (err) t.ifErr(err)
       common.login(api, function (err, jar) {
         if (err) t.ifErr(err)
-        params = {
+        var params = {
           method: 'POST',
           uri: 'http://localhost:' + api.options.PORT + path,
           json: data,
@@ -77,7 +78,7 @@ module.exports = function (opts) {
   }
 
   common.getRegistry = function (t, cb) {
-    if (cb == undefined) {
+    if (cb === undefined) {
       cb = t
     }
 
@@ -127,10 +128,48 @@ module.exports = function (opts) {
           if (t && t.end) t.end()
         })
       }
-
     }
-
   }
+
+  common.createDat = function (test, metadat) {
+    if (fs.existsSync(metadat.url)) rimraf.sync(metadat.url)
+    fs.mkdirSync(metadat.url)
+    test('create dat', function (t) {
+      var st = spawn(t, 'dat init --no-prompt', {cwd: metadat.url})
+      st.end()
+    })
+
+    test('put data in dat', function (t) {
+      var st = spawn(t, 'echo "foo,bar\n3,4" | dat import -d test -', {cwd: metadat.url})
+      st.stderr.match(/Done importing data/)
+      st.end()
+    })
+
+    test('get status', function (t) {
+      var st = spawn(t, 'dat status --json', {cwd: metadat.url})
+      st.stdout.match(function (output) {
+        status = JSON.parse(output)
+        return true
+      })
+      st.end()
+    })
+
+    test('creates a new Metadat via POST', function (t) {
+      var data = extend({}, metadat)
+
+      common.testPOST(t, '/api/metadat', data,
+        function (err, api, jar, res, json, done) {
+          t.ifError(err)
+          t.equal(res.statusCode, 201, 'returns 201')
+          console.log(json)
+          t.equal(typeof json.id, 'string', 'return id is a string')
+          t.equal(json.name, data.url, 'returns corrent name')
+          done()
+        }
+      )
+    })
+  }
+
 
   return common
 }

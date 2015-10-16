@@ -2,14 +2,11 @@ var url = require('url')
 var Router = require('routes-router')
 var response = require('response')
 var debug = require('debug')('routes')
-var sqliteSearch = require('sqlite-search')
-var concat = require('concat-stream')
 var pump = require('pump')
 var through = require('through2')
 var formatData = require('format-data')
 
 var authorize = require('./authorize')
-var defaults = require('./defaults.js')
 
 function onerror (req, res, err) {
   console.trace('Router error', err)
@@ -45,10 +42,11 @@ module.exports = function createRoutes (server) {
 
   router.addRoute('/auth/currentuser', function (req, res) {
     server.sessions.getSession(req, function (err, session) {
+      if (err) return response.json({'error': err.message})
       if (session) {
         var id = session.data.id
         server.models.users.get({id: id}, function (err, user) {
-          user.admin = server.options.ADMINS.indexOf(user.handle) != - -1
+          user.admin = server.options.ADMINS.indexOf(user.handle) !== -1
           if (err) {
             response.json({
               'status': 'warning',
@@ -85,7 +83,7 @@ module.exports = function createRoutes (server) {
       })
     })
     pump(server.models.metadat.searcher.createSearchStream(query), retrieve, formatData('json'), res, function (err) {
-      if (err) response.json({'status': 'error', 'message': err.message})
+      if (err) response.json({status: 'error', message: err.message})
     })
   })
 
@@ -104,7 +102,7 @@ module.exports = function createRoutes (server) {
     var method = req.method.toLowerCase()
     var responseOpts = {}
     if (id) responseOpts.id = id
-    if (query.limit) responseOpts.limit = parseInt(query.limit)
+    if (query.limit) responseOpts.limit = parseInt(query.limit, 10)
 
     console.log(responseOpts)
 
@@ -119,13 +117,7 @@ module.exports = function createRoutes (server) {
       return model.handler.dispatch(req, responseOpts, respond)
 
       function respond (err, data) {
-        if (err) {
-          var code = 500
-          if (err.notFound) code = 404
-          if (err.statusCode) code = err.statusCode
-          response.json({status: 'error', message: err.message}).pipe(res)
-          return
-        }
+        if (err) return response.json({status: 'error', message: err.message}).pipe(res)
 
         if (!data) data = {status: 'error', message: 'no data returned'}
 
@@ -152,7 +144,6 @@ module.exports = function createRoutes (server) {
         res.end()
       }
     })
-
   })
 
   return router

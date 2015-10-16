@@ -1,12 +1,8 @@
 var request = require('request').defaults({json: true})
 var series = require('run-series')
 var extend = require('extend')
-var spawn = require('tape-spawn')
 var tmp = require('os').tmpdir()
 var path = require('path')
-var fs = require('fs')
-var rimraf = require('rimraf')
-var crypto = require('crypto')
 var debug = require('debug')('test-metadat')
 
 var TEST_DAT = {
@@ -25,46 +21,8 @@ var TEST_DAT2 = {
 var status
 
 module.exports.createMetadat = function (test, common) {
-  createDat(TEST_DAT)
-  createDat(TEST_DAT2)
-  function createDat (metadat) {
-    if (fs.existsSync(metadat.url)) rimraf.sync(metadat.url)
-    fs.mkdirSync(metadat.url)
-    test('create dat', function (t) {
-      var st = spawn(t, 'dat init --no-prompt', {cwd: metadat.url})
-      st.end()
-    })
-
-    test('put data in dat', function (t) {
-      var st = spawn(t, 'echo "foo,bar\n3,4" | dat import -d test -', {cwd: metadat.url})
-      st.stderr.match(/Done importing data/)
-      st.end()
-    })
-
-    test('get status', function (t) {
-      var st = spawn(t, 'dat status --json', {cwd: metadat.url})
-      st.stdout.match(function (output) {
-        status = JSON.parse(output)
-        return true
-      })
-      st.end()
-    })
-
-    test('creates a new Metadat via POST', function (t) {
-      var data = extend({}, metadat)
-
-      common.testPOST(t, '/api/metadat', data,
-        function (err, api, jar, res, json, done) {
-          t.ifError(err)
-          t.equal(res.statusCode, 201, 'returns 201')
-          console.log(json)
-          t.equal(typeof json.id, 'string', 'return id is a string')
-          t.equal(json.name, data.url, 'returns corrent name')
-          done()
-        }
-      )
-    })
-  }
+  common.createDat(test, TEST_DAT)
+  common.createDat(test, TEST_DAT2)
 }
 
 module.exports.duplicate = function (test, common) {
@@ -118,6 +76,7 @@ module.exports.query = function (test, common) {
   test('query by url or owner_id', function (t) {
     common.testPOST(t, '/api/metadat', TEST_DAT,
       function (err, api, jar, res, json, done) {
+        t.ifError(err)
         t.equal(json.owner_id, TEST_DAT.owner_id)
 
         request({
@@ -206,6 +165,7 @@ module.exports.createInvalidField = function (test, common) {
 module.exports.getMetadatsEmpty = function (test, common) {
   test('get a metadat with empty db', function (t) {
     common.getRegistry(t, function (err, api, done) {
+      t.ifError(err)
       request('http://localhost:' + api.options.PORT + '/api/metadat/',
         function (err, res, json) {
           t.ifError(err)

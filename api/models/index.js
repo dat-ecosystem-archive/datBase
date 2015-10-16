@@ -29,7 +29,7 @@ module.exports = function (db, opts) {
   }
 
   sqliteSearch(searchOpts, function (err, searcher) {
-    if (err) console.error('error!', err)
+    if (err) throw err
     models.metadat.searcher = searcher
     searchIndexer({
       searcher: searcher,
