@@ -1,10 +1,10 @@
 {
-  "name": "dathub",
+  "name": "publicbits",
   "version": "2.0.0",
   "description": "a place to pubilsh and collaborate your datasets.",
   "main": "index.js",
   "bin": {
-    "dathub": "server.js"
+    "publicbits": "server.js"
   },
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
@@ -16,21 +16,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/karissa/dathub.git"
+    "url": "https://github.com/karissa/publicbits.git"
   },
   "keywords": [
     "data",
     "datasets",
     "publish",
     "registry",
-    "dathub",
+    "publicbits",
     "dat",
     "web"
   ],
   "author": "karissa",
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/karissa/dathub/issues"
+    "url": "https://github.com/karissa/publicbits/issues"
   },
   "homepage": "http://dat-data.com",
   "dependencies": {
@@ -41,7 +41,7 @@
     "cookie-auth": "^2.4.0",
     "dat-api-client": "^1.2.0",
     "dat-ping": "^1.0.2",
-    "dathub-api-client": "^2.0.0",
+    "publicbits-js": "^2.0.0",
     "debug": "^2.0.0",
     "dom": "0.0.3",
     "enter-means-submit": "^1.0.1",

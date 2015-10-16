@@ -1,4 +1,4 @@
-module.exports = require('dathub-api-client').defaults({
+module.exports = require('publicbits-js').defaults({
   xhr: true,
   uri: ''
 })
