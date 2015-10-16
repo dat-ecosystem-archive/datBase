@@ -4,7 +4,7 @@ var dom = require('dom')
 var enterMeansSubmit = require('enter-means-submit')
 var main = require('./controllers/main.js')
 var routes = require('./routes.js')
-var helpers = require('./helpers.js')
+require('./helpers.js')
 
 var init = {
   ctx: function (ctx, next) {
@@ -41,7 +41,6 @@ function render (ctx, next) {
       ctx.ractive.onrender.call(this)
     }
   })
-
 }
 
 function requiresAuth (ctx, next) {

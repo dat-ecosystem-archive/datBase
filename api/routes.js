@@ -42,7 +42,7 @@ module.exports = function createRoutes (server) {
 
   router.addRoute('/auth/currentuser', function (req, res) {
     server.sessions.getSession(req, function (err, session) {
-      if (err) return response.json({'error': err.message})
+      if (err && !err.notFound) return response.json({'error': err.message}).pipe(res)
       if (session) {
         var id = session.data.id
         server.models.users.get({id: id}, function (err, user) {
