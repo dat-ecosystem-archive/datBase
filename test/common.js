@@ -60,18 +60,7 @@ module.exports = function (opts) {
         debug('requesting', params)
 
         request(params, function get (err, res, json) {
-          function cleanup (cb) {
-            request({
-              method: 'DELETE',
-              jar: jar,
-              uri: 'http://localhost:' + api.options.PORT + '/api/metadat/' + json.id,
-              json: true
-            }, function (err, res, json) {
-              t.ifError(err)
-              cb()
-            })
-          }
-          cb(err, api, jar, res, json, function () { cleanup(done) })
+          cb(err, api, jar, res, json, done)
         })
       })
     })
@@ -161,7 +150,6 @@ module.exports = function (opts) {
         function (err, api, jar, res, json, done) {
           t.ifError(err)
           t.equal(res.statusCode, 201, 'returns 201')
-          console.log(json)
           t.equal(typeof json.id, 'string', 'return id is a string')
           t.equal(json.name, data.url, 'returns corrent name')
           done()
