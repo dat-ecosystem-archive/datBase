@@ -17,9 +17,21 @@ module.exports = function (data) {
       self.set('password', null)
       self.set('username', null)
 
+      self.on('create', function (event) {
+        var data = self.get('metadat')
+        metadats.query({
+          name: data.name
+        }, function (err, json) {
+          if (err || (json && json.status === 'error')) return onerror(err)
+          if (json.length > 0) return onerror(new Error('A dat already exists with that name.'))
+          // CREATE THE DAT !!!
+          event.original.preventDefault()
+        })
+      })
+
       /** Submit **/
 
-      self.on('submitOK', function (event) {
+      self.on('publish', function (event) {
         // save the metadat
         var data = self.get('metadat')
 
@@ -27,6 +39,7 @@ module.exports = function (data) {
           url: data.url
         }, function (err, json) {
           if (err || (json && json.status === 'error')) return onerror(err)
+          if (json.length > 0) return onerror(new Error('A dat already exists with that URL.'))
 
           data.username = self.get('username')
           data.password = self.get('password')
@@ -36,7 +49,6 @@ module.exports = function (data) {
             window.location.href = '/view/' + metadat.id
           })
         })
-
         event.original.preventDefault()
       })
 

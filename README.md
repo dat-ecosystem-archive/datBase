@@ -1,7 +1,7 @@
-Dathub
+publicbits
 ===========
 
-[![build status](https://secure.travis-ci.org/karissa/dathub.png)](http://travis-ci.org/karissa/dathub)
+[![build status](https://secure.travis-ci.org/karissa/publicbits.png)](http://travis-ci.org/karissa/publicbits)
 
 This is a web client that will let you publish and collaborate with your data. It is *not* a data hosting service.
 
