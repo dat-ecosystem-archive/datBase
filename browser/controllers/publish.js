@@ -44,7 +44,7 @@ module.exports = function (data) {
           data.username = self.get('username')
           data.password = self.get('password')
 
-          metadats.create(data, function (err, resp, metadat) {
+          metadats.publish(data, function (err, resp, metadat) {
             if (err) return onerror(err)
             window.location.href = '/view/' + metadat.id
           })

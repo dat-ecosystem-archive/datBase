@@ -41,7 +41,7 @@
     "cookie-auth": "^2.4.0",
     "dat-api-client": "^1.2.0",
     "dat-ping": "^1.0.2",
-    "publicbits-js": "^2.0.0",
+    "publicbits-js": "^3.0.0",
     "debug": "^2.0.0",
     "dom": "0.0.3",
     "enter-means-submit": "^1.0.1",
