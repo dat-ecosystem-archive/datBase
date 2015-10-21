@@ -1,6 +1,6 @@
 <div class="app-page view-metadat">
   <h1>
-    <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> / {{metadat.name}}
+    {{metadat.name}}
   </h1>
 
   <div class="row">
@@ -51,6 +51,10 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div class="row">
+    <h2>Created by:</h2>
+    <a href="/profile/{{metadat.owner_id}}">{{metadat.owner_id}}</a> /
   </div>
 
   <div class="row">
