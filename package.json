@@ -9,7 +9,7 @@
   "scripts": {
     "start": "npm run watch & npm run watch-css & npm run server",
     "server": "nodemon index.js",
-    "test": "node test/run.js | tap-spec",
+    "test": "tape test/* | tap-spec",
     "watch": "watchify -t ractivate browser/index.js -o static/js/bundle.js",
     "watch-css": "autoless static/css",
     "build": "autoless --no-watch static/css && browserify -t ractivate browser/index.js -o static/js/bundle.js"
