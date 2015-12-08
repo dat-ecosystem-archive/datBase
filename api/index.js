@@ -5,7 +5,7 @@ var http = require('http')
 var path = require('path')
 var HttpHashRouter = require('http-hash-router')
 var auth = require('./auth.js')
-var db = require('./db.js')
+var createDB = require('./db.js')
 
 var indexHTML = fs.readFileSync('./index.html')
 
@@ -13,8 +13,8 @@ module.exports = function (opts) {
   var router = HttpHashRouter()
   var staticPath = opts.STATIC || path.join(__dirname, '..', 'static')
 
-  server.db = db(opts.db)
-  auth(server.db, router)
+  var db = createDB(opts)
+  auth(db, router)
 
   router.set('/static/*', function (req, res, opts, cb) {
     var filepath = path.join(staticPath, opts.splat)
@@ -34,6 +34,7 @@ module.exports = function (opts) {
       response.json(msg, 500).pipe(res)
     }
   })
+  server.db = db
 
   return server
 }
