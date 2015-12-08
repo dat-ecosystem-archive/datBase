@@ -53,11 +53,24 @@ testServer(PORT, function (err, server, close) {
       user.password = user.newPassword
       post('/auth/login', user, function (err, json, resp) {
         t.ifError(err)
+        t.equal(resp.statusCode, 200)
+        t.end()
+      })
+    })
+  })
+
+  test('remove user', function (t) {
+    post('/auth/remove', {id: 1}, function (err, json, resp) {
+      t.ifError(err)
+      t.equal(resp.statusCode, 200)
+      post('/auth/login', user, function (err, json, resp) {
+        t.ok(err)
         close()
         t.end()
       })
     })
   })
+
 })
 
 function post (path, data, cb) {

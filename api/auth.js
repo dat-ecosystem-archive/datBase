@@ -8,11 +8,10 @@ var auth = function (db, creds, cb) {
   db('users').where({email: creds.email}).asCallback(function (err, rows) {
     if (err) return cb(err)
     var row = rows[0]
-    console.log(rows)
-
+    if (!row) return cb(new Error('User does not exist'))
     // borrowed from substack/accountdown-basic
-    if (!row.salt) return cb('NOSALT', 'integrity error: no salt found')
-    if (!row.hash) return cb('NOHASH', 'integrity error: no hash found')
+    if (!row.salt) return cb(new Error('salt required'))
+    if (!row.hash) return cb(new Error('hash required'))
     var pw = Buffer(creds.password)
     var salt = Buffer(row.salt, 'hex')
     var h = shasum(Buffer.concat([ salt, pw ]))
@@ -139,7 +138,7 @@ module.exports = function (db, router) {
       db('users').where({id: user.id}).del().asCallback(function (err) {
         if (err) return cb(err)
         res.writeHead(200)
-        return res.end()
+        return res.end(JSON.stringify({removed: true}))
       })
     }), function (err) {
       if (err) return cb(err)
