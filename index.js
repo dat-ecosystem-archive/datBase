@@ -1,7 +1,7 @@
 var API = require('./api')
 
 var server = new API({
-  db: './db'
+  db: ':memory'
 })
 
 var port = process.env.PORT || 8080

@@ -1,9 +1,9 @@
 var streamsql = require('streamsql')
 
-module.exports = function () {
+module.exports = function (opts) {
   var db = streamsql.connect({
     driver: 'sqlite3',
-    filename: ':memory:'
+    filename: opts.db
   })
 
   return {
