@@ -1,5 +1,4 @@
 var dathubClient = require('../hub')
-var debug = require('debug')('settings')
 
 module.exports = function (data) {
   return {

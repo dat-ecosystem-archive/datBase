@@ -1,9 +1,7 @@
-var debug = require('debug')('profile')
 var page = require('page')
 var xhr = require('xhr')
 
 var dathub = require('../hub')
-var gravatar = require('../common/gravatar.js')
 
 // Controller for:
 // /profile
@@ -18,7 +16,6 @@ module.exports = function (data) {
     },
     onrender: function () {
       var ractive = this
-      ractive.set('loggedin', data.user && (data.user.handle === data.handle))
       // if sent to /profile without /:handle
       if (!data.handle) {
         // if logged in
@@ -30,7 +27,6 @@ module.exports = function (data) {
       dathub.users.get(data.handle, function (err, resp, user) {
         if (err) return window.ractive.message('error', err.message)
         ractive.set('profile', user)
-        gravatar('.content-card-avatar')
       })
 
       dathub.metadats.query({
@@ -41,17 +37,9 @@ module.exports = function (data) {
       })
 
       ractive.on('logout', function (event) {
-        xhr({
-          uri: '/auth/logout',
-          json: true
-        }, function (err, resp, json) {
-          if (err) return window.ractive.message('error', err.message)
-          if (json.loggedOut === true) {
-            window.location.reload()
-          }
-        })
+        localStorage.removeItem('id_token')
+        page('/')
       })
-
     }
   }
 }

@@ -28,6 +28,10 @@ module.exports = function (opts, cb) {
       response.html(indexHTML).pipe(res)
     })
 
+    router.set('*', function (req, res) {
+      response.html(indexHTML).pipe(res)
+    })
+
     var server = http.createServer(function (req, res) {
       console.log(req.url)
       router(req, res, {}, onerror)

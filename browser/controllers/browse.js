@@ -1,6 +1,3 @@
-var debug = require('debug')('browse')
-var qs = require('querystring')
-var xhr = require('xhr')
 var from = require('from2')
 var through = require('through2')
 

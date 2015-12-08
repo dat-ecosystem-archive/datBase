@@ -1,30 +1,29 @@
 <div class="app-page">
   <div class="app-text-container">
-  <h1>
-      <img class="content-card-avatar medium"
-           data-user="{{profile.handle}}" />{{profile.handle}}</h1>
-    {{#if loggedin}}
-        <a class="caption" href="/settings">
-          <div class="button">Settings</div>
-        </a>
-        <a class="caption" on-click="logout">
-          <div class="button">Logout</div>
-        </a>
-    {{/if}}
-    <div class="row">
-      {{#if profile.data.email}}
+    <h1>
+      <img class="content-card-avatar medium" src="{{user.picture}}" /></h1>
+      {{#if user}}
+      <a class="caption" href="/settings">
+        <div class="button">Settings</div>
+      </a>
+      <a class="caption" on-click="logout">
+        <div class="button">Logout</div>
+      </a>
+      {{/if}}
+      <div class="row">
+        {{#if profile.data.email}}
         {{profile.data.email}}<br>
-      {{/if}}
-      {{#if profile.data.location}}
+        {{/if}}
+        {{#if profile.data.location}}
         {{profile.data.location}}<br>
-      {{/if}}
-      <a class="no-page" href="{{profile.data.blog}}" target="_blank">
-        {{profile.data.blog}}</a>
-      <br>{{profile.data.bio}}
-    </div>
+        {{/if}}
+        <a class="no-page" href="{{profile.data.blog}}" target="_blank">
+          {{profile.data.blog}}</a>
+          <br>{{profile.data.bio}}
+        </div>
 
-    <div class="row">
-      <listMetadats metadats="{{metadats}}"></listMetadats>
+        <div class="row">
+          <listMetadats metadats="{{metadats}}"></listMetadats>
+        </div>
+      </div>
     </div>
-  </div>
-</div>

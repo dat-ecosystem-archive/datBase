@@ -15,7 +15,6 @@ var init = {
       partials: {},
       onrender: function () {}
     }
-
     main(ctx, next) // gets user, etc.
   }
 }
@@ -37,7 +36,6 @@ function render (ctx, next) {
       })
 
       enterMeansSubmit(document.getElementsByClassName('form'))
-
       ctx.ractive.onrender.call(this)
     }
   })
