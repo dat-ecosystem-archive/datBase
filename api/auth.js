@@ -2,12 +2,13 @@ var debug = require('debug')('publicbits/auth')
 var concat = require('concat-stream')
 var crypto = require('crypto')
 var shasum = require('shasum')
-var response = require('response')
 var pipe = require('pump')
 
 var auth = function (db, creds, cb) {
-  db.users.getOne({ email: creds.email }, function (err, row) {
+  db('users').where({email: creds.email}).asCallback(function (err, rows) {
     if (err) return cb(err)
+    var row = rows[0]
+    console.log(rows)
 
     // borrowed from substack/accountdown-basic
     if (!row.salt) return cb('NOSALT', 'integrity error: no salt found')
@@ -20,9 +21,9 @@ var auth = function (db, creds, cb) {
   })
 }
 
-var generateCreds = function (db, password) {
+var generateCreds = function (password) {
   var salt = crypto.randomBytes(16)
-  var pw = Buffer(password)
+  var pw = new Buffer(password)
   return {
     hash: shasum(Buffer.concat([ salt, pw ])),
     salt: salt.toString('hex')
@@ -40,16 +41,16 @@ module.exports = function (db, router) {
       if (!user.email || !user.password) return cb(new Error('Email and password required.'))
       auth(db, {email: user.email, password: user.password}, function (err, user) {
         if (err) {
-          res.writeHead(err.status, {'WWW-Authenticate': 'Basic realm="Secure Area"'})
-          return response.json({error: 'Login failed.'}).pipe(res)
+          res.writeHead(401, {'WWW-Authenticate': 'Basic realm="Secure Area"'})
+          return res.end(JSON.stringify({error: 'Login failed'}))
         }
         debug('Logging in', user.email)
-        response.json({
+        return res.end(JSON.stringify({
           id: user.id,
           nickname: user.nickname,
           email: user.email,
           verified: user.verified
-        }).pipe(res)
+        }))
       })
       return
     }), function (err) {
@@ -67,12 +68,11 @@ module.exports = function (db, router) {
       if (!user.email) return cb(new Error('Email required.'))
       debug('verifying', user.email)
 
-      db.users.put({
-        email: user.email,
+      db('users').where({ email: user.email }).update({
         verified: true
-      }, function (err, row) {
+      }).asCallback(function (err, rows) {
         if (err) return cb(err)
-        response.json({updated: true}).pipe(res)
+        return res.end(JSON.stringify({updated: true}))
       })
     }), function (err) {
       if (err) return cb(err)
@@ -87,19 +87,18 @@ module.exports = function (db, router) {
         return cb(err)
       }
       if (!user.email || !user.password) return cb(new Error('Email and password required.'))
-      debug('creating', user.email)
       var creds = generateCreds(user.password)
-      db.users.put({
+      debug('creating', user.email)
+      db('users').insert({
         email: user.email,
-        password: user.password,
         verified: false,
         hash: creds.hash,
         salt: creds.salt
-      }, function (err, row) {
+      }).asCallback(function (err, rows) {
         if (err) return cb(err)
-        debug('id', row.insertId)
+        debug('created user id', rows[0])
         res.writeHead(201)
-        res.end()
+        return res.end(JSON.stringify({ id: rows[0] }))
       })
     }), function (err) {
       if (err) return cb(err)
@@ -116,14 +115,12 @@ module.exports = function (db, router) {
       if (!user.email || !user.newPassword) return cb(new Error('Email and newPassword required.'))
       debug('changing password', user.email)
       var creds = generateCreds(user.newPassword)
-      db.users.put({
-        email: user.email,
+      db('users').where({ email: user.email }).update({
         hash: creds.hash,
         salt: creds.salt
-      }, function (err, row) {
+      }).asCallback(function (err, row) {
         if (err) return cb(err)
-        res.writeHead(200)
-        response.json({updated: true}).pipe(res)
+        return res.end(JSON.stringify({updated: true}))
       })
     }), function (err) {
       if (err) return cb(err)
@@ -139,12 +136,10 @@ module.exports = function (db, router) {
       }
       if (!user.id) return cb(new Error('Id required.'))
       debug('removing', user.id)
-      db.users.del({
-        id: user.id
-      }, function (err, row) {
+      db('users').where({id: user.id}).del().asCallback(function (err) {
         if (err) return cb(err)
         res.writeHead(200)
-        res.end()
+        return res.end()
       })
     }), function (err) {
       if (err) return cb(err)

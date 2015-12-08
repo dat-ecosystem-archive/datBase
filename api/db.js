@@ -1,16 +1,7 @@
-var streamsql = require('streamsql')
+var createDb = require('./createDb.js')
 
-module.exports = function (opts) {
-  var db = streamsql.connect({
-    driver: 'sqlite3',
-    filename: opts.db
+module.exports = function (opts, cb) {
+  createDb(opts, function (err, knex) {
+    cb(err, knex)
   })
-
-  return {
-    users: db.table('users', Users)
-  }
-}
-
-var Users = {
-  fields: [ 'id', 'nickname', 'email', 'hash', 'salt', 'verified' ]
 }
