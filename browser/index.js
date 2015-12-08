@@ -16,7 +16,7 @@ var init = {
       onrender: function () {}
     }
 
-    main(ctx, next)
+    main(ctx, next) // gets user, etc.
   }
 }
 

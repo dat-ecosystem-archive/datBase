@@ -1,48 +1,39 @@
 var fs = require('fs')
-var path = require('path')
+var response = require('response')
+var debug = require('debug')('publicbits/api')
 var http = require('http')
-var extend = require('extend')
-var level = require('level')
-var subdown = require('subleveldown')
-var cookieAuth = require('cookie-auth')
-var debug = require('debug')('server')
+var path = require('path')
+var HttpHashRouter = require('http-hash-router')
+var auth = require('./auth.js')
+var db = require('./db.js')
 
-var defaults = require('./defaults.js')
-var githubAuth = require('./auth/github.js')
-var createModels = require('./models')
-var createRoutes = require('./routes')
+var indexHTML = fs.readFileSync('./index.html')
 
-module.exports = Server
+module.exports = function (opts) {
+  var router = HttpHashRouter()
+  var staticPath = opts.STATIC || path.join(__dirname, '..', 'static')
 
-function Server (overrides) {
-  // allow either new Server() or just Server()
-  if (!(this instanceof Server)) return new Server(overrides)
-  var self = this
-  self.options = extend({}, defaults, overrides)
+  server.db = db(opts.db)
+  auth(server.db, router)
 
-  // allow custom db to be passed in
-  if (self.options.db) self.db = self.options.db
-  else self.db = level(self.options.DAT_REGISTRY_DB)
-
-  self.sessions = cookieAuth({name: 'dathub', sessions: subdown(this.db, 'sessions')})
-  self.models = createModels(self.db)
-  self.auth = { github: githubAuth(this.models, this.sessions) }
-  self.router = createRoutes(self)
-  self.server = self.createServer()
-}
-
-Server.prototype.createServer = function () {
-  var self = this
-  return http.createServer(function (req, res) {
-    debug(req.method, req.url)
-    self.router(req, res)
+  router.set('/static/*', function (req, res, opts, cb) {
+    var filepath = path.join(staticPath, opts.splat)
+    var f = fs.createReadStream(filepath)
+    debug('serving', filepath)
+    f.pipe(response()).pipe(res)
   })
-}
 
-Server.prototype.close = function (cb) {
-  var self = this
-  self.db.close(function closedDb (err) {
-    if (err) return cb(err)
-    self.server.close(cb)
+  router.set('/', function (req, res) {
+    response.html(indexHTML).pipe(res)
   })
+
+  var server = http.createServer(function (req, res) {
+    router(req, res, {}, onerror)
+    function onerror (err) {
+      var msg = {error: 'Error', message: err.message}
+      response.json(msg, 500).pipe(res)
+    }
+  })
+
+  return server
 }
