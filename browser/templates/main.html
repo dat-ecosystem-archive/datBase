@@ -7,14 +7,12 @@
       <li><a href="/">publicbits</a></li>
     </ul>
     <ul class="top-header__buttons u-pull-right">
-      <li><a href="/browse">Search</a></li>
       {{#if user}}
-      <li><a href="/profile/{{user.handle}}">Profile</a></li>
+      <li><a href="/{{user.nickname}}">Profile</a></li>
       {{/if}}
       {{#if !user}}
       <li><a id="btn-login" class="no-page" href="#">Login</a></li>
       {{/if}}
-      <li><a href="/publish">Publish +</a></li>
     </ul>
   </div>
 </div>

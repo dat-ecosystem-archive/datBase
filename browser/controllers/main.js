@@ -1,4 +1,5 @@
 var Ractive = require('ractive-toolkit')
+var Auth0Lock = require('auth0-lock')
 
 module.exports = function (ctx, next) {
   var lock = new Auth0Lock('iJQfH9WkB707jALLeQ07NehjnRXbLDte', 'publicbits.auth0.com')
@@ -9,17 +10,17 @@ module.exports = function (ctx, next) {
     localStorage.setItem('id_token', hash.id_token)
   }
   if (hash && hash.error) {
-    alert('There was an error: ' + hash.error + '\n' + hash.error_description)
+    throw new Error(hash.error)
   }
   var id_token = localStorage.getItem('id_token')
-  console.log(id_token)
   if (id_token) {
     lock.getProfile(id_token, function (err, profile) {
       if (err) {
         ctx.state.user = null
-        return alert('There was an error geting the profile: ' + err.message)
+        throw err
+      } else {
+        ctx.state.user = profile
       }
-      ctx.state.user = profile
       main()
     })
   } else main()

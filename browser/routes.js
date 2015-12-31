@@ -15,7 +15,7 @@ module.exports = {
   },
   profile: function (ctx, next) {
     ctx.ractive = require('./controllers/profile.js')({
-      handle: ctx.params.handle,
+      nickname: ctx.params.nickname,
       user: ctx.state.user
     })
     next()

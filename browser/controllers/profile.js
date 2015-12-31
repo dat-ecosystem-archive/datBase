@@ -1,5 +1,4 @@
 var page = require('page')
-var xhr = require('xhr')
 
 var dathub = require('../hub')
 
@@ -17,22 +16,26 @@ module.exports = function (data) {
     onrender: function () {
       var ractive = this
       // if sent to /profile without /:handle
-      if (!data.handle) {
+      if (!data.nickname) {
         // if logged in
-        if (data.user) return page('/profile/' + data.user.handle)
+        console.log(data.user)
+        if (data.user) return page('/' + data.user.nickname)
         // redirect to home if didn't supply a user and not logged in
         else return page('/')
       }
 
-      dathub.users.get(data.handle, function (err, resp, user) {
-        if (err) return window.ractive.message('error', err.message)
-        ractive.set('profile', user)
-      })
+      if (!data.user) {
+        dathub.users.get(data.nickname, function (err, resp, user) {
+          if (err) return window.ractive.message('error', err.message)
+          ractive.set('user', user)
+        })
+      }
 
       dathub.metadats.query({
-        owner_id: data.handle
+        owner_id: data.nickname
       }, function (err, resp, metadats) {
         if (err) return window.ractive.message('error', err.message)
+        console.log('metadats', metadats)
         ractive.set('metadats', metadats)
       })
 
