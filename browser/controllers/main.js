@@ -17,7 +17,7 @@ module.exports = function (ctx, next) {
     lock.getProfile(id_token, function (err, profile) {
       if (err) {
         ctx.state.user = null
-        throw err
+        localStorage.removeItem('id_token')
       } else {
         ctx.state.user = profile
       }
