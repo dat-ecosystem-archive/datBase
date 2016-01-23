@@ -1,7 +1,10 @@
 var API = require('./api')
-
 API({
-  db: ':memory:'
+  dialect: 'sqlite',
+  debug: true,
+  connection: {
+    filename: ':memory:'
+  }
 }, function (err, server) {
   if (err) throw err
   var port = process.env.PORT || 8080
