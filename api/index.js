@@ -4,8 +4,9 @@ var debug = require('debug')('publicbits/api')
 var http = require('http')
 var path = require('path')
 var HttpHashRouter = require('http-hash-router')
+
 var auth = require('./auth.js')
-var createDB = require('./db.js')
+var createDB = require('./db')
 
 var indexHTML = fs.readFileSync(path.join(__dirname, '..', 'index.html'))
 
