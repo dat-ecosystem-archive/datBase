@@ -42,7 +42,6 @@
     "extend": "^2.0.0",
     "format-data": "^2.1.2",
     "from2": "^2.1.0",
-    "github-oauth": "^0.2.0",
     "hat": "0.0.3",
     "http-hash-router": "^1.1.0",
     "hyperquest": "^1.2.0",
