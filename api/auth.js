@@ -12,7 +12,7 @@ var auth = function (db, creds, cb) {
     // borrowed from substack/accountdown-basic
     if (!row.salt) return cb(new Error('salt required'))
     if (!row.hash) return cb(new Error('hash required'))
-    var pw = Buffer(creds.password)
+    var pw = Buffer(creds.password, 'utf-8')
     var salt = Buffer(row.salt, 'hex')
     var h = shasum(Buffer.concat([ salt, pw ]))
     if (h === row.hash) return cb(null, row)
