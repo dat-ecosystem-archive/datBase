@@ -17,7 +17,8 @@ testServer(PORT, function (err, server, close) {
       t.equal(json.id, 1)
       post('/auth/login', user, function (err, json, resp) {
         t.ifError(err)
-        t.equal(json.id, 1)
+        t.equal(json.id.length, 36)
+        user.id = json.id
         t.equal(json.email, 'hello@world.com')
         t.end()
       })
@@ -60,7 +61,7 @@ testServer(PORT, function (err, server, close) {
   })
 
   test('remove user', function (t) {
-    post('/auth/remove', {id: 1}, function (err, json, resp) {
+    post('/auth/remove', {id: user.id}, function (err, json, resp) {
       t.ifError(err)
       t.equal(resp.statusCode, 200)
       post('/auth/login', user, function (err, json, resp) {
@@ -70,7 +71,6 @@ testServer(PORT, function (err, server, close) {
       })
     })
   })
-
 })
 
 function post (path, data, cb) {

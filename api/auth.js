@@ -2,27 +2,28 @@ var debug = require('debug')('publicbits/auth')
 var concat = require('concat-stream')
 var crypto = require('crypto')
 var shasum = require('shasum')
+var uuid = require('uuid')
 var pipe = require('pump')
 
 var auth = function (db, creds, cb) {
   db('users').where({email: creds.email}).asCallback(function (err, rows) {
     if (err) return cb(err)
-    var row = rows[0]
-    if (!row) return cb(new Error('User does not exist'))
+    var user = rows[0]
+    if (!user) return cb(new Error('User does not exist'))
     // borrowed from substack/accountdown-basic
-    if (!row.salt) return cb(new Error('salt required'))
-    if (!row.hash) return cb(new Error('hash required'))
+    if (!user.salt) return cb(new Error('salt required'))
+    if (!user.hash) return cb(new Error('hash required'))
     var pw = Buffer(creds.password, 'utf-8')
-    var salt = Buffer(row.salt, 'hex')
+    var salt = Buffer(user.salt, 'hex')
     var h = shasum(Buffer.concat([ salt, pw ]))
-    if (h === row.hash) return cb(null, row)
-    else cb({status: 401}, row)
+    if (h === user.hash) return cb(null, user)
+    else cb({status: 401}, user)
   })
 }
 
 var generateCreds = function (password) {
   var salt = crypto.randomBytes(16)
-  var pw = new Buffer(password)
+  var pw = new Buffer(password, 'utf-8')
   return {
     hash: shasum(Buffer.concat([ salt, pw ])),
     salt: salt.toString('hex')
@@ -43,7 +44,7 @@ module.exports = function (db, router) {
           res.writeHead(401, {'WWW-Authenticate': 'Basic realm="Secure Area"'})
           return res.end(JSON.stringify({error: 'Login failed'}))
         }
-        debug('Logging in', user.email)
+        debug('Logging in', user)
         return res.end(JSON.stringify({
           id: user.id,
           nickname: user.nickname,
@@ -89,6 +90,7 @@ module.exports = function (db, router) {
       var creds = generateCreds(user.password)
       debug('creating', user.email)
       db('users').insert({
+        id: uuid.v1(),
         email: user.email,
         verified: false,
         hash: creds.hash,

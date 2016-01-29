@@ -3,7 +3,7 @@ API({
   dialect: 'sqlite',
   debug: true,
   connection: {
-    filename: ':memory:'
+    filename: './publicbits.db'
   }
 }, function (err, server) {
   if (err) throw err
