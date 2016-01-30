@@ -41,7 +41,7 @@ module.exports = function (data) {
 
       ractive.on('logout', function (event) {
         localStorage.removeItem('id_token')
-        page('/')
+        window.location.href = '/'
       })
     }
   }
