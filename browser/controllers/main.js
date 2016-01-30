@@ -57,7 +57,10 @@ module.exports = function (ctx, next) {
 
         var login_btn = document.getElementById('btn-login')
         if (login_btn) login_btn.addEventListener('click', function () {
-          lock.show({ authParams: { scope: 'openid' } })
+          lock.show({
+            authParams: { scope: 'openid' },
+            icon: '/static/img/dat-hex-small.png'
+          })
         })
       }
     })
