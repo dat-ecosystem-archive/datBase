@@ -1,9 +1,7 @@
 publicbits.org
 ===========
 
-[![build status](https://secure.travis-ci.org/publicbits/publicbits.org.png)](http://travis-ci.org/publicbits/publicbits.org)
-
-We were recently awarded with a [$420,000 grant by the Knight Foundation](www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergiong heavy development for the next few months.
+We were recently awarded a [$420,000 grant by the Knight Foundation](www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergiong heavy development for the next few months.
 
 ## Deployment
 
