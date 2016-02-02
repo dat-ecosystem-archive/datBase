@@ -1,11 +1,9 @@
-publicbits
+publicbits.org
 ===========
 
-[![build status](https://secure.travis-ci.org/karissa/publicbits.png)](http://travis-ci.org/karissa/publicbits)
+[![build status](https://secure.travis-ci.org/publicbits/publicbits.org.png)](http://travis-ci.org/publicbits/publicbits.org)
 
-This is a web client that will let you publish and collaborate with your data. It is *not* a data hosting service.
-
-See the website at http://dat-data.com for more information.
+We were recently awarded with a [$420,000 grant by the Knight Foundation](www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergiong heavy development for the next few months.
 
 ## Deployment
 
