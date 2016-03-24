@@ -21,7 +21,7 @@ var init = {
 
 page('*', init.ctx)
 page('/:nickname', routes.profile)
-page('/', routes.browse)
+page('/', routes.splash)
 page('/about', routes.about)
 page('/browse', routes.browse)
 page('/browse/:query', routes.browse)
