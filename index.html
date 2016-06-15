@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <link rel="icon" type="image/png" href="static/dat-data-blank.png" />
+    <link rel="stylesheet" type="text/css" href="static/style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1><a href="http://dat-data.com"><img src="static/dat-data.png" style="width:30px;" /></a></h1>
+        <input type="text" readonly="true" value="" id="share-link" data-intro="blahblahblahba">
+        <h3 id="peers"></h3>
+        <button id="help" class="button">?</button>
+        <button id="new" class="button">Reset</button>
+        <h3 id="speed">speed:
+          <span id="download-speed"></span>
+          <span id="upload-speed"></span>
+        </h3>
+      </div>
+    </header>
+    <div class="status-bar">
+      <p id="help-text">Initializing</p>
+    </div>
+    <main class="site-main">
+      <div class="container">
+        <!-- <div class="upload-file">Drop Files</div> -->
+        <div id="hyperdrive-ui"></div>
+      </div>
+    </main>
+    <script type="text/javascript" src="bundle.js"></script>
+  </body>
+</html>
