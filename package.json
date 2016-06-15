@@ -1,0 +1,45 @@
+{
+  "name": "hyperdrive-ui",
+  "version": "1.2.3",
+  "description": "Render a hyperdrive in the browser.",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify app.js > bundle.js",
+    "watch": "watchify app.js -o bundle.js",
+    "start": "npm run watch & http-server .",
+    "deploy": "gh-pages-deploy",
+    "test": "standard",
+    "lint": "standard"
+  },
+  "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "brfs": "^1.4.3",
+    "browserify": "^12.0.0",
+    "choppa": "^1.0.2",
+    "drag-drop": "^2.11.0",
+    "filereader-stream": "^1.0.0",
+    "gh-pages-deploy": "^0.4.2",
+    "http-server": "^0.9.0",
+    "hyperdrive": "^6.2.1",
+    "hyperdrive-archive-swarm": "^3.0.1",
+    "level-browserify": "^1.1.0",
+    "memdb": "^1.3.1",
+    "standard": "^7.1.2",
+    "watchify": "~3.6.0",
+    "wzrd": "^1.3.1"
+  },
+  "gh-pages-deploy": {
+    "prep": [
+      "build"
+    ],
+    "noprompt": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/karissa/hyperdrive-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/karissa/hyperdrive-ui/issues"
+  }
+}
