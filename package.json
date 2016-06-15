@@ -24,7 +24,7 @@
     "http-server": "^0.9.0",
     "hyperdrive": "^6.2.1",
     "hyperdrive-archive-swarm": "^3.0.1",
-    "hyperdrive-ui": "^1.2.3",
+    "hyperdrive-ui": "^2.0.0",
     "intro.js": "^2.1.0",
     "level-browserify": "^1.1.0",
     "memdb": "^1.3.1",
