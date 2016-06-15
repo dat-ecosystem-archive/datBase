@@ -1,11 +1,11 @@
 {
-  "name": "hyperdrive-ui",
+  "name": "dat-land",
   "version": "1.2.3",
-  "description": "Render a hyperdrive in the browser.",
+  "description": "An online place for dats.",
   "main": "index.js",
   "scripts": {
-    "build": "browserify app.js > bundle.js",
-    "watch": "watchify app.js -o bundle.js",
+    "build": "browserify index.js > bundle.js",
+    "watch": "watchify index.js -o bundle.js",
     "start": "npm run watch & http-server .",
     "deploy": "gh-pages-deploy",
     "test": "standard",
