@@ -127,7 +127,7 @@ a:hover, a:focus,
   width: 320px;
 }
 
-#speed span {
+#speed span span {
   font-weight: normal;
   font-size: 13px;
   line-height: 37px;
