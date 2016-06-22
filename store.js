@@ -3,7 +3,7 @@ var minidux = require('minidux')
 function archiveReducer (state, action) {
   if (state === undefined) state = { archive: undefined }
   if (action.type === 'INIT_ARCHIVE' || action.type === 'UPDATE_ARCHIVE') {
-    return  { archive: action.archive }
+    return { archive: action.archive }
   }
 }
 
@@ -18,6 +18,6 @@ var reducers = minidux.combineReducers({
   archiveReducer,
   peersReducer
 })
-var store = minidux.createStore(reducers);
+var store = minidux.createStore(reducers)
 
 module.exports = store

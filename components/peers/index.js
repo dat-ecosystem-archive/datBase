@@ -4,10 +4,9 @@ module.exports = Peers
 
 function Peers (el) {
   if (!(this instanceof Peers)) return new Peers(el)
-  var self = this
   this.$el = document.getElementById(el)
   this._component = this._render()
-  this._peers = 0;
+  this._peers = 0
 
   if (this.$el) this.$el.appendChild(this._component)
 }
@@ -28,7 +27,9 @@ Peers.prototype._render = function () {
 
 Peers.prototype._updateNumPeers = function (state) {
   if (state.peersReducer && state.peersReducer.peers) {
-    return this._peers = state.peersReducer.peers
+    this._peers = state.peersReducer.peers
+  } else {
+    this._peers = 0
   }
-  else { return this._peers = 0 }
+  return this._peers
 }

@@ -5,5 +5,3 @@ module.exports = {
   ResetButton: require('./reset-button'),
   SpeedDisplay: require('./speed-display')
 }
-
-

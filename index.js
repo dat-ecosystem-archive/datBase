@@ -19,7 +19,7 @@ var components = [
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.Peers('peers'),
   componentCtors.ResetButton('new', main),
-  componentCtors.SpeedDisplay('speed'),
+  componentCtors.SpeedDisplay('speed')
 ]
 
 var store = require('./store')

@@ -5,7 +5,6 @@ module.exports = HyperdriveSize
 
 function HyperdriveSize (el) {
   if (!(this instanceof HyperdriveSize)) return new HyperdriveSize(el)
-  var self = this
   this.$el = document.getElementById(el)
   this._component = this._render()
   this._size = 0
@@ -29,9 +28,11 @@ HyperdriveSize.prototype._render = function () {
 HyperdriveSize.prototype._updateSize = function (state) {
   if (state.archiveReducer) {
     var s = state.archiveReducer
-    if (s.archive &&  s.archive.content && s.archive.content.bytes) {
-      return this._size = prettyBytes(s.archive.content.bytes)
+    if (s.archive && s.archive.content && s.archive.content.bytes) {
+      this._size = prettyBytes(s.archive.content.bytes)
+    } else {
+      this._size = 0
     }
-    else { return this._size = 0 }
+    return this._size
   }
 }

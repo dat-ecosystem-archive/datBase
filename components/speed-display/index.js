@@ -29,8 +29,8 @@ SpeedDisplay.prototype._render = function () {
   window.clearTimeout(this._timer)
   this._timer = window.setTimeout(function () {
     self.$el.style.display = 'none'
-    self._download = 0;
-    self._upload = 0;
+    self._download = 0
+    self._upload = 0
   }, 1500)
 
   var down = this._download
