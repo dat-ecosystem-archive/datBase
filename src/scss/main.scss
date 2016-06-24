@@ -1,34 +1,24 @@
-/* color variables */
-/*
-:root {
-  --dat-color-dark-blue: #2A3749;
-  --dat-color-dark-text: #959ba4;
-  --dat-color-off-white: #fdfdfd;
-  --dat-color-white-border: #f0f0f0;
-  --dat-color-light-grey: #f4f5f6;
-  --dat-color-light-border: #dfe2e4;
-  --dat-color-green: #35B44F;
-  --dat-color-green-hover: #A9CE7F;
-  --dat-color-error: #C0392B;
-}
-*/
-
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+/**
+ * Use awesome syntax of `node-sass-magic-importer` to import scss modules
+ * "@import ~xxx" resolves to a node module named `xxx`
+ * If there's no file path specified after module name, it resolves to the file
+ * defined by the imported package.json's `style` property
+ *
+ * More magic importer features:
+ * https://github.com/maoberlehner/node-sass-magic-importer
+ */
+@import "~dat-design";
+@import "~dat-design/scss/responsive/breakpoints.scss";
 
 body {
   min-width: 500px;
-  margin: 0;
-  padding 0;
-  font-size: 14px;
-  line-height: 1.42857143;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', 'Lucida Grande', Arial, sans-serif;
-  color: #2A3749;
+  // mixin is being imported from "~dat-design/scss/responsive/breakpoints.scss":
+  @include breakpoint (xs) {
+    background: red;
+  }
+  @include breakpoint (sm) {
+    background: yellow;
+  }
 }
 
 a, button, input, .link {
@@ -65,7 +55,7 @@ a:hover, a:focus,
 .site-header {
   background-color: #fdfdfd;
   border-bottom: 1px solid #f0f0f0;
-  height: 60px;
+  height: 65px;
 }
 
 .site-header h1 {
@@ -167,6 +157,7 @@ a:hover, a:focus,
 
 .status-bar {
   padding: .5rem;
+  padding-top: 1rem;
   background-color: #f5fbf6;
   text-align: center;
 }

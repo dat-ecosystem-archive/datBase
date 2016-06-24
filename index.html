@@ -1,14 +1,18 @@
 <html>
   <head>
-    <link rel="icon" type="image/png" href="static/dat-data-blank.png" />
-    <link rel="stylesheet" type="text/css" href="static/style.css"/>
+    <link rel="icon" type="image/png" href="public/images/dat-data-blank.png" />
+    <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
   </head>
   <body>
     <header class="site-header">
       <div class="container">
-        <h1><a href="http://dat-data.com"><img src="static/dat-data.png" style="width:30px;" /></a></h1>
-        <input type="text" readonly="true" value="" id="share-link" data-intro="blahblahblahba">
+        <h1>
+          <a href="http://dat-data.com">
+            <img src="public/images/dat-data.png" style="width:30px;" />
+          </a>
+        </h1>
+        <input type="text" readonly="true" value="" id="share-link" data-intro="">
         <h3 id="peers"></h3>
         <button id="help" class="button">?</button>
         <button id="new" class="button">Reset</button>
@@ -25,6 +29,6 @@
         <div id="hyperdrive-ui"></div>
       </div>
     </main>
-    <script type="text/javascript" src="bundle.js"></script>
+    <script type="text/javascript" src="public/js/app.js"></script>
   </body>
 </html>
