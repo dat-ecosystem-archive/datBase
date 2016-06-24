@@ -13,22 +13,9 @@
 }
 */
 
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
 body {
   min-width: 500px;
-  margin: 0;
-  padding 0;
-  font-size: 14px;
-  line-height: 1.42857143;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', 'Lucida Grande', Arial, sans-serif;
-  color: #2A3749;
+
 }
 
 a, button, input, .link {
@@ -65,7 +52,7 @@ a:hover, a:focus,
 .site-header {
   background-color: #fdfdfd;
   border-bottom: 1px solid #f0f0f0;
-  height: 60px;
+  height: 65px;
 }
 
 .site-header h1 {
@@ -167,6 +154,7 @@ a:hover, a:focus,
 
 .status-bar {
   padding: .5rem;
+  padding-top: 1rem;
   background-color: #f5fbf6;
   text-align: center;
 }
