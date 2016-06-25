@@ -9,14 +9,14 @@ function Help (el, clickHandler) {
     var _intro = intro.introJs()
     _intro.setOptions({
       steps: [{
-        intro: 'You can create a new hyperdrive by clicking <b>Reset</b>'
+        intro: 'You can create a new dat by clicking <b>Reset</b>'
       },
       {
         intro: 'Drop some files here',
         element: '#help-text'
       },
       {
-        intro: 'You can share the hyperdrive with this link',
+        intro: 'You can share the dat with this link',
         element: 'input#share-link',
         position: 'bottom'
       }
