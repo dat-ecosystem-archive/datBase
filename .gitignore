@@ -1,4 +1,6 @@
+.DS_Store
 node_modules/
 data/*
-.DS_Store
-bundle.js
+public/css/*
+public/js/*
+

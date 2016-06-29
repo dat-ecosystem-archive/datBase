@@ -1,21 +1,24 @@
-/* color variables */
-/*
-:root {
-  --dat-color-dark-blue: #2A3749;
-  --dat-color-dark-text: #959ba4;
-  --dat-color-off-white: #fdfdfd;
-  --dat-color-white-border: #f0f0f0;
-  --dat-color-light-grey: #f4f5f6;
-  --dat-color-light-border: #dfe2e4;
-  --dat-color-green: #35B44F;
-  --dat-color-green-hover: #A9CE7F;
-  --dat-color-error: #C0392B;
-}
-*/
+/**
+ * Use awesome syntax of `node-sass-magic-importer` to import scss modules
+ * "@import ~xxx" resolves to a node module named `xxx`
+ * If there's no file path specified after module name, it resolves to the file
+ * defined by the imported package.json's `style` property
+ *
+ * More magic importer features:
+ * https://github.com/maoberlehner/node-sass-magic-importer
+ */
+@import "~dat-design";
+@import "~dat-design/scss/responsive/breakpoints.scss";
 
 body {
   min-width: 500px;
-
+  // mixin is being imported from "~dat-design/scss/responsive/breakpoints.scss":
+  @include breakpoint (xs) {
+    background: red;
+  }
+  @include breakpoint (sm) {
+    background: yellow;
+  }
 }
 
 a, button, input, .link {
