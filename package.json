@@ -4,6 +4,7 @@
   "description": "An online place for dats.",
   "main": "src/js/app.js",
   "scripts": {
+    "version": "node ./bin/version-assets.js",
     "build-js": "browserify src/js/app.js > public/js/app.js",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
     "build": "npm run build-js && npm run build-css",
