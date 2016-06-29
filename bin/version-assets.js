@@ -7,7 +7,9 @@ var versionAssets = new Version({
   ],
   grepFiles: [
     'index.html'
-  ]
+  ],
+  keepOriginal: true,
+  keepOldVersions: false
 });
 
 versionAssets.run();
