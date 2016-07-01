@@ -5,6 +5,7 @@
   "main": "src/js/app.js",
   "scripts": {
     "version": "./bin/version-assets.js",
+    "minify-css": "minify --output public/css/main.*.css public/css/main.*.css ",
     "build-js": "browserify src/js/app.js > public/js/app.js",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
     "build": "npm run build-js && npm run build-css",
@@ -35,6 +36,7 @@
     "level-browserify": "^1.1.0",
     "memdb": "^1.3.1",
     "minidux": "^1.0.1",
+    "minifier": "^0.7.1",
     "node-sass": "^3.8.0",
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
