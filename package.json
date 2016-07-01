@@ -4,7 +4,7 @@
   "description": "An online place for dats.",
   "main": "src/js/app.js",
   "scripts": {
-    "build-js": "browserify src/js/app.js > public/js/app.js",
+    "build-js": "browserify -g yo-yoify src/js/app.js > public/js/app.js",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
     "build": "npm run build-js && npm run build-css",
     "watch-js": "watchify src/js/app.js -o public/js/app.js",
@@ -17,6 +17,9 @@
   },
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
+  "dependencies": {
+    "yo-yo": "^1.2.2"
+  },
   "devDependencies": {
     "brfs": "^1.4.3",
     "browserify": "^12.0.0",
@@ -40,7 +43,8 @@
     "speedometer": "^1.0.0",
     "standard": "^7.1.2",
     "watchify": "~3.6.0",
-    "wzrd": "^1.3.1"
+    "wzrd": "^1.3.1",
+    "yo-yoify": "^3.1.0"
   },
   "gh-pages-deploy": {
     "prep": [
