@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var Version = require('node-version-assets');
 
 var versionAssets = new Version({
