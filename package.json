@@ -4,9 +4,10 @@
   "description": "An online place for dats.",
   "main": "src/js/app.js",
   "scripts": {
-    "version-assets": "./bin/version-assets.js",
+    "version": "./bin/version-assets.js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
+    "minify": "npm run minify-css && npm run minify-js",
     "build-js": "browserify -g yo-yoify src/js/app.js > public/js/app.js -t es2020",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
     "build": "npm run build-js && npm run build-css",

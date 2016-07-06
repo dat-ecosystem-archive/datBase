@@ -5,7 +5,7 @@ var Version = require('node-version-assets')
 // productionize `index.html` by updating asset references
 // `main.css` -> 'main.min.css'
 // `app.js` -> `app.min.js`
-// copy original, un-updated `index.html` to `debug.html`
+// re-name original, un-productionized `index.html` to `debug.html`
 var index = fs.readFileSync('index.html', 'utf8')
 fs.renameSync('index.html', 'debug.html')
 var prod = index

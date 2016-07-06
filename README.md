@@ -20,3 +20,11 @@ To watch for scss changes and build css as you go (in a separate terminal):
 ```
 npm run watch-css
 ```
+
+### build for production
+```
+npm run build
+npm run minify
+npm run version
+```
+
