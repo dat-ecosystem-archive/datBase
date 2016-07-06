@@ -68,6 +68,9 @@ function main (key) {
   getArchive(key, function (archive) {
     if (archive.owner) {
       help.innerHTML = 'drag and drop files'
+    } else {
+      // XXX: this should depend on sw.connections
+      help.innerHTML = ''
     }
     installDropHandler(archive)
     window.location = '#' + archive.key.toString('hex')
