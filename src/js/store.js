@@ -15,8 +15,8 @@ function peersReducer (state, action) {
 }
 
 var reducers = minidux.combineReducers({
-  archiveReducer,
-  peersReducer
+  archiveReducer: archiveReducer,
+  peersReducer: peersReducer
 })
 var store = minidux.createStore(reducers)
 
