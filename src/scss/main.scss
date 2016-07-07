@@ -101,6 +101,18 @@ a:hover, a:focus,
   text-align: center;
 }
 
+#hyperdrive-size {
+  float: left;
+}
+
+#hyperdrive-stats {
+  float: left;
+  display: none;
+  span {
+    padding-left: 1em;
+  }
+}
+
 #peers {
   line-height: 37px;
   padding: 0;
@@ -184,7 +196,7 @@ a:hover, a:focus,
 }
 
 #hyperdrive-ui {
-
+  clear: both;
 }
 
 #yo-fs {

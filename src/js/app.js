@@ -17,6 +17,7 @@ var componentCtors = require('./components')
 var components = [
   componentCtors.Help('help'),
   componentCtors.HyperdriveSize('hyperdrive-size'),
+  componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
   componentCtors.ResetButton('new', main),
   componentCtors.SpeedDisplay('speed')
