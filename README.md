@@ -13,7 +13,7 @@ We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.
 ### develop
 ```
 npm run build
-npm start
+npm run dev
 ```
 
 To watch for scss changes and build css as you go (in a separate terminal):

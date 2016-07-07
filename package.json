@@ -4,7 +4,8 @@
   "description": "An online place for dats.",
   "main": "src/js/app.js",
   "scripts": {
-    "start": "npm run watch & http-server .",
+    "dev": "npm run watch && npm start",
+    "start": "http-server .",
     "lint": "standard",
     "test": "standard",
     "watch": "npm run watch-js",
