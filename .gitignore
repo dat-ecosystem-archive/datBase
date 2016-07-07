@@ -1,5 +1,6 @@
 .DS_Store
 debug.html
+version.txt
 node_modules/
 data/*
 public/css/*

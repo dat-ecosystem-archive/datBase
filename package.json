@@ -16,7 +16,7 @@
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
-    "version": "./bin/version-assets.js"
+    "version": "./bin/git-sha.js && ./bin/version-assets.js"
   },
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
@@ -30,6 +30,7 @@
     "es2020": "^1.1.7",
     "filereader-stream": "^1.0.0",
     "gh-pages-deploy": "^0.4.2",
+    "git-sha": "^1.0.0",
     "http-server": "^0.9.0",
     "hyperdrive": "^6.2.1",
     "hyperdrive-archive-swarm": "^3.0.1",
