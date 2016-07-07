@@ -49,7 +49,7 @@ if (file) {
 }
 
 function getArchive (key, cb) {
-  var archive = drive.createArchive(key, {live: true})
+  var archive = drive.createArchive(key, {live: true, sparse: true})
   var sw = swarm(archive)
   sw.on('connection', function (peer) {
     store.dispatch({ type: 'UPDATE_PEERS', peers: sw.connections })
