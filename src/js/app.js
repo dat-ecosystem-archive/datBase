@@ -9,6 +9,7 @@ var db = level('./dat.db')
 var drive = hyperdrive(db)
 var path = require('path')
 var explorer = require('hyperdrive-ui')
+var pump = require('pump')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
