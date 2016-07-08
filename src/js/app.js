@@ -109,7 +109,10 @@ function installDropHandler (archive) {
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
-        stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(entry)).on('finish', loop)
+        pump(stream, choppa(4 * 1024), archive.createFileWriteStream(entry), function (err) {
+          if (err) throw err
+          loop()
+        })
       }
     })
   } else {
