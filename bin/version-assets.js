@@ -10,7 +10,7 @@ var index = fs.readFileSync('index.html', 'utf8')
 fs.renameSync('index.html', 'debug.html')
 var prod = index
              .replace(/public\/css\/main.css/gmi, 'public/css/main.min.css')
-             .replace(/public\/js\/app.js/gmi, 'public/css/app.min.js')
+             .replace(/public\/js\/app.js/gmi, 'public/js/app.min.js')
 fs.writeFileSync('index.html', prod, 'utf8')
 
 // version `app.min.js` and `main.min.js` by appending md5 hash to filename
