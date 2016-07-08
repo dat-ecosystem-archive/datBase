@@ -38,13 +38,13 @@ npm install shipit-cli -g
 
 the config file is `shipitfile.js`. you'll need to set the environment var `DATLAND_USER` in your local shell for it to know which account to use to access the server.
 
-to test your access to machine via shipit:
+to test your access to machine via shipit from your local command line, call shipit, then the environment (in this case `uat`, which is tracking the master branch), then the actual command which corresponds to tasks defined in the shipitfile:
 ```
-shipit staging pwd
+shipit uat pwd
 ```
 
 to deploy and install a build (note that shipit pulls build source from github):
 ```
-shipit staging deploy
-shipit staging install
+shipit uat deploy
+shipit uat install
 ```
