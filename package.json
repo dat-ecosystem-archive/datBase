@@ -21,7 +21,7 @@
     "watch-js": "watchify src/js/app.js -o public/js/app.js",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
-    "build-js": "browserify -g yo-yoify src/js/app.js > public/js/app.js -t es2020",
+    "build-js": "browserify -g yo-yoify src/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "brfs": "^1.4.3",
-    "browserify": "^12.0.0",
+    "browserify": "^13.0.0",
     "choppa": "^1.0.2",
     "concat-stream": "^1.5.1",
     "dat-design": "^1.2.5",
