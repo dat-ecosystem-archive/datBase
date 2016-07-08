@@ -2,7 +2,15 @@
   "name": "dat-land",
   "version": "1.2.3",
   "description": "An online place for dats.",
+  "license": "MIT",
   "main": "src/js/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/datproject/dat.land.git"
+  },
+  "bugs": {
+    "url": "https://github.com/datproject/dat.land/issues"
+  },
   "scripts": {
     "dev": "npm run watch && npm start",
     "start": "http-server .",
@@ -19,14 +27,12 @@
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
     "version": "./bin/git-sha.js && ./bin/version-assets.js"
   },
-  "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
-  "license": "MIT",
   "devDependencies": {
     "brfs": "^1.4.3",
     "browserify": "^12.0.0",
     "choppa": "^1.0.2",
     "concat-stream": "^1.5.1",
-    "dat-design": "^1.1.0",
+    "dat-design": "^1.2.5",
     "drag-drop": "^2.11.0",
     "es2020": "^1.1.7",
     "filereader-stream": "^1.0.0",
@@ -45,6 +51,7 @@
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
     "pretty-bytes": "^3.0.1",
+    "shipit-deploy": "^2.2.0",
     "speedometer": "^1.0.0",
     "standard": "^7.1.2",
     "uglify-js": "^2.7.0",
@@ -52,12 +59,5 @@
     "wzrd": "^1.3.1",
     "yo-yo": "^1.2.2",
     "yo-yoify": "^3.1.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/karissa/hyperdrive-ui.git"
-  },
-  "bugs": {
-    "url": "https://github.com/karissa/hyperdrive-ui/issues"
   }
 }
