@@ -11,15 +11,29 @@ An online place for dats.
 We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergiong heavy development for the next few months.
 
 ### develop
+
 ```
-npm run build
+npm install
+```
+
+Do all of the below (watch assets and start server) in one command:
+```
 npm run dev
 ```
 
-To watch for scss changes and build css as you go (in a separate terminal):
+Start the server:
+
+```
+npm start
+```
+
+To watch and build scss and javascript changes as you go (in a separate terminal):
+
 ```
 npm run watch-css
+npm run watch-js
 ```
+
 
 ### build for production
 ```
