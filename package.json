@@ -12,7 +12,7 @@
     "url": "https://github.com/datproject/dat.land/issues"
   },
   "scripts": {
-    "dev": "npm run watch && npm start",
+    "dev": "npm run watch & npm start",
     "start": "http-server .",
     "lint": "standard",
     "test": "standard",
