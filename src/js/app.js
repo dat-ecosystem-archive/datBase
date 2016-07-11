@@ -59,7 +59,19 @@ function getArchive (key, cb) {
       store.dispatch({ type: 'UPDATE_PEERS', peers: sw.connections })
     })
   })
-  archive.open(function () { cb(archive) })
+  archive.open(function () {
+    console.log(archive)
+    archive.content.get(0, function (data) {
+      // XXX: Hack to fetch a small bit of data so size properly updates
+    })
+    cb(archive)
+  })
+  archive.on('download', function () {
+    store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
+  })
+  archive.on('upload', function () {
+    store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
+  })
 }
 
 function main (key) {
