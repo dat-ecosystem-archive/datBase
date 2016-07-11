@@ -116,8 +116,8 @@ function installDropHandler (archive) {
       loop()
 
       function loop () {
+        store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
         if (i === files.length) {
-          store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
           return console.log('added files to ', archive.key.toString('hex'), files)
         }
         var file = files[i++]
