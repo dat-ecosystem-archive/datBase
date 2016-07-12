@@ -32,6 +32,6 @@ module.exports = function (shipit) {
   })
 
   shipit.task('restart', function () {
-    return shipit.remote(`psy ${shipit.config.processName} restart`)
+    shipit.remote(`source ~/.bash_profile && psy restart ${shipit.config.processName}`)
   })
 }

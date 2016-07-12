@@ -26,7 +26,7 @@
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
     "version": "./bin/git-sha.js && ./bin/version-assets.js",
-    "deploy": "shipit uat deploy && shipit uat install"
+    "deploy": "shipit uat deploy && shipit uat install && shipit uat restart"
   },
   "devDependencies": {
     "brfs": "^1.4.3",
