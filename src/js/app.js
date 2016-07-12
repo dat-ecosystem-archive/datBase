@@ -3,6 +3,7 @@ var concat = require('concat-stream')
 var level = require('level-browserify')
 var drop = require('drag-drop')
 var fileReader = require('filereader-stream')
+var encoding = require('dat-encoding')
 var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
 var db = level('./dat.db')
@@ -40,7 +41,7 @@ main()
 
 function main () {
   var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
-  var key = keypath ? keypath[1] : null
+  var key = keypath ? encoding.decode(keypath[1]) : null
   var file = keypath ? keypath[2] : null
 
   if (file) {
@@ -94,7 +95,7 @@ function initArchive (key) {
       help.innerHTML = ''
     }
     installDropHandler(archive)
-    window.location = '#' + archive.key.toString('hex')
+    window.location = '#' + encoding.encode(archive.key)
     updateShareLink()
 
     function onclick (ev, entry) {
