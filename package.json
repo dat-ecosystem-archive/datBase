@@ -25,7 +25,8 @@
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
-    "version": "./bin/git-sha.js && ./bin/version-assets.js"
+    "version": "./bin/git-sha.js && ./bin/version-assets.js",
+    "deploy": "shipit uat deploy && shipit uat install"
   },
   "devDependencies": {
     "brfs": "^1.4.3",

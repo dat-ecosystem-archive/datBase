@@ -57,8 +57,7 @@ to test your access to machine via shipit from your local command line, call shi
 shipit uat pwd
 ```
 
-to deploy and install a build (note that shipit pulls build source from github):
+to deploy and install a build on remote machine (note that shipit pulls build source from github, not your local project dir):
 ```
-shipit uat deploy
-shipit uat install
+npm run deploy
 ```
