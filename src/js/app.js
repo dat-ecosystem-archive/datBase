@@ -20,7 +20,7 @@ var components = [
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
-  componentCtors.ResetButton('new', main),
+  componentCtors.ResetButton('new', initArchive),
   componentCtors.SpeedDisplay('speed')
 ]
 
@@ -33,21 +33,27 @@ store.subscribe(function (state) {
   }
 })
 
-var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
-var key = keypath ? keypath[1] : null
-var file = keypath ? keypath[2] : null
-var cwd = '/'
+window.addEventListener('hashchange', main)
 
-if (file) {
-  getArchive(key, function (archive) {
-    store.dispatch({ type: 'INIT_ARCHIVE', archive: archive })
-    archive.createFileReadStream(file).pipe(concat(function (data) {
-      document.write(data)
-    }))
-  })
-} else {
-  installDropHandler()
-  main(key)
+var cwd = '/'
+main()
+
+function main () {
+  var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
+  var key = keypath ? keypath[1] : null
+  var file = keypath ? keypath[2] : null
+
+  if (file) {
+    getArchive(key, function (archive) {
+      store.dispatch({ type: 'INIT_ARCHIVE', archive: archive })
+      archive.createFileReadStream(file).pipe(concat(function (data) {
+        document.write(data)
+      }))
+    })
+  } else {
+    installDropHandler()
+    initArchive(key)
+  }
 }
 
 function getArchive (key, cb) {
@@ -75,7 +81,7 @@ function getArchive (key, cb) {
   })
 }
 
-function main (key) {
+function initArchive (key) {
   var help = document.querySelector('#help-text')
   help.innerHTML = 'looking for sources …'
   $hyperdrive.innerHTML = ''
