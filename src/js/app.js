@@ -18,7 +18,7 @@ var $shareLink = document.getElementById('share-link')
 var componentCtors = require('./components')
 var components = [
   componentCtors.Help('help'),
-  componentCtors.HyperdriveQueue('hyperdrive-queue'),
+  componentCtors.FileQueue('file-queue'),
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),

@@ -1,6 +1,6 @@
 var minidux = require('minidux')
 
-function hyperdriveQueueReducer (state, action) {
+function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: [] }
   if (action.type === 'ADD_FILES') {
     // TODO: don't forget to handle directories properly!
@@ -28,7 +28,7 @@ function peersReducer (state, action) {
 }
 
 var reducers = minidux.combineReducers({
-  hyperdriveQueueReducer: hyperdriveQueueReducer,
+  fileQueueReducer: fileQueueReducer,
   archiveReducer: archiveReducer,
   peersReducer: peersReducer
 })
