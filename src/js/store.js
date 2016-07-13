@@ -1,5 +1,18 @@
 var minidux = require('minidux')
 
+function hyperdriveQueueReducer (state, action) {
+  if (state === undefined) state = { queue: [] }
+  if (action.type === 'ADD_FILES') {
+    // TODO: don't forget to handle directories properly!
+    if (action.files && action.files.length > 0) {
+      action.files.forEach(function (file) {
+        state.queue.push(file)
+      })
+      console.log('[store] added files')
+    }
+  }
+}
+
 function archiveReducer (state, action) {
   if (state === undefined) state = { archive: undefined }
   if (action.type === 'INIT_ARCHIVE' || action.type === 'UPDATE_ARCHIVE') {
@@ -15,6 +28,7 @@ function peersReducer (state, action) {
 }
 
 var reducers = minidux.combineReducers({
+  hyperdriveQueueReducer: hyperdriveQueueReducer,
   archiveReducer: archiveReducer,
   peersReducer: peersReducer
 })

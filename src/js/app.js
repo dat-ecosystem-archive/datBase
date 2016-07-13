@@ -18,6 +18,7 @@ var $shareLink = document.getElementById('share-link')
 var componentCtors = require('./components')
 var components = [
   componentCtors.Help('help'),
+  componentCtors.HyperdriveQueue('hyperdrive-queue'),
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
@@ -69,15 +70,18 @@ function getArchive (key, cb) {
   archive.open(function () {
     if (archive.content) {
       archive.content.get(0, function (data) {
+        console.log('archive.content.get <-- retrieve a bit of data for sizing')
         // XXX: Hack to fetch a small bit of data so size properly updates
       })
     }
     cb(archive)
   })
   archive.on('download', function () {
+    console.log('archive.on `download`')
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
   archive.on('upload', function () {
+    console.log('archive.on `upload`')
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
 }
@@ -105,6 +109,7 @@ function initArchive (key) {
     }
     var tree = explorer(archive, onclick)
     $hyperdrive.appendChild(tree)
+    console.log('store.dispatch INIT_ARCHIVE')
     store.dispatch({ type: 'INIT_ARCHIVE', archive: archive })
   })
 }
@@ -119,6 +124,10 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
+      console.log('clearDrop i=0', archive)
+      console.log('clearDrop files', files)
+      console.log('store.dispatch ADD_FILES')
+      store.dispatch({ type: 'ADD_FILES', files: files })
       var i = 0
       loop()
 
@@ -132,6 +141,7 @@ function installDropHandler (archive) {
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
         pump(stream, choppa(4 * 1024), archive.createFileWriteStream(entry), function (err) {
           if (err) throw err
+          console.log('clearDrop i=', i, archive)
           loop()
         })
       }
