@@ -11,6 +11,7 @@ var drive = hyperdrive(db)
 var path = require('path')
 var explorer = require('hyperdrive-ui')
 var pump = require('pump')
+var progress = require('progress-stream')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -81,7 +82,7 @@ function getArchive (key, cb) {
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
   archive.on('upload', function () {
-    console.log('archive.on `upload`')
+    console.log('!!!archive.on `upload`')
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
 }
@@ -126,24 +127,38 @@ function installDropHandler (archive) {
     clearDrop = drop(document.body, function (files) {
       console.log('clearDrop i=0', archive)
       console.log('clearDrop files', files)
-      console.log('store.dispatch ADD_FILES')
-      store.dispatch({ type: 'ADD_FILES', files: files })
       var i = 0
       loop()
 
       function loop () {
         store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
         if (i === files.length) {
-          return console.log('added files to ', archive.key.toString('hex'), files)
+          return console.log('loop() DONE;added files to ', archive.key.toString('hex'), files)
         }
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
-        pump(stream, choppa(4 * 1024), archive.createFileWriteStream(entry), function (err) {
-          if (err) throw err
-          console.log('clearDrop i=', i, archive)
-          loop()
+        console.log('init streamProgress')
+        var streamProgress = progress({ length: stream.size, time: 50 }) // time: ms
+        streamProgress.on('progress', function (progress) {
+          console.log('ON progress')
+          console.log(progress)
         })
+        console.log('store.dispatch ADD_FILE')
+        store.dispatch({ type: 'ADD_FILE', file: file })
+
+        console.log('start pump() 2')
+        pump(
+          stream,
+          choppa(4 * 1024),
+          streamProgress,
+          archive.createFileWriteStream(entry),
+          function (err) {
+            if (err) throw err
+            console.log('DONE PUMPING! clearDrop i=', i, archive)
+            // loop()
+          }
+        )
       }
     })
   } else {

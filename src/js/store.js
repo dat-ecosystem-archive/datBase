@@ -2,13 +2,12 @@ var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: [] }
-  if (action.type === 'ADD_FILES') {
+  if (action.type === 'ADD_FILE') {
     // TODO: don't forget to handle directories properly!
-    if (action.files && action.files.length > 0) {
-      action.files.forEach(function (file) {
-        state.queue.push(file)
-      })
-      console.log('[store] added files')
+    if (action.file) {
+      state.queue.push(action.file)
+      console.log('[store] added file to queue')
+      return { queue: state.queue }
     }
   }
 }

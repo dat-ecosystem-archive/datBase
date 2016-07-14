@@ -34,6 +34,7 @@
     "choppa": "^1.0.2",
     "concat-stream": "^1.5.1",
     "dat-design": "^1.2.5",
+    "dat-encoding": "^2.0.2",
     "drag-drop": "^2.11.0",
     "es2020": "^1.1.7",
     "filereader-stream": "^1.0.0",
@@ -51,6 +52,7 @@
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
     "pretty-bytes": "^3.0.1",
+    "progress-stream": "^1.2.0",
     "pump": "^1.0.1",
     "shipit-deploy": "^2.2.0",
     "speedometer": "^1.0.0",
@@ -59,7 +61,6 @@
     "watchify": "~3.6.0",
     "wzrd": "^1.3.1",
     "yo-yo": "^1.2.2",
-    "yo-yoify": "^3.1.0",
-    "dat-encoding": "^2.0.2"
+    "yo-yoify": "^3.1.0"
   }
 }
