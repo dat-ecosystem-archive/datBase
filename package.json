@@ -61,5 +61,8 @@
     "yo-yo": "^1.2.2",
     "yo-yoify": "^3.1.0",
     "dat-encoding": "^2.0.2"
+  },
+  "dependencies": {
+    "dat-header": "^1.0.0"
   }
 }
