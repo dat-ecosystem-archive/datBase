@@ -1,22 +1,23 @@
 <html>
   <head>
-    <link rel="icon" type="image/png" href="public/images/dat-data-blank.png" />
+    <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
     <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
   </head>
   <body>
-    <header class="site-header">
-      <div class="container">
-        <h1>
-          <a href="http://dat-data.com">
-            <img src="public/images/dat-data.png" style="width:30px;" />
-          </a>
-        </h1>
-        <input type="text" readonly="true" value="" id="share-link" data-intro="">
-        <h3 id="peers"></h3>
-        <button id="help" class="button">?</button>
-        <button id="new" class="button">Reset</button>
-        <h3 id="speed"></h3>
+    <header class="dat-header">
+      <a href="http://dat-data.com" class="dat-logo">
+        <img src="./public/img/dat-data-logo.svg" style="width:40px;" />
+      </a>
+      <div class="dat-import">
+        <div class="dat-import--icon">
+          <img src="./public/img/link.svg" />
+        </div>
+        <input type="text" readonly="true" value="" id="share-link" data-intro="" class="dat-import--input">
+      </div>
+      <div class="dat-header__actions">
+        <button id="new" class="btn btn--green btn--header">Reset</button>
+        <button id="help" class="btn btn--green btn--header">?</button>
       </div>
     </header>
     <div class="status-bar">
@@ -25,8 +26,9 @@
     <main class="site-main">
       <div class="container">
         <div id="hyperdrive-size"></div>
+        <div id="speed"></div>
+        <div id="peers"></div>
         <div id="hyperdrive-stats"></div>
-        <!-- <div class="upload-file">Drop Files</div> -->
         <div id="hyperdrive-ui"></div>
       </div>
     </main>

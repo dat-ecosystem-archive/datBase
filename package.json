@@ -32,7 +32,7 @@
     "browserify": "^13.0.0",
     "choppa": "^1.0.2",
     "concat-stream": "^1.5.1",
-    "dat-design": "^1.2.5",
+    "dat-design": "^1.2.6",
     "drag-drop": "^2.11.0",
     "es2020": "^1.1.7",
     "filereader-stream": "^1.0.0",
