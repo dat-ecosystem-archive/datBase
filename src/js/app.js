@@ -17,11 +17,15 @@ var $shareLink = document.getElementById('share-link')
 
 var componentCtors = require('./components')
 var components = [
-  componentCtors.Help('help'),
+  componentCtors.Header('header', {
+    create: initArchive,
+    download: initArchive,
+    title: 'datland'
+  }),
+  //componentCtors.Help('help'),
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
-  componentCtors.ResetButton('new', initArchive),
   componentCtors.SpeedDisplay('speed')
 ]
 
@@ -110,7 +114,7 @@ function initArchive (key) {
 }
 
 function updateShareLink () {
-  $shareLink.value = window.location
+  $shareLink.innerHTML = window.location
 }
 
 var clearDrop
