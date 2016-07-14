@@ -1,4 +1,5 @@
 var yo = require('yo-yo')
+var encoding = require('dat-encoding')
 var prettyBytes = require('pretty-bytes')
 
 module.exports = Stats
@@ -33,8 +34,10 @@ Stats.prototype._attachHandlers = function (state) {
   var self = this
   if (state && state.archiveReducer) {
     var s = state.archiveReducer
-    if (s.archive && s.archive.key.toString('hex') !== this._archiveKey) {
-      this._archiveKey = s.archive.key.toString('hex')
+    if (!s.archive) return
+    var key = encoding.encode(s.archive.key)
+    if (key !== this._archiveKey) {
+      this._archiveKey = key
 
       s.archive.on('upload', function (data) {
         self._upload += data.length

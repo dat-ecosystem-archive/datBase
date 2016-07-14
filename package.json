@@ -12,20 +12,21 @@
     "url": "https://github.com/datproject/dat.land/issues"
   },
   "scripts": {
-    "dev": "npm run watch && npm start",
+    "dev": "npm run watch & npm start",
     "start": "http-server .",
     "lint": "standard",
     "test": "standard",
-    "watch": "npm run watch-js",
+    "watch": "npm run watch-js & npm run watch-css",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "watch-js": "watchify src/js/app.js -o public/js/app.js",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
-    "build-js": "browserify -g yo-yoify src/js/app.js -g es2020 > public/js/app.js",
+    "build-js": "browserify src/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
-    "version": "./bin/git-sha.js && ./bin/version-assets.js"
+    "version": "./bin/git-sha.js && ./bin/version-assets.js",
+    "deploy": "shipit uat deploy && shipit uat install && shipit uat restart"
   },
   "devDependencies": {
     "brfs": "^1.4.3",
@@ -58,6 +59,7 @@
     "watchify": "~3.6.0",
     "wzrd": "^1.3.1",
     "yo-yo": "^1.2.2",
-    "yo-yoify": "^3.1.0"
+    "yo-yoify": "^3.1.0",
+    "dat-encoding": "^2.0.2"
   }
 }

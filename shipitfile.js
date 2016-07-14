@@ -12,6 +12,7 @@ module.exports = function (shipit) {
       keepReleases: 2
     },
     uat: {
+      processName: 'uat',
       servers: process.env.DATLAND_USER + '@dat.land',
       deployTo: 'src/dat.land/uat',
       branch: 'master'
@@ -26,8 +27,11 @@ module.exports = function (shipit) {
     var current = shipit.config.deployTo + '/current'
     shipit.log('running `shipit install` in remote ' + current)
     return shipit.remote(
-      'cd ' + current +
-      ' && npm install && npm run build && npm run minify && npm run version'
+      `cd ${current} && npm install && npm run build && npm run minify && npm run version`
     )
+  })
+
+  shipit.task('restart', function () {
+    shipit.remote(`source ~/.bash_profile && psy restart ${shipit.config.processName}`)
   })
 }

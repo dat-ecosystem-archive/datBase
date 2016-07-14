@@ -31,7 +31,7 @@ HyperdriveSize.prototype._updateSize = function (state) {
     if (s.archive && s.archive.content && s.archive.content.bytes) {
       this._size = prettyBytes(s.archive.content.bytes)
     } else {
-      this._size = 0
+      this._size = '0 MB'
     }
     return this._size
   }
