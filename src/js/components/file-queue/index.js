@@ -15,6 +15,17 @@ FileQueue.prototype.update = function (state) {
   if (state && state.fileQueueReducer) {
     this._queue = state.fileQueueReducer.queue
     console.log('[FileQueue] this._queue', this._queue)
+
+    // set up progress listener on file
+    if (this._queue && this._queue.length > 0) {
+      this._queue.map(function (file) {
+        file.streamProgress.on('progress', function (progress) {
+          console.log('ON progress')
+          console.log(progress)
+        })
+      })
+    }
+
     yo.update(this._component, this._render())
   }
 }

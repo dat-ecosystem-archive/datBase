@@ -139,24 +139,19 @@ function installDropHandler (archive) {
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
         console.log('init streamProgress')
-        var streamProgress = progress({ length: stream.size, time: 50 }) // time: ms
-        streamProgress.on('progress', function (progress) {
-          console.log('ON progress')
-          console.log(progress)
-        })
+        file.streamProgress = progress({ length: stream.size, time: 50 }) // time: ms
         console.log('store.dispatch ADD_FILE')
         store.dispatch({ type: 'ADD_FILE', file: file })
-
         console.log('start pump() 2')
         pump(
           stream,
           choppa(4 * 1024),
-          streamProgress,
+          file.streamProgress,
           archive.createFileWriteStream(entry),
           function (err) {
             if (err) throw err
             console.log('DONE PUMPING! clearDrop i=', i, archive)
-            // loop()
+            loop()
           }
         )
       }
