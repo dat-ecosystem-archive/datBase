@@ -19,8 +19,8 @@ FileQueue.prototype.update = function (state) {
     // set up progress listener on file
     if (this._queue && this._queue.length > 0) {
       this._queue.map(function (file) {
-        file.streamProgress.on('progress', function (progress) {
-          console.log('ON progress')
+        file.writeProgress.on('progress', function (progress) {
+          console.log('ON write progress')
           console.log(progress)
         })
       })

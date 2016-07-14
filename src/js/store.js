@@ -2,7 +2,7 @@ var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: [] }
-  if (action.type === 'ADD_FILE') {
+  if (action.type === 'QUEUE_NEW_FILE') {
     // TODO: don't forget to handle directories properly!
     if (action.file) {
       state.queue.push(action.file)

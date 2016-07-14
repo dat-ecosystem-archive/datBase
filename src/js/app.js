@@ -125,28 +125,30 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
+      // TODO: refactor this into `hyperdrive-write-queue` module
       console.log('clearDrop i=0', archive)
       console.log('clearDrop files', files)
       var i = 0
       loop()
 
       function loop () {
+        console.log('UPDATE_ARCHIVE')
         store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
         if (i === files.length) {
-          return console.log('loop() DONE;added files to ', archive.key.toString('hex'), files)
+          return console.log('loop() DONE; added files to ', archive.key.toString('hex'), files)
         }
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
         console.log('init streamProgress')
-        file.streamProgress = progress({ length: stream.size, time: 50 }) // time: ms
-        console.log('store.dispatch ADD_FILE')
-        store.dispatch({ type: 'ADD_FILE', file: file })
-        console.log('start pump() 2')
+        file.writeProgress = progress({ length: stream.size, time: 50 }) // time: ms
+        console.log('store.dispatch QUEUE_NEW_FILE')
+        store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+        console.log('start pump()')
         pump(
           stream,
           choppa(4 * 1024),
-          file.streamProgress,
+          file.writeProgress,
           archive.createFileWriteStream(entry),
           function (err) {
             if (err) throw err
@@ -155,6 +157,7 @@ function installDropHandler (archive) {
           }
         )
       }
+      // end /TODO: `hyperdrive-write-queue` module
     })
   } else {
     clearDrop = drop(document.body, function () {
