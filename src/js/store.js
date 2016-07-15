@@ -10,6 +10,15 @@ function fileQueueReducer (state, action) {
       return { queue: state.queue }
     }
   }
+  if (action.type === 'DEQUEUE_FILE') {
+    if (action.file) {
+      console.log('[store] DEQUEUE_FILE')
+      state.queue = state.queue.filter(function (file) {
+        return file.fullPath !== action.file.fullPath
+      })
+    }
+    return { queue: state.queue }
+  }
 }
 
 function archiveReducer (state, action) {

@@ -20,10 +20,12 @@ FileQueue.prototype.update = function (state) {
 
     if (this._queue && this._queue.length > 0) {
       this._queue.map(function (file) {
-        file.progressListener.on('progress', function (progress) {
-          file.progress = progress
-          yo.update(self._component, self._render())
-        })
+        if (file.progressListener) {
+          file.progressListener.on('progress', function (progress) {
+            file.progress = progress
+            yo.update(self._component, self._render())
+          })
+        }
       })
     }
   }

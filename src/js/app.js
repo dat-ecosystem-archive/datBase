@@ -138,7 +138,6 @@ function installDropHandler (archive) {
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
-        // console.log('init streamProgress')
         file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
         store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
         console.log('start pump()')
@@ -148,8 +147,10 @@ function installDropHandler (archive) {
           file.progressListener,
           archive.createFileWriteStream(entry),
           function (err) {
+            // TODO: handle errors in UI (file queue component)
             if (err) throw err
             console.log('DONE PUMPING! clearDrop i=', i, archive)
+            store.dispatch({ type: 'DEQUEUE_FILE', file: file })
             loop()
           }
         )
