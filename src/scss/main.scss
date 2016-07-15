@@ -23,6 +23,35 @@ body {
   }
 }
 
+// breakpoint testing helper
+body {
+  position: relative;
+  &:before {
+    position: absolute;
+    width: auto;
+    top: 0;
+    right: 50%;
+    font-size: 8px;
+    padding: 2px;
+    background-color: black;
+    color: white;
+    z-index: 100;
+    transition: all .1s ease-in-out;
+    content: '';
+    opacity: .8;
+    @include breakpoint (xs) {
+      content: 'We’re on breakpoint xs';
+      background-color: red;
+    }
+    @include breakpoint (sm) {
+      content: 'We’re on breakpoint sm';
+      background-color: yellow;
+      color: black;
+    }
+  }
+}
+
+
 a, button, input, .link {
   transition-property: background-color, color;
   transition-duration: $transition-duration;
