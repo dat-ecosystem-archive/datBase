@@ -1,5 +1,6 @@
 var yo = require('yo-yo')
 var importButton = require('dat-header/import')
+var help = require('../help')
 var button = require('dat-button')
 
 module.exports = Header
@@ -34,7 +35,7 @@ Header.prototype._render = function () {
         ${importButton({
           download: this._props.download
         })}
-        <button id="help" class="btn btn--green btn--header">?</button>
+        ${help()}
       </div>
   </div>
   `

@@ -28,8 +28,7 @@ var components = [
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
-  componentCtors.SpeedDisplay('speed'),
-  componentCtors.Help('help')
+  componentCtors.SpeedDisplay('speed')
 ]
 
 var store = require('./store')
@@ -75,6 +74,7 @@ function getArchive (key, cb) {
     })
   })
   archive.open(function () {
+    console.log('open?')
     if (archive.content) {
       archive.content.get(0, function (data) {
         // XXX: Hack to fetch a small bit of data so size properly updates
