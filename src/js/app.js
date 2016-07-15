@@ -138,12 +138,21 @@ function installDropHandler (archive) {
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
 
+
         file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
         store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
         // TODO: when i=0, loop thru all other files and add them to queue
         // BUT they won't have a file.progressListener so you'll
         // have to add the listener in the FileQueue component
-        // separately
+        // separately.
+        // how to fix this?
+        // structure the fileQueueReducer like this:
+        // state = {
+        //   writing: file, <-- when this gets updated, add the progressListener callback in the component
+        //   fileQueue: [file, file, file]
+        // }
+        // don't forget to remove the listener callback after write is done!
+
 
         console.log('start pump()')
         pump(
