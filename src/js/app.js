@@ -17,11 +17,17 @@ var $shareLink = document.getElementById('share-link')
 
 var componentCtors = require('./components')
 var components = [
-  componentCtors.Help('help'),
+  componentCtors.Header('header', {
+    create: function (event) {
+      initArchive()
+    },
+    download: function (link) {
+      initArchive(link)
+    }
+  }),
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
-  componentCtors.ResetButton('new', initArchive),
   componentCtors.SpeedDisplay('speed')
 ]
 
@@ -41,7 +47,7 @@ main()
 
 function main () {
   var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
-  var key = keypath ? encoding.decode(keypath[1]) : null
+  var key = keypath ? keypath[1] : null
   var file = keypath ? keypath[2] : null
 
   if (file) {
@@ -58,6 +64,7 @@ function main () {
 }
 
 function getArchive (key, cb) {
+  if ((typeof key) === 'string') key = encoding.decode(key)
   var archive = drive.createArchive(key, {live: true, sparse: true})
   var sw = swarm(archive)
   sw.on('connection', function (peer) {
@@ -74,6 +81,7 @@ function getArchive (key, cb) {
     }
     cb(archive)
   })
+
   archive.on('download', function () {
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
@@ -110,7 +118,7 @@ function initArchive (key) {
 }
 
 function updateShareLink () {
-  $shareLink.value = window.location
+  $shareLink.innerHTML = window.location
 }
 
 var clearDrop
