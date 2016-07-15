@@ -74,7 +74,6 @@ function getArchive (key, cb) {
     })
   })
   archive.open(function () {
-    console.log('open?')
     if (archive.content) {
       archive.content.get(0, function (data) {
         // XXX: Hack to fetch a small bit of data so size properly updates
