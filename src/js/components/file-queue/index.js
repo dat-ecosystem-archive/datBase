@@ -5,7 +5,10 @@ module.exports = FileQueue
 function FileQueue (el) {
   if (!(this instanceof FileQueue)) return new FileQueue(el)
   this.$el = document.getElementById(el)
-  this._queue = []
+  this._queue = {
+    writing: undefined,
+    next: undefined
+  }
   this._component = this._render()
 
   if (this.$el) this.$el.appendChild(this._component)
@@ -14,7 +17,11 @@ function FileQueue (el) {
 FileQueue.prototype.update = function (state) {
   var self = this
   if (state && state.fileQueueReducer) {
+
+    // see notes in app.js loop
     this._queue = state.fileQueueReducer.queue
+
+
     console.log('[FileQueue] this._queue', this._queue)
     yo.update(this._component, this._render())
 
@@ -43,10 +50,17 @@ FileQueue.prototype.update = function (state) {
   }
 }
 
+FileQueue.prototype._addProgressCallback = function () {
+  // add the progress listener from above^^
+}
+
 FileQueue.prototype._render = function () {
   var self = this
   return yo`<ul>
-    ${this._queue.map(function (file) {
+
+    ${self._renderLi(this._queue.writing)}
+
+    ${this._queue.next.map(function (file) {
       return self._renderLi(file)
     })}
     </ul>`

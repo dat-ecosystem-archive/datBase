@@ -148,8 +148,10 @@ function installDropHandler (archive) {
         // how to fix this?
         // structure the fileQueueReducer like this:
         // state = {
-        //   writing: file, <-- when this gets updated, add the progressListener callback in the component
-        //   fileQueue: [file, file, file]
+        //   queue {
+        //     writing: file, <-- when this gets updated, add the progressListener callback in the component
+        //     next: [file, file, file]
+        //   }
         // }
         // don't forget to remove the listener callback after write is done!
 
