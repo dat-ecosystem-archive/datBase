@@ -47,9 +47,10 @@ var fs = require('fs')
 
 module.exports = (function (settings) {
   var chrome = '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
-  if (fs.statSync(chrome)) {
+  try {
+    fs.statSync(chrome)
     settings.test_settings.chrome.desiredCapabilities.chromeOptions = { binary: chrome }
-  }
+  } catch (e) { }
   if (!(process.env.__NIGHTWATCH_ENV_KEY || '').match(/_1$/)) {
     settings.output_folder = false
     settings.output = false
