@@ -50,8 +50,13 @@ FileQueue.prototype.update = function (state) {
   }
 }
 
-FileQueue.prototype._addProgressCallback = function () {
+FileQueue.prototype._addFileProgressListener = function () {
   // add the progress listener from above^^
+}
+
+FileQueue.prototype._removeFileProgressListener = function () {
+  // watch for changes to this._queue.writing
+  // when a file is bumped there, remove its progress listener here
 }
 
 FileQueue.prototype._render = function () {

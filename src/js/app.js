@@ -166,7 +166,6 @@ function installDropHandler (archive) {
             // TODO: handle errors in UI
             if (err) throw err
             console.log('DONE PUMPING! clearDrop i=', i, archive)
-            file.progress = { complete: true }
             store.dispatch({ type: 'DEQUEUE_FILE', file: file })
             loop()
           }
