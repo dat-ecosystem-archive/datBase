@@ -48,7 +48,7 @@ main()
 
 function main () {
   var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
-  var key = keypath ? encoding.decode(keypath[1]) : null
+  var key = keypath ? keypath[1] : null
   var file = keypath ? keypath[2] : null
 
   if (file) {
@@ -65,6 +65,7 @@ function main () {
 }
 
 function getArchive (key, cb) {
+  if ((typeof key) === 'string') key = encoding.decode(key)
   var archive = drive.createArchive(key, {live: true, sparse: true})
   var sw = swarm(archive)
   sw.on('connection', function (peer) {
@@ -81,6 +82,7 @@ function getArchive (key, cb) {
     }
     cb(archive)
   })
+
   archive.on('download', function () {
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
