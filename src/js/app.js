@@ -124,7 +124,6 @@ function installDropHandler (archive) {
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
       // TODO: refactor this into `hyperdrive-write-queue` module
-      console.log('clearDrop i=0', archive)
       console.log('clearDrop files', files)
       var i = 0
       loop()
@@ -138,8 +137,14 @@ function installDropHandler (archive) {
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
+
         file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
         store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+        // TODO: when i=0, loop thru all other files and add them to queue
+        // BUT they won't have a file.progressListener so you'll
+        // have to add the listener in the FileQueue component
+        // separately
+
         console.log('start pump()')
         pump(
           stream,
@@ -147,9 +152,10 @@ function installDropHandler (archive) {
           file.progressListener,
           archive.createFileWriteStream(entry),
           function (err) {
-            // TODO: handle errors in UI (file queue component)
+            // TODO: handle errors in UI
             if (err) throw err
             console.log('DONE PUMPING! clearDrop i=', i, archive)
+            file.progress = { complete: true }
             store.dispatch({ type: 'DEQUEUE_FILE', file: file })
             loop()
           }

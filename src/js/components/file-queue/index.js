@@ -18,6 +18,16 @@ FileQueue.prototype.update = function (state) {
     console.log('[FileQueue] this._queue', this._queue)
     yo.update(this._component, this._render())
 
+
+    // FIXME: this is a bad pattern for more than 1 file at a time
+    // you'll need to add the progressListener callback below
+    // when the file enters the app.js clearDrop loop()
+    // BUT you want ALL the files to show in the FileQueue list
+    // before that, just with a 0% progress bar until the
+    // writing begins/progressListener added
+    // If we don't fix this below, a progress listener is added
+    // to every file each time a new file is added or removed from
+    // the queue! Sad!
     if (this._queue && this._queue.length > 0) {
       this._queue.map(function (file) {
         if (file.progressListener) {
@@ -28,6 +38,8 @@ FileQueue.prototype.update = function (state) {
         }
       })
     }
+
+
   }
 }
 
@@ -51,13 +63,13 @@ FileQueue.prototype._renderProgress = function (file) {
   var loaded = 0
   if (file && file.progress && file.progress.percentage) {
     loaded = parseInt(file.progress.percentage) // no decimal points, plz
-  }
-  return yo`<div class="progress">
-     <div class="progress__counter">${loaded}%</div>
-     <div class="progress__bar">
-       <div class="progress__line progress__line--loading"
-            style="width: ${loaded}%">
+    return yo`<div class="progress">
+       <div class="progress__counter">${loaded}%</div>
+       <div class="progress__bar">
+         <div class="progress__line progress__line--loading"
+              style="width: ${loaded}%">
+         </div>
        </div>
-     </div>
-   </div>`
+     </div>`
+  }
 }

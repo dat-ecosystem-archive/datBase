@@ -3,22 +3,17 @@ var minidux = require('minidux')
 function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: [] }
   if (action.type === 'QUEUE_NEW_FILE') {
-    // TODO: don't forget to handle directories properly!
-    if (action.file) {
-      state.queue.push(action.file)
-      console.log('[store] QUEUE_NEW_FILE')
-      return { queue: state.queue }
-    }
+    state.queue.push(action.file)
+    console.log('[store] QUEUE_NEW_FILE done')
   }
   if (action.type === 'DEQUEUE_FILE') {
-    if (action.file) {
-      console.log('[store] DEQUEUE_FILE')
-      state.queue = state.queue.filter(function (file) {
-        return file.fullPath !== action.file.fullPath
-      })
-    }
-    return { queue: state.queue }
+    state.queue = state.queue.filter(function (file) {
+      return file.fullPath !== action.file.fullPath
+    })
+    console.log('[store] DEQUEUE_FILE done')
   }
+  console.log('[store] fileQueueReducer state: ', state)
+  return { queue: state.queue }
 }
 
 function archiveReducer (state, action) {
