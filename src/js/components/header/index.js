@@ -13,7 +13,9 @@ function Header (el, props) {
 }
 
 Header.prototype.update = function (state) {
-  yo.update(this._component, this._render())
+  if (state && state.archiveReducer) {
+    yo.update(this._component, this._render())
+  }
 }
 
 Header.prototype._render = function () {

@@ -18,8 +18,12 @@ var $shareLink = document.getElementById('share-link')
 var componentCtors = require('./components')
 var components = [
   componentCtors.Header('header', {
-    create: initArchive,
-    download: initArchive
+    create: function (event) {
+      initArchive()
+    },
+    download: function (link) {
+      initArchive(link)
+    }
   }),
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
