@@ -12,31 +12,50 @@ function FileQueue (el) {
 }
 
 FileQueue.prototype.update = function (state) {
+  var self = this
   if (state && state.fileQueueReducer) {
     this._queue = state.fileQueueReducer.queue
     console.log('[FileQueue] this._queue', this._queue)
+    yo.update(this._component, this._render())
 
-    // set up progress listener on file
     if (this._queue && this._queue.length > 0) {
       this._queue.map(function (file) {
-        file.writeProgress.on('progress', function (progress) {
-          console.log('ON write progress')
-          console.log(progress)
+        file.progressListener.on('progress', function (progress) {
+          file.progress = progress
+          yo.update(self._component, self._render())
         })
       })
     }
-
-    yo.update(this._component, this._render())
   }
 }
 
 FileQueue.prototype._render = function () {
-  function li (file) {
-    return yo`<li>${file.fullPath} (todo: progress bar!)</li>`
-  }
+  var self = this
   return yo`<ul>
     ${this._queue.map(function (file) {
-      return li(file)
+      return self._renderLi(file)
     })}
     </ul>`
+}
+
+FileQueue.prototype._renderLi = function (file) {
+  return yo`<li>
+    ${file.fullPath}
+    ${this._renderProgress(file)}
+    </li>`
+}
+
+FileQueue.prototype._renderProgress = function (file) {
+  var loaded = 0
+  if (file && file.progress && file.progress.percentage) {
+    loaded = parseInt(file.progress.percentage) // no decimal points, plz
+  }
+  return yo`<div class="progress">
+     <div class="progress__counter">${loaded}%</div>
+     <div class="progress__bar">
+       <div class="progress__line progress__line--loading"
+            style="width: ${loaded}%">
+       </div>
+     </div>
+   </div>`
 }

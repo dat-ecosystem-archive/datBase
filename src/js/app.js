@@ -78,11 +78,9 @@ function getArchive (key, cb) {
     cb(archive)
   })
   archive.on('download', function () {
-    console.log('archive.on `download`')
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
   archive.on('upload', function () {
-    console.log('!!!archive.on `upload`')
     store.dispatch({type: 'UPDATE_ARCHIVE', archive: archive})
   })
 }
@@ -140,15 +138,14 @@ function installDropHandler (archive) {
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
-        console.log('init streamProgress')
-        file.writeProgress = progress({ length: stream.size, time: 50 }) // time: ms
-        console.log('store.dispatch QUEUE_NEW_FILE')
+        // console.log('init streamProgress')
+        file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
         store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
         console.log('start pump()')
         pump(
           stream,
           choppa(4 * 1024),
-          file.writeProgress,
+          file.progressListener,
           archive.createFileWriteStream(entry),
           function (err) {
             if (err) throw err

@@ -8,16 +8,18 @@
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
 @import "~dat-design";
-@import "~dat-design/scss/responsive/breakpoints.scss";
+@import "~dat-design/scss/base.scss";
 
 body {
   min-width: 500px;
   // mixin is being imported from "~dat-design/scss/responsive/breakpoints.scss":
   @include breakpoint (xs) {
-    background: red;
+    // sample rule here to demo:
+    // background: red;
   }
   @include breakpoint (sm) {
-    background: yellow;
+    // sample rule here to demo:
+    // background: yellow;
   }
 }
 
@@ -33,8 +35,10 @@ a,
   color: #35b44f;
 }
 
-a:hover, a:focus,
-.link:hover, .link:focus {
+a:hover,
+a:focus,
+.link:hover,
+.link:focus {
   color: #A9CE7F;
   outline: none;
 }
@@ -50,7 +54,22 @@ a:hover, a:focus,
   content: '« '
 }
 
-/* demo page layout */
+ul,
+li {
+  @include list-plain;
+}
+
+
+/* box model */
+
+.container {
+  margin: 0 auto;
+  padding: .75rem 2rem;
+  max-width: 1170px;
+}
+
+
+/* header */
 
 .site-header {
   background-color: #fdfdfd;
@@ -82,12 +101,6 @@ a:hover, a:focus,
 
 .site-main {
   padding-top: 1.5rem;
-}
-
-.container {
-  margin: 0 auto;
-  padding: .75rem 2rem;
-  max-width: 1170px;
 }
 
 .upload-file {
@@ -195,17 +208,24 @@ a:hover, a:focus,
   position: absolute;
 }
 
+/* file queue */
+
+#file-queue {
+  clear: both;
+  .progress {
+    float: right;
+    width: 30%;
+  }
+}
+
+/* archive ui */
+
 #hyperdrive-ui {
   clear: both;
 }
 
 #yo-fs {
   color: #2A3749;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
 }
 
 #yo-fs h1 a {

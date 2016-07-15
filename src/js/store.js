@@ -6,7 +6,7 @@ function fileQueueReducer (state, action) {
     // TODO: don't forget to handle directories properly!
     if (action.file) {
       state.queue.push(action.file)
-      console.log('[store] added file to queue')
+      console.log('[store] QUEUE_NEW_FILE')
       return { queue: state.queue }
     }
   }
