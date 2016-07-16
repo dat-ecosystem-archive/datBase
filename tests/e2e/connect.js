@@ -46,9 +46,10 @@ module.exports = new function () {
     testCases['opening the browser and navigating to the url'] = (client) => {
       client
         .url(testServer)
-        .expect.element('#share-link').to.have.value.that.matches(/(.*?)#(.*)/).before(10000)
+        .expect.element('#share-link').text.matches(/^(.+)$/).before(10000)
 
-      client.getValue('#share-link', (result) => {
+      client.getText('#share-link', (result) => {
+        console.log('sending', result.value)
         browser2.write(result.value)
       })
     }
@@ -56,9 +57,10 @@ module.exports = new function () {
     testCases['opening the browser and navigating to the url'] = (client) => {
       client.pause(5000)
       ipcClient.once('data', (data) => {
-        console.info('using datlink', data.toString())
+        const datlink = data.toString()
+        console.info('using datlink', datlink)
         client
-          .url(data.toString())
+          .url(testServer + '#' + datlink)
           .waitForElementVisible('body', 10000)
       })
     }
