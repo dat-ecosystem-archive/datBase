@@ -1,6 +1,7 @@
 module.exports = {
   Header: require('./header'),
   Help: require('./help'),
+  Permissions: require('./permissions'),
   HyperdriveSize: require('./hyperdrive-size'),
   HyperdriveStats: require('./hyperdrive-stats'),
   Peers: require('./peers'),

@@ -21,7 +21,7 @@ HyperdriveSize.prototype.update = function (state) {
 
 HyperdriveSize.prototype._render = function () {
   var size = this._size
-  var component = yo`<p id="size">Drive size: ${size}</p>`
+  var component = yo`<p id="size">${size}</p>`
   return component
 }
 
