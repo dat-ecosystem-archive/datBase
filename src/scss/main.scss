@@ -142,14 +142,6 @@ a:hover, a:focus,
   float: left;
 }
 
-#hyperdrive-stats {
-  float: left;
-  display: none;
-  span {
-    padding-left: 1em;
-  }
-}
-
 #peers {
   display: inline-block;
 }
@@ -161,7 +153,7 @@ a:hover, a:focus,
   margin: 0 10px 0 0px;
   padding: 0;
   width: 320px;
-  span span {
+  span {
     font-weight: normal;
     font-size: 13px;
     line-height: 37px;

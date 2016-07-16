@@ -24,7 +24,7 @@ Stats.prototype.update = function (state) {
 Stats.prototype._render = function () {
   var down = prettyBytes(this._download)
   var up = prettyBytes(this._upload)
-  var component = yo`<span><span>Total Download: ${down}</span><span>Total Upload: ${up}</span></span>`
+  var component = yo`<span>Total: ↓ ${down} / ↑ ${up}</span>`
   if (this._download || this._upload) this.$el.style.display = 'block'
 
   return component

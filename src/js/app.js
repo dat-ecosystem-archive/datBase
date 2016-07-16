@@ -28,6 +28,7 @@ var components = [
   componentCtors.HyperdriveSize('hyperdrive-size'),
   componentCtors.HyperdriveStats('hyperdrive-stats'),
   componentCtors.Peers('peers'),
+  componentCtors.Permissions('permissions'),
   componentCtors.SpeedDisplay('speed')
 ]
 
@@ -96,15 +97,11 @@ function initArchive (key) {
   $hyperdrive.innerHTML = ''
 
   getArchive(key, function (archive) {
-    if (archive.owner) {
-      help.innerHTML = 'drag and drop files'
-    } else {
-      // XXX: this should depend on sw.connections
-      help.innerHTML = ''
-    }
+    help.innerHTML = ''
     installDropHandler(archive)
-    window.location = '#' + encoding.encode(archive.key)
-    updateShareLink()
+    var link = encoding.encode(archive.key)
+    window.location = '#' + link
+    $shareLink.innerHTML = link // XXX: move to its own component
 
     function onclick (ev, entry) {
       if (entry.type === 'directory') {
@@ -115,10 +112,6 @@ function initArchive (key) {
     $hyperdrive.appendChild(tree)
     store.dispatch({ type: 'INIT_ARCHIVE', archive: archive })
   })
-}
-
-function updateShareLink () {
-  $shareLink.innerHTML = window.location
 }
 
 var clearDrop
