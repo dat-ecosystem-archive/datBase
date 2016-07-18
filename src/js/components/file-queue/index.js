@@ -54,9 +54,9 @@ FileQueue.prototype._removeProgressListenerCb = function (file) {
 
 FileQueue.prototype._render = function () {
   var self = this
-  if (this._queue && (this._queue.writing || this._queue.next)) {
+  if (this._queue && (this._queue.writing || this._queue.next.length > 0)) {
     return yo`<ul>
-      ${this._renderLi(this._queue.writing)}
+      ${this._queue.writing ? this._renderLi(this._queue.writing) : undefined}
       ${this._queue.next.map(function (file) {
         return self._renderLi(file)
       })}
