@@ -123,8 +123,18 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      // TODO: refactor this into `hyperdrive-write-queue` module
       console.log('clearDrop files', files)
+      // TODO: refactor this into `hyperdrive-write-manager` module
+      files.forEach(function (file) {
+        var QueuedFile = function (file) {
+          // TODO: validate file
+          file.progress = null
+          file.progressListener = null
+          file.writeError = null
+          return file
+        }
+        store.dispatch({ type: 'QUEUE_NEW_FILE_WRITE', file: new QueuedFile(file) })
+      })
       var i = 0
       loop()
 
@@ -137,24 +147,8 @@ function installDropHandler (archive) {
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
-
-
         file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
-        store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
-        // TODO: when i=0, loop thru all other files and add them to queue
-        // BUT they won't have a file.progressListener so you'll
-        // have to add the listener in the FileQueue component
-        // separately.
-        // how to fix this?
-        // structure the fileQueueReducer like this:
-        // state = {
-        //   queue {
-        //     writing: file, <-- when this gets updated, add the progressListener callback in the component
-        //     next: [file, file, file]
-        //   }
-        // }
-        // don't forget to remove the listener callback after write is done!
-
+        store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
 
         console.log('start pump()')
         pump(
@@ -164,9 +158,10 @@ function installDropHandler (archive) {
           archive.createFileWriteStream(entry),
           function (err) {
             // TODO: handle errors in UI
-            if (err) throw err
+            if (err) throw err // TODO: file.writeError
             console.log('DONE PUMPING! clearDrop i=', i, archive)
-            store.dispatch({ type: 'DEQUEUE_FILE', file: file })
+            file.progress = { complete: true }
+            store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
             loop()
           }
         )

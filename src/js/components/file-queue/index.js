@@ -5,10 +5,7 @@ module.exports = FileQueue
 function FileQueue (el) {
   if (!(this instanceof FileQueue)) return new FileQueue(el)
   this.$el = document.getElementById(el)
-  this._queue = {
-    writing: undefined,
-    next: undefined
-  }
+  this._queue = undefined
   this._component = this._render()
 
   if (this.$el) this.$el.appendChild(this._component)
@@ -17,58 +14,57 @@ function FileQueue (el) {
 FileQueue.prototype.update = function (state) {
   var self = this
   if (state && state.fileQueueReducer) {
+    var updated = state.fileQueueReducer.queue
 
-    // see notes in app.js loop
-    this._queue = state.fileQueueReducer.queue
-
-
-    console.log('[FileQueue] this._queue', this._queue)
-    yo.update(this._component, this._render())
-
-
-    // FIXME: this is a bad pattern for more than 1 file at a time
-    // you'll need to add the progressListener callback below
-    // when the file enters the app.js clearDrop loop()
-    // BUT you want ALL the files to show in the FileQueue list
-    // before that, just with a 0% progress bar until the
-    // writing begins/progressListener added
-    // If we don't fix this below, a progress listener is added
-    // to every file each time a new file is added or removed from
-    // the queue! Sad!
-    if (this._queue && this._queue.length > 0) {
-      this._queue.map(function (file) {
-        if (file.progressListener) {
-          file.progressListener.on('progress', function (progress) {
-            file.progress = progress
-            yo.update(self._component, self._render())
-          })
-        }
-      })
+    // add listener
+    if (updated && updated.writing && updated.writing.progressListener) {
+      if (updated.writing) this._addProgressListenerCb(updated.writing)
+      this._queue = updated
     }
 
+    // updated, switch out listener
+    if (this._queue && this._queue.writing &&
+         (this._queue.writing.fullPath !== updated.writing.fullPath)) {
+      // this._removeProgressListenerCb(this._queue.writing)
+      this._addProgressListenerCb(updated.writing)
+      this._queue = updated
+    }
 
+    console.log('[FileQueue] update() this._queue', this._queue)
+    yo.update(this._component, this._render())
   }
 }
 
-FileQueue.prototype._addFileProgressListener = function () {
-  // add the progress listener from above^^
+FileQueue.prototype._addProgressListenerCb = function (file) {
+  console.log('[FileQueue Component] _addProgressListenerCb(file)', file)
+  var self = this
+  // TODO: use a timeout before adding listner for less ui churn on small files
+  if (file.progressListener) {
+    file.progressListener.on('progress', function (progress) {
+      file.progress = progress
+      console.log(file.progress.percentage)
+      yo.update(self._component, self._render())
+    })
+  }
 }
 
-FileQueue.prototype._removeFileProgressListener = function () {
-  // watch for changes to this._queue.writing
-  // when a file is bumped there, remove its progress listener here
+FileQueue.prototype._removeProgressListenerCb = function (file) {
+  console.log('TODO: _removeProgressListenerCb')
 }
 
 FileQueue.prototype._render = function () {
   var self = this
-  return yo`<ul>
-
-    ${self._renderLi(this._queue.writing)}
-
-    ${this._queue.next.map(function (file) {
-      return self._renderLi(file)
-    })}
-    </ul>`
+  if (this._queue && (this._queue.writing || this._queue.next)) {
+    return yo`<ul>
+      ${this._renderLi(this._queue.writing)}
+      ${this._queue.next.map(function (file) {
+        return self._renderLi(file)
+      })}
+      </ul>`
+  }
+  else {
+    return yo`<ul></ul>`
+  }
 }
 
 FileQueue.prototype._renderLi = function (file) {
