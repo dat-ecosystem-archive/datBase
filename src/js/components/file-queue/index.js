@@ -2,6 +2,7 @@ var yo = require('yo-yo')
 
 module.exports = FileQueue
 
+var progressHandler;
 function FileQueue (el) {
   if (!(this instanceof FileQueue)) return new FileQueue(el)
   this.$el = document.getElementById(el)
@@ -33,25 +34,24 @@ FileQueue.prototype.update = function (state) {
       }
     }
 
-    console.log('[FileQueue] update() this._queue', this._queue)
     yo.update(this._component, this._render())
   }
 }
 
 FileQueue.prototype._addProgressListenerCb = function (file) {
-  console.log('[FileQueue Component] _addProgressListenerCb(file)', file.fullPath)
   var self = this
-  if (file.progressListener) {
-    file.progressListener.on('progress', function (progress) {
-      file.progress = progress
-      console.log(file.progress.percentage)
-      yo.update(self._component, self._render())
-    })
+
+  file.progressHandler = function (progress) {
+    file.progress = progress
+    console.log(file.progress.percentage)
+    yo.update(self._component, self._render())
   }
+
+  file.progressListener.on('progress', file.progressHandler)
 }
 
 FileQueue.prototype._removeProgressListenerCb = function (file) {
-  console.log('TODO: _removeProgressListenerCb')
+  file.progressListener.removeListener('progress', file.progressHandler)
 }
 
 FileQueue.prototype._render = function () {
@@ -89,7 +89,7 @@ FileQueue.prototype._renderLi = function (file) {
 FileQueue.prototype._renderProgress = function (file) {
   var loaded = 0
   if (file && file.progress && file.progress.percentage) {
-    loaded = parseInt(file.progress.percentage) // no decimal points, plz
+    loaded = parseInt(file.progress.percentage) // no decimals, plz
   }
   return yo`<div class="progress">
      <div class="progress__counter">${loaded}%</div>

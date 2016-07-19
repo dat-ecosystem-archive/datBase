@@ -123,13 +123,13 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      // console.log('clearDrop files', files)
       // TODO: refactor this into `hyperdrive-write-manager` module
       files.forEach(function (file) {
         var QueuedFile = function (file) {
-          // TODO: validate file
+          // TODO: validate file properties below
           file.progress = null
           file.progressListener = null
+          file.progressHandler = null
           file.writeError = null
           return file
         }
@@ -139,7 +139,6 @@ function installDropHandler (archive) {
       loop()
 
       function loop () {
-        // console.log('UPDATE_ARCHIVE')
         store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
         if (i === files.length) {
           return console.log('loop() DONE; added files to ', archive.key.toString('hex'), files)
