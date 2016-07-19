@@ -2,6 +2,7 @@ var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: [{ writing: null, next: [] }] }
+
   // shallow copy the last `state` frame so we can preserve
   // file.progressListener refs:
   var stateCopy = new Object()
