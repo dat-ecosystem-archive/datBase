@@ -12,6 +12,7 @@ var path = require('path')
 var explorer = require('hyperdrive-ui')
 var pump = require('pump')
 var progress = require('progress-stream')
+var QueuedFileModel = require('./models/queued-file-model.js')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -123,13 +124,6 @@ function installDropHandler (archive) {
     clearDrop = drop(document.body, function (files) {
       // TODO: refactor this into `hyperdrive-write-manager` module
       files.forEach(function (file) {
-        var QueuedFileModel = function (file) {
-          file.progress = null
-          file.progressListener = null
-          file.progressHandler = null
-          file.writeError = null
-          return file
-        }
         store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFileModel(file) })
       })
       var i = 0
