@@ -20,13 +20,19 @@ FileQueue.prototype.update = function (state) {
 
     if (!this._queue) {
         this._queue = q
-    } else if (this._queue) {
-      if (newState.writing) {
-        if (lastState.writing.fullPath !== newState.writing.fullPath) {
+    } else {
+
+      if (newState && newState.writing) {
+        if ((!lastState.writing && newState.writing.fullPath) ||
+            (lastState.writing.fullPath !== newState.writing.fullPath)) {
+
+          if (newState.writing.progressListener) {
             this._addProgressListenerCb(newState.writing)
+          }
+
         }
       }
-      if (!newState.writing) {
+      if (newState && !newState.writing) {
         if (lastState.writing) {
           this._removeProgressListenerCb(lastState.writing)
         }
@@ -42,6 +48,7 @@ FileQueue.prototype._addProgressListenerCb = function (file) {
   console.log('[FileQueue Component] _addProgressListenerCb(file)', file.fullPath)
   var self = this
   // TODO: use a timeout before adding listener for less ui churn on small files
+  debugger
   if (file.progressListener) {
     file.progressListener.on('progress', function (progress) {
       file.progress = progress
