@@ -12,24 +12,19 @@ function fileQueueReducer (state, action) {
   if (action.type === 'QUEUE_NEW_FILE') {
     stateCopy.next.push(action.file)
     state.queue.push(stateCopy)
-    // console.log('QUEUE_NEW_FILE_WRITE ' + action.file.fullPath)
   }
 
   if (action.type ==='QUEUE_WRITE_BEGIN') {
     stateCopy.writing = stateCopy.next[0]
     stateCopy.next = stateCopy.next.slice(1)
     state.queue.push(stateCopy)
-    // var foo = stateCopy.writing ? stateCopy.writing.fullPath : ''
-    // console.log('QUEUE_WRITE_BEGIN ' + foo)
   }
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
-    // console.log('QUEUE_WRITE_COMPLETE ' + stateCopy.writing.fullPath)
     stateCopy.writing = null
     state.queue.push(stateCopy)
   }
 
-  // console.log('[store] fileQueueReducer state: ', state)
   return { queue: state.queue }
 }
 

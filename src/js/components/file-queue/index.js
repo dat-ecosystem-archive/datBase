@@ -43,7 +43,6 @@ FileQueue.prototype._addProgressListenerCb = function (file) {
 
   file.progressHandler = function (progress) {
     file.progress = progress
-    console.log(file.progress.percentage)
     yo.update(self._component, self._render())
   }
 
@@ -51,7 +50,6 @@ FileQueue.prototype._addProgressListenerCb = function (file) {
 }
 
 FileQueue.prototype._removeProgressListenerCb = function (file) {
-  console.log('REMOVE LISTENER ' + file.fullPath)
   file.progressListener.removeListener('progress', file.progressHandler)
   file.progressHandler = null
 }
