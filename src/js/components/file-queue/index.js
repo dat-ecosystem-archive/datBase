@@ -87,6 +87,9 @@ FileQueue.prototype._renderLi = function (file) {
 
 FileQueue.prototype._renderProgress = function (file) {
   var loaded = 0
+  if (file.writeError) {
+    return yo`<div class="progress error">Error</div>`
+  }
   if (file && file.progress && file.progress.percentage) {
     loaded = parseInt(file.progress.percentage) // no decimals, plz
   }

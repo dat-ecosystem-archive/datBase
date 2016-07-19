@@ -145,10 +145,12 @@ function installDropHandler (archive) {
           file.progressListener,
           archive.createFileWriteStream(entry),
           function (err) {
-            // TODO: handle errors in UI
-            if (err) throw err // TODO: file.writeError
-            file.progress = { complete: true }
-            store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+            if (err) {
+              file.writeError = true
+            } else {
+              file.progress = { complete: true }
+              store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+            }
             loop()
           }
         )
