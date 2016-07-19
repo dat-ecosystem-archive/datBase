@@ -3,25 +3,25 @@ var minidux = require('minidux')
 function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: { writing: null, next: [] } }
   if (action.type === 'QUEUE_NEW_FILE_WRITE') {
-    state.queue.next.push(action.file)
-    console.log('[store] QUEUE_NEW_FILE done')
     debugger
+    state.queue.next.push(action.file)
+    console.log('QUEUE_NEW_FILE_WRITE ' + action.file.fullPath)
   }
 
-
   if (action.type ==='QUEUE_WRITE_BEGIN') {
+    debugger
     state.queue.writing = state.queue.next[0]
     state.queue.next = state.queue.next.slice(1)
-    debugger
+
+    var foo = state.queue.writing ? state.queue.writing.fullPath : ''
+    console.log('QUEUE_WRITE_BEGIN ' + state.queue.writing.fullPath)
   }
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
-    var shiftedItem = state.queue.next.shift()
-    state.queue.writing = shiftedItem
-    state.queue.next = state.queue.next.filter(function (file) {
-      return file.fullPath !== shiftedItem.fullPath
-    })
-    console.log('[store] QUEUE_WRITE_COMPLETE done')
+    debugger
+    console.log('QUEUE_WRITE_COMPLETE ' + state.queue.writing.fullPath)
+    state.queue.writing = state.queue.next[0]
+    state.queue.next = state.queue.next.slice(1)
   }
 
   console.log('[store] fileQueueReducer state: ', state)

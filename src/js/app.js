@@ -71,7 +71,7 @@ function getArchive (key, cb) {
   archive.open(function () {
     if (archive.content) {
       archive.content.get(0, function (data) {
-        console.log('archive.content.get <-- retrieve a bit of data for sizing')
+        // console.log('archive.content.get <-- retrieve a bit of data for sizing')
         // XXX: Hack to fetch a small bit of data so size properly updates
       })
     }
@@ -108,7 +108,7 @@ function initArchive (key) {
     }
     var tree = explorer(archive, onclick)
     $hyperdrive.appendChild(tree)
-    console.log('store.dispatch INIT_ARCHIVE')
+    // console.log('store.dispatch INIT_ARCHIVE')
     store.dispatch({ type: 'INIT_ARCHIVE', archive: archive })
   })
 }
@@ -123,7 +123,7 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      console.log('clearDrop files', files)
+      // console.log('clearDrop files', files)
       // TODO: refactor this into `hyperdrive-write-manager` module
       files.forEach(function (file) {
         var QueuedFile = function (file) {
@@ -139,7 +139,7 @@ function installDropHandler (archive) {
       loop()
 
       function loop () {
-        console.log('UPDATE_ARCHIVE')
+        // console.log('UPDATE_ARCHIVE')
         store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
         if (i === files.length) {
           return console.log('loop() DONE; added files to ', archive.key.toString('hex'), files)
@@ -148,8 +148,8 @@ function installDropHandler (archive) {
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
         file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
+        console.log('dispatch QUEUE_WRITE BEGIN ' + file.fullPath)
         store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
-
         console.log('start pump()')
         pump(
           stream,

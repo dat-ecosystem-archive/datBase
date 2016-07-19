@@ -16,18 +16,21 @@ FileQueue.prototype.update = function (state) {
   if (state && state.fileQueueReducer) {
     var updated = state.fileQueueReducer.queue
 
-    // add listener
-    if (updated && updated.writing && updated.writing.progressListener) {
-      if (updated.writing) this._addProgressListenerCb(updated.writing)
-      this._queue = updated
-    }
+    // init
+    if (!this._queue) {
+      if (updated && updated.writing && updated.writing.progressListener) {
+        this._addProgressListenerCb(updated.writing)
+        this._queue = updated
+      }
+    } else if (this._queue && this._queue.writing) {
 
-    // updated, switch out listener
-    if (this._queue && this._queue.writing &&
-         (this._queue.writing.fullPath !== updated.writing.fullPath)) {
-      // this._removeProgressListenerCb(this._queue.writing)
-      this._addProgressListenerCb(updated.writing)
-      this._queue = updated
+console.log('updated.writing.fullPath', updated.writing.fullPath)
+console.log('this._queue.writing.fullPath', this._queue.writing.fullPath)
+
+      if (this._queue.writing.fullPath !== updated.writing.fullPath) {
+        this._addProgressListenerCb(updated.writing)
+        this._queue = updated
+      }
     }
 
     console.log('[FileQueue] update() this._queue', this._queue)
@@ -36,9 +39,9 @@ FileQueue.prototype.update = function (state) {
 }
 
 FileQueue.prototype._addProgressListenerCb = function (file) {
-  console.log('[FileQueue Component] _addProgressListenerCb(file)', file)
+  console.log('[FileQueue Component] _addProgressListenerCb(file)', file.fullPath)
   var self = this
-  // TODO: use a timeout before adding listner for less ui churn on small files
+  // TODO: use a timeout before adding listener for less ui churn on small files
   if (file.progressListener) {
     file.progressListener.on('progress', function (progress) {
       file.progress = progress
