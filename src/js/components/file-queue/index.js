@@ -2,7 +2,6 @@ var yo = require('yo-yo')
 
 module.exports = FileQueue
 
-var progressHandler;
 function FileQueue (el) {
   if (!(this instanceof FileQueue)) return new FileQueue(el)
   this.$el = document.getElementById(el)
