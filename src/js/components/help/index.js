@@ -1,15 +1,12 @@
+var yo = require('yo-yo')
 var intro = require('intro.js')
 
-module.exports = Help
-
-function Help (el, clickHandler) {
-  if (!(this instanceof Help)) return new Help(el)
-  this.$el = document.getElementById(el)
-  this.$el.onclick = function () {
+module.exports = function Help () {
+  function onclick () {
     var _intro = intro.introJs()
     _intro.setOptions({
       steps: [{
-        intro: 'You can create a new dat by clicking <b>Reset</b>'
+        intro: 'You can create a new dat by clicking <b>Create New Dat</b>'
       },
       {
         intro: 'Drop some files here',
@@ -17,10 +14,11 @@ function Help (el, clickHandler) {
       },
       {
         intro: 'You can share the dat with this link',
-        element: 'input#share-link',
+        element: '#share-link',
         position: 'bottom'
       }
     ]})
     _intro.start()
   }
+  return yo`<button id="help" onclick=${onclick} class="btn btn--green btn--header">?</button>`
 }

@@ -1,9 +1,10 @@
 module.exports = {
   FileQueue: require('./file-queue'),
+  Header: require('./header'),
   Help: require('./help'),
+  Permissions: require('./permissions'),
   HyperdriveSize: require('./hyperdrive-size'),
   HyperdriveStats: require('./hyperdrive-stats'),
   Peers: require('./peers'),
-  ResetButton: require('./reset-button'),
   SpeedDisplay: require('./speed-display')
 }

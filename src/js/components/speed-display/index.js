@@ -35,10 +35,9 @@ SpeedDisplay.prototype._render = function () {
 
   var down = this._download
   var up = this._upload
-  var component = yo`<span>speed:
-                     <span id="download-speed">download: ${down}</span>
-                     <span id="upload-speed">upload: ${up}</span>
-                     </span>`
+  var component = yo`<div>
+    <span id="download-speed">↓ ${down}/s</span> / <span id="upload-speed">↑ ${up}/s</span>
+  </div>`
 
   if (down || up) this.$el.style.display = 'block'
   return component
