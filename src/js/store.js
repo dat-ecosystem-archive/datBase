@@ -5,7 +5,7 @@ function fileQueueReducer (state, action) {
 
   // shallow copy the last `state` frame so we can preserve
   // file.progressListener refs:
-  var stateCopy = new Object()
+  var stateCopy = {}
   stateCopy.writing = state.queue[state.queue.length - 1].writing
   stateCopy.next = state.queue[state.queue.length - 1].next
 
