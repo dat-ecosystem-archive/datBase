@@ -26,7 +26,6 @@ function fileQueueReducer (state, action) {
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
     console.log('QUEUE_WRITE_COMPLETE ' + state.queue.writing.fullPath)
-    state.queue.complete = state.queue.completed.push(state.queue.writing)
     state.queue.writing = null
   }
 
