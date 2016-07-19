@@ -33,7 +33,7 @@ FileQueue.prototype.update = function (state) {
         }
       }
       if (newState && !newState.writing) {
-        if (lastState.writing) {
+        if (lastState && lastState.writing) {
           this._removeProgressListenerCb(lastState.writing)
         }
       }

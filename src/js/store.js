@@ -1,32 +1,29 @@
 var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {
-
   if (state === undefined) state = { queue: [{ writing: null, next: [] }] }
-  var stateCopy = state.queue[state.queue.length - 1]
-
-    // TODO: tomro: make this a proper reducer
-    // push each new state of the queue model into the
-    // state so you can see "backwards" in time
+  // shallow copy the last `state` frame so we can preserve
+  // file.progressListener refs:
+  var stateCopy = new Object()
+  stateCopy.writing = state.queue[state.queue.length - 1].writing
+  stateCopy.next = state.queue[state.queue.length - 1].next
 
   if (action.type === 'QUEUE_NEW_FILE') {
-    // debugger
     stateCopy.next.push(action.file)
     state.queue.push(stateCopy)
-    console.log('QUEUE_NEW_FILE_WRITE ' + action.file.fullPath)
+    // console.log('QUEUE_NEW_FILE_WRITE ' + action.file.fullPath)
   }
 
   if (action.type ==='QUEUE_WRITE_BEGIN') {
-    // debugger
     stateCopy.writing = stateCopy.next[0]
     stateCopy.next = stateCopy.next.slice(1)
     state.queue.push(stateCopy)
-    var foo = stateCopy.writing ? stateCopy.writing.fullPath : ''
-    console.log('QUEUE_WRITE_BEGIN ' + foo)
+    // var foo = stateCopy.writing ? stateCopy.writing.fullPath : ''
+    // console.log('QUEUE_WRITE_BEGIN ' + foo)
   }
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
-    console.log('QUEUE_WRITE_COMPLETE ' + stateCopy.writing.fullPath)
+    // console.log('QUEUE_WRITE_COMPLETE ' + stateCopy.writing.fullPath)
     stateCopy.writing = null
     state.queue.push(stateCopy)
   }
