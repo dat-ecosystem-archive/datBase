@@ -43,7 +43,7 @@ store.subscribe(function (state) {
 
 window.addEventListener('hashchange', main)
 
-var cwd = '/'
+var cwd = ''
 main()
 
 function main () {
