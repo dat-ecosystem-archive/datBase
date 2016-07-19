@@ -125,15 +125,14 @@ function installDropHandler (archive) {
     clearDrop = drop(document.body, function (files) {
       // TODO: refactor this into `hyperdrive-write-manager` module
       files.forEach(function (file) {
-        var QueuedFile = function (file) {
-          // TODO: validate file properties below
+        var QueuedFileModel = function (file) {
           file.progress = null
           file.progressListener = null
           file.progressHandler = null
           file.writeError = null
           return file
         }
-        store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFile(file) })
+        store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFileModel(file) })
       })
       var i = 0
       loop()

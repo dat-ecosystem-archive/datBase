@@ -28,7 +28,7 @@ FileQueue.prototype.update = function (state) {
         }
       }
       if (newState && !newState.writing) {
-        if (lastState && lastState.writing) {
+        if (lastState && lastState.writing && lastState.writing.progressHandler) {
           this._removeProgressListenerCb(lastState.writing)
         }
       }
@@ -51,7 +51,9 @@ FileQueue.prototype._addProgressListenerCb = function (file) {
 }
 
 FileQueue.prototype._removeProgressListenerCb = function (file) {
+  console.log('REMOVE LISTENER ' + file.fullPath)
   file.progressListener.removeListener('progress', file.progressHandler)
+  file.progressHandler = null
 }
 
 FileQueue.prototype._render = function () {
