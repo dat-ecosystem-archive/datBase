@@ -2,6 +2,13 @@ var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {
   if (state === undefined) state = { queue: { writing: null, next: [] } }
+
+
+    // TODO: tomro: make this a proper reducer
+    // push each new state of the queue model into the
+    // state so you can see "backwards" in time
+
+
   if (action.type === 'QUEUE_NEW_FILE') {
     // debugger
     state.queue.next.push(action.file)
@@ -19,10 +26,11 @@ function fileQueueReducer (state, action) {
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
     console.log('QUEUE_WRITE_COMPLETE ' + state.queue.writing.fullPath)
+    state.queue.complete = state.queue.completed.push(state.queue.writing)
     state.queue.writing = null
   }
 
-  console.log('[store] fileQueueReducer state: ', state)
+  // console.log('[store] fileQueueReducer state: ', state)
   return { queue: state.queue }
 }
 

@@ -16,7 +16,6 @@ FileQueue.prototype.update = function (state) {
   if (state && state.fileQueueReducer) {
     var updated = state.fileQueueReducer.queue
 
-    // init
     if (!this._queue) {
       if (updated && updated.writing && updated.writing.progressListener) {
         this._addProgressListenerCb(updated.writing)
@@ -34,7 +33,6 @@ FileQueue.prototype.update = function (state) {
           this._addProgressListenerCb(updated.writing)
           this._queue = updated
       }
-
 
       if (this._queue.writing && !updated.writing) {
         this._removeProgressListenerCb(updated.writing)
