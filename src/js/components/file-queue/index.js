@@ -22,15 +22,22 @@ FileQueue.prototype.update = function (state) {
         this._addProgressListenerCb(updated.writing)
         this._queue = updated
       }
-    } else if (this._queue && this._queue.writing) {
-
-console.log('updated.writing.fullPath', updated.writing.fullPath)
-console.log('this._queue.writing.fullPath', this._queue.writing.fullPath)
-
-      if (this._queue.writing.fullPath !== updated.writing.fullPath) {
-        this._addProgressListenerCb(updated.writing)
+    }
+    else if (this._queue) {
+      debugger
+      if (!this._queue.writing && updated.writing) {
+        console.log('updated.writing.fullPath', updated.writing.fullPath)
+        console.log('this._queue.writing.fullPath', this._queue.writing.fullPath)
+        // if (updated.writing.fullPath !== this._queue.writing.fullPath) {
+          this._addProgressListenerCb(updated.writing)
+          this._queue = updated
+        // }
+      }
+      else if (this._queue.writing && !updated.writing) {
+        this._removeProgressListenerCb(updated.writing)
         this._queue = updated
       }
+
     }
 
     console.log('[FileQueue] update() this._queue', this._queue)

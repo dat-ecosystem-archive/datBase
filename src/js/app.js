@@ -133,7 +133,7 @@ function installDropHandler (archive) {
           file.writeError = null
           return file
         }
-        store.dispatch({ type: 'QUEUE_NEW_FILE_WRITE', file: new QueuedFile(file) })
+        store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFile(file) })
       })
       var i = 0
       loop()
