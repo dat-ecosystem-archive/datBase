@@ -1,32 +1,34 @@
 var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {
-  if (state === undefined) state = { queue: { writing: null, next: [] } }
 
+  if (state === undefined) state = { queue: [{ writing: null, next: [] }] }
+  var stateCopy = state.queue[state.queue.length]
 
     // TODO: tomro: make this a proper reducer
     // push each new state of the queue model into the
     // state so you can see "backwards" in time
 
-
   if (action.type === 'QUEUE_NEW_FILE') {
     // debugger
-    state.queue.next.push(action.file)
+    stateCopy.next.push(action.file)
+    state.queue.push(stateCopy)
     console.log('QUEUE_NEW_FILE_WRITE ' + action.file.fullPath)
   }
 
   if (action.type ==='QUEUE_WRITE_BEGIN') {
     // debugger
-    state.queue.writing = state.queue.next[0]
-    state.queue.next = state.queue.next.slice(1)
-
-    var foo = state.queue.writing ? state.queue.writing.fullPath : ''
+    stateCopy.writing = stateCopy.next[0]
+    stateCopy.next = stateCopy.next.slice(1)
+    state.queue.push(stateCopy)
+    var foo = stateCopy.writing ? stateCopy.writing.fullPath : ''
     console.log('QUEUE_WRITE_BEGIN ' + foo)
   }
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
-    console.log('QUEUE_WRITE_COMPLETE ' + state.queue.writing.fullPath)
-    state.queue.writing = null
+    stateCopy.writing = null
+    state.queue.push(stateCopy)
+    console.log('QUEUE_WRITE_COMPLETE ' + stateCopy.writing.fullPath)
   }
 
   // console.log('[store] fileQueueReducer state: ', state)

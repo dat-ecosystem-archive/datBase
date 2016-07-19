@@ -14,21 +14,29 @@ function FileQueue (el) {
 FileQueue.prototype.update = function (state) {
   var self = this
   if (state && state.fileQueueReducer) {
-    var updated = state.fileQueueReducer.queue
+    var q = state.fileQueueReducer.queue
+    var lastState = q[q.length - 2]
+    var newState = q[q.length - 1]
 
     if (!this._queue) {
-      if (updated && updated.writing && updated.writing.progressListener) {
-        this._addProgressListenerCb(updated.writing)
-        this._queue = updated
-      }
+        this._queue = q
     } else if (this._queue) {
-      if (this._queue.writing && updated.writing.fullPath) {
-          this._addProgressListenerCb(updated.writing)
+      if (newState.writing) {
+        if (lastState.writing.fullPath !== newState.writing.fullPath) {
+            this._addProgressListenerCb(newState.writing)
+        }
+      }
+      if (!newState.writing) {
+        if (lastState.writing) {
+          this._removeProgressListenerCb(lastState.writing)
+        }
       }
     }
 
-    console.log('[FileQueue] update() this._queue', this._queue)
-    yo.update(this._component, this._render())
+    if (newState) {
+      console.log('[FileQueue] update() this._queue', this._queue)
+      yo.update(this._component, this._render())
+    }
   }
 }
 
@@ -51,15 +59,18 @@ FileQueue.prototype._removeProgressListenerCb = function (file) {
 
 FileQueue.prototype._render = function () {
   var self = this
-  if (this._queue && (this._queue.writing || this._queue.next.length > 0)) {
-    return yo`<ul>
-      ${this._queue.writing ? this._renderLi(this._queue.writing) : undefined}
-      ${this._queue.next.map(function (file) {
-        return self._renderLi(file)
-      })}
-      </ul>`
-  }
-  else {
+
+  if (this._queue && this._queue.length) {
+    var newState = this._queue[this._queue.length - 1]
+    if (newState && (newState.writing || newState.next.length > 0)) {
+      return yo`<ul>
+        ${newState.writing ? this._renderLi(newState.writing) : undefined}
+        ${newState.next.map(function (file) {
+          return self._renderLi(file)
+        })}
+        </ul>`
+    }
+  } else {
     return yo`<ul></ul>`
   }
 }
