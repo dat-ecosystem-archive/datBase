@@ -122,7 +122,7 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      // TODO: refactor this into `hyperdrive-write-manager` module
+      // TODO: refactor this into `hyperdrive-write-queue` module
       files.forEach(function (file) {
         store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFileModel(file) })
       })
