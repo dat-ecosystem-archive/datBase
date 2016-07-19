@@ -3,7 +3,7 @@ var minidux = require('minidux')
 function fileQueueReducer (state, action) {
 
   if (state === undefined) state = { queue: [{ writing: null, next: [] }] }
-  var stateCopy = state.queue[state.queue.length]
+  var stateCopy = state.queue[state.queue.length - 1]
 
     // TODO: tomro: make this a proper reducer
     // push each new state of the queue model into the
@@ -26,9 +26,9 @@ function fileQueueReducer (state, action) {
   }
 
   if (action.type === 'QUEUE_WRITE_COMPLETE') {
+    console.log('QUEUE_WRITE_COMPLETE ' + stateCopy.writing.fullPath)
     stateCopy.writing = null
     state.queue.push(stateCopy)
-    console.log('QUEUE_WRITE_COMPLETE ' + stateCopy.writing.fullPath)
   }
 
   // console.log('[store] fileQueueReducer state: ', state)

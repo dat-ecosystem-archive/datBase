@@ -33,10 +33,8 @@ FileQueue.prototype.update = function (state) {
       }
     }
 
-    if (newState) {
-      console.log('[FileQueue] update() this._queue', this._queue)
-      yo.update(this._component, this._render())
-    }
+    console.log('[FileQueue] update() this._queue', this._queue)
+    yo.update(this._component, this._render())
   }
 }
 
@@ -59,7 +57,9 @@ FileQueue.prototype._removeProgressListenerCb = function (file) {
 
 FileQueue.prototype._render = function () {
   var self = this
-
+  function empty () {
+    return yo`<ul></ul>`
+  }
   if (this._queue && this._queue.length) {
     var newState = this._queue[this._queue.length - 1]
     if (newState && (newState.writing || newState.next.length > 0)) {
@@ -70,8 +70,11 @@ FileQueue.prototype._render = function () {
         })}
         </ul>`
     }
+    else {
+      return empty()
+    }
   } else {
-    return yo`<ul></ul>`
+    return empty()
   }
 }
 
