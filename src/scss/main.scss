@@ -8,18 +8,19 @@
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
 @import "~dat-design";
-@import "~dat-design/scss/variables/colors.scss";
-@import "~dat-design/scss/variables/transitions.scss";
-@import "~dat-design/scss/responsive/breakpoints.scss";
+@import "~dat-design/scss/base.scss";
+
 
 body {
   min-width: 500px;
   // mixin is being imported from "~dat-design/scss/responsive/breakpoints.scss":
   @include breakpoint (xs) {
-//    background: red;
+    // sample rule here to demo:
+    // background: red;
   }
   @include breakpoint (sm) {
-//    background: yellow;
+    // sample rule here to demo:
+    // background: yellow;
   }
 }
 
@@ -64,6 +65,7 @@ a,
   color: $color-green;
 }
 
+
 a:hover, a:focus,
 .link:hover, .link:focus {
   color: $color-green--hover;
@@ -82,7 +84,22 @@ a:hover, a:focus,
 //   content: '« '
 // }
 
-/* demo page layout */
+ul,
+li {
+  @include list-plain;
+}
+
+
+/* box model */
+
+.container {
+  margin: 0 auto;
+  padding: .75rem 2rem;
+  max-width: 1170px;
+}
+
+
+/* header */
 
 .dat-header {
   height: 4rem;
@@ -132,10 +149,15 @@ a:hover, a:focus,
   padding-top: 1.5rem;
 }
 
-.container {
-  margin: 0 auto;
-  padding: .75rem 2rem;
-  max-width: 1170px;
+.upload-file {
+  width: 100%;
+  min-height: 3em;
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 3px dashed #959ba4;
+  border-radius: 1em;
+  color: #959ba4;
+  text-align: center;
 }
 
 #hyperdrive-size {
@@ -190,6 +212,31 @@ a:hover, a:focus,
   z-index: 10;
   position: absolute;
 }
+
+/* file queue */
+
+#file-queue {
+  clear: both;
+  li {
+    padding: 10px;
+    padding-left: 35px;
+    font-size: 14px;
+    color: $color-neutral--50;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: $color-neutral--04;
+    .progress {
+      float: right;
+      width: 30%;
+      &.error {
+        color: $color-danger;
+        text-align: right;
+        padding: 0;
+      }
+    }
+  }
+}
+
+/* archive ui */
 
 #hyperdrive-ui {
   clear: both;

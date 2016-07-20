@@ -11,12 +11,16 @@ var drive = hyperdrive(db)
 var path = require('path')
 var explorer = require('hyperdrive-ui')
 var pump = require('pump')
+var progress = require('progress-stream')
+var QueuedFileModel = require('./models/queued-file-model.js')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
 var componentCtors = require('./components')
 var components = [
+  componentCtors.Help('help'),
+  componentCtors.FileQueue('file-queue'),
   componentCtors.Header('header', {
     create: function (event) {
       initArchive()
@@ -120,6 +124,10 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
+      // TODO: refactor this into `hyperdrive-write-queue` module
+      files.forEach(function (file) {
+        store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFileModel(file) })
+      })
       var i = 0
       loop()
 
@@ -131,11 +139,25 @@ function installDropHandler (archive) {
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
-        pump(stream, choppa(4 * 1024), archive.createFileWriteStream(entry), function (err) {
-          if (err) throw err
-          loop()
-        })
+        file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
+        store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
+        pump(
+          stream,
+          choppa(4 * 1024),
+          file.progressListener,
+          archive.createFileWriteStream(entry),
+          function (err) {
+            if (err) {
+              file.writeError = true
+            } else {
+              file.progress = { complete: true }
+              store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+            }
+            loop()
+          }
+        )
       }
+      // end /TODO: `hyperdrive-write-queue` module
     })
   } else {
     clearDrop = drop(document.body, function () {

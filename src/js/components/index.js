@@ -1,4 +1,5 @@
 module.exports = {
+  FileQueue: require('./file-queue'),
   Header: require('./header'),
   Help: require('./help'),
   Permissions: require('./permissions'),
