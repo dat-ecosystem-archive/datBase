@@ -18,7 +18,7 @@ FileQueue.prototype.update = function (state) {
     var newState = q[q.length - 1]
 
     if (!this._queue) {
-        this._queue = q
+      this._queue = q
     } else {
       if (newState && newState.writing) {
         if ((!lastState.writing && newState.writing.fullPath) ||
@@ -69,8 +69,7 @@ FileQueue.prototype._render = function () {
           return self._renderLi(file)
         })}
         </ul>`
-    }
-    else {
+    } else {
       return empty()
     }
   } else {

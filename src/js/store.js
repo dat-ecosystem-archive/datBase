@@ -14,7 +14,7 @@ function fileQueueReducer (state, action) {
     state.queue.push(stateCopy)
   }
 
-  if (action.type ==='QUEUE_WRITE_BEGIN') {
+  if (action.type === 'QUEUE_WRITE_BEGIN') {
     stateCopy.writing = stateCopy.next[0]
     stateCopy.next = stateCopy.next.slice(1)
     state.queue.push(stateCopy)
