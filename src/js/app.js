@@ -143,7 +143,7 @@ function installDropHandler (archive) {
         store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
         pump(
           stream,
-          choppa(4 * 1024),
+          choppa(4 * 1024), // use `rabin` module for non-browser implementation https://github.com/mafintosh/hyperdrive/blob/master/archive.js#L6
           file.progressListener,
           archive.createFileWriteStream(entry),
           function (err) {
