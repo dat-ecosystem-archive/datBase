@@ -9,6 +9,8 @@
  */
 @import "~dat-design";
 @import "~dat-design/scss/base.scss";
+@import "site-header.scss";
+@import "dat-header.scss";
 
 
 body {
@@ -96,73 +98,6 @@ li {
   margin: 0 auto;
   padding: .75rem 2rem;
   max-width: 1170px;
-}
-
-
-/* header */
-
-.site-header {
-  height: 4rem;
-  padding-right: 1.5rem;
-  background-color: $color-green--hover;
-  color: $color-white;
-}
-
-.site-header__actions {
-  float: right;
-}
-
-.dat-import {
-  float: left;
-  margin-top: .5rem;
-}
-
-.dat-logo {
-  width: 6.5rem;
-  padding-top: .75rem;
-  padding-left: 2.625rem;
-  float: left;
-}
-
-// dat-button
-.dat-button {
-  float: left;
-  padding-top: 1.15rem;
-  padding-bottom: 1.15rem;
-  margin-right: 3rem;
-  button {
-    &:hover, &:focus, &:active {
-      color: $color-neutral--04;
-      outline: none;
-      cursor: pointer;
-    }
-  }
-}
-
-// header for a single dat
-
-.dat-header {
-  background-color: $color-neutral--04;
-  border-bottom: 1px solid $color-neutral--10;
-  font-size: .8125rem;
-}
-
-.share-link {
-  font-size: 1.375rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dat-details {
-  padding-top: 1.5rem;
-  padding-bottom: .25rem;
-}
-
-.dat-detail {
-  display: inline-block;
-  margin-right: 1.5rem;
-  color: $color-neutral--80;
 }
 
 .site-main {

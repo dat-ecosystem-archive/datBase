@@ -1,0 +1,39 @@
+/* header */
+
+.site-header {
+  height: 4rem;
+  padding-right: 1.5rem;
+  background-color: $color-green--hover;
+  color: $color-white;
+}
+
+.site-header__actions {
+  float: right;
+}
+
+.dat-import {
+  float: left;
+  margin-top: .5rem;
+}
+
+.dat-logo {
+  width: 6.5rem;
+  padding-top: .75rem;
+  padding-left: 2.625rem;
+  float: left;
+}
+
+// dat-button
+.dat-button {
+  float: left;
+  padding-top: 1.15rem;
+  padding-bottom: 1.15rem;
+  margin-right: 3rem;
+  button {
+    &:hover, &:focus, &:active {
+      color: $color-neutral--04;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+}
