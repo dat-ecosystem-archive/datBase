@@ -21,11 +21,11 @@ Header.prototype.update = function (state) {
 
 Header.prototype._render = function () {
   return yo`
-    <header class="dat-header">
+    <header class="site-header">
       <a href="http://dat-data.com" class="dat-logo">
         <img src="./public/img/dat-data-logo.svg" style="width:40px;" />
       </a>
-      <div class="dat-header__actions">
+      <div class="site-header__actions">
         <div class="dat-button">
           ${button({
             text: 'Create new Dat',

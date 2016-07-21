@@ -101,12 +101,20 @@ li {
 
 /* header */
 
-.dat-header {
+.site-header {
   height: 4rem;
   padding-right: 1.5rem;
-//  padding-left: 6.5rem;
   background-color: $color-green--hover;
   color: $color-white;
+}
+
+.site-header__actions {
+  float: right;
+}
+
+.dat-import {
+  float: left;
+  margin-top: .5rem;
 }
 
 .dat-logo {
@@ -114,15 +122,6 @@ li {
   padding-top: .75rem;
   padding-left: 2.625rem;
   float: left;
-}
-
-.dat-header__actions {
-  float: right;
-}
-
-.dat-import {
-  float: left;
-  margin-top: .5rem;
 }
 
 // dat-button
@@ -142,7 +141,7 @@ li {
 
 // header for a single dat
 
-.dat-info-header {
+.dat-header {
   background-color: $color-neutral--04;
   border-bottom: 1px solid $color-neutral--10;
   font-size: .8125rem;
