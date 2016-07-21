@@ -145,6 +145,14 @@ li {
   }
 }
 
+// header for a single dat
+
+.dat-info-header {
+  background-color: $color-neutral--04;
+  border-bottom: 1px solid $color-neutral--10;
+  font-size: .8125rem;
+}
+
 .site-main {
   padding-top: 1.5rem;
 }
@@ -189,10 +197,19 @@ li {
 }
 
 .status-bar {
-  padding: .5rem;
-  padding-top: 1rem;
-  background-color: #f5fbf6;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: $color-neutral--04;
+  border-top: 1px solid $color-neutral--10;
+  font-size: .6875rem;
   text-align: center;
+}
+.status-bar-status {
+  float: left;
+}
+.status-bar-stats {
+  float: right;
 }
 
 #display {

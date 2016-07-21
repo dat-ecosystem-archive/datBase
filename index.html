@@ -6,22 +6,26 @@
   </head>
   <body>
     <div id="header"></div>
+    <div class="dat-info-header" id="dat-info">
+      <div class="container">
+        <div id="share-link"></div>
+        <div id="permissions"></div>
+        <div id="hyperdrive-size"></div>
+        <div id="peers"></div>
+        <div id="speed"></div>
+      </div>
+    </div>
     <main class="site-main">
       <div class="container">
-        <div id="dat-info">
-          <div id="share-link"></div>
-          <div id="permissions"></div>
-          <div id="hyperdrive-size"></div>
-          <div id="peers"></div>
-          <div id="speed"></div>
-        </div>
         <div id="file-queue"></div>
         <div id="hyperdrive-ui"></div>
       </div>
     </main>
     <div class="status-bar">
-      <span id="help-text">Initializing</span>
-      <div id="hyperdrive-stats"></div>
+      <div class="container">
+        <span id="help-text" class="status-bar-status">Initializing</span>
+        <div id="hyperdrive-stats" class="status-bar-stats"></div>
+      </div>
     </div>
     <script type="text/javascript" src="public/js/app.js"></script>
   </body>
