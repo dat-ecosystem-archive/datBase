@@ -36,13 +36,15 @@
     "choppa": "^1.0.2",
     "chromedriver": "^2.21.2",
     "concat-stream": "^1.5.1",
-    "dat-design": "^1.2.5",
+    "dat-design": "^1.2.11",
+    "dat-encoding": "^2.0.2",
+    "dat-button": "^2.3.0",
+    "dat-header": "^1.0.5",
     "drag-drop": "^2.11.0",
     "es2020": "^1.1.7",
     "filereader-stream": "^1.0.0",
     "gh-pages-deploy": "^0.4.2",
     "http-server": "^0.9.0",
-    "hyperdrive": "^6.6.1",
     "hyperdrive-archive-swarm": "^3.0.1",
     "hyperdrive-ui": "^2.0.0",
     "intro.js": "^2.1.0",
@@ -55,6 +57,7 @@
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
     "pretty-bytes": "^3.0.1",
+    "progress-stream": "^1.2.0",
     "pump": "^1.0.1",
     "selenium-server-standalone-jar": "^2.53.1",
     "shipit-deploy": "^2.2.0",
@@ -64,7 +67,7 @@
     "watchify": "~3.6.0",
     "wzrd": "^1.3.1",
     "yo-yo": "^1.2.2",
-    "yo-yoify": "^3.1.0",
-    "dat-encoding": "^2.0.2"
+    "hyperdrive": "^7.0.0",
+    "yo-yoify": "^3.1.0"
   }
 }
