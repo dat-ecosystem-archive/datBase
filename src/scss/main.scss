@@ -155,6 +155,17 @@ li {
   text-overflow: ellipsis;
 }
 
+.dat-details {
+  padding-top: 1.5rem;
+  padding-bottom: .25rem;
+}
+
+.dat-detail {
+  display: inline-block;
+  margin-right: 1.5rem;
+  color: $color-neutral--80;
+}
+
 .site-main {
   padding-top: 1.5rem;
 }
@@ -170,14 +181,6 @@ li {
   text-align: center;
 }
 
-#hyperdrive-size {
-  float: left;
-}
-
-#peers {
-  display: inline-block;
-}
-
 #speed {
   display: none;
   float: right;
@@ -187,9 +190,8 @@ li {
   width: 320px;
   span {
     font-weight: normal;
-    font-size: 13px;
+    font-size: .8125rem;
     line-height: 37px;
-    margin-left: 10px;
   }
 }
 
