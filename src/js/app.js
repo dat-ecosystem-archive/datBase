@@ -137,7 +137,7 @@ function installDropHandler (archive) {
         }
         var file = files[i++]
         var stream = fileReader(file)
-        var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
+        var entry = {name: path.join(cwd, file.fullPath.slice(1)), mtime: Date.now(), ctime: Date.now()}
         file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
         store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
         pump(
