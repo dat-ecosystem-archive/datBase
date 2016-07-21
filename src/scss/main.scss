@@ -14,8 +14,10 @@
 @import "dat-header.scss";
 @import "file-system.scss";
 @import "file-queue.scss";
-@import "helper-breakpoints.scss";
+@import "helper-breakpoints.scss"; // this should move into dat-design – @kriesse
 
+
+// global styles
 
 a, button, input {
   transition-property: background-color, color;
@@ -46,20 +48,6 @@ li {
   max-width: 1170px;
 }
 
-#speed {
-  display: none;
-  float: right;
-  line-height: 37px;
-  margin: 0 10px 0 0px;
-  padding: 0;
-  width: 320px;
-  span {
-    font-weight: normal;
-    font-size: .8125rem;
-    line-height: 37px;
-  }
-}
-
 .breadcrumbs {
   margin-bottom: 1rem;
   min-height: 2em;
@@ -76,7 +64,6 @@ li {
     height: 70%;
     border: 1px solid $color-neutral--20;
   }
-  /* render data */
   table {
     width: 100%;
     margin-top: 10px;
