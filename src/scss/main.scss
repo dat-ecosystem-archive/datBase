@@ -54,43 +54,26 @@ body {
   }
 }
 
-
-a, button, input, .link {
+a, button, input {
   transition-property: background-color, color;
   transition-duration: $transition-duration;
   transition-timing-function: $transition-timing-function;
   cursor: pointer;
 }
 
-a,
-.link {
+a {
   color: $color-green;
 }
 
-
-a:hover, a:focus,
-.link:hover, .link:focus {
+a:hover, a:focus {
   color: $color-green--hover;
   outline: none;
 }
-
-//can be removed? @kriesse
-// .link {
-//   color: #959ba4;
-//   border: none;
-//   background: none;
-//   padding: .2rem 1rem .2rem 0;
-// }
-//
-// .link:before {
-//   content: '« '
-// }
 
 ul,
 li {
   @include list-plain;
 }
-
 
 /* box model */
 
@@ -98,21 +81,6 @@ li {
   margin: 0 auto;
   padding: .75rem 2rem;
   max-width: 1170px;
-}
-
-.site-main {
-  padding-top: 1.5rem;
-}
-
-.upload-file {
-  width: 100%;
-  min-height: 3em;
-  margin: 1rem auto;
-  padding: 1rem;
-  border: 3px dashed #959ba4;
-  border-radius: 1em;
-  color: #959ba4;
-  text-align: center;
 }
 
 #speed {
