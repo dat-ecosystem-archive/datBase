@@ -69,7 +69,7 @@ function main () {
 }
 
 function getArchive (key, cb) {
-  if ((typeof key) === 'string') key = encoding.decode(key)
+  if ((typeof key) === 'string') key = new Buffer(key, 'hex')
   var archive = drive.createArchive(key, {live: true, sparse: true})
   var sw = swarm(archive)
   sw.on('connection', function (peer) {
@@ -103,7 +103,7 @@ function initArchive (key) {
   getArchive(key, function (archive) {
     help.innerHTML = ''
     installDropHandler(archive)
-    var link = encoding.encode(archive.key)
+    var link = archive.key.toString('hex')
     window.location = '#' + link
     $shareLink.innerHTML = link // XXX: move to its own component
 
