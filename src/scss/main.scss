@@ -14,6 +14,7 @@
 @import "dat-header.scss";
 @import "file-system.scss";
 @import "file-queue.scss";
+@import "preview-display.scss";
 @import "helper-breakpoints.scss"; // this should move into dat-design – @kriesse
 
 
@@ -51,32 +52,6 @@ li {
 .breadcrumbs {
   margin-bottom: 1rem;
   min-height: 2em;
-}
-
-#display {
-  margin-bottom: 4rem;
-  img,
-  video {
-    margin: 10px;
-  }
-  iframe {
-    width: 100%;
-    height: 70%;
-    border: 1px solid $color-neutral--20;
-  }
-  table {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
-  table th,
-  table td {
-    text-align: left;
-    padding: 5px 10px;
-    color: $color-neutral;
-    min-height: 1.42857143;
-  }
 }
 
 #get_link {
