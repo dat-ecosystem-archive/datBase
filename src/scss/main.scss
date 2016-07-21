@@ -10,6 +10,7 @@
 @import "~dat-design";
 @import "~dat-design/scss/base.scss";
 @import "site-header.scss";
+@import "status-bar.scss";
 @import "dat-header.scss";
 @import "file-system.scss";
 @import "file-queue.scss";
@@ -62,22 +63,6 @@ li {
 .breadcrumbs {
   margin-bottom: 1rem;
   min-height: 2em;
-}
-
-.status-bar {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: $color-neutral--04;
-  border-top: 1px solid $color-neutral--10;
-  font-size: .6875rem;
-  text-align: center;
-}
-.status-bar-status {
-  float: left;
-}
-.status-bar-stats {
-  float: right;
 }
 
 #display {

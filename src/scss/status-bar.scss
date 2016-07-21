@@ -1,0 +1,15 @@
+.status-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: $color-neutral--04;
+  border-top: 1px solid $color-neutral--10;
+  font-size: .6875rem;
+  text-align: center;
+}
+.status-bar-status {
+  float: left;
+}
+.status-bar-stats {
+  float: right;
+}
