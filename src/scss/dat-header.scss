@@ -20,20 +20,13 @@
 
 .dat-detail {
   display: inline-block;
-  margin-right: 1.5rem;
+  margin-right: 1rem;
   color: $color-neutral--80;
+  @include breakpoint (md1) {
+    margin-right: 1.5rem;
+  }
 }
 
 .dat-detail--speed {
   display: none;
-  float: right;
-  line-height: 37px;
-  margin: 0 10px 0 0px;
-  padding: 0;
-  width: 320px;
-  span {
-    font-weight: normal;
-    font-size: .8125rem;
-    line-height: 37px;
-  }
 }
