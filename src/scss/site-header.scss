@@ -2,7 +2,6 @@
 
 .site-header {
   height: 4rem;
-  padding-right: 1.5rem;
   background-color: $color-green--hover;
   color: $color-white;
 }
@@ -12,23 +11,21 @@
 }
 
 .dat-import {
-  float: left;
-  margin-top: .5rem;
+  display: inline-block;
+  margin-top: -.25rem;
+  vertical-align: middle;
 }
 
 .dat-logo {
   width: 6.5rem;
-  padding-top: .75rem;
-  padding-left: 2.625rem;
   float: left;
 }
 
 // dat-button
 .dat-button {
-  float: left;
-  padding-top: 1.15rem;
-  padding-bottom: 1.15rem;
-  margin-right: 3rem;
+  display: inline-block;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
   button {
     &:hover, &:focus, &:active {
       color: $color-neutral--04;
@@ -36,4 +33,8 @@
       cursor: pointer;
     }
   }
+}
+
+.dat-button--new-dat {
+  margin-right: 1rem;
 }

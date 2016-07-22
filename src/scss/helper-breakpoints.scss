@@ -1,5 +1,4 @@
 body {
-  min-width: 500px;
   // mixin is being imported from "~dat-design/scss/responsive/breakpoints.scss":
   @include breakpoint (xs) {
     // sample rule here to demo:

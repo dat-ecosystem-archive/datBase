@@ -45,8 +45,16 @@ li {
 
 .container {
   margin: 0 auto;
-  padding: .75rem 2rem;
+  padding: .75rem .625rem;
   max-width: 1170px;
+  @include breakpoint (sm) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  @include breakpoint (md1) {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
 }
 
 .breadcrumbs {
