@@ -20,6 +20,10 @@
 
 // global styles
 
+body {
+  min-width: 480px;
+}
+
 a, button, input {
   transition-property: background-color, color;
   transition-duration: $transition-duration;
