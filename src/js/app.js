@@ -122,12 +122,15 @@ function installDropHandler (archive) {
         cwd: cwd,
         progressInterval: 50,
         onQueueNewFile: function (err, file) {
+          if (err) console.log(err)
           store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
         },
         onFileWriteBegin: function (err, file) {
+          if (err) console.log(err)
           store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
         },
         onFileWriteComplete: function (err, file) {
+          if (err) console.log(err)
           store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
           store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
         },
