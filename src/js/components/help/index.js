@@ -1,5 +1,6 @@
 var yo = require('yo-yo')
 var intro = require('intro.js')
+var button = require('dat-button')
 
 module.exports = function Help () {
   function onclick () {
@@ -20,5 +21,5 @@ module.exports = function Help () {
     ]})
     _intro.start()
   }
-  return yo`<button id="help" onclick=${onclick} class="btn btn--green btn--header">?</button>`
+  return yo`<div class="dat-button">${button({text: '?', click: onclick})}</div>`
 }
