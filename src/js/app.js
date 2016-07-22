@@ -91,8 +91,10 @@ function getArchive (key, cb) {
 
 function initArchive (key) {
   var help = document.querySelector('#help-text')
+  var $addFiles = document.querySelector('#add-files')
   help.innerHTML = 'looking for sources …'
   $hyperdrive.innerHTML = ''
+  $addFiles.innerHTML = ''
 
   getArchive(key, function (archive) {
     help.innerHTML = ''
@@ -108,7 +110,36 @@ function initArchive (key) {
     }
     var tree = explorer(archive, onclick)
     $hyperdrive.appendChild(tree)
+    $addFiles.appendChild(componentCtors.AddFiles({onfiles: (e) => importFiles(e.target.files, archive)}))
     store.dispatch({ type: 'INIT_ARCHIVE', archive: archive })
+  })
+}
+
+function importFiles (files, archive) {
+  if (!Array.isArray(files)) {
+    // arrayify FileList
+    files = Array.prototype.slice.call(files, 0)
+    for (var i in files) {
+      files[i].fullPath = '/' + files[i].name
+    }
+  }
+  hyperdriveImportQueue(files, archive, {
+    cwd: cwd,
+    progressInterval: 50,
+    onQueueNewFile: function (err, file) {
+      if (err) console.log(err)
+      store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+    },
+    onFileWriteBegin: function (err, file) {
+      if (err) console.log(err)
+      store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
+    },
+    onFileWriteComplete: function (err, file) {
+      if (err) console.log(err)
+      store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
+      store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+    },
+    onCompleteAll: function () {}
   })
 }
 
@@ -118,24 +149,7 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      hyperdriveImportQueue(files, archive, {
-        cwd: cwd,
-        progressInterval: 50,
-        onQueueNewFile: function (err, file) {
-          if (err) console.log(err)
-          store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
-        },
-        onFileWriteBegin: function (err, file) {
-          if (err) console.log(err)
-          store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
-        },
-        onFileWriteComplete: function (err, file) {
-          if (err) console.log(err)
-          store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
-          store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
-        },
-        onCompleteAll: function () {}
-      })
+      importFiles(files, archive, cwd)
     })
   } else {
     clearDrop = drop(document.body, function () {

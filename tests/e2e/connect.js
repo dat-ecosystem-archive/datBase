@@ -1,5 +1,6 @@
 var process = require('process')
 var net = require('net')
+var path = require('path')
 var browser2
 
 function makeServer () {
@@ -69,6 +70,18 @@ module.exports = new function () {
   testCases['found the other peer'] = (client) => {
     client
       .expect.element('#peers').text.matches(/2 Sources/).before(30000)
+  }
+
+  if (firstClient) {
+    testCases['upload file'] = (client) => {
+      client.setValue('#add-files input[type=file]', path.resolve('./package.json'))
+        .expect.element('#fs').text.to.contain('package.json').before(10000)
+    }
+  } else {
+    testCases['file synced'] = (client) => {
+      client
+        .expect.element('#fs').text.to.contain('package.json').before(10000)
+    }
   }
 
   testCases.suspend = (client) => {
