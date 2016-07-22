@@ -13,7 +13,7 @@ var explorer = require('hyperdrive-ui')
 // var pump = require('pump')
 // var progress = require('progress-stream')
 // var QueuedFileModel = require('./models/queued-file-model.js')
-var HyperdriveWriteQueue = require('./../../hyperdrive-write-queue')
+var hyperdriveImportQueue = require('./../../../hyperdrive-import-queue')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -125,11 +125,11 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      // TODO: refactor this into `hyperdrive-write-queue` module
-      HyperdriveWriteQueue(files, archive, {
-        progressInterval: 100,
+      hyperdriveImportQueue(files, archive, {
+        cwd: cwd,
+        progressInterval: 50,
         onQueueNewFile: function (err, file) {
-          store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFileModel(file) })
+          store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
         },
         onFileWriteBegin: function (err, file) {
           store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
@@ -140,7 +140,6 @@ function installDropHandler (archive) {
         },
         onCompleteAll: function () {}
       })
-      // end /TODO: `hyperdrive-write-queue` module
     })
   } else {
     clearDrop = drop(document.body, function () {
