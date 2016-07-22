@@ -2,16 +2,11 @@ var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')
 var level = require('level-browserify')
 var drop = require('drag-drop')
-var fileReader = require('filereader-stream')
-var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
 var db = level('./dat.db')
 var drive = hyperdrive(db)
-var path = require('path')
 var explorer = require('hyperdrive-ui')
-var pump = require('pump')
-var progress = require('progress-stream')
-var QueuedFileModel = require('./models/queued-file-model.js')
+var hyperdriveImportQueue = require('hyperdrive-import-queue')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -123,40 +118,24 @@ function installDropHandler (archive) {
 
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
-      // TODO: refactor this into `hyperdrive-write-queue` module
-      files.forEach(function (file) {
-        store.dispatch({ type: 'QUEUE_NEW_FILE', file: new QueuedFileModel(file) })
+      hyperdriveImportQueue(files, archive, {
+        cwd: cwd,
+        progressInterval: 50,
+        onQueueNewFile: function (err, file) {
+          if (err) console.log(err)
+          store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+        },
+        onFileWriteBegin: function (err, file) {
+          if (err) console.log(err)
+          store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
+        },
+        onFileWriteComplete: function (err, file) {
+          if (err) console.log(err)
+          store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
+          store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+        },
+        onCompleteAll: function () {}
       })
-      var i = 0
-      loop()
-
-      function loop () {
-        store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
-        if (i === files.length) {
-          return console.log('added files to ', archive.key.toString('hex'), files)
-        }
-        var file = files[i++]
-        var stream = fileReader(file)
-        var entry = {name: path.join(cwd, file.fullPath.slice(1)), mtime: Date.now(), ctime: Date.now()}
-        file.progressListener = progress({ length: stream.size, time: 50 }) // time: ms
-        store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
-        pump(
-          stream,
-          choppa(4 * 1024),
-          file.progressListener,
-          archive.createFileWriteStream(entry),
-          function (err) {
-            if (err) {
-              file.writeError = true
-            } else {
-              file.progress = { complete: true }
-              store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
-            }
-            loop()
-          }
-        )
-      }
-      // end /TODO: `hyperdrive-write-queue` module
     })
   } else {
     clearDrop = drop(document.body, function () {
