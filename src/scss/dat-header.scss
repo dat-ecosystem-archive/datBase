@@ -25,6 +25,9 @@
   @include breakpoint (md1) {
     margin-right: 1.5rem;
   }
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .dat-detail--speed {
