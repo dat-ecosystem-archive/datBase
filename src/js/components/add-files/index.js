@@ -1,5 +1,4 @@
 var yo = require('yo-yo')
-var button = require('dat-button')
 
 module.exports = function AddFiles (props) {
   this.props = props
