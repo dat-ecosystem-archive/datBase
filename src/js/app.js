@@ -2,17 +2,11 @@ var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')
 var level = require('level-browserify')
 var drop = require('drag-drop')
-// var fileReader = require('filereader-stream')
 var encoding = require('dat-encoding')
-// var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
 var db = level('./dat.db')
 var drive = hyperdrive(db)
-// var path = require('path')
 var explorer = require('hyperdrive-ui')
-// var pump = require('pump')
-// var progress = require('progress-stream')
-// var QueuedFileModel = require('./models/queued-file-model.js')
 var hyperdriveImportQueue = require('./../../../hyperdrive-import-queue')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
@@ -126,7 +120,7 @@ function installDropHandler (archive) {
   if (archive && archive.owner) {
     clearDrop = drop(document.body, function (files) {
       hyperdriveImportQueue(files, archive, {
-        cwd: cwd,
+        cwd: cwd
         progressInterval: 50,
         onQueueNewFile: function (err, file) {
           store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
