@@ -11,7 +11,7 @@ module.exports = function Help () {
       },
       {
         intro: 'Drop some files here',
-        element: '#help-text'
+        element: '#add-files'
       },
       {
         intro: 'You can share the dat with this link',
