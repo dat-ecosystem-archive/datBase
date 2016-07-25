@@ -74,3 +74,45 @@ li {
   z-index: 10;
   position: absolute;
 }
+
+.site-main {
+  .container {
+    position: relative;
+  }
+}
+
+.button-add {
+  $radius: 24px;
+  position: absolute;
+  top: -$radius;
+  right: .5rem;
+  width: 2 * $radius;
+  height: 2 * $radius;
+  box-shadow:
+    0px 2px 10px rgba(0,0,0,.3),
+    0px 0px 1px rgba(0,0,0,.1),
+    inset 0px 1px 0px rgba(255,255,255,.25),
+    inset 0px -1px 0px rgba(0,0,0,.15);
+  background-color: $color-info;
+  color: $color-white;
+  border-radius: 50%;
+  text-align: center;
+  text-indent: -999px;
+  overflow: hidden;
+  &:hover, &:focus {
+    background-color: $color-info--hover;
+  }
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: $radius - 1px;
+    left: $radius * .75;
+    background-color: currentColor;
+    width: $radius / 2;
+    height: 2px;
+  }
+  &:after {
+    transform: rotate(90deg);
+  }
+}
