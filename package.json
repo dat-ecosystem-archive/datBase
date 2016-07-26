@@ -33,6 +33,7 @@
   "devDependencies": {
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
+    "choo": "^3.2.0",
     "chromedriver": "^2.21.2",
     "concat-stream": "^1.5.1",
     "dat-button": "^2.3.0",
@@ -43,6 +44,7 @@
     "es2020": "^1.1.7",
     "gh-pages-deploy": "^0.4.2",
     "http-server": "^0.9.0",
+    "hyperdrive": "^7.0.0",
     "hyperdrive-archive-swarm": "^3.0.1",
     "hyperdrive-import-queue": "^1.0.0",
     "hyperdrive-ui": "^2.0.0",
@@ -64,7 +66,6 @@
     "watchify": "~3.6.0",
     "wzrd": "^1.3.1",
     "yo-yo": "^1.2.2",
-    "hyperdrive": "^7.0.0",
     "yo-yoify": "^3.1.0"
   }
 }

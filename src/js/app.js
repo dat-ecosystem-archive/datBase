@@ -1,3 +1,14 @@
+const choo = require('choo')
+const mainView = require('./views/main')
+
+app.router((route) => [
+  route('/', mainView)
+])
+
+const tree = app.start()
+
+
+// TODO: refactor everything below into choo models/views
 var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')
 var level = require('level-browserify')
