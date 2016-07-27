@@ -1,14 +1,21 @@
 const choo = require('choo')
-const mainView = require('./views/main')
+const app = choo()
 
+
+// define models:
+app.model(require('./models/archive'))
+
+// define routes:
 app.router((route) => [
-  route('/', mainView)
+  route('/', require('./views/main'))
 ])
 
-const tree = app.start()
+// start app:
+// TODO: figure out how to connect { hash:true } updates to main view
+const tree = app.start('#choo-refactor-main', { hash: true })
 
 
-// TODO: refactor everything below into choo models/views
+// TODO: refactor everything below into choo framework paradigm:
 var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')
 var level = require('level-browserify')
