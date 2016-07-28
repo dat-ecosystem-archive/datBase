@@ -19,6 +19,7 @@ router.on('/:archiveId', {
   }
 })
 
+// TODO: better recursion for nested filepaths on archives
 router.on('/:archiveId/:filePath', {
   get: function (req, res, params) {
     res.end('route is: /' + params.archiveId + '/' + params.filePath)
