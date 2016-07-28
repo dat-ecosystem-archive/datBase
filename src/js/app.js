@@ -1,17 +1,16 @@
 const choo = require('choo')
 const app = choo()
 
-
 // define models:
 app.model(require('./models/archive'))
 
 // define routes:
 app.router((route) => [
-  route('/', require('./views/main'))
+  route('/', require('./views/home')),
+  route('/:archiveId', require('./views/main'))
 ])
 
 // start app:
-// TODO: figure out how to connect { hash:true } updates to main view
 const tree = app.start('#choo-refactor-main', { hash: true })
 
 
