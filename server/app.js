@@ -1,17 +1,17 @@
 const choo = require('choo')
 const app = choo()
 
-// define models:
-// app.model(require('./models/archive'))
+app.model({
+  namespace: 'home',
+  state: {
+    h1: 'this is the server $state.h1 <-- hell yes'
+  }
+})
 
 // define routes:
 app.router((route) => [
-  route('/', require('./views/home')),
-  // route('/:archiveId', require('./views/main'))
+  route('/', require('./views/home'))
 ])
-
-// start app:
-app.start()
 
 module.exports = app
 
