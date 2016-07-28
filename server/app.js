@@ -6,13 +6,13 @@ const app = choo()
 app.model({
   namespace: 'home',
   state: {
-    h1: 'this is the server $state.h1 <-- hell yes'
+    h1: 'this is the server $state.h1'
   }
 })
 
 // define routes:
 app.router((route) => [
-  route('/', require('./views/home'))
+  route('/', require('./components/home'))
 ])
 
 module.exports = app
