@@ -12,15 +12,16 @@
     "url": "https://github.com/datproject/dat.land/issues"
   },
   "scripts": {
-    "dev": "npm run watch & npm start",
+    "dev": "npm run watch",
     "start": "node ./server",
     "lint": "standard",
     "test": "standard",
     "test:e2e": "nightwatch --env chrome,chrome",
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
-    "watch": "npm run watch-js & npm run watch-css",
+    "watch": "npm run watch-js & npm run watch-css & npm run watch-server",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "watch-js": "watchify src/js/app.js -o public/js/app.js",
+    "watch-server": "nodemon --watch server server",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
     "build-js": "browserify src/js/app.js > public/js/app.js",
