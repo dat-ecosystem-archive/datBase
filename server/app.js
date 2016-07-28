@@ -1,6 +1,8 @@
 const choo = require('choo')
 const app = choo()
 
+// TODO: server-side choo logger
+
 app.model({
   namespace: 'home',
   state: {

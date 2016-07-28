@@ -2,6 +2,7 @@ const serverRouter = require('server-router')
 const router = serverRouter()
 const app = require('./app')
 
+
 router.on('/', {
   get: function (req, res, params) {
     res.setHeader('Content-Type', 'text/html');
