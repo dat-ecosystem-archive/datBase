@@ -3,7 +3,6 @@
   "version": "1.2.3",
   "description": "An online place for dats.",
   "license": "MIT",
-  "main": "src/js/app.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/datproject/dat.land.git"
@@ -11,6 +10,7 @@
   "bugs": {
     "url": "https://github.com/datproject/dat.land/issues"
   },
+  "main": "server/index.js",
   "scripts": {
     "dev": "npm run watch",
     "start": "node ./server",
@@ -20,11 +20,11 @@
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
     "watch": "npm run watch-js & npm run watch-css & npm run watch-server",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-    "watch-js": "watchify src/js/app.js -o public/js/app.js",
+    "watch-js": "watchify client/js/app.js -o public/js/app.js",
     "watch-server": "nodemon --watch server server",
     "build": "npm run build-js && npm run build-css",
-    "build-css": "node-sass --importer node_modules/node-sass-magic-importer src/scss/main.scss public/css/main.css",
-    "build-js": "browserify src/js/app.js > public/js/app.js",
+    "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/main.scss public/css/main.css",
+    "build-js": "browserify client/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
