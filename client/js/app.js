@@ -7,8 +7,8 @@ app.model(require('./models/archive'))
 
 // define routes:
 app.router((route) => [
-  route('/', require('./views/home')),
-  route('/:archiveId', require('./views/main'))
+  route('/', require('./components/home')),
+  route('/:archiveId', require('./components/archive'))
 ])
 
 // start app:
