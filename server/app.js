@@ -7,7 +7,7 @@ app.model(require('./models/home-page'))
 
 // define routes:
 app.router((route) => [
-  route('/', require('./components/home'))
+  route('/', require('./pages/home'))
 ])
 
 module.exports = app
