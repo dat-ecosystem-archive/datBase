@@ -2,7 +2,6 @@ const fs = require('fs')
 const serverRouter = require('server-router')
 const app = require('./app')
 const router = serverRouter()
-const locus = require('/usr/local/lib/node_modules/locus')
 
 router.on('/', {
   get: function (req, res, params) {
