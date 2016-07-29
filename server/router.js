@@ -26,6 +26,7 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveId', {
   get: function (req, res, params) {
+    // TODO: send app state down the pipe to client
     res.setHeader('Content-Type', 'text/html');
     res.end('route is: /:archiveId ' + params.archiveId)
   }
