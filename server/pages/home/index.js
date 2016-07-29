@@ -11,7 +11,6 @@ const homePage = (state, prev) => {
       ${header(state, prev)}
       <div class="tmp-home-view">
         <h1>Home Page Test: </h1>
-        <h2>${state.homePage.h1}</h2>
         <ul>
           <li>What is dat.land?</li>
           <li>How can I use it?</li>

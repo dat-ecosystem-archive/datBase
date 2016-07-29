@@ -2,6 +2,7 @@ const fs = require('fs')
 const serverRouter = require('server-router')
 const app = require('./app')
 const router = serverRouter()
+const locus = require('/usr/local/lib/node_modules/locus')
 
 router.on('/', {
   get: function (req, res, params) {
@@ -26,7 +27,14 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveId', {
   get: function (req, res, params) {
-    const contents = app.toString('/:archiveId', app.state)
+    // TODO: talk to yoshua about this, there seems to be no great pattern
+    // for dynamically updating state on server side before app.toString()
+    // (no send()/subscriptions()/effects() methods available)
+    // -> this doesn't work:
+    // app.model({ archive: { key: params.archiveId }})
+    // my hacky solution for now:
+    // copy the current app.state then manipulate the object manually
+    const contents = app.toString('/:archiveId', { archive: {key: params.archiveId} })
     // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html');
     res.end(contents)

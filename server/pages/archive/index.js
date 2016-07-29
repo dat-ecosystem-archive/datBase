@@ -10,7 +10,8 @@ const archivePage = (state, prev) => {
     <body>
       ${header(state, prev)}
       <div class="tmp-archive-view">
-        <h1>ArchivePage </h1>
+        <h1>ArchivePage</h1>
+        <h2>Server-rendered archive key: ${state.archive.key}</h2>
       <script type="text/javascript" src="public/js/app.js"></script>
     </body></html>`
 }

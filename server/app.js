@@ -3,7 +3,7 @@ const app = choo()
 // TODO: server-side choo logger
 
 // define models:
-app.model(require('./models/home-page'))
+app.model(require('./models/archive'))
 
 // define routes:
 app.router((route) => [
