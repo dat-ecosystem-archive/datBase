@@ -25,16 +25,10 @@ router.on('/migrate', {
 })
 
 // new choo-based archive route:
-router.on('/:archiveId', {
+router.on('/:archiveKey', {
   get: function (req, res, params) {
-    // TODO: talk to yoshua about this, there seems to be no great pattern
-    // for dynamically updating state on server side before app.toString()
-    // (no send()/subscriptions()/effects() methods available)
-    // -> this doesn't work:
-    // app.model({ archive: { key: params.archiveId }})
-    // my hacky solution for now:
-    // copy the current app.state then manipulate the object manually
-    const contents = app.toString('/:archiveId', { archive: {key: params.archiveId} })
+    // TODO: mutate the default app.state with update to archive key prop
+    const contents = app.toString('/:archiveKey', { archive: { key: params.archiveKey } })
     // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html');
     res.end(contents)
@@ -42,9 +36,9 @@ router.on('/:archiveId', {
 })
 
 // TODO: better recursion for nested filepaths on archives
-router.on('/:archiveId/:filePath', {
+router.on('/:archiveKey/:filePath', {
   get: function (req, res, params) {
-    res.end('route is: /' + params.archiveId + '/' + params.filePath)
+    res.end('route is: /' + params.archiveKey + '/' + params.filePath)
   }
 })
 
@@ -83,5 +77,10 @@ router.on('/public/img/:asset', {
     })
   }
 })
+
+function mutateDefaultAppState (defaultState, update) {
+  // copy defaultSate map the props, update the props specified by updateObject
+  // return updatedState
+}
 
 module.exports = router
