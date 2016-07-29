@@ -2,7 +2,7 @@ const choo = require('choo')
 const app = choo()
 // TODO: server-side choo logger
 
-// define models
+// define models:
 app.model(require('./models/home-page'))
 
 // define routes:

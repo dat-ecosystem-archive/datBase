@@ -6,9 +6,9 @@ const router = serverRouter()
 router.on('/', {
   get: function (req, res, params) {
     res.setHeader('Content-Type', 'text/html');
-    const body = app.toString('/', app.state)
-    // TODO: send app state down the pipe to client
-    res.end('<html><body>' + body + '</body></html>')
+    const content = app.toString('/', app.state)
+    // TODO: send client app state down the pipe to client
+    res.end(content)
   }
 })
 
@@ -26,7 +26,7 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveId', {
   get: function (req, res, params) {
-    // TODO: send app state down the pipe to client
+    // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html');
     res.end('route is: /:archiveId ' + params.archiveId)
   }
