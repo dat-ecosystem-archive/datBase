@@ -13,3 +13,5 @@ app.router((route) => [
 
 // start app:
 const tree = app.start('#choo-refactor-main', { hash: true })
+
+window.alert('foo!')
