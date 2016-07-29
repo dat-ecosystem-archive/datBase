@@ -23,6 +23,7 @@ router.on('/migrate', {
   }
 })
 
+// new choo-based archive route:
 router.on('/:archiveId', {
   get: function (req, res, params) {
     res.setHeader('Content-Type', 'text/html');

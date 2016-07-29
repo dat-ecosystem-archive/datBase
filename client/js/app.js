@@ -29,7 +29,7 @@ var hyperdriveImportQueue = require('hyperdrive-import-queue')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
-var componentCtors = require('./components')
+var componentCtors = require('./components-migrate')
 var components = [
   componentCtors.Help('help'),
   componentCtors.FileQueue('file-queue'),
