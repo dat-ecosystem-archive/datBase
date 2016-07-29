@@ -38,12 +38,25 @@ router.on('/public/css/:asset', {
   }
 })
 
+// TODO: decide on a real static asset setup with cacheing strategy
 router.on('/public/js/:asset', {
   get: function (req, res, params) {
     console.log('GET ' + req.url)
     fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
       if (err) return res.end('nope')
       res.setHeader('Content-Type', 'text/javascript')
+      res.end(contents)
+    })
+  }
+})
+
+// TODO: decide on a real static asset setup with cacheing strategy
+router.on('/public/img/:asset', {
+  get: function (req, res, params) {
+    console.log('GET ' + req.url)
+    fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
+      if (err) return res.end('nope')
+      res.setHeader('Content-Type', 'image/svg+xml')
       res.end(contents)
     })
   }
