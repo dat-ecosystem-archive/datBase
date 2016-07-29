@@ -7,15 +7,26 @@ router.on('/', {
   get: function (req, res, params) {
     res.setHeader('Content-Type', 'text/html');
     const body = app.toString('/', app.state)
-    // TODO: send app state down the pipe?
+    // TODO: send app state down the pipe to client
     res.end('<html><body>' + body + '</body></html>')
+  }
+})
+
+// serve old pre-choo client-side-only app for migration work:
+router.on('/migrate', {
+  get: function (req, res, params) {
+    fs.readFile('./public/html/index.html', 'utf-8', function (err, contents) {
+      if (err) return res.end('nope')
+      res.setHeader('Content-Type', 'text/html')
+      res.end(contents)
+    })
   }
 })
 
 router.on('/:archiveId', {
   get: function (req, res, params) {
     res.setHeader('Content-Type', 'text/html');
-    res.end('route is: /:archiveId' + params.archiveId)
+    res.end('route is: /:archiveId ' + params.archiveId)
   }
 })
 
