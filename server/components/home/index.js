@@ -6,7 +6,7 @@ const homeView = (state, prev, send) => {
       <ul>
         <li>What is Dat.land?</li>
         <li>How can I use it?</li>
-        <li>What is my purpose in life?</li>
+        <li>What is my purpose in life???</li>
       </ul>
     </div>`
 }
