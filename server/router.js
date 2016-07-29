@@ -1,7 +1,7 @@
+const fs = require('fs')
 const serverRouter = require('server-router')
-const router = serverRouter()
 const app = require('./app')
-
+const router = serverRouter()
 
 router.on('/', {
   get: function (req, res, params) {
@@ -15,7 +15,7 @@ router.on('/', {
 router.on('/:archiveId', {
   get: function (req, res, params) {
     res.setHeader('Content-Type', 'text/html');
-    res.end('route is: /' + params.archiveId)
+    res.end('route is: /:archiveId' + params.archiveId)
   }
 })
 
@@ -26,5 +26,27 @@ router.on('/:archiveId/:filePath', {
   }
 })
 
+// TODO: decide on a real static asset setup with cacheing strategy
+router.on('/public/css/:asset', {
+  get: function (req, res, params) {
+    console.log('GET ' + req.url)
+    fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
+      if (err) return res.end('nope')
+      res.setHeader('Content-Type', 'text/css')
+      res.end(contents)
+    })
+  }
+})
+
+router.on('/public/js/:asset', {
+  get: function (req, res, params) {
+    console.log('GET ' + req.url)
+    fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
+      if (err) return res.end('nope')
+      res.setHeader('Content-Type', 'text/javascript')
+      res.end(contents)
+    })
+  }
+})
 
 module.exports = router
