@@ -1,20 +1,3 @@
-const choo = require('choo')
-const app = choo()
-// TODO: client-side choo logger
-
-// define models:
-app.model(require('./models/archive'))
-
-// define routes:
-app.router((route) => [
-  route('/', require('./views/home')),
-  route('/:archiveId', require('./views/main'))
-])
-
-// start app:
-const tree = app.start('#choo-refactor-main', { hash: true })
-
-
 // TODO: refactor everything below into choo framework paradigm:
 var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')

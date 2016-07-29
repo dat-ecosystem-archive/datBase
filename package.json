@@ -20,18 +20,13 @@
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
     "watch": "npm run watch-js & npm run watch-migrate-js & npm run watch-css & npm run watch-server",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-
     "watch-js": "watchify client/js/app.js -o public/js/app.js",
     "watch-migrate-js": "watchify client/js/migrate-app.js -o public/js/migrate-app.js",
-
     "watch-server": "nodemon --watch server server",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/main.scss public/css/main.css",
-
     "build-js": "browserify client/js/app.js > public/js/app.js",
     "build-migrate-js": "browserify client/js/migrate-app.js > public/js/migrate-app.js",
-
-
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
