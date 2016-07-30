@@ -1,3 +1,4 @@
+// TODO: rehydrate this model with archive data from server
 module.exports = {
   namespace: 'archive',
   state: {
