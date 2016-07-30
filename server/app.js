@@ -8,5 +8,3 @@ app.router((route) => [
 ])
 
 module.exports = app
-
-

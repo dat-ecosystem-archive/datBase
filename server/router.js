@@ -7,7 +7,7 @@ router.on('/', {
   get: function (req, res, params) {
     const contents = app.toString('/', app.state)
     // TODO: send client app state down the pipe to client
-    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Content-Type', 'text/html')
     res.end(contents)
   }
 })
@@ -30,7 +30,7 @@ router.on('/:archiveKey', {
     state.archive.key = params.archiveKey
     const contents = app.toString('/:archiveKey', state)
     // TODO: send client app state down the pipe to client
-    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Content-Type', 'text/html')
     res.end(contents)
   }
 })
