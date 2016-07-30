@@ -46,7 +46,7 @@ var settings = {
 var fs = require('fs')
 
 module.exports = (function (settings) {
-  var chrome = '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
+  var chrome = process.env.DATLAND_CHROME_PATH || '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
   try {
     fs.statSync(chrome)
     settings.test_settings.chrome.desiredCapabilities.chromeOptions = { binary: chrome }

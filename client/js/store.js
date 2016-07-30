@@ -1,3 +1,6 @@
+// TODO: this minidux store will also be obsolete once we're
+// done migrating to choo, this is only still here for reference,
+// delete it once we're done
 var minidux = require('minidux')
 
 function fileQueueReducer (state, action) {

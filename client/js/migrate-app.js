@@ -1,3 +1,7 @@
+// TODO: refactor everything below into choo framework paradigm:
+// NOTE: this file is no longer being built by `npm run dev`
+//       it is only here for reference during migration to choo
+//       the build file is temporary checked into /public/js/migrate-app.js
 var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')
 var level = require('level-browserify')
@@ -11,7 +15,7 @@ var hyperdriveImportQueue = require('hyperdrive-import-queue')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
-var componentCtors = require('./components')
+var componentCtors = require('./components-migrate')
 var components = [
   componentCtors.Help('help'),
   componentCtors.FileQueue('file-queue'),
