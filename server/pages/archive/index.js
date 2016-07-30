@@ -9,7 +9,7 @@ const archivePage = (state, prev) => {
     </head>
     <body>
       ${header(state, prev)}
-      <div class="tmp-archive-view">
+      <div class="archive-metadata">
         <h1>ArchivePage</h1>
         <h2>Server-rendered properties:</h2>
         <ul>
@@ -23,6 +23,8 @@ const archivePage = (state, prev) => {
           </ul>
         </li>
         </ul>
+      </div>
+      <main id="archive-list"></main>
       <script type="text/javascript" src="public/js/app.js"></script>
     </body></html>`
 }

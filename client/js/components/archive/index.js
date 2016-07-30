@@ -1,13 +1,13 @@
 const html = require('choo/html')
 
-const mainView = (state, prev, send) => {
-  return html`<div class="tmp-main-view"
-       style="background: orange; padding: 50px;">
-      <h1>Main View:</h1>
-      <h2>${state.location}</h2>
-      archive key: ${state.archive.key} <br />
-      file: ${state.archive.file}
+const archive = (state, prev, send) => {
+  return html`<div>
+      <h3>Client-rendered properties:</h3>
+      <ul>
+      <li>location: ${state.location.pathname}</li>
+      <li>TODO: "rehydrate" me with metadata from server, look for webrtc peers</li>
+      </ul>
       </div>`
 }
 
-module.exports = mainView
+module.exports = archive

@@ -7,9 +7,8 @@ app.model(require('./models/archive'))
 
 // define routes:
 app.router((route) => [
-  route('/', require('./components/home')),
   route('/:archiveId', require('./components/archive'))
 ])
 
 // start app:
-const tree = app.start('#choo-refactor-main', { hash: true })
+const tree = app.start('#archive-list')
