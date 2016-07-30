@@ -39,7 +39,7 @@ SpeedDisplay.prototype._render = function () {
     <span id="download-speed">↓ ${down}/s</span> / <span id="upload-speed">↑ ${up}/s</span>
   </div>`
 
-  if (down || up) this.$el.style.display = 'block'
+  if (down || up) this.$el.style.display = 'inline-block'
   return component
 }
 

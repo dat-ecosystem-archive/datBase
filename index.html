@@ -1,28 +1,39 @@
 <html>
   <head>
     <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
   </head>
   <body>
     <div id="header"></div>
+    <div class="dat-header" id="dat-info">
+      <div class="container">
+        <div class="dat-header__actions">
+          <button class="dat-header-action">Download</button>
+          <button class="dat-header-action">Open in Desktop App</button>
+        </div>
+        <div id="share-link" class="share-link"></div>
+        <div class="dat-details">
+          <div id="permissions" class="dat-detail"></div>
+          <div id="hyperdrive-size" class="dat-detail"></div>
+          <div id="peers" class="dat-detail"></div>
+          <div id="speed" class="dat-detail dat-detail--speed"></div>
+        </div>
+      </div>
+    </div>
     <main class="site-main">
       <div class="container">
-        <div id="dat-info">
-          <div id="share-link"></div>
-          <div id="permissions"></div>
-          <div id="hyperdrive-size"></div>
-          <div id="peers"></div>
-          <div id="speed"></div>
-        </div>
         <div id="add-files"></div>
         <div id="file-queue"></div>
         <div id="hyperdrive-ui"></div>
       </div>
     </main>
     <div class="status-bar">
-      <span id="help-text">Initializing</span>
-      <div id="hyperdrive-stats"></div>
+      <div class="container">
+        <span id="help-text" class="status-bar-status">Initializing</span>
+        <div id="hyperdrive-stats" class="status-bar-stats"></div>
+      </div>
     </div>
     <script type="text/javascript" src="public/js/app.js"></script>
   </body>
