@@ -26,7 +26,7 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
-    let state = require('./models/archive-page')
+    let state = copyAppState(require('./models/archive-page'))
     state.archive.key = params.archiveKey
     const contents = app.toString('/:archiveKey', state)
     // TODO: send client app state down the pipe to client
