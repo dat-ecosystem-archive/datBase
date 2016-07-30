@@ -18,7 +18,7 @@ const archivePage = (state, prev) => {
         <li>signalhubs:
           <ul>
           ${state.signalhubs.map(function (fqdn) {
-            return numPeers(fqdn)
+            return signalhubs(fqdn)
           })}
           </ul>
         </li>
@@ -27,7 +27,7 @@ const archivePage = (state, prev) => {
     </body></html>`
 }
 
-const numPeers = (fqdn) => {
+const signalhubs = (fqdn) => {
   return html`<li>- ${fqdn}</li>`
 }
 
