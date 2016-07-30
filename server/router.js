@@ -26,8 +26,9 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
-    // TODO: mutate the default app.state with update to archive key prop
-    const contents = app.toString('/:archiveKey', { archive: { key: params.archiveKey } })
+    let state = require('./models/archive-page')
+    state.archive.key = params.archiveKey
+    const contents = app.toString('/:archiveKey', state)
     // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html');
     res.end(contents)
@@ -77,9 +78,8 @@ router.on('/public/img/:asset', {
   }
 })
 
-function mutateDefaultAppState (defaultState, update) {
-  // copy defaultSate map the props, update the props specified by updateObject
-  // return updatedState
+function copyAppState (state) {
+  return JSON.parse(JSON.stringify(state))
 }
 
 module.exports = router

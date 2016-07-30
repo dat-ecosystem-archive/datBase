@@ -11,7 +11,12 @@ const archivePage = (state, prev) => {
       ${header(state, prev)}
       <div class="tmp-archive-view">
         <h1>ArchivePage</h1>
-        <h2>Server-rendered archive key: ${state.archive.key}</h2>
+        <h2>Server-rendered properties:</h2>
+        <ul>
+        <li>archive key: ${state.archive.key}</li>
+        <li>peers: ${state.archive.numPeers}</li>
+        <li>signalhub: ${state.signalhub.fqdn}</li>
+        </ul>
       <script type="text/javascript" src="public/js/app.js"></script>
     </body></html>`
 }
