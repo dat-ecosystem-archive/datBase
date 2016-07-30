@@ -3,7 +3,8 @@ module.exports = {
     key: null,
     numPeers : 0
   },
-  signalhub: {
-    fqdn : 'signalhub.mafintosh.com'
-  },
+  signalhubs: [
+    'signalhub.mafintosh.com',
+    'signalhub.dat.land'
+  ]
 }

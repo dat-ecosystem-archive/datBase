@@ -15,10 +15,20 @@ const archivePage = (state, prev) => {
         <ul>
         <li>archive key: ${state.archive.key}</li>
         <li>peers: ${state.archive.numPeers}</li>
-        <li>signalhub: ${state.signalhub.fqdn}</li>
+        <li>signalhubs:
+          <ul>
+          ${state.signalhubs.map(function (fqdn) {
+            return numPeers(fqdn)
+          })}
+          </ul>
+        </li>
         </ul>
       <script type="text/javascript" src="public/js/app.js"></script>
     </body></html>`
+}
+
+const numPeers = (fqdn) => {
+  return html`<li>- ${fqdn}</li>`
 }
 
 module.exports = archivePage
