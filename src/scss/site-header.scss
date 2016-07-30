@@ -1,0 +1,42 @@
+/* header */
+
+.site-header {
+  height: 4rem;
+  background-color: $color-green--hover;
+  color: $color-white;
+}
+
+.site-header__actions {
+  float: right;
+}
+
+.dat-import {
+  display: inline-block;
+  margin-top: -.25rem;
+  vertical-align: middle;
+}
+
+.dat-logo {
+  float: left;
+}
+
+// dat-button
+.dat-button {
+  display: inline-block;
+  padding-top: .4rem;
+  padding-right: .2rem;
+  padding-bottom: .4rem;
+  padding-left: .2rem;
+  background-color: $color-green--hover;
+  button {
+    &:hover, &:focus, &:active {
+      color: $color-neutral--04;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+}
+
+.dat-button--new-dat {
+  margin-right: 1rem;
+}
