@@ -58,6 +58,7 @@
     "node-sass": "^3.8.0",
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
+    "nodemon": "^1.10.0",
     "pretty-bytes": "^3.0.1",
     "selenium-server-standalone-jar": "^2.53.1",
     "shipit-deploy": "^2.2.0",
