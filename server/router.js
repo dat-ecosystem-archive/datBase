@@ -1,3 +1,5 @@
+'use strict'
+
 const fs = require('fs')
 const serverRouter = require('server-router')
 const app = require('./app')
