@@ -71,7 +71,9 @@
     "yo-yoify": "^3.1.0"
   },
   "dependencies": {
+    "choo": "juliangruber/choo#fixes",
     "http": "0.0.0",
-    "server-router": "^2.1.0"
+    "server-router": "^2.1.0",
+    "yo-yo": "juliangruber/yo-yo#fixes"
   }
 }
