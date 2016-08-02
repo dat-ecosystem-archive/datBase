@@ -11,4 +11,4 @@ app.router((route) => [
 ])
 
 // start app:
-const tree = app.start('#archive-list')
+app.start('#archive-list')
