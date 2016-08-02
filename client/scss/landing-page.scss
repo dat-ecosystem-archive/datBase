@@ -1,0 +1,48 @@
+$landing-header-height: 6rem;
+
+.landing-header {
+  height: $landing-header-height;
+  background-color: $color-green--hover;
+  text-align: center;
+  color: $color-white;
+}
+
+.landing-main {
+  height: calc(100vh - #{$site-header-height} - #{$landing-header-height});
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  > div {
+    text-align: center;
+  }
+  &.container {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.landing-create-new-dat {
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2rem;
+  border-radius: .5rem;
+  border: 4px dashed $color-neutral--20;
+  h3 {
+    color: $color-green--hover;
+  }
+}
+
+
+.landing-import-dat {
+  flex-grow: 0;
+  flex-shrink: 1;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  h3 {
+    color: $color-green--hover;
+    display: inline-block;
+  }
+}

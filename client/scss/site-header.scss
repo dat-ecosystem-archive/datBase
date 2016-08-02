@@ -1,7 +1,9 @@
 /* header */
 
+$site-header-height: 4rem;
+
 .site-header {
-  height: 4rem;
+  height: $site-header-height;
   background-color: $color-green--hover;
   color: $color-white;
 }

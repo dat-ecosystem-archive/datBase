@@ -10,12 +10,25 @@ const homePage = (state, prev) => {
     <body>
       ${header(state, prev)}
       <div class="tmp-home-view">
-        <h1>Home Page Test: </h1>
-        <ul>
-          <li>What is dat.land?</li>
-          <li>How can I use it?</li>
-          <li>What is dat's purpose in life?</li>
-        </ul>
+        <div class="landing-header">
+          Dat is a dataset sharing system.
+          <br>
+          Give it a try:
+        </div>
+        <div class="landing-main container">
+
+          <div class="landing-create-new-dat">
+            <h3>Create New Dat</h3>
+            <p>
+              Drag and drop files to upload and start sharing your data
+            </p>
+          </div>
+
+          <div class="landing-import-dat">
+            <h3>Or Open An Existing Dat</h3>
+            <input />
+          </div>
+        </div>
       </div>
     </body></html>`
 }
