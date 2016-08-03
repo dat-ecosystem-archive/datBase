@@ -4,7 +4,6 @@ const fs = require('fs')
 // TODO: determine client-side or server-side choo logger
 const app = require('../client/js/app')
 const router = require('server-router')()
-const yo = require('yo-yo')
 
 router.on('/', {
   get: function (req, res, params) {
