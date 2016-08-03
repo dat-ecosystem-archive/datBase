@@ -13,7 +13,7 @@ const header = (state, prev, send) => {
         <div class="dat-button dat-button--new-dat">
           ${button({
             text: 'Create new Dat',
-            onclick: () => send('newArchive')
+            click: () => send('archive:new')
           })}
         </div>
         ${importButton({

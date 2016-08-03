@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   effects: {
-    newArchive: function (data, state, send, done) {
+    new: function (data, state, send, done) {
       console.log('whack new archive')
       window.alert('this should create a new archive')
       setTimeout(() => done(), 1000)
