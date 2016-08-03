@@ -42,6 +42,22 @@ npm run minify
 npm run version
 ```
 
+### end-to-end tests
+
+Chrome:
+
+```
+npm run build
+npm run start &
+DATLAND_CHROME_PATH=/path/to/chrome_bin TEST_SERVER=http://localhost:8080/migrate npm run test:e2e
+```
+
+Firefox: (currently not working)
+
+```
+TEST_SERVER=http://localhost:8080/migrate npm run test:e2e:firefox
+```
+
 ### using shipit for deployment and install
 [shipit](https://github.com/shipitjs/shipit) and [shipit-deploy](https://github.com/shipitjs/shipit-deploy) depends on rsync version 3+, git version 1.7.8+, and OpenSSH version 5+. To upgrade rsync on a macosx machine, [follow instructions here](https://static.afp548.com/mactips/rsync.html) (see "compile rsync 3.0.7" section).
 
