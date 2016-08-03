@@ -56,13 +56,23 @@ function findChrome (paths) {
   throw new Error('can not find chrome')
 }
 
+function defaultChromePaths () {
+  if (process.platform === 'darwin') {
+    return ['/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
+            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome']
+  }
+  // leave for defaults
+  return null
+}
+
 module.exports = (function (settings) {
   // XXX: if we are testing with firefox, we should skip the chrome path detection
   var paths = process.env.DATLAND_CHROME_PATH
-    ? [ process.env.DATLAND_CHROME_PATH ]
-    : ['/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
-       '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome']
-  settings.test_settings.chrome.desiredCapabilities.chromeOptions = { binary: findChrome(paths) }
+    ? [ process.env.DATLAND_CHROME_PATH ] : defaultChromePaths()
+
+  if (paths) {
+    settings.test_settings.chrome.desiredCapabilities.chromeOptions = { binary: findChrome(paths) }
+  }
   if (!(process.env.__NIGHTWATCH_ENV_KEY || '').match(/_1$/)) {
     settings.output_folder = false
     settings.output = false
