@@ -3,7 +3,12 @@ module.exports = {
   namespace: 'archive',
   state: {
     key: null,
-    file: null
+    file: null,
+    numPeers: 0,
+    signalhubs: [
+      'signalhub.mafintosh.com',
+      'signalhub.dat.land'
+    ]
   },
   reducers: {
     update: (data, state) => {

@@ -1,13 +1,9 @@
 const html = require('choo/html')
-const header = require('./../../components/header')
+const header = require('../../components/header')
 
 const archivePage = (state, prev, send) => {
-  return html`<html>
-    <head>
-      <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
-      <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
-    </head>
-    <body>
+  return html`
+    <div>
       ${header(state, prev, send)}
       <div class="archive-metadata">
         <h1>ArchivePage</h1>
@@ -17,7 +13,7 @@ const archivePage = (state, prev, send) => {
         <li>peers: ${state.archive.numPeers}</li>
         <li>signalhubs:
           <ul>
-          ${state.signalhubs.map(function (fqdn) {
+          ${state.archive.signalhubs.map(function (fqdn) {
             return signalhubs(fqdn)
           })}
           </ul>
@@ -25,8 +21,7 @@ const archivePage = (state, prev, send) => {
         </ul>
       </div>
       <main id="archive-list"></main>
-      <script type="text/javascript" src="public/js/app.js"></script>
-    </body></html>`
+    </div>`
 }
 
 const signalhubs = (fqdn) => {
