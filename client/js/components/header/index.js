@@ -1,7 +1,11 @@
 const html = require('choo/html')
-var button = require('dat-button')
-var importButton = () => 'import button'
-var help = () => 'help'
+const button = require('dat-button')
+const importButton = require('dat-header/import')
+
+const help = () => {
+  const intro = () => window.alert('not yet')
+  return html`<div class="dat-button">${button({text: '?', click: intro})}</div>`
+}
 
 const header = (state, prev, send) => {
   return html`<header class="site-header">
@@ -17,7 +21,7 @@ const header = (state, prev, send) => {
           })}
         </div>
         ${importButton({
-          download: 'zzz'
+          download: (link) => send('archive:load', link)
         })}
         ${help()}
       </div>

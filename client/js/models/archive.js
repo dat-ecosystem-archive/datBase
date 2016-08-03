@@ -20,8 +20,11 @@ module.exports = {
   },
   effects: {
     new: function (data, state, send, done) {
-      console.log('whack new archive')
       window.alert('this should create a new archive')
+      setTimeout(() => done(), 1000)
+    },
+    load: function (data, state, send, done) {
+      window.alert('this should load the archive', data)
       setTimeout(() => done(), 1000)
     }
   }
