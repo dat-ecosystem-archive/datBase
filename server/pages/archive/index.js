@@ -1,14 +1,14 @@
 const html = require('choo/html')
 const header = require('./../../components/header')
 
-const archivePage = (state, prev) => {
+const archivePage = (state, prev, send) => {
   return html`<html>
     <head>
       <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
       <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
     </head>
     <body>
-      ${header(state, prev)}
+      ${header(state, prev, send)}
       <div class="archive-metadata">
         <h1>ArchivePage</h1>
         <h2>Server-rendered properties:</h2>

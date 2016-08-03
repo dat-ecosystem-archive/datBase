@@ -3,7 +3,7 @@ var button = require('dat-button')
 var importButton = () => 'import button'
 var help = () => 'help'
 
-const header = (state, prev) => {
+const header = (state, prev, send) => {
   return html`<header class="site-header">
     <div class="container">
       <a href="http://dat-data.com" class="dat-logo">
@@ -12,7 +12,8 @@ const header = (state, prev) => {
       <div class="site-header__actions">
         <div class="dat-button dat-button--new-dat">
           ${button({
-            text: 'Create new Dat'
+            text: 'Create new Dat',
+            onclick: () => send('newArchive')
           })}
         </div>
         ${importButton({
