@@ -3,6 +3,7 @@
 const fs = require('fs')
 // TODO: determine client-side or server-side choo logger
 const app = require('../client/js/app')
+const page = require('./page')
 const router = require('server-router')()
 
 router.on('/', {
@@ -34,14 +35,7 @@ router.on('/:archiveKey', {
     const contents = app.toString('/:archiveKey', state)
     // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html')
-    res.end(`<html>
-      <head>
-        <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
-        <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
-      </head>
-      <body id="app-root">${contents}</body>
-      <script type="text/javascript" src="public/js/app.js"></script>
-    </html>`)
+    res.end(page(contents))
   }
 })
 
