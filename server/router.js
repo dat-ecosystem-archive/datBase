@@ -1,14 +1,14 @@
 'use strict'
 
 const fs = require('fs')
-const serverRouter = require('server-router')
-const app = require('./app')
-const router = serverRouter()
+// TODO: determine client-side or server-side choo logger
+const app = require('../client/js/app')
+const page = require('./page')
+const router = require('server-router')()
 
 router.on('/', {
   get: function (req, res, params) {
-    const contents = app.toString('/', app.state)
-    // TODO: send client app state down the pipe to client
+    const contents = app.toString('/', undefined) // no default state (yet)
     res.setHeader('Content-Type', 'text/html')
     res.end(contents)
   }
@@ -28,12 +28,13 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
-    let state = copyAppState(require('./models/archive-page'))
+    // XXX: get global default state with route params applied
+    let state = copyAppState({archive: require('../client/js/models/archive').state})
     state.archive.key = params.archiveKey
     const contents = app.toString('/:archiveKey', state)
     // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html')
-    res.end(contents)
+    res.end(page(contents))
   }
 })
 

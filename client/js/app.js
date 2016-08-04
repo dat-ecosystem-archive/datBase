@@ -1,14 +1,17 @@
 const choo = require('choo')
 const app = choo()
-// TODO: client-side choo logger
 
 // define models:
 app.model(require('./models/archive'))
 
 // define routes:
 app.router((route) => [
-  route('/:archiveId', require('./components/archive'))
+  route('/', require('./pages/landing')),
+  route('/:archiveKey', require('./pages/archive'))
 ])
 
-// start app:
-app.start('#archive-list')
+if (module.parent) {
+  module.exports = app
+} else {
+  app.start('#app-root')
+}
