@@ -6,7 +6,7 @@ app.model(require('./models/archive'))
 
 // define routes:
 app.router((route) => [
-  route('/', require('./pages/home')),
+  route('/', require('./pages/landing')),
   route('/:archiveKey', require('./pages/archive'))
 ])
 

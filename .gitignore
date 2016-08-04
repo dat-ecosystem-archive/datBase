@@ -8,3 +8,5 @@ public/js/app.js
 npm-debug.log
 REVISION
 version.json
+reports/
+selenium-debug.log
