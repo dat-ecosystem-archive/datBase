@@ -3,7 +3,7 @@ const app = choo()
 // TODO: server-side choo logger
 
 app.router((route) => [
-  route('/', require('./pages/home')),
+  route('/', require('./pages/landing')),
   route('/:archiveId', require('./pages/archive'))
 ])
 
