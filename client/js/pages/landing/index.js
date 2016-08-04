@@ -1,7 +1,7 @@
 const html = require('choo/html')
 const header = require('./../../components/header')
 
-const homePage = (state, prev) => {
+const landingPage = (state, prev) => {
   return html`<html>
     <head>
       <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
@@ -33,4 +33,4 @@ const homePage = (state, prev) => {
     </body></html>`
 }
 
-module.exports = homePage
+module.exports = landingPage
