@@ -8,8 +8,7 @@ const router = require('server-router')()
 
 router.on('/', {
   get: function (req, res, params) {
-    const contents = app.toString('/', app.state)
-    // TODO: send client app state down the pipe to client
+    const contents = app.toString('/', undefined) // no default state (yet)
     res.setHeader('Content-Type', 'text/html')
     res.end(contents)
   }
