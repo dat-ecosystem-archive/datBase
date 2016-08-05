@@ -12,6 +12,8 @@ router.on('/', {
     const contents = app.toString('/', undefined) // no default state (yet)
     // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html')
+    // TODO: de-dupe this route's templating so that it uses
+    // `res.end(page(contents))` like the /:archiveId route (below)
     res.end(contents)
   }
 })
