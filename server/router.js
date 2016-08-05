@@ -22,10 +22,7 @@ router.on('/', {
   get: function (req, res, params) {
     // TODO: get global default state with route params applied
     let state = copyAppState({archive: require('../client/js/models/archive').state})
-    const contents = app.toString('/', state)
-    // TODO: send client app state down the pipe to client
-    res.setHeader('Content-Type', 'text/html')
-    res.end(page(contents))
+    sendSPA('/', res, state)
   }
 })
 
@@ -35,10 +32,7 @@ router.on('/:archiveKey', {
     // TODO: get global default state with route params applied
     let state = copyAppState({archive: require('../client/js/models/archive').state})
     state.archive.key = params.archiveKey
-    const contents = app.toString('/:archiveKey', state)
-    // TODO: send client app state down the pipe to client
-    res.setHeader('Content-Type', 'text/html')
-    res.end(page(contents))
+    sendSPA('/:archiveKey', res, state)
   }
 })
 
@@ -84,6 +78,13 @@ router.on('/public/img/:asset', {
     })
   }
 })
+
+function sendSPA (route, res, state) {
+  // TODO: send client app state down the pipe to client
+  const contents = app.toString('/', state)
+  res.setHeader('Content-Type', 'text/html')
+  res.end(page(contents))
+}
 
 function copyAppState (state) {
   return JSON.parse(JSON.stringify(state))
