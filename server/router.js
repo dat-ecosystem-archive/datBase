@@ -8,7 +8,9 @@ const router = require('server-router')()
 
 router.on('/', {
   get: function (req, res, params) {
+    // TODO: get global default state
     const contents = app.toString('/', undefined) // no default state (yet)
+    // TODO: send client app state down the pipe to client
     res.setHeader('Content-Type', 'text/html')
     res.end(contents)
   }
@@ -28,7 +30,7 @@ router.on('/migrate', {
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
-    // XXX: get global default state with route params applied
+    // TODO: get global default state with route params applied
     let state = copyAppState({archive: require('../client/js/models/archive').state})
     state.archive.key = params.archiveKey
     const contents = app.toString('/:archiveKey', state)
