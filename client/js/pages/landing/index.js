@@ -1,14 +1,10 @@
 const html = require('choo/html')
 const header = require('./../../components/header')
 
-const landingPage = (state, prev) => {
-  return html`<html>
-    <head>
-      <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
-      <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
-    </head>
-    <body>
-      ${header(state, prev)}
+const landingPage = (state, prev, send) => {
+  return html`
+    <div>
+      ${header(state, prev, send)}
       <div class="landing-header">
         Dat is a dataset sharing system.
         <br>
@@ -28,7 +24,7 @@ const landingPage = (state, prev) => {
           <input />
         </div>
       </div>
-    </body></html>`
+    </div>`
 }
 
 module.exports = landingPage

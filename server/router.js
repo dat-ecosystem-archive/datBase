@@ -6,18 +6,6 @@ const app = require('../client/js/app')
 const page = require('./page')
 const router = require('server-router')()
 
-router.on('/', {
-  get: function (req, res, params) {
-    // TODO: get global default state
-    const contents = app.toString('/', undefined) // no default state (yet)
-    // TODO: send client app state down the pipe to client
-    res.setHeader('Content-Type', 'text/html')
-    // TODO: de-dupe this route's templating so that it uses
-    // `res.end(page(contents))` like the /:archiveId route (below)
-    res.end(contents)
-  }
-})
-
 // serve old pre-choo client-side-only app for migration work:
 router.on('/migrate', {
   get: function (req, res, params) {
@@ -26,6 +14,18 @@ router.on('/migrate', {
       res.setHeader('Content-Type', 'text/html')
       res.end(contents)
     })
+  }
+})
+
+// landing page
+router.on('/', {
+  get: function (req, res, params) {
+    // TODO: get global default state with route params applied
+    let state = copyAppState({archive: require('../client/js/models/archive').state})
+    const contents = app.toString('/', state)
+    // TODO: send client app state down the pipe to client
+    res.setHeader('Content-Type', 'text/html')
+    res.end(page(contents))
   }
 })
 
