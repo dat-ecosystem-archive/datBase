@@ -2,7 +2,6 @@
 
 const fs = require('fs')
 const assert = require('assert')
-// TODO: determine client-side or server-side choo logger
 const app = require('../client/js/app')
 const page = require('./page')
 const router = require('server-router')()
@@ -21,7 +20,6 @@ router.on('/migrate', {
 // landing page
 router.on('/', {
   get: function (req, res, params) {
-    // TODO: get global default state with route params applied
     let state = getDefaultAppState()
     sendSPA('/', res, state)
   }
@@ -30,7 +28,6 @@ router.on('/', {
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
-    // TODO: get global default state with route params applied
     let state = getDefaultAppState()
     state.archive.key = params.archiveKey
     sendSPA('/:archiveKey', res, state)
