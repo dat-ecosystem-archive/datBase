@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const assert = require('assert')
 // TODO: determine client-side or server-side choo logger
 const app = require('../client/js/app')
 const page = require('./page')
@@ -21,7 +22,7 @@ router.on('/migrate', {
 router.on('/', {
   get: function (req, res, params) {
     // TODO: get global default state with route params applied
-    let state = copyAppState({archive: require('../client/js/models/archive').state})
+    let state = getDefaultAppState()
     sendSPA('/', res, state)
   }
 })
@@ -30,7 +31,7 @@ router.on('/', {
 router.on('/:archiveKey', {
   get: function (req, res, params) {
     // TODO: get global default state with route params applied
-    let state = copyAppState({archive: require('../client/js/models/archive').state})
+    let state = getDefaultAppState()
     state.archive.key = params.archiveKey
     sendSPA('/:archiveKey', res, state)
   }
@@ -86,8 +87,15 @@ function sendSPA (route, res, state) {
   res.end(page(contents))
 }
 
-function copyAppState (state) {
-  return JSON.parse(JSON.stringify(state))
+function getDefaultAppState () {
+  let state = {}
+  app._store._models.forEach((model) => {
+    assert.equal(typeof model, 'object', 'getDefaultAppState: model must be an object')
+    assert.equal(typeof model.namespace, 'string', 'getDefaultAppState: model must have a namespace property that is a string')
+    assert.equal(typeof model.state, 'object', 'getDefaultAppState: model must have a state property that is an object')
+    state[model.namespace] = model.state
+  })
+  return state
 }
 
 module.exports = router

@@ -3,6 +3,7 @@ const app = choo()
 
 // define models:
 app.model(require('./models/archive'))
+app.model(require('./models/user'))
 
 // define routes:
 app.router((route) => [
