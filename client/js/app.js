@@ -14,5 +14,6 @@ app.router((route) => [
 if (module.parent) {
   module.exports = app
 } else {
+  app.model(require('./models/app-rehydrator'))
   app.start('#app-root')
 }
