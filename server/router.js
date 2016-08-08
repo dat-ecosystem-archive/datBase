@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const assert = require('assert')
+const serializeJS = require('serialize-javascript')
 const app = require('../client/js/app')
 const page = require('./page')
 const router = require('server-router')()
@@ -77,13 +78,7 @@ router.on('/public/img/:asset', {
   }
 })
 
-function sendSPA (route, res, state) {
-  // TODO: send client app state down the pipe to client
-  const contents = app.toString('/', state)
-  res.setHeader('Content-Type', 'text/html')
-  res.end(page(contents))
-}
-
+/* helpers */
 function getDefaultAppState () {
   let state = {}
   app._store._models.forEach((model) => {
@@ -93,6 +88,13 @@ function getDefaultAppState () {
     state[model.namespace] = model.state
   })
   return state
+}
+
+function sendSPA (route, res, state) {
+  const frozenState = Object.freeze(state)
+  const contents = app.toString('/', frozenState)
+  res.setHeader('Content-Type', 'text/html')
+  res.end(page(contents, serializeJS(frozenState)))
 }
 
 module.exports = router

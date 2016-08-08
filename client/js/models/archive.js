@@ -1,4 +1,3 @@
-// TODO: rehydrate this model with archive data from server
 module.exports = {
   namespace: 'archive',
   state: {
@@ -13,8 +12,10 @@ module.exports = {
   reducers: {
     update: (data, state) => {
       return {
-        key: null,
-        file: null
+        key: data.key || state.key,
+        file: data.file || state.file,
+        numPeers: data.numPeers || state.numPeers,
+        signalhubs: data.signalhubs || state.signalhubs
       }
     }
   },
