@@ -24,7 +24,11 @@ var getIntro = function () {
 module.exports = {
   namespace: 'help',
   state: {},
-  reducers: {},
+  reducers: {
+    update: function (data, state) {
+      return data
+    }
+  },
   effects: {
     show: function (data, state, send, done) {
       getIntro().start()
