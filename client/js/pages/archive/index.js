@@ -1,7 +1,9 @@
 const html = require('choo/html')
+const yofs = require('yo-fs')
 const header = require('../../components/header')
 
 const archivePage = (state, prev, send) => {
+  var tree = yofs('/', state.archive.entries)
   return html`
     <div>
       ${header(state, prev, send)}
@@ -20,7 +22,9 @@ const archivePage = (state, prev, send) => {
         </li>
         </ul>
       </div>
-      <main id="archive-list"></main>
+      <main id="archive-list">
+        ${tree.widget}
+      </main>
     </div>`
 }
 

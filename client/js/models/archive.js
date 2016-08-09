@@ -4,6 +4,7 @@ module.exports = {
     key: null,
     file: null,
     numPeers: 0,
+    entries: [],
     signalhubs: [
       'signalhub.mafintosh.com',
       'signalhub.dat.land'
@@ -13,6 +14,7 @@ module.exports = {
     update: (data, state) => {
       return {
         key: data.key || state.key,
+        entries: data.entries || state.archive.entries,
         file: data.file || state.file,
         numPeers: data.numPeers || state.numPeers,
         signalhubs: data.signalhubs || state.signalhubs
