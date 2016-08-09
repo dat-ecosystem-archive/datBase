@@ -19,8 +19,8 @@ function listItem (entry) {
   }
 
 module.exports = function (state, prev, send) {
-    // static rendering of hyperdrive list from server side state
   if (module.parent) {
+    // static rendering of hyperdrive list from server side state
     return html`
       <div id="yo-fs">
         <div id="fs">
@@ -33,6 +33,8 @@ module.exports = function (state, prev, send) {
       </div>
     `
   }
+
+  // dynamic hyperdrive view using discovery-swarm
   var drive = hyperdrive(memdb())
   var archive = drive.createArchive(state.archive.key)
   var sw = swarm(archive)
