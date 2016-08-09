@@ -14,7 +14,7 @@ module.exports = {
     update: (data, state) => {
       return {
         key: data.key || state.key,
-        entries: data.entries || state.archive.entries,
+        entries: data.entries || state.entries,
         file: data.file || state.file,
         numPeers: data.numPeers || state.numPeers,
         signalhubs: data.signalhubs || state.signalhubs
@@ -27,8 +27,7 @@ module.exports = {
       setTimeout(() => done(), 1000)
     },
     load: function (data, state, send, done) {
-      window.alert('this should load the archive', data)
-      setTimeout(() => done(), 1000)
+      document.location.pathname = '/' + state.archive.key
     }
   }
 }

@@ -1,9 +1,8 @@
 const html = require('choo/html')
-const yofs = require('yo-fs')
+const hyperdrive = require('../../components/hyperdrive')
 const header = require('../../components/header')
 
 const archivePage = (state, prev, send) => {
-  var tree = yofs('/', state.archive.entries)
   return html`
     <div>
       ${header(state, prev, send)}
@@ -23,7 +22,7 @@ const archivePage = (state, prev, send) => {
         </ul>
       </div>
       <main id="archive-list">
-        ${tree.widget}
+        ${hyperdrive(state, prev, send)}
       </main>
     </div>`
 }
