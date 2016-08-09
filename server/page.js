@@ -4,7 +4,7 @@ function page (contents, dehydratedAppState) {
         <link rel="icon" type="image/png" href="public/img/dat-data-blank.png" />
         <link rel="stylesheet" type="text/css" href="public/css/main.css"/>
       </head>
-      <body id="app-root">${contents}</body>
+      <body><div id="app-root">${contents}</div></body>
       <script>
         window.dl = window.dl || {};
         window.dl.init__dehydratedAppState = ${dehydratedAppState};
