@@ -1,6 +1,6 @@
 const html = require('choo/html')
-const button = require('dat-button')
-const importButton = require('dat-header/import')
+const button = require('./../../elements/button')
+const importButton = require('./../../elements/import-button')
 
 const help = (state, prev, send) => {
   const intro = () => send('help:show')
@@ -21,7 +21,7 @@ const header = (state, prev, send) => {
           })}
         </div>
         ${importButton({
-          download: (link) => send('archive:load', link)
+          handler: (link) => window.alert('TODO: go to dat link: ' + link)
         })}
         ${help(state, prev, send)}
       </div>
