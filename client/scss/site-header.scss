@@ -45,4 +45,7 @@ $site-header-height: 4rem;
 
 .dat-button--new-dat {
   margin-right: 1rem;
+  button {
+    text-transform: uppercase;
+  }
 }
