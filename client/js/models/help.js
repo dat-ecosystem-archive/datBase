@@ -1,8 +1,8 @@
-var intro = require('intro.js')
+var introJs = require('intro.js')
 
 var getIntro = function () {
-  const _intro = intro.introJs()
-  _intro.setOptions({
+  const intro = introJs.introJs()
+  intro.setOptions({
     element: '#intro',
     steps: [
       {
@@ -18,7 +18,7 @@ var getIntro = function () {
         position: 'bottom'
       }
     ]})
-  return _intro
+  return intro
 }
 
 module.exports = {
