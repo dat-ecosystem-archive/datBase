@@ -76,8 +76,10 @@
   "dependencies": {
     "choo": "juliangruber/choo#fixes",
     "http": "0.0.0",
+    "hyperdrive-haus": "^1.0.0",
     "serialize-javascript": "^1.3.0",
     "server-router": "^2.1.0",
+    "yo-fs": "^2.0.5",
     "yo-yo": "juliangruber/yo-yo#fixes"
   }
 }
