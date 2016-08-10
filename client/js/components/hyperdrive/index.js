@@ -1,5 +1,5 @@
 const html = require('choo/html')
-var hyperdriveUI;
+let hyperdriveUI;
 if (!module.parent) hyperdriveUI = require('hyperdrive-ui')
 const path = require('path')
 const pretty = require('pretty-bytes')
@@ -8,6 +8,7 @@ const getArchive = require('./archive.js')
 module.exports = function (state, prev, send) {
   if (module.parent) {
     // static rendering of hyperdrive list from server side state
+    // TODO: move to server-side
     return html`
       <div id="yo-fs">
         <div id="fs">
@@ -22,7 +23,7 @@ module.exports = function (state, prev, send) {
   }
 
   // dynamic hyperdrive view using discovery-swarm
-  var archive = getArchive(state.archive.key)
+  let archive = getArchive(state.archive.key)
   return hyperdriveUI(archive, {entries: state.archive.entries})
 }
 
