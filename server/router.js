@@ -31,11 +31,11 @@ router.on('/', {
 router.on('/:archiveKey', {
   get: function (req, res, params) {
     let state = getDefaultAppState()
-    state.archive.key = params.archiveKey
-    var archive = haus(state.archive.key)
+    let archive = haus(params.archiveKey)
     archive.list(function (err, data) {
-      if (err) throw err
+      if (err) state.archive.error = err
       state.archive.entries = data
+      state.archive.key = params.archiveKey
       sendSPA('/:archiveKey', res, state)
     })
   }

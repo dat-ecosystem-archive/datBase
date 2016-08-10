@@ -3,11 +3,13 @@ const hyperdrive = require('../../components/hyperdrive')
 const header = require('../../components/header')
 
 const archivePage = (state, prev, send) => {
+  // TODO: style the error handling
   return html`
     <div>
       ${header(state, prev, send)}
       <div class="archive-metadata">
         <h1>ArchivePage</h1>
+        <h2>Error: ${state.archive.error.message}</h2>
         <h2>Server-rendered properties:</h2>
         <ul>
         <li>archive key: ${state.archive.key}</li>
