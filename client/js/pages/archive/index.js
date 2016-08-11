@@ -1,7 +1,7 @@
 const html = require('choo/html')
 const hyperdrive = require('../../components/hyperdrive')
 const header = require('../../components/header')
-const error = require('../../components/error')
+const error = require('../../elements/error')
 
 const archivePage = (state, prev, send) => {
   // TODO: style the error handling
