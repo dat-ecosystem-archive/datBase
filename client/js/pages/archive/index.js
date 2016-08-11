@@ -1,5 +1,6 @@
 const html = require('choo/html')
 const hyperdrive = require('../../components/hyperdrive')
+const permissions = require('../../components/permissions')
 const header = require('../../components/header')
 const error = require('../../elements/error')
 
@@ -15,6 +16,7 @@ const archivePage = (state, prev, send) => {
         <ul>
         <li>archive key: ${state.archive.key}</li>
         <li>peers: ${state.archive.numPeers}</li>
+        <li>${permissions(state, prev, send)}</li>
         <li>signalhubs:
           <ul>
           ${state.archive.signalhubs.map(function (fqdn) {
