@@ -6,6 +6,7 @@ const serializeJS = require('serialize-javascript')
 const app = require('../client/js/app')
 const page = require('./page')
 const router = require('server-router')()
+const haus = require('hyperdrive-haus')
 
 // serve old pre-choo client-side-only app for migration work:
 router.on('/migrate', {
@@ -30,8 +31,13 @@ router.on('/', {
 router.on('/:archiveKey', {
   get: function (req, res, params) {
     let state = getDefaultAppState()
-    state.archive.key = params.archiveKey
-    sendSPA('/:archiveKey', res, state)
+    let archive = haus(params.archiveKey)
+    archive.list(function (err, data) {
+      if (err) state.archive.error = err
+      state.archive.entries = data
+      state.archive.key = params.archiveKey
+      sendSPA('/:archiveKey', res, state)
+    })
   }
 })
 
