@@ -1,8 +1,7 @@
 const html = require('choo/html')
 const path = require('path')
 const pretty = require('pretty-bytes')
-const getArchive = require('./archive.js')
-var hyperdriveRenderer
+let hyperdriveRenderer
 
 module.exports = function (state, prev, send) {
   if (module.parent) {
@@ -13,6 +12,8 @@ module.exports = function (state, prev, send) {
   }
   // XXX: dynamic hyperdrive view using discovery-swarm
   hyperdriveRenderer = require('hyperdrive-ui')
-  let archive = getArchive(state.archive.key)
-  return hyperdriveRenderer(archive, {entries: state.archive.entries})
+
+  send('archive:join', function (err, archive) {
+    return hyperdriveRenderer(archive, {entries: state.archive.entries})
+  })
 }
