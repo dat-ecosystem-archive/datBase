@@ -12,7 +12,7 @@
   },
   "main": "server/index.js",
   "browser": {
-    "server/components/hyperdrive/index.js" : false
+    "server/**/*" : false
   },
   "scripts": {
     "dev": "npm run watch",
