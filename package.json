@@ -24,7 +24,7 @@
     "watch": "npm run watch-js & npm run watch-css & npm run watch-server",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "watch-js": "watchify client/js/app.js -o public/js/app.js",
-    "watch-server": "nodemon --watch server server",
+    "watch-server": "nodemon --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/main.scss public/css/main.css",
     "build-js": "browserify client/js/app.js > public/js/app.js",
