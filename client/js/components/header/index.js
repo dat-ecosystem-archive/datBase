@@ -21,7 +21,7 @@ const header = (state, prev, send) => {
           })}
         </div>
         ${importButton({
-          handler: (link) => window.alert('TODO: go to dat link: ' + link)
+          handler: (link) => send('archive:import') 
         })}
         ${help(state, prev, send)}
       </div>
