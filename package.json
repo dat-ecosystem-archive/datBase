@@ -11,6 +11,9 @@
     "url": "https://github.com/datproject/dat.land/issues"
   },
   "main": "server/index.js",
+  "browser": {
+    "server/components/hyperdrive/index.js" : false
+  },
   "scripts": {
     "dev": "npm run watch",
     "start": "node ./server",

@@ -13,7 +13,12 @@ app.router((route) => [
 ])
 
 if (module.parent) {
-  module.exports = app
+  module.exports = {
+    app: app,
+    serverComponents: {
+      hyperdrive: require('./components/hyperdrive')
+    }
+  }
 } else {
   app.model(require('./models/app-rehydrator'))
   app.start('#app-root')
