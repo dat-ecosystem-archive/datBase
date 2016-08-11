@@ -11,7 +11,7 @@ function Haus (opts) {
   if (!(this instanceof Haus)) return new Haus(opts)
   if (!opts) opts = {}
   var self = this
-  this.file = undefined
+  this.file = opts.persist ? undefined : ram
   this.db = level(opts.db || 'dat.land')
   this.drive = hyperdrive(this.db)
   this.cache = lru(opts.cacheSize || 100)
