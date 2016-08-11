@@ -15,8 +15,16 @@ app.router((route) => [
 if (module.parent) {
   module.exports = {
     app: app,
-    serverComponents: {
-      hyperdrive: require('./components/hyperdrive')
+    getServerComponent: (component) => {
+      let components = {
+        // register server-side components here:
+        hyperdrive: require('./components/hyperdrive')
+      }
+      if (components[component]) {
+        return components[component]
+      } else {
+        console.log(`\nWARNING: app.js could not find server component ${component} \n`)
+      }
     }
   }
 } else {
