@@ -8,7 +8,7 @@ const archivePage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      ${error(state.archive.error, send)}
+      ${error(state.archive.error)}
       <div class="archive-metadata">
         <h1>ArchivePage</h1>
         <h2>Server-rendered properties:</h2>
