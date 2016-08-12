@@ -3,6 +3,7 @@ const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 
 let noop = function () {}
+let drive = hyperdrive(memdb())
 
 module.exports = {
   namespace: 'archive',
@@ -35,10 +36,10 @@ module.exports = {
   },
   subscriptions: [
     (send, done) => {
-      var drive = hyperdrive(memdb())
-      var key = window.location.pathname.replace('/','')
-      var archive = drive.createArchive(key)
-      var sw = swarm(archive)
+      let key = window.location.pathname.replace('/','')
+      if (!key) return
+      let archive = drive.createArchive(key)
+      let sw = swarm(archive)
       sw.on('connection', function (conn) {
         send('archive:updatePeers', noop)
         conn.on('close', function () {
