@@ -19,7 +19,6 @@ module.exports = {
   },
   reducers: {
     updatePeers: (data, state) => {
-      console.log(state.swarm)
       return {numPeers: state.swarm.connections}
     },
     update: (data, state) => {
