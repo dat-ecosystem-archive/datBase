@@ -11,6 +11,7 @@ module.exports = {
   state: {
     key: null,
     file: null,
+    error: null,
     numPeers: 0,
     entries: [],
     instance: null,
@@ -28,6 +29,7 @@ module.exports = {
         key: data.key || state.key,
         entries: data.entries || state.entries,
         file: data.file || state.file,
+        error: data.error || state.error,
         instance: data.instance || state.instance,
         swarm: data.swarm || state.swarm,
         numPeers: data.numPeers || state.numPeers,

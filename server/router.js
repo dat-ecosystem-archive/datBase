@@ -3,6 +3,7 @@
 const fs = require('fs')
 const assert = require('assert')
 const serializeJS = require('serialize-javascript')
+const encoding = require('dat-encoding')
 const app = require('../client/js/app').app
 const page = require('./page')
 const router = require('server-router')()
@@ -33,9 +34,16 @@ router.on('/', {
 router.on('/:archiveKey', {
   get: function (req, res, params) {
     let state = getDefaultAppState()
-    let archive = haus.getArchive(params.archiveKey)
+    let key
+    try {
+      key = encoding.decode(params.archiveKey)
+    } catch (e) {
+      state.archive.error = {message: e.message}
+      return sendSPA('/:archiveKey', res, state)
+    }
+    let archive = haus.getArchive(key)
     archive.list(function (err, data) {
-      if (err) state.archive.error = err
+      if (err) state.archive.error = {message: err.message}
       state.archive.entries = data
       state.archive.key = params.archiveKey
       sendSPA('/:archiveKey', res, state)

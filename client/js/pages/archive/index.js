@@ -9,10 +9,10 @@ const archivePage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      ${error(state.archive.error)}
       <div class="archive-metadata">
         <h1>ArchivePage</h1>
         <h2>Server-rendered properties:</h2>
+        ${error(state.archive.error)}
         <ul>
         <li>archive key: ${state.archive.key}</li>
         <li>peers: ${state.archive.numPeers}</li>
