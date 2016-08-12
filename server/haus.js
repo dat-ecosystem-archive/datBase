@@ -1,5 +1,4 @@
 var level = require('level')
-var ram = require('random-access-memory')
 var swarm = require('discovery-swarm')
 var defaults = require('datland-swarm-defaults')
 var hyperdrive = require('hyperdrive')

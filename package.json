@@ -12,7 +12,7 @@
   },
   "main": "server/index.js",
   "browser": {
-    "server/**/*" : false
+    "server/**/*": false
   },
   "scripts": {
     "dev": "npm run watch",
@@ -78,6 +78,7 @@
   },
   "dependencies": {
     "choo": "juliangruber/choo#fixes",
+    "dat-encoding": "^2.0.2",
     "datland-swarm-defaults": "^1.0.2",
     "discovery-swarm": "^4.0.2",
     "http": "0.0.0",

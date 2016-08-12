@@ -1,6 +1,7 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
+const encoding = require('dat-encoding')
 
 let noop = function () {}
 let drive = hyperdrive(memdb())
@@ -36,7 +37,12 @@ module.exports = {
   },
   subscriptions: [
     (send, done) => {
-      let key = window.location.pathname.replace('/','')
+      let key
+      try {
+        key = encoding.decode(window.location.pathname.replace('/', ''))
+      } catch (e) {
+        // TODO: throw error to user
+      }
       if (!key) return
       let archive = drive.createArchive(key)
       let sw = swarm(archive)

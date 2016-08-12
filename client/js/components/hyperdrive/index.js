@@ -1,5 +1,3 @@
-const html = require('choo/html')
-const path = require('path')
 const from = require('from2')
 const getServerComponent = module.parent ? require('./../../app.js').getServerComponent : {}
 let hyperdriveRenderer = module.parent ? getServerComponent('hyperdrive') : require('hyperdrive-ui')
