@@ -1,18 +1,16 @@
 const html = require('choo/html')
 const path = require('path')
-const pretty = require('pretty-bytes')
+const from = require('from2')
 const getServerComponent = module.parent ? require('./../../app.js').getServerComponent : {}
-const hyperdriveRenderer = module.parent ? getServerComponent('hyperdrive') : require('hyperdrive-ui')
+let hyperdriveRenderer = module.parent ? getServerComponent('hyperdrive') : require('hyperdrive-ui')
 
 module.exports = function (state, prev, send) {
-  if (module.parent) {
-    // XXX: static rendering of hyperdrive list from server side state
-    return hyperdriveRenderer(state.archive)
+  if (!state.archive.instance) {
+    state.archive.instance = {
+      list: function () {
+        return from.obj(state.archive.entries)
+      }
+    }
   }
-  // XXX: dynamic hyperdrive view using discovery-swarm
-  hyperdriveRenderer = require('hyperdrive-ui')
-
-  send('archive:join', function (err, archive) {
-    return hyperdriveRenderer(archive, {entries: state.archive.entries})
-  })
+  return hyperdriveRenderer(state.archive.instance, {entries: state.archive.entries})
 }

@@ -11,22 +11,44 @@ module.exports = {
     file: null,
     numPeers: 0,
     entries: [],
+    instance: null,
     signalhubs: [
       'signalhub.mafintosh.com',
       'signalhub.dat.land'
     ]
   },
   reducers: {
+    updatePeers: (data, state) => {
+      console.log(state.swarm)
+      return {numPeers: state.swarm.connections}
+    },
     update: (data, state) => {
       return {
         key: data.key || state.key,
         entries: data.entries || state.entries,
         file: data.file || state.file,
+        instance: data.instance || state.instance,
+        swarm: data.swarm || state.swarm,
         numPeers: data.numPeers || state.numPeers,
         signalhubs: data.signalhubs || state.signalhubs
       }
     }
   },
+  subscriptions: [
+    (send, done) => {
+      var drive = hyperdrive(memdb())
+      var key = window.location.pathname.replace('/','')
+      var archive = drive.createArchive(key)
+      var sw = swarm(archive)
+      sw.on('connection', function (conn) {
+        send('archive:updatePeers', noop)
+        conn.on('close', function () {
+          send('archive:updatePeers', noop)
+        })
+      })
+      send('archive:update', {instance: archive, swarm: sw}, noop)
+    }
+  ],
   effects: {
     new: function (data, state, send, done) {
       window.alert('this should create a new archive')
@@ -34,24 +56,6 @@ module.exports = {
     },
     import: function (data, state, send, done) {
       document.location.pathname = '/' + state.key
-    },
-    updatePeers: function (data, state, send, done) {
-      state.numPeers = state.swarm.connections
-      send('archive:update', state, function () {
-      })
-    },
-    join: function (data, state, send, done) {
-      var drive = hyperdrive(memdb())
-      var archive = drive.createArchive(state.key)
-      var sw = swarm(archive)
-      state.swarm = sw
-      sw.on('connection', function (conn) {
-        send('archive:updatePeers', noop)
-        conn.on('close', function () {
-          send('archive:updatePeers', noop)
-        })
-      })
-      done(null, archive)
     }
   }
 }
