@@ -1,14 +1,20 @@
 const from = require('from2')
-const getServerComponent = module.parent ? require('./../../app.js').getServerComponent : {}
-let hyperdriveRenderer = module.parent ? getServerComponent('hyperdrive') : require('hyperdrive-ui')
 
-module.exports = function (state, prev, send) {
-  if (!state.archive.instance) {
-    state.archive.instance = {
-      list: function () {
-        return from.obj(state.archive.entries)
+if (module.parent) {
+  let hyperdriveRenderer = require('./../../app.js').getServerComponent('hyperdrive')
+
+  module.exports = function (state, prev, send) {
+    return hyperdriveRenderer({entries: state.archive.entries})
+  }
+} else {
+  module.exports = function (state, prev, send) {
+    if (!state.archive.instance) {
+      state.archive.instance = {
+        list: function () {
+          return from.obj(state.archive.entries)
+        }
       }
     }
+    return require('hyperdrive-ui')(state.archive.instance, {entries: state.archive.entries})
   }
-  return hyperdriveRenderer(state.archive.instance, {entries: state.archive.entries})
 }

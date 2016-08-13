@@ -18,7 +18,7 @@ if (module.parent) {
     getServerComponent: (component) => {
       let components = {
         // register server-side components here:
-        hyperdrive: require('./components/hyperdrive')
+        hyperdrive: require('../../server/components/hyperdrive')
       }
       if (components[component]) {
         return components[component]

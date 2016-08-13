@@ -8,7 +8,7 @@ module.exports = function (state) {
     <div id="yo-fs">
       <div id="fs">
         <ul id="file-widget">
-        ${state.archive.entries.map(function (entry) {
+        ${state.entries.map(function (entry) {
           return listItem(entry)
         })}
         </ul>

@@ -108,7 +108,7 @@ function getDefaultAppState () {
 
 function sendSPA (route, res, state) {
   const frozenState = Object.freeze(state)
-  const contents = app.toString('/', frozenState)
+  const contents = app.toString(route, frozenState)
   res.setHeader('Content-Type', 'text/html')
   res.end(page(contents, serializeJS(frozenState)))
 }
