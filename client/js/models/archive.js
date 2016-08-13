@@ -46,15 +46,6 @@ module.exports = {
         // TODO: throw error to user
       }
       if (!key) return
-      let archive = drive.createArchive(key)
-      let sw = swarm(archive)
-      sw.on('connection', function (conn) {
-        send('archive:updatePeers', noop)
-        conn.on('close', function () {
-          send('archive:updatePeers', noop)
-        })
-      })
-      send('archive:update', {instance: archive, swarm: sw}, noop)
     }
   ],
   effects: {
@@ -65,9 +56,37 @@ module.exports = {
     },
     import: function (data, state, send, done) {
       const location = '/' + data
-      send('archive:update', {key: data, entries: {}}, noop)
       send('location:setLocation', { location }, done)
       window.history.pushState({}, null, location)
+      send('archive:load', data, done)
+    },
+    load: function (key, state, send, done) {
+      send('archive:update', {key, entries: {}}, noop)
+      if (state.instance) {
+        // XXX: cleanup original instance
+      }
+      let archive = drive.createArchive(key)
+      let sw = swarm(archive)
+      send('archive:update', {instance: archive, swarm: sw}, done)
+      sw.on('connection', function (conn) {
+        send('archive:updatePeers', noop)
+        conn.on('close', function () {
+          send('archive:updatePeers', noop)
+        })
+      })
+      archive.on('download', function () {
+        console.log('download')
+      })
+      archive.on('upload', function () {
+        console.log('upload')
+      })
+      archive.open(function () {
+        if (archive.content) {
+          archive.content.get(0, function (data) {
+            // XXX: Hack to fetch a small bit of data so size properly updates
+          })
+        }
+      })
     }
   }
 }
