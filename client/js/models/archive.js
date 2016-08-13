@@ -59,12 +59,13 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
-      window.alert('this should create a new archive')
-      setTimeout(() => done(), 1000)
+      const archive = drive.createArchive(null, {live: true, sparse: true})
+      const link = archive.key.toString('hex')
+      send('archive:import', link, done)
     },
     import: function (data, state, send, done) {
       const location = '/' + data
-      send('archive:update', {key: data}, noop)
+      send('archive:update', {key: data, entries: {}}, noop)
       send('location:setLocation', { location }, done)
       window.history.pushState({}, null, location)
     }
