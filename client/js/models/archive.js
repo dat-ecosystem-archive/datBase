@@ -63,7 +63,10 @@ module.exports = {
       setTimeout(() => done(), 1000)
     },
     import: function (data, state, send, done) {
-      document.location.pathname = '/' + state.key
+      const location = '/' + data
+      send('archive:update', {key: data}, noop)
+      send('location:setLocation', { location }, done)
+      window.history.pushState({}, null, location)
     }
   }
 }
