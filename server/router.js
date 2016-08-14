@@ -49,10 +49,16 @@ router.on('/:archiveKey', {
       return sendSPA('/:archiveKey', res, state)
     }
     let archive = haus.getArchive(key)
+    let cancelled
+    let clear = setTimeout(() => {
+      cancelled = true
+      sendSPA('/:archiveKey', res, state)
+    }, 3000)
+    state.archive.key = params.archiveKey
     archive.list(function (err, data) {
       if (err) state.archive.error = {message: err.message}
-      state.archive.entries = data
-      state.archive.key = params.archiveKey
+      if (cancelled) return
+      clear()
       sendSPA('/:archiveKey', res, state)
     })
   }
