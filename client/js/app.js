@@ -1,5 +1,7 @@
 const choo = require('choo')
 const app = choo()
+// Enable webrtc debugging:
+// try { localStorage.debug = 'webrtc-swarm' } catch (e) {}
 
 // define models:
 app.model(require('./models/archive'))
