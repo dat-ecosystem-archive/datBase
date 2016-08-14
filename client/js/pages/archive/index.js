@@ -26,7 +26,7 @@ const archivePage = (state, prev, send) => {
         </li>
         </ul>
       </div>
-      <main id="archive-list">
+      <main id="archive-list" class="container">
         ${hyperdrive(state, prev, send)}
       </main>
     </div>`

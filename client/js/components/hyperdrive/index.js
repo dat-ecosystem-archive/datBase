@@ -10,11 +10,20 @@ if (module.parent) {
   module.exports = function (state, prev, send) {
     if (!state.archive.instance) {
       state.archive.instance = {
-        list: function () {
-          return from.obj(state.archive.entries)
-        }
+        list: () => from.obj(state.archive.entries)
+      }
+      // No instance but with key, this means we are just rehydrated
+      if (state.archive.key) {
+        send('archive:load', state.archive.key)
       }
     }
-    return require('hyperdrive-ui')(state.archive.instance, {entries: state.archive.entries})
+
+    // Use dumb mode for hyperdrive-ui
+    return require('hyperdrive-ui')(null, {root: state.archive.cwd, entries: state.archive.entries}, (ev, entry) => {
+      if (entry.type === 'directory') {
+        send('archive:update', {root: entry.name})
+      }
+      return false
+    })
   }
 }

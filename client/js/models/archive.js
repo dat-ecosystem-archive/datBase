@@ -2,6 +2,7 @@ const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const encoding = require('dat-encoding')
+const path = require('path')
 
 let noop = function () {}
 let drive = hyperdrive(memdb())
@@ -58,10 +59,11 @@ module.exports = {
       const location = '/' + data
       send('location:setLocation', { location }, done)
       window.history.pushState({}, null, location)
+      send('archive:update', {entries: {}}, noop)
       send('archive:load', data, done)
     },
     load: function (key, state, send, done) {
-      send('archive:update', {key, entries: {}}, noop)
+      send('archive:update', {key}, noop)
       if (state.instance) {
         // XXX: cleanup original instance
       }
@@ -86,6 +88,20 @@ module.exports = {
             // XXX: Hack to fetch a small bit of data so size properly updates
           })
         }
+        var stream = archive.list({live: true})
+        var entries = {}
+        stream.on('data', function (entry) {
+          entries[entry.name] = entry
+          let dir = path.dirname(entry.name)
+          if (!entries[dir]) {
+            entries[dir] = {
+              type: 'directory',
+              name: dir,
+              length: 0
+            }
+          }
+          send('archive:update', {entries}, noop)
+        })
       })
     }
   }
