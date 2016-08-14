@@ -24,7 +24,7 @@ const archivePage = (state, prev, send) => {
           </li>
           </ul>
           <div class="dat-details">
-            <div id="permissions" class="dat-detail">${permissions({owner: state.archive ? state.archive.owner : false})}</div>
+            <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>
             <div id="hyperdrive-size" class="dat-detail"><p id="size">${prettyBytes(state.archive.size || 0)}</p></div>
             <div id="peers" class="dat-detail">${state.archive.numPeers} Source(s)</div>
             <div style="display: none;" id="speed" class="dat-detail dat-detail--speed"><div>
