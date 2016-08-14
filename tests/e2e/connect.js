@@ -47,6 +47,10 @@ module.exports = new function () {
     testCases['opening the browser and navigating to the url'] = (client) => {
       client
         .url(testServer)
+        .expect.element('.dat-button--new-dat button').to.be.present
+
+      client
+        .click('.dat-button--new-dat button').pause(1000)
         .expect.element('#share-link').text.matches(/^(.+)$/).before(10000)
 
       client.getText('#share-link', (result) => {
@@ -61,7 +65,7 @@ module.exports = new function () {
         const datlink = data.toString()
         console.info('using datlink', datlink)
         client
-          .url(testServer + '#' + datlink)
+          .url(testServer + datlink)
           .waitForElementVisible('body', 10000)
       })
     }
