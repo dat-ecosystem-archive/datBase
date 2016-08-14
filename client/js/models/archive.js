@@ -3,6 +3,7 @@ const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const encoding = require('dat-encoding')
 const path = require('path')
+const hyperdriveImportQueue = require('hyperdrive-import-queue')
 
 let noop = function () {}
 let drive = hyperdrive(memdb())
@@ -54,6 +55,34 @@ module.exports = {
       window.history.pushState({}, null, location)
       send('archive:update', {entries: {}}, noop)
       send('archive:load', data, done)
+    },
+    importFiles: function (files, state, send, done) {
+      const archive = state.instance
+      if (!Array.isArray(files)) {
+        // arrayify FileList
+        files = Array.prototype.slice.call(files, 0)
+        for (var i in files) {
+          files[i].fullPath = '/' + files[i].name
+        }
+      }
+      hyperdriveImportQueue(files, archive, {
+        cwd: state.cwd || '',
+        progressInterval: 50,
+        onQueueNewFile: function (err, file) {
+          if (err) console.log(err)
+//          store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+        },
+        onFileWriteBegin: function (err, file) {
+          if (err) console.log(err)
+//          store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
+        },
+        onFileWriteComplete: function (err, file) {
+          if (err) console.log(err)
+//          store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
+//          store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+        },
+        onCompleteAll: function () {}
+      })
     },
     load: function (key, state, send, done) {
       var archive, sw
