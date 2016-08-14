@@ -37,7 +37,7 @@ const archivePage = (state, prev, send) => {
       </div>
       <main id="site-main">
         <div class="container">
-          <div id="add-files">${state.archive && state.archive.owner ? addFiles({ onfiles: (ev, files) => send('archive:importFiles', {ev, files}) }) : ''}</div>
+          <div id="add-files">${state.archive.instance && state.archive.instance.owner ? addFiles({ onfiles: (ev, files) => send('archive:importFiles', {ev, files}) }) : ''}</div>
           <div id="file-queue">XXX: file queue</div>
           ${hyperdrive(state, prev, send)}
         </div>

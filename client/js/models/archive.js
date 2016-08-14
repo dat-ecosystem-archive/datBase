@@ -44,8 +44,9 @@ module.exports = {
   effects: {
     new: function (data, state, send, done) {
       const archive = drive.createArchive(null, {live: true, sparse: true})
-      const link = archive.key.toString('hex')
-      send('archive:import', link, done)
+      const key = archive.key.toString('hex')
+      send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
+      send('archive:import', key, done)
     },
     import: function (data, state, send, done) {
       const location = '/' + data
@@ -55,13 +56,21 @@ module.exports = {
       send('archive:load', data, done)
     },
     load: function (key, state, send, done) {
-      send('archive:update', {key}, noop)
-      if (state.instance) {
-        // XXX: cleanup original instance
+      var archive, sw
+      if (state.instance && state.instance.drive) {
+        if (state.instance.key.toString('hex') === key) {
+          archive = state.instance
+          sw = state.swarm
+        } else {
+          archive = null
+        }
       }
-      let archive = drive.createArchive(key)
-      let sw = swarm(archive)
-      send('archive:update', {instance: archive, swarm: sw}, done)
+      if (!archive) {
+        send('archive:update', {key}, noop)
+        archive = drive.createArchive(key)
+        sw = swarm(archive)
+        send('archive:update', {instance: archive, swarm: sw, key}, done)
+      }
       sw.on('connection', function (conn) {
         send('archive:updatePeers', noop)
         conn.on('close', function () {
