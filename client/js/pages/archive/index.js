@@ -14,9 +14,13 @@ const archivePage = (state, prev, send) => {
       ${header(state, prev, send)}
       <div id="dat-info" class="dat-header">
         <div class="container">
+          <div class="dat-header__actions">
+            <button class="dat-header-action">Download</button>
+            <button class="dat-header-action">Open in Desktop App</button>
+          </div>
+          <div id="share-link" class="share-link">${state.archive.key}</div>
           ${error(state.archive.error)}
           <ul>
-          <li>archive key: ${state.archive.key}</li>
           <li>signalhubs:
             <ul>
             ${state.archive.signalhubs.map(function (fqdn) {
