@@ -1,6 +1,6 @@
 const html = require('choo/html')
 const hyperdrive = require('../../components/hyperdrive')
-const permissions = require('../../components/permissions')
+const permissions = require('../../elements/permissions')
 const header = require('../../components/header')
 const error = require('../../elements/error')
 
@@ -23,7 +23,7 @@ const archivePage = (state, prev, send) => {
           </li>
           </ul>
           <div class="dat-details">
-            <div id="permissions" class="dat-detail">${permissions(state, prev, send)}</div>
+            <div id="permissions" class="dat-detail">${permissions({owner: state.archive ? state.archive.owner : false})}</div>
             <div id="hyperdrive-size" class="dat-detail"><p id="size">92.78 kB</p></div>
             <div id="peers" class="dat-detail">${state.archive.numPeers} Source(s)</div>
             <div style="display: none;" id="speed" class="dat-detail dat-detail--speed"><div>
