@@ -53,7 +53,7 @@
     "gh-pages-deploy": "^0.4.2",
     "http-server": "^0.9.0",
     "hyperdrive": "^7.0.0",
-    "hyperdrive-archive-swarm": "^3.0.1",
+    "hyperdrive-archive-swarm": "^4.0.0",
     "hyperdrive-import-queue": "^1.0.0",
     "hyperdrive-ui": "^2.0.0",
     "intro.js": "^2.1.0",

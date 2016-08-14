@@ -9,7 +9,14 @@ const page = require('./page')
 const router = require('server-router')()
 const Haus = require('./haus')
 
-let haus = Haus()
+var wrtc
+try {
+  wrtc = require('electron-webrtc')()
+  wrtc.on('error', function (err) { console.log(err) })
+} catch (e) {
+  console.warn('To enable rtc swarm, run: npm i electron-webrtc')
+}
+let haus = Haus({ wrtc })
 
 // serve old pre-choo client-side-only app for migration work:
 router.on('/migrate', {
