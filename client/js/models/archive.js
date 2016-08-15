@@ -4,6 +4,7 @@ const swarm = require('hyperdrive-archive-swarm')
 const encoding = require('dat-encoding')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
+var drop = require('drag-drop')
 
 let noop = function () {}
 let drive = hyperdrive(memdb())
@@ -33,13 +34,7 @@ module.exports = {
   },
   subscriptions: [
     (send, done) => {
-      let key
-      try {
-        key = encoding.decode(window.location.pathname.replace('/', ''))
-      } catch (e) {
-        // TODO: throw error to user
-      }
-      if (!key) return
+      drop(document.body, (files) => send('archive:importFiles', files, done))
     }
   ],
   effects: {
@@ -58,6 +53,11 @@ module.exports = {
     },
     importFiles: function (files, state, send, done) {
       const archive = state.instance
+      if (!archive || !archive.owner) {
+        // XXX: use error in state
+        window.alert('You can not put files in this archive')
+        return done()
+      }
       if (!Array.isArray(files)) {
         // arrayify FileList
         files = Array.prototype.slice.call(files, 0)
