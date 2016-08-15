@@ -68,11 +68,11 @@ module.exports = {
           send('archive:updatePeers', noop)
         })
       })
-      archive.on('download', function () {
-        console.log('download')
+      archive.on('upload', function (data) {
+        send('archive:update', {uploaded: data.length + (state.uploaded || 0)}, noop)
       })
-      archive.on('upload', function () {
-        console.log('upload')
+      archive.on('download', function (data) {
+        send('archive:update', {downloaded: data.length + (state.downloaded || 0)}, noop)
       })
       archive.open(function () {
         if (archive.content) {
