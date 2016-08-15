@@ -73,7 +73,7 @@ module.exports = new function () {
 
   testCases['found the other peer'] = (client) => {
     client
-      .expect.element('#peers').text.matches(/2 Sources/).before(30000)
+      .expect.element('#peers').text.matches(/1 Source\(s\)/).before(30000)
   }
 
   if (firstClient) {
