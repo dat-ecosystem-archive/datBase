@@ -3,6 +3,7 @@ const hyperdrive = require('../../components/hyperdrive')
 const permissions = require('../../elements/permissions')
 const header = require('../../components/header')
 const error = require('../../elements/error')
+const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 
 const archivePage = (state, prev, send) => {
@@ -44,7 +45,7 @@ const archivePage = (state, prev, send) => {
         <div class="container">
           <span id="help-text" class="status-bar-status"></span>
           <div style="display: block;" id="hyperdrive-stats" class="status-bar-stats">
-            <span>Total: XX kB / XXX kB</span>
+            ${hyperdriveStats({ downloaded: state.archive.downloaded, uploaded: state.archive.uploaded })}
           </div>
         </div>
       </div>
