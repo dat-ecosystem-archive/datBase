@@ -3,6 +3,8 @@ const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const encoding = require('dat-encoding')
 const path = require('path')
+const hyperdriveImportQueue = require('hyperdrive-import-queue')
+var drop = require('drag-drop')
 
 let noop = function () {}
 let drive = hyperdrive(memdb())
@@ -32,20 +34,15 @@ module.exports = {
   },
   subscriptions: [
     (send, done) => {
-      let key
-      try {
-        key = encoding.decode(window.location.pathname.replace('/', ''))
-      } catch (e) {
-        // TODO: throw error to user
-      }
-      if (!key) return
+      drop(document.body, (files) => send('archive:importFiles', files, done))
     }
   ],
   effects: {
     new: function (data, state, send, done) {
       const archive = drive.createArchive(null, {live: true, sparse: true})
-      const link = archive.key.toString('hex')
-      send('archive:import', link, done)
+      const key = archive.key.toString('hex')
+      send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
+      send('archive:import', key, done)
     },
     import: function (data, state, send, done) {
       const location = '/' + data
@@ -54,14 +51,55 @@ module.exports = {
       send('archive:update', {entries: {}}, noop)
       send('archive:load', data, done)
     },
-    load: function (key, state, send, done) {
-      send('archive:update', {key}, noop)
-      if (state.instance) {
-        // XXX: cleanup original instance
+    importFiles: function (files, state, send, done) {
+      const archive = state.instance
+      if (!archive || !archive.owner) {
+        // XXX: use error in state
+        window.alert('You can not put files in this archive')
+        return done()
       }
-      let archive = drive.createArchive(key)
-      let sw = swarm(archive)
-      send('archive:update', {instance: archive, swarm: sw}, done)
+      if (!Array.isArray(files)) {
+        // arrayify FileList
+        files = Array.prototype.slice.call(files, 0)
+        for (var i in files) {
+          files[i].fullPath = '/' + files[i].name
+        }
+      }
+      hyperdriveImportQueue(files, archive, {
+        cwd: state.cwd || '',
+        progressInterval: 50,
+        onQueueNewFile: function (err, file) {
+          if (err) console.log(err)
+//          store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+        },
+        onFileWriteBegin: function (err, file) {
+          if (err) console.log(err)
+//          store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
+        },
+        onFileWriteComplete: function (err, file) {
+          if (err) console.log(err)
+//          store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
+//          store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+        },
+        onCompleteAll: function () {}
+      })
+    },
+    load: function (key, state, send, done) {
+      var archive, sw
+      if (state.instance && state.instance.drive) {
+        if (state.instance.key.toString('hex') === key) {
+          archive = state.instance
+          sw = state.swarm
+        } else {
+          archive = null
+        }
+      }
+      if (!archive) {
+        send('archive:update', {key}, noop)
+        archive = drive.createArchive(key)
+        sw = swarm(archive)
+        send('archive:update', {instance: archive, swarm: sw, key}, done)
+      }
       sw.on('connection', function (conn) {
         send('archive:updatePeers', noop)
         conn.on('close', function () {

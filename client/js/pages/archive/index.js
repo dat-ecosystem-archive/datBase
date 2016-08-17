@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const hyperdrive = require('../../components/hyperdrive')
 const permissions = require('../../elements/permissions')
+const addFiles = require('../../elements/add-files')
 const header = require('../../components/header')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
@@ -36,7 +37,7 @@ const archivePage = (state, prev, send) => {
       </div>
       <main id="site-main">
         <div class="container">
-          <div id="add-files">XXX: add files</div>
+          <div id="add-files">${state.archive.instance && state.archive.instance.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', files) }) : ''}</div>
           <div id="file-queue">XXX: file queue</div>
           ${hyperdrive(state, prev, send)}
         </div>
