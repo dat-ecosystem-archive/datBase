@@ -1,7 +1,6 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
-const encoding = require('dat-encoding')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 var drop = require('drag-drop')
