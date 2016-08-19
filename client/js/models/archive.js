@@ -6,8 +6,8 @@ const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 var drop = require('drag-drop')
 
-let noop = function () {}
-let drive = hyperdrive(memdb())
+var noop = function () {}
+var drive = hyperdrive(memdb())
 
 module.exports = {
   namespace: 'archive',
@@ -123,7 +123,7 @@ module.exports = {
         var entries = {}
         stream.on('data', function (entry) {
           entries[entry.name] = entry
-          let dir = path.dirname(entry.name)
+          var dir = path.dirname(entry.name)
           if (!entries[dir]) {
             entries[dir] = {
               type: 'directory',
