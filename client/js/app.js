@@ -18,7 +18,7 @@ if (module.parent) {
   module.exports = {
     app: app,
     getServerComponent: (component) => {
-      let components = {
+      var components = {
         // register server-side components here:
         hyperdrive: require('../../server/components/hyperdrive')
       }

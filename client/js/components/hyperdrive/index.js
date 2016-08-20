@@ -1,7 +1,7 @@
 const from = require('from2')
 
 if (module.parent) {
-  let hyperdriveRenderer = require('./../../app.js').getServerComponent('hyperdrive')
+  var hyperdriveRenderer = require('./../../app.js').getServerComponent('hyperdrive')
 
   module.exports = function (state, prev, send) {
     return hyperdriveRenderer({entries: state.archive.entries})
