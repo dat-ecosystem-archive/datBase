@@ -40,7 +40,7 @@ function Haus (opts) {
 }
 
 Haus.prototype.getArchive = function (key, cb) {
-  let archive = this.cache.get(key)
+  var archive = this.cache.get(key)
   if (!archive) {
     archive = this.drive.createArchive(key, {file: this.file})
     this.cache.set(archive.discoveryKey.toString('hex'), archive)

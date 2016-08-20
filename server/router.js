@@ -16,7 +16,7 @@ try {
 } catch (e) {
   console.warn('To enable rtc swarm, run: npm i electron-webrtc')
 }
-let haus = Haus({ wrtc })
+var haus = Haus({ wrtc })
 
 // serve old pre-choo client-side-only app for migration work:
 router.on('/migrate', {
@@ -32,7 +32,7 @@ router.on('/migrate', {
 // landing page
 router.on('/', {
   get: function (req, res, params) {
-    let state = getDefaultAppState()
+    var state = getDefaultAppState()
     sendSPA('/', res, state)
   }
 })
@@ -40,17 +40,17 @@ router.on('/', {
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
-    let state = getDefaultAppState()
-    let key
+    var state = getDefaultAppState()
+    var key
     try {
       key = encoding.decode(params.archiveKey)
     } catch (e) {
       state.archive.error = {message: e.message}
       return sendSPA('/:archiveKey', res, state)
     }
-    let archive = haus.getArchive(key)
-    let cancelled
-    let clear = setTimeout(() => {
+    var archive = haus.getArchive(key)
+    var cancelled
+    var clear = setTimeout(() => {
       cancelled = true
       sendSPA('/:archiveKey', res, state)
     }, 3000)
@@ -109,7 +109,7 @@ router.on('/public/img/:asset', {
 
 /* helpers */
 function getDefaultAppState () {
-  let state = {}
+  var state = {}
   app._store._models.forEach((model) => {
     assert.equal(typeof model, 'object', 'getDefaultAppState: model must be an object')
     assert.equal(typeof model.namespace, 'string', 'getDefaultAppState: model must have a namespace property that is a string')
