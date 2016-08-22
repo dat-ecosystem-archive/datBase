@@ -46,12 +46,14 @@ router.on('/:archiveKey', {
       key = encoding.decode(params.archiveKey)
     } catch (e) {
       state.archive.error = {message: e.message}
+      console.warn('error: ' + e.message)
       return sendSPA('/:archiveKey', res, state)
     }
     var archive = haus.getArchive(key)
     var cancelled
     var clear = setTimeout(() => {
       cancelled = true
+      console.log('server getArchive() timed out for key: ' + key)
       sendSPA('/:archiveKey', res, state)
     }, 3000)
     state.archive.key = params.archiveKey
