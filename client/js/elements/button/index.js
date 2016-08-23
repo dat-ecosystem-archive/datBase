@@ -6,6 +6,5 @@ module.exports = (props, click) => {
   return html`
     <button onclick=${props.click} class="btn ${props.klass || 'btn--green'}">
       ${props.text}
-    </button>
-  `
+    </button>`
 }
