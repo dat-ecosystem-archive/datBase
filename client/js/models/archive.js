@@ -3,6 +3,7 @@ const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
+const drop = require('drag-drop')
 
 var noop = function () {}
 var drive = hyperdrive(memdb())
@@ -31,6 +32,9 @@ module.exports = {
     }
   },
   subscriptions: [
+    (send, done) => {
+      drop(document.body, (files) => send('archive:importFiles', {files}, done))
+    }
   ],
   effects: {
     new: function (data, state, send, done) {
