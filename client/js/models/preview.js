@@ -12,7 +12,7 @@ module.exports = {
   namespace: 'preview',
   state: defaultState,
   reducers: {
-    updateFile: (data, state) => {
+    update: (data, state) => {
       return {
         archiveKey: data.archiveKey || state.archiveKey,
         fileName: data.entry || state.entry
@@ -27,7 +27,7 @@ module.exports = {
   },
   effects: {
     file: (data, state, send, done) => {
-      send('preview:updateFile', data, noop)
+      send('preview:update', data, noop)
       send('preview:openPanel', {}, noop)
       send('archive:readFile', data, noop)
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
