@@ -52,12 +52,12 @@ module.exports = {
     },
     importFiles: function (data, state, send, done) {
       var files = data.files
-      if (data.createArchive) {
+      const archive = state.instance
+      if (data.createArchive || !archive) {
         send('archive:new', null, () => send('archive:importFiles', {files}, done))
         return
       }
-      const archive = state.instance
-      if (!archive || !archive.owner) {
+      if (!archive.owner) {
         // XXX: use error in state
         window.alert('You can not put files in this archive')
         return done()
