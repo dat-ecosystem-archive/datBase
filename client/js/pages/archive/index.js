@@ -7,6 +7,7 @@ const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 const drop = require('drag-drop')
+const preview = require('../../components/preview')
 
 const archivePage = (state, prev, send) => {
   // TODO: style the error handling
@@ -57,6 +58,7 @@ const archivePage = (state, prev, send) => {
           </div>
         </div>
       </div>
+      ${preview(state, prev, send)}
     </div>`
 }
 
