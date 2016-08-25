@@ -3,7 +3,6 @@ const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
-var drop = require('drag-drop')
 
 var noop = function () {}
 var drive = hyperdrive(memdb())
@@ -32,9 +31,6 @@ module.exports = {
     }
   },
   subscriptions: [
-    (send, done) => {
-      drop(document.body, (files) => send('archive:importFiles', files, done))
-    }
   ],
   effects: {
     new: function (data, state, send, done) {
@@ -50,7 +46,12 @@ module.exports = {
       send('archive:update', {entries: {}}, noop)
       send('archive:load', data, done)
     },
-    importFiles: function (files, state, send, done) {
+    importFiles: function (data, state, send, done) {
+      var files = data.files
+      if (data.createArchive) {
+        send('archive:new', null, () => send('archive:importFiles', {files}, done))
+        return
+      }
       const archive = state.instance
       if (!archive || !archive.owner) {
         // XXX: use error in state

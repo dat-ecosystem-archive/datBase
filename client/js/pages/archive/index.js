@@ -6,6 +6,7 @@ const header = require('../../components/header')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
+const drop = require('drag-drop')
 const preview = require('../../components/preview')
 
 const archivePage = (state, prev, send) => {
@@ -40,7 +41,9 @@ const archivePage = (state, prev, send) => {
           </div>
         </div>
       </div>
-      <main id="site-main">
+      <main id="site-main" onload=${
+          (el) => drop(el, (files) => send('archive:importFiles', {files}))
+        }>
         <div class="container">
           <div id="add-files">${state.archive.instance && state.archive.instance.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', files) }) : ''}</div>
           <div id="file-queue">XXX: file queue</div>
