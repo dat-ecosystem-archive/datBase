@@ -53,7 +53,7 @@ router.on('/:archiveKey', {
     var cancelled
     var clear = setTimeout(() => {
       cancelled = true
-      console.log('server getArchive() timed out for key: ' + key)
+      console.log('server getArchive() timed out for key: ' + params.archiveKey)
       sendSPA('/:archiveKey', res, state)
     }, 3000)
     state.archive.key = params.archiveKey
