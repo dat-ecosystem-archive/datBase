@@ -14,9 +14,12 @@
 @import "dat-header.scss";
 @import "file-system.scss";
 @import "file-queue.scss";
-@import "preview-display.scss";
+@import "panel.scss"; //
+@import "preview.scss"; // TODO: this should move into dat-design - @lauren
 @import "landing-page.scss";
-@import "helper-breakpoints.scss"; // this should move into dat-design – @kriesse
+@import "helper-breakpoints.scss"; // TODO: this should move into dat-design – @kriesse
+
+@import "preview-display.scss"; // TODO: delete this after choo migration
 
 
 // global styles

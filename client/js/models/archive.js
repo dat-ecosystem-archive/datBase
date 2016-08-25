@@ -134,6 +134,9 @@ module.exports = {
           send('archive:update', {entries, size}, noop)
         })
       })
+    },
+    readFile: function (data, state, send, done) {
+      console.log('TODO: read file from archive, send back to preview panel')
     }
   }
 }
