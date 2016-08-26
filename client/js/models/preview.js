@@ -1,3 +1,5 @@
+var render = require('render-data')
+
 var noop = function () {}
 var defaultState = {
   isPanelOpen: false,
@@ -29,7 +31,17 @@ module.exports = {
     file: (data, state, send, done) => {
       send('preview:update', data, noop)
       send('preview:openPanel', {}, noop)
-      send('archive:readFile', data, noop)
+      send('archive:readFile', data, function (readStream) {
+        var displayElem = document.querySelector('#render')
+        render.render({
+           name: data.entry,
+           createReadStream: function () {
+             return readStream
+           }
+         }, displayElem, function (err) {
+           if (err) throw err
+         })
+      })
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
     }
   }
