@@ -26,6 +26,9 @@
 
 body {
   min-width: 480px;
+  > div {
+    min-height: 100vh;
+  }
 }
 
 a, button, input {

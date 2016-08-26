@@ -1,12 +1,62 @@
 .panel {
   position: absolute;
   top: 0;
-  right: -100%;
+  right: 0;
   width: 100%;
   height: 100%;
-  transition: right 250ms $transition-timing-function;
-
+  transition: opacity, transform;
+  transition-duration: 250ms;
+  transition-timing-function: $transition-timing-function;
+  opacity: 0;
+  transform: scale(.8);
+  pointer-events: none;
   &.open {
-    right: 0;
+    opacity: 1;
+    transform: none;
+    pointer-events: all;
   }
+}
+
+.panel-header {
+  position: fixed;
+  width: 100%;
+  height: $site-header-height;
+  border-bottom: 1px solid $color-neutral--10;
+  background-color: $color-neutral--04;
+  font-size: .8125rem;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.panel-header__close-button {
+  width: $site-header-height;
+  height: $site-header-height;
+  border-radius: 0;
+  background-color: $color-green;
+  margin-right: 1rem;
+}
+
+.panel-header__title-group {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  .dat-details {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.panel-title {
+  font-size: 1.375rem;
+  margin-right: 1rem;
+}
+
+.panel-header__action-group {
+  padding-right: 1rem;
+}
+
+.panel-main {
+  padding: calc(#{$site-header-height} + 1rem) 1rem 1rem 1rem;
 }
