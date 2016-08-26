@@ -5,8 +5,8 @@ const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 
-var noop = function () {}
 var drive = hyperdrive(memdb())
+var noop = function () {}
 
 module.exports = {
   namespace: 'archive',
@@ -21,14 +21,51 @@ module.exports = {
     signalhubs: [
       'signalhub.mafintosh.com',
       'signalhub.dat.land'
-    ]
+    ],
+    importQueue: {
+      writing: null,
+      writingProgressPct: 0,
+      next: []
+    }
   },
   reducers: {
+    update: (data, state) => {
+      return data
+    },
     updatePeers: (data, state) => {
       return {numPeers: state.swarm.connections}
     },
-    update: (data, state) => {
-      return data
+    updateImportQueue: (data, state) => {
+      // shallow copy the last `state` frame so we can preserve
+      // file.progressListener refs:
+      var stateCopy = {}
+      stateCopy.writing = state.importQueue.writing
+      stateCopy.writingProgressPct = state.importQueue.writingProgressPct
+      stateCopy.next = state.importQueue.next
+      // new file is enqueued:
+      if (data.onQueueNewFile) stateCopy.next.push(data.file)
+      // next file begins writing:
+      if (data.onFileWriteBegin) {
+        stateCopy.writing = stateCopy.next[0]
+        stateCopy.next = stateCopy.next.slice(1)
+      }
+      // progress percentage of file that is currently writing:
+      if (data.writingProgressPct) {
+        stateCopy.writingProgressPct = data.writingProgressPct
+        console.log(data.writingProgressPct)
+      }
+      // current file is done writing:
+      if (data.onFileWriteComplete) {
+        stateCopy.writing = null
+        stateCopy.writingProgressPct = 0
+      }
+      return {
+        importQueue: {
+          writing: stateCopy.writing,
+          writingProgressPct: stateCopy.writingProgressPct,
+          next: stateCopy.next
+        }
+      }
     }
   },
   subscriptions: [
@@ -74,16 +111,25 @@ module.exports = {
         progressInterval: 50,
         onQueueNewFile: function (err, file) {
           if (err) console.log(err)
-//          store.dispatch({ type: 'QUEUE_NEW_FILE', file: file })
+          send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
         },
         onFileWriteBegin: function (err, file) {
           if (err) console.log(err)
-//          store.dispatch({ type: 'QUEUE_WRITE_BEGIN' })
+          file.progressHandler = function (progress) {
+            console.log('call updateImportQueue() on progress!!!')
+            const pct = parseInt(progress.percentage)
+            send('archive:updateImportQueue', {writingProgressPct: pct}, noop)
+          }
+          file.progressListener.on('progress', file.progressHandler)
+          send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
         },
         onFileWriteComplete: function (err, file) {
           if (err) console.log(err)
-//          store.dispatch({ type: 'UPDATE_ARCHIVE', archive: archive })
-//          store.dispatch({ type: 'QUEUE_WRITE_COMPLETE', file: file })
+          send('archive:updateImportQueue', {writingProgressPct: 100}, noop)
+          setTimeout(function () {
+            send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
+            file.progressListener.removeListener('progress', file.progressHandler)
+          }, 250)
         },
         onCompleteAll: function () {}
       })
