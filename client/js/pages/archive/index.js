@@ -9,7 +9,18 @@ const prettyBytes = require('pretty-bytes')
 const preview = require('../../components/preview')
 
 const archivePage = (state, prev, send) => {
-  // TODO: style the error handling
+  // XXX: have an error enum?
+  if (state.archive.error && state.archive.error.message === 'Invalid key') {
+    // TODO: update below HTML
+    return html`
+      <div>
+        ${header(state, prev, send)}
+        <img src="./public/img/dat-data-logo.svg" />
+        <h2>404 - Sorry, no dat here.</h2>
+        <h3>We couldn't find the droids you were looking for. Is the link correct?</h3>
+        <button class="btn btn--green take-me-home" href="/">Take me home</button>
+      </div>`
+  }
   return html`
     <div>
       ${header(state, prev, send)}
