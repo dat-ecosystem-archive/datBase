@@ -12,7 +12,9 @@ module.exports = (state, prev, send) => {
     writing.progressHandler = _progressHandler
     writing.progressListener.on('progress', writing.progressHandler)
   }
-  // TODO: remove progress handler onFileWriteComplete
+  if (prevWriting) {
+    prevWriting.progressListener.removeListener('progress', prevWriting.progressHandler)
+  }
 
   return _render()
 
