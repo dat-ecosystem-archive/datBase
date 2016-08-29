@@ -30,11 +30,8 @@ module.exports = {
   effects: {
     file: (data, state, send, done) => {
       send('preview:update', data, noop)
-      console.log('opening panel')
       send('preview:openPanel', {}, function () {
-        console.log('reading file')
         send('archive:readFile', data, function (readStream) {
-          console.log('update')
           send('preview:update', {readStream: readStream}, noop)
         })
       })

@@ -39,7 +39,6 @@ const preview = (state, prev, send) => {
 
   if (readStream) {
     var elem = el.querySelector('#render')
-    console.log('elem', elem)
     data.render({
       name: fileName,
       createReadStream: function () {
