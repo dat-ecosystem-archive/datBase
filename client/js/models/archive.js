@@ -52,7 +52,6 @@ module.exports = {
       // progress percentage of file that is currently writing:
       if (data.writingProgressPct) {
         stateCopy.writingProgressPct = data.writingProgressPct
-        console.log(data.writingProgressPct)
       }
       // current file is done writing:
       if (data.onFileWriteComplete) {
@@ -116,7 +115,6 @@ module.exports = {
         onFileWriteBegin: function (err, file) {
           if (err) console.log(err)
           file.progressHandler = function (progress) {
-            console.log('call updateImportQueue() on progress!!!')
             const pct = parseInt(progress.percentage)
             send('archive:updateImportQueue', {writingProgressPct: pct}, noop)
           }

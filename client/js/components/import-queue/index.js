@@ -8,7 +8,6 @@ module.exports = (state, prev, send) => {
   return _render()
 
   function _render () {
-    console.log('render()')
     if (writing || next.length > 0) {
       return html`<ul id="file-queue">
         ${writing ? _renderLi(writing, writingProgressPct) : undefined}
