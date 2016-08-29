@@ -24,7 +24,6 @@ module.exports = {
     ],
     importQueue: {
       writing: null,
-      writingProgressPct: 0,
       next: []
     }
   },
@@ -49,19 +48,13 @@ module.exports = {
         stateCopy.writing = stateCopy.next[0]
         stateCopy.next = stateCopy.next.slice(1)
       }
-      // progress percentage of file that is currently writing:
-      if (data.writingProgressPct) {
-        stateCopy.writingProgressPct = data.writingProgressPct
-      }
       // current file is done writing:
       if (data.onFileWriteComplete) {
         stateCopy.writing = null
-        stateCopy.writingProgressPct = 0
       }
       return {
         importQueue: {
           writing: stateCopy.writing,
-          writingProgressPct: stateCopy.writingProgressPct,
           next: stateCopy.next
         }
       }
@@ -107,26 +100,19 @@ module.exports = {
       }
       hyperdriveImportQueue(files, archive, {
         cwd: state.cwd || '',
-        progressInterval: 50,
+        progressInterval: 100,
         onQueueNewFile: function (err, file) {
           if (err) console.log(err)
           send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
         },
         onFileWriteBegin: function (err, file) {
           if (err) console.log(err)
-          file.progressHandler = function (progress) {
-            const pct = parseInt(progress.percentage)
-            send('archive:updateImportQueue', {writingProgressPct: pct}, noop)
-          }
-          file.progressListener.on('progress', file.progressHandler)
           send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
         },
         onFileWriteComplete: function (err, file) {
           if (err) console.log(err)
-          send('archive:updateImportQueue', {writingProgressPct: 100}, noop)
           setTimeout(function () {
             send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-            file.progressListener.removeListener('progress', file.progressHandler)
           }, 250)
         },
         onCompleteAll: function () {}
