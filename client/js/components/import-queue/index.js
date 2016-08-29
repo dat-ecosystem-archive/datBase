@@ -28,15 +28,17 @@ module.exports = (state, prev, send) => {
   }
 
   function _renderProgress (file, progressPct) {
-    let loaded = 0
     if (file.writeError) {
       return html`<div class="progress error">Error</div>`
     }
+    let loaded = 0
+    let klass = 'progress__line--loading'
     if (progressPct) loaded = progressPct
+    if (progressPct === 100) klass = 'progress__line--complete'
     return html`<div class="progress">
        <div class="progress__counter">${loaded}%</div>
        <div class="progress__bar">
-         <div class="progress__line progress__line--loading"
+         <div class="progress__line ${klass}"
               style="width: ${loaded}%">
          </div>
        </div>
