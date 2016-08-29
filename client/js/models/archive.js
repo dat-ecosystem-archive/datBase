@@ -142,7 +142,6 @@ module.exports = {
     },
     readFile: function (data, state, send, done) {
       var archive = state.instance
-      var sw = state.swarm
       var readStream = archive.createFileReadStream(data.fileName)
       done(readStream)
     }

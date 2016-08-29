@@ -41,9 +41,8 @@ const preview = (state, prev, send) => {
     var elem = el.querySelector('#render')
     data.render({
       name: fileName,
-      createReadStream: function () {
-        return readStream
-      }}, elem, function (err) {
+      createReadStream: function () { return readStream }
+    }, elem, function (err) {
       if (err) throw err
     })
   }
