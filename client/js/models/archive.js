@@ -1,12 +1,20 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
+const level = require('level-browserify')
 const swarm = require('hyperdrive-archive-swarm')
+const ram = require('random-access-memory')
+const raf = require('random-access-file-reader')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 
-var drive = hyperdrive(memdb())
 var noop = function () {}
+var drive
+
+function getDrive () {
+  if (!drive) drive = hyperdrive(level('dat.land'))
+  return drive
+}
 
 module.exports = {
   namespace: 'archive',
@@ -72,9 +80,14 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
-      const archive = drive.createArchive(null, {live: true, sparse: true})
+      drive = getDrive()
+      const archive = drive.createArchive(null, {
+        live: true,
+        sparse: true,
+        file: ram
+      })
       const key = archive.key.toString('hex')
-      send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
+      send('archive:update', {instance: archive, swarm: swarm(archive), key: key}, noop)
       send('archive:import', key, done)
     },
     import: function (data, state, send, done) {
@@ -85,12 +98,26 @@ module.exports = {
       send('archive:load', data, done)
     },
     importFiles: function (data, state, send, done) {
-      var files = data.files
-      const archive = state.instance
-      if (data.createArchive || !archive) {
+      if (data.createArchive || !state.instance) {
         send('archive:new', null, () => send('archive:importFiles', {files}, done))
         return
       }
+      var files = data.files
+      var filesByName = {}
+      for (var i in files) {
+        var file = files[i]
+        filesByName[file.name] = file
+      }
+      console.log(filesByName)
+      drive = getDrive()
+      const archive = drive.createArchive(state.instance.key, {
+        live: true,
+        sparse: true,
+        file: function (name) {
+          console.log(name, filesByName[name])
+          return raf(filesByName[name])
+        }
+      })
       if (!archive.owner) {
         // XXX: use error in state
         window.alert('You can not put files in this archive')
@@ -136,6 +163,7 @@ module.exports = {
       }
       if (!archive) {
         send('archive:update', {key}, noop)
+        drive = getDrive()
         archive = drive.createArchive(key)
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
