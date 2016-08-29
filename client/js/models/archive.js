@@ -111,7 +111,9 @@ module.exports = {
         },
         onFileWriteComplete: function (err, file) {
           if (err) console.log(err)
-          send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
+          setTimeout(function () {
+            send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
+          }, 250)
         },
         onCompleteAll: function () {}
       })
