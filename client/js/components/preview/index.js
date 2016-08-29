@@ -29,7 +29,7 @@ const preview = (state, prev, send) => {
       </div>
     </div>
     <div class="panel-main">
-      [XXX preview content goes here]
+      <div id="render"></div>
     </div>
   </preview>`
 
