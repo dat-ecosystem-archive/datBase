@@ -100,7 +100,7 @@ module.exports = {
       }
       hyperdriveImportQueue(files, archive, {
         cwd: state.cwd || '',
-        progressInterval: 50,
+        progressInterval: 100,
         onQueueNewFile: function (err, file) {
           if (err) console.log(err)
           send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)

@@ -7,6 +7,8 @@ module.exports = (state, prev, send) => {
 
   if ((writing && !prevWriting) ||
       (writing && prevWriting && writing.fullPath !== prevWriting.fullPath)) {
+    writing.elIdSuffix = encodeURIComponent(writing.fullPath)
+    writing.progressPct = 0
     writing.progressHandler = _progressHandler
     writing.progressListener.on('progress', writing.progressHandler)
   }
@@ -38,14 +40,17 @@ module.exports = (state, prev, send) => {
     if (file.writeError) {
       return html`<div class="progress error">Error</div>`
     }
+    const id = file.elIdSuffix
     let loaded = 0
+    if (file.progressPct) loaded = file.progressPct
     let klass = 'progress__line--loading'
-    // if (progressPct) loaded = progressPct
     // if (progressPct === 100) klass = 'progress__line--complete'
     return html`<div class="progress">
-       <div class="progress__counter">${loaded}%</div>
+       <div class="progress__counter" id="progress__counter--${id}">
+        ${loaded}%
+      </div>
        <div class="progress__bar">
-         <div class="progress__line ${klass}"
+         <div class="progress__line ${klass}" id="progress__line--${id}"
               style="width: ${loaded}%">
          </div>
        </div>
@@ -53,8 +58,10 @@ module.exports = (state, prev, send) => {
   }
 
   function _progressHandler (progress) {
+    const id = writing.elIdSuffix
     const pct = parseInt(progress.percentage)
-    console.log(pct)
-    // TODO: update element
+    writing.progressPct = pct
+    document.getElementById(`progress__counter--${id}`).innerHTML = pct + '%'
+    document.getElementById(`progress__line--${id}`).style.width = pct + '%'
   }
 }
