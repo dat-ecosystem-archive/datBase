@@ -24,7 +24,7 @@ if (module.parent) {
       if (entry.type === 'directory') {
         send('archive:update', {root: entry.name})
       } else {
-        send('preview:file', {archiveKey: state.archive.key, entry: entry.name}, noop)
+        send('preview:file', {archiveKey: state.archive.key, fileName: entry.name}, noop)
       }
       return false
     })

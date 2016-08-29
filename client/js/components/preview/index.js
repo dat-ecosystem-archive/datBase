@@ -7,6 +7,8 @@ const data = module.parent ? function () { } : require('render-data')
 const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const fileName = state.preview.fileName
+  const readStream = state.preview.readStream
+
   var el = html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
       ${button({
@@ -33,14 +35,15 @@ const preview = (state, prev, send) => {
     <div class="panel-main">
       <div id="render"></div>
     </div>
-  </preview>`
+  </section>`
 
-  if (fileName) {
+  if (readStream) {
     var elem = el.querySelector('#render')
+    console.log('elem', elem)
     data.render({
       name: fileName,
       createReadStream: function () {
-        return state.preview.readStream
+        return readStream
       }}, elem, function (err) {
       if (err) throw err
     })
