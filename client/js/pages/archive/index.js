@@ -15,10 +15,16 @@ const archivePage = (state, prev, send) => {
     return html`
       <div>
         ${header(state, prev, send)}
-        <img src="./public/img/dat-data-logo.svg" />
-        <h2>404 - Sorry, no dat here.</h2>
-        <h3>We couldn't find the droids you were looking for. Is the link correct?</h3>
-        <button class="btn btn--green take-me-home" href="/">Take me home</button>
+        <div class="error-page">
+          <div class="mb3">
+            <img src="./public/img/dat-data-logo.svg" />
+          </div>
+          <h3>404 - Sorry, no dat here.</h3>
+          <p class="mb3">We couldn't find the droids you were looking for. Is the link correct?</p>
+          <p class="mb4">
+            <button class="btn btn--large btn--green take-me-home" href="/">Take me home</button>
+          </p>
+        </div>
       </div>`
   }
   return html`
