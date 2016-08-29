@@ -1,10 +1,11 @@
 const html = require('choo/html')
+const data = require('render-data')
 const button = require('../../elements/button')
 
 const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const fileName = state.preview.fileName
-  return html`<section id="preview" class="panel ${isOpen}">
+  var el = html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
       ${button({
         klass: 'btn--green panel-header__close-button',
@@ -31,6 +32,18 @@ const preview = (state, prev, send) => {
       [XXX preview content goes here]
     </div>
   </preview>`
+
+  if (fileName) {
+    var elem = el.querySelector('#render')
+    data.render({
+      name: fileName,
+      createReadStream: function () {
+        return state.preview.readStream
+      }}, elem, function (err) {
+      if (err) throw err
+    })
+  }
+  return el
 }
 
 module.exports = preview
