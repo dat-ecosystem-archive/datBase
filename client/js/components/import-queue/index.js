@@ -20,14 +20,14 @@ module.exports = (state, prev, send) => {
 
   function _render () {
     if (writing || next.length > 0) {
-      return html`<ul id="file-queue">
+      return html`<ul id="import-queue">
         ${writing ? _renderLi(writing) : null}
         ${next.map(function (file) {
           return _renderLi(file)
         })}
       </ul>`
     } else {
-      return html`<ul id="file-queue"></ul>`
+      return html`<ul id="import-queue"></ul>`
     }
   }
 
