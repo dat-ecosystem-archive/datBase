@@ -13,7 +13,6 @@ module.exports = {
   state: defaultState,
   reducers: {
     update: (data, state) => {
-      console.log('update', data, state)
       return {
         archiveKey: data.archiveKey || state.archiveKey,
         fileName: data.fileName || state.fileName,
