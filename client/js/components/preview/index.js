@@ -1,6 +1,8 @@
 const html = require('choo/html')
-const data = require('render-data')
 const button = require('../../elements/button')
+
+// XXX: server-side data rendering could pull from a cache if we want
+const data = module.parent ? function () { } : require('render-data')
 
 const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
