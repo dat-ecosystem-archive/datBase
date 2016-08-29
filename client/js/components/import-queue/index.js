@@ -43,9 +43,9 @@ module.exports = (state, prev, send) => {
       return html`<div class="progress error">Error</div>`
     }
     const id = file.elsSuffix
-    let loaded = 0
+    var loaded = 0
     if (file.progressPct) loaded = file.progressPct
-    let klass = 'progress__line--loading'
+    var klass = 'progress__line--loading'
     if (file.progressPct === 100) klass = 'progress__line--complete'
     return html`<div class="progress">
        <div class="progress__counter" id="progress__counter--${id}">
