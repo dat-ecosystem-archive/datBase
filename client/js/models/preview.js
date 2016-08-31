@@ -3,8 +3,8 @@ var defaultState = {
   isPanelOpen: false,
   isLoading: false,
   archiveKey: null,
-  fileName: null,
-  fileContents: null,
+  entryName: null,
+  readStream: null,
   error: null
 }
 
@@ -15,7 +15,8 @@ module.exports = {
     update: (data, state) => {
       return {
         archiveKey: data.archiveKey || state.archiveKey,
-        fileName: data.entry || state.entry
+        entryName: data.entryName || state.entryName,
+        readStream: data.readStream || state.readStream
       }
     },
     openPanel: (data, state) => {
@@ -28,8 +29,11 @@ module.exports = {
   effects: {
     file: (data, state, send, done) => {
       send('preview:update', data, noop)
-      send('preview:openPanel', {}, noop)
-      send('archive:readFile', data, noop)
+      send('preview:openPanel', {}, function () {
+        send('archive:readFile', data, function (readStream) {
+          send('preview:update', {readStream: readStream}, noop)
+        })
+      })
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
     }
   }

@@ -171,7 +171,9 @@ module.exports = {
       })
     },
     readFile: function (data, state, send, done) {
-      console.log('TODO: read file from archive, send back to preview panel')
+      var archive = state.instance
+      var readStream = archive.createFileReadStream(data.entryName)
+      done(readStream)
     }
   }
 }
