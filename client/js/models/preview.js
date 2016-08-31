@@ -3,7 +3,7 @@ var defaultState = {
   isPanelOpen: false,
   isLoading: false,
   archiveKey: null,
-  fileName: null,
+  entryName: null,
   readStream: null,
   error: null
 }
@@ -15,7 +15,7 @@ module.exports = {
     update: (data, state) => {
       return {
         archiveKey: data.archiveKey || state.archiveKey,
-        fileName: data.fileName || state.fileName,
+        entryName: data.entryName || state.entryName,
         readStream: data.readStream || state.readStream
       }
     },

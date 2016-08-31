@@ -142,7 +142,7 @@ module.exports = {
     },
     readFile: function (data, state, send, done) {
       var archive = state.instance
-      var readStream = archive.createFileReadStream(data.fileName)
+      var readStream = archive.createFileReadStream(data.entryName)
       done(readStream)
     }
   }
