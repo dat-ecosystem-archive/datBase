@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const hyperdrive = require('../../components/hyperdrive')
 const permissions = require('../../elements/permissions')
+const fourohfour = require('../../components/404')
 const addFiles = require('../../elements/add-files')
 const header = require('../../components/header')
 const error = require('../../elements/error')
@@ -11,21 +12,15 @@ const preview = require('../../components/preview')
 const archivePage = (state, prev, send) => {
   // XXX: have an error enum?
   if (state.archive.error && state.archive.error.message === 'Invalid key') {
-    // TODO: update below HTML
+    var props = {
+      header: 'No dat here.'
+    }
     return html`
-      <div>
-        ${header(state, prev, send)}
-        <div class="error-page">
-          <div class="mb3">
-            <img src="./public/img/dat-data-logo.svg" />
-          </div>
-          <h3>404 - Sorry, no dat here.</h3>
-          <p class="mb3">We couldn't find the droids you were looking for. Is the link correct?</p>
-          <p class="mb4">
-            <button class="btn btn--large btn--green take-me-home" href="/">Take me home</button>
-          </p>
-        </div>
-      </div>`
+    <div>
+    ${header(state, prev, send)}
+    ${fourohfour(props)}
+    </div>
+    `
   }
   return html`
     <div>
