@@ -33,12 +33,12 @@ const preview = (state, prev, send) => {
       </div>
     </div>
     <div class="panel-main">
-      <div id="render"></div>
+      <div id="display"></div>
     </div>
   </section>`
 
   if (readStream) {
-    var elem = el.querySelector('#render')
+    var elem = el.querySelector('#display')
     data.render({
       name: entryName,
       createReadStream: function () { return readStream }
