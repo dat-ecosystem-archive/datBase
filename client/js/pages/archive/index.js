@@ -2,6 +2,7 @@ const html = require('choo/html')
 const importQueue = require('../../components/import-queue')
 const hyperdrive = require('../../components/hyperdrive')
 const permissions = require('../../elements/permissions')
+const fourohfour = require('../../elements/404')
 const addFiles = require('../../elements/add-files')
 const header = require('../../components/header')
 const error = require('../../elements/error')
@@ -10,7 +11,18 @@ const prettyBytes = require('pretty-bytes')
 const preview = require('../../components/preview')
 
 const archivePage = (state, prev, send) => {
-  // TODO: style the error handling
+  // XXX: have an error enum?
+  if (state.archive.error && state.archive.error.message === 'Invalid key') {
+    var props = {
+      header: 'No dat here.'
+    }
+    return html`
+    <div>
+    ${header(state, prev, send)}
+    ${fourohfour(props)}
+    </div>
+    `
+  }
   return html`
     <div>
       ${header(state, prev, send)}
