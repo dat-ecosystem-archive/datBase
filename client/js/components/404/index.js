@@ -2,8 +2,8 @@ const html = require('choo/html')
 
 module.exports = function (props) {
   if (!props) props = {}
-  props.header = props.header || "404"
-  props.body = props.body || "We couldn't find the droids you were looking for. Is the link correct?"
+  props.header = props.header || '404'
+  props.body = props.body || 'We could not find the droids you were looking for. Is the link correct?'
   return html`
     <div>
     <div class="error-page">
