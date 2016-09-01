@@ -1,4 +1,3 @@
-const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const level = require('level-browserify')
 const swarm = require('hyperdrive-archive-swarm')
@@ -102,7 +101,7 @@ module.exports = {
         return
       }
       const archive = state.instance
-      const files = data.files
+      var files = data.files
       archive.open(function () {
         if (!archive.owner) {
           // XXX: use error in state
