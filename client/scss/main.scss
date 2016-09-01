@@ -89,6 +89,8 @@ li {
   }
 }
 
+/** below to be moved somewhere else**/
+
 .button-add {
   $radius: 24px;
   position: absolute;
@@ -122,5 +124,18 @@ li {
   }
   &:after {
     transform: rotate(90deg);
+  }
+}
+
+.danger-block {
+  background-color: $color-danger;
+  text-align: center;
+  color: #fff;
+  h1, h2, h3, h4, h5 {
+    color: #fff;
+  }
+  a {
+    text-decoration: underline;
+    color: #fff;
   }
 }
