@@ -1,7 +1,8 @@
 // header for a single dat
 
 .dat-header {
-  padding-top: .5rem;
+  padding-top: 1.25rem;
+  padding-bottom: .75rem;
   border-bottom: 1px solid $color-neutral--10;
   background-color: $color-neutral--04;
   font-size: .8125rem;
@@ -24,7 +25,6 @@
     color: $color-neutral;
   }
 }
-
 
 .share-link {
   font-size: 1.375rem;

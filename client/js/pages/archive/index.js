@@ -44,7 +44,7 @@ const archivePage = (state, prev, send) => {
           </div>
         </div>
       </div>
-      <main id="site-main">
+      <main class="site-main">
         <div class="container">
           <div id="add-files">${state.archive.instance && state.archive.instance.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', {files}) }) : ''}</div>
           ${importQueue(state, prev, send)}

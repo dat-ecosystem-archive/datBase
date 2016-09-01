@@ -1,7 +1,7 @@
 .button-add {
   $radius: 24px;
   position: absolute;
-  top: -$radius;
+  top: calc(#{-$radius} - #{$padding-site-main});
   right: .5rem;
   width: 2 * $radius;
   height: 2 * $radius;

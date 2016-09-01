@@ -1,10 +1,9 @@
 // global dat.land styles
 
+$padding-site-main: 3rem;
+
 body {
   min-width: 480px;
-  > div {
-    min-height: 100vh;
-  }
 }
 
 a, button, input {
@@ -26,7 +25,8 @@ li {
 
 .container {
   margin: 0 auto;
-  padding: .75rem .625rem;
+  padding-right: .625rem;
+  padding-left: .625rem;
   max-width: 1170px;
   @include breakpoint (sm) {
     padding-right: 1rem;
@@ -39,9 +39,9 @@ li {
 }
 
 .site-main {
-  .container {
-    position: relative;
-  }
+  position: relative;
+  padding-top: $padding-site-main;
+  padding-bottom: $padding-site-main;
 }
 
 .breadcrumbs {

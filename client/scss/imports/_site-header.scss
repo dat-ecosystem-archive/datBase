@@ -4,6 +4,8 @@ $site-header-height: 4rem;
 
 .site-header {
   height: $site-header-height;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
   background-color: $color-green--hover;
   color: $color-white;
 }
