@@ -1,10 +1,15 @@
 const html = require('choo/html')
 const button = require('../../elements/button')
 
+// XXX: server-side data rendering could pull from a cache if we want
+const data = module.parent ? function () { } : require('render-data')
+
 const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
-  const fileName = state.preview.fileName
-  return html`<section id="preview" class="panel ${isOpen}">
+  const entryName = state.preview.entryName
+  const readStream = state.preview.readStream
+
+  var el = html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
       ${button({
         klass: 'btn--green panel-header__close-button',
@@ -15,7 +20,7 @@ const preview = (state, prev, send) => {
       })}
       <div class="panel-header__title-group">
         <div class="panel-title">
-          ${fileName}
+          ${entryName}
         </div>
         <div class="dat-details">
           <div class="dat-detail">XX.X KB</div>
@@ -28,9 +33,20 @@ const preview = (state, prev, send) => {
       </div>
     </div>
     <div class="panel-main">
-      [XXX preview content goes here]
+      <div id="display"></div>
     </div>
-  </preview>`
+  </section>`
+
+  if (readStream) {
+    var elem = el.querySelector('#display')
+    data.render({
+      name: entryName,
+      createReadStream: function () { return readStream }
+    }, elem, function (err) {
+      if (err) throw err
+    })
+  }
+  return el
 }
 
 module.exports = preview

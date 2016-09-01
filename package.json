@@ -45,7 +45,7 @@
     "chromedriver": "^2.21.2",
     "concat-stream": "^1.5.1",
     "dat-button": "^2.3.0",
-    "dat-design": "^1.2.11",
+    "dat-design": "^1.2.13",
     "dat-header": "^1.0.5",
     "drag-drop": "^2.11.0",
     "es2020": "^1.1.7",
@@ -87,6 +87,7 @@
     "pretty-bytes": "^3.0.1",
     "random-access-memory": "^2.1.0",
     "relative-date": "^1.1.3",
+    "render-data": "^2.2.0",
     "serialize-javascript": "^1.3.0",
     "server-router": "^2.1.0"
   }
