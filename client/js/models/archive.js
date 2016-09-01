@@ -118,37 +118,39 @@ module.exports = {
           return raf(filesByName[name])
         }
       })
-      if (!archive.owner) {
-        // XXX: use error in state
-        window.alert('You can not put files in this archive')
-        return done()
-      }
-      if (!Array.isArray(files)) {
-        // arrayify FileList
-        files = Array.prototype.slice.call(files, 0)
-        for (var i in files) {
-          files[i].fullPath = '/' + files[i].name
+      archive.open(function () {
+        if (!archive.owner) {
+          // XXX: use error in state
+          window.alert('You can not put files in this archive')
+          return done()
         }
-      }
-      hyperdriveImportQueue(files, archive, {
-        cwd: state.cwd || '',
-        progressInterval: 100,
-        onQueueNewFile: function (err, file) {
-          if (err) console.log(err)
-          send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
-        },
-        onFileWriteBegin: function (err, file) {
-          if (err) console.log(err)
-          send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
-        },
-        onFileWriteComplete: function (err, file) {
-          if (err) console.log(err)
-          if (file && file.progressListener && file.progressHandler) {
-            file.progressListener.removeListener('progress', file.progressHandler)
+        if (!Array.isArray(files)) {
+          // arrayify FileList
+          files = Array.prototype.slice.call(files, 0)
+          for (var i in files) {
+            files[i].fullPath = '/' + files[i].name
           }
-          send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-        },
-        onCompleteAll: function () {}
+        }
+        hyperdriveImportQueue(files, archive, {
+          cwd: state.cwd || '',
+          progressInterval: 100,
+          onQueueNewFile: function (err, file) {
+            if (err) console.log(err)
+            send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
+          },
+          onFileWriteBegin: function (err, file) {
+            if (err) console.log(err)
+            send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
+          },
+          onFileWriteComplete: function (err, file) {
+            if (err) console.log(err)
+            if (file && file.progressListener && file.progressHandler) {
+              file.progressListener.removeListener('progress', file.progressHandler)
+            }
+            send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
+          },
+          onCompleteAll: function () {}
+        })
       })
     },
     load: function (key, state, send, done) {
