@@ -39,7 +39,6 @@ module.exports = {
       // file.progressListener refs:
       var stateCopy = {}
       stateCopy.writing = state.importQueue.writing
-      stateCopy.writingProgressPct = state.importQueue.writingProgressPct
       stateCopy.next = state.importQueue.next
       // new file is enqueued:
       if (data.onQueueNewFile) stateCopy.next.push(data.file)
@@ -47,6 +46,12 @@ module.exports = {
       if (data.onFileWriteBegin) {
         stateCopy.writing = stateCopy.next[0]
         stateCopy.next = stateCopy.next.slice(1)
+      }
+      // write progress on current file writing:
+      if (data.writingProgressPct && data.writing && data.writing.fullPath) {
+        if (stateCopy.writing && (stateCopy.writing.fullPath === data.writing.fullPath)) {
+          stateCopy.writing.progressPct = data.writingProgressPct
+        }
       }
       // current file is done writing:
       if (data.onFileWriteComplete) {
@@ -111,9 +116,10 @@ module.exports = {
         },
         onFileWriteComplete: function (err, file) {
           if (err) console.log(err)
-          setTimeout(function () {
-            send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-          }, 250)
+          if (file && file.progressListener && file.progressHandler) {
+            file.progressListener.removeListener('progress', file.progressHandler)
+          }
+          send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
         },
         onCompleteAll: function () {}
       })

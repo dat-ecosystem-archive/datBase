@@ -5,25 +5,23 @@ module.exports = (state, prev, send) => {
   const prevWriting = prev && prev.archive ? prev.archive.importQueue.writing : null
   const next = state.archive.importQueue.next
 
-  if ((writing && !prevWriting) ||
-      (writing && prevWriting && writing.fullPath !== prevWriting.fullPath)) {
-    writing.elsSuffix = encodeURIComponent(writing.fullPath)
+  if (writing && !writing.progressHandler) {
     writing.progressPct = 0
-    writing.progressHandler = _progressHandler
+    writing.progressHandler = (progress) => {
+      const pct = parseInt(progress.percentage)
+      send('archive:updateImportQueue', {writingProgressPct: pct, writing: writing}, function(){})
+    }
     writing.progressListener.on('progress', writing.progressHandler)
   }
-  if (prevWriting) {
-    prevWriting.progressListener.removeListener('progress', prevWriting.progressHandler)
-  }
 
-  return _render()
+  return render()
 
-  function _render () {
+  function render () {
     if (writing || next.length > 0) {
       return html`<ul id="import-queue">
-        ${writing ? _renderLi(writing) : null}
+        ${writing ? renderLi(writing) : null}
         ${next.map(function (file) {
-          return _renderLi(file)
+          return renderLi(file)
         })}
       </ul>`
     } else {
@@ -31,38 +29,27 @@ module.exports = (state, prev, send) => {
     }
   }
 
-  function _renderLi (file) {
+  function renderLi (file) {
     return html`<li>
       ${file.fullPath}
-      ${_renderProgress(file)}
+      ${renderProgress(file)}
     </li>`
   }
 
-  function _renderProgress (file) {
+  function renderProgress (file) {
     if (file.writeError) {
       return html`<div class="progress error">Error</div>`
     }
-    const id = file.elsSuffix
-    var loaded = 0
-    if (file.progressPct) loaded = file.progressPct
-    var klass = 'progress__line--loading'
-    if (file.progressPct === 100) klass = 'progress__line--complete'
+    var loaded = file.progressPct || 0
+    var klass = loaded === 100 ? 'progress__line--complete' : 'progress__line--loading'
     return html`<div class="progress">
-       <div class="progress__counter" id="progress__counter--${id}">
+       <div class="progress__counter">
         ${loaded}%
       </div>
        <div class="progress__bar">
-         <div class="progress__line ${klass}" id="progress__line--${id}"
-              style="width: ${loaded}%">
+         <div class="progress__line ${klass}" style="width: ${loaded}%">
          </div>
        </div>
      </div>`
-  }
-
-  function _progressHandler (progress) {
-    const id = writing.elsSuffix
-    const pct = writing.progressPct = parseInt(progress.percentage)
-    document.getElementById(`progress__counter--${id}`).innerHTML = pct + '%'
-    document.getElementById(`progress__line--${id}`).style.width = pct + '%'
   }
 }
