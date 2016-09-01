@@ -102,22 +102,8 @@ module.exports = {
         send('archive:new', null, () => send('archive:importFiles', {files}, done))
         return
       }
-      var files = data.files
-      var filesByName = {}
-      for (var i in files) {
-        var file = files[i]
-        filesByName[file.name] = file
-      }
-      console.log(filesByName)
-      drive = getDrive()
-      const archive = drive.createArchive(state.instance.key, {
-        live: true,
-        sparse: true,
-        file: function (name) {
-          console.log(name, filesByName[name])
-          return raf(filesByName[name])
-        }
-      })
+      const archive = state.instance
+      const files = data.files
       archive.open(function () {
         if (!archive.owner) {
           // XXX: use error in state
