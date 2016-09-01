@@ -10,8 +10,6 @@ const help = (state, prev, send) => {
 
 const header = (state, prev, send) => {
   return html`
-  <div>
-    ${browser()}
     <header class="site-header"><div id="intro"></div>
       <div class="container">
         <a href="http://dat-data.com" class="dat-logo">
@@ -30,8 +28,7 @@ const header = (state, prev, send) => {
           ${help(state, prev, send)}
         </div>
       </div>
-    </header>
-  </div>`
+    </header>`
 }
 
 module.exports = header
