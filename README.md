@@ -17,6 +17,7 @@ npm install
 ```
 
 Do all of the below (watch assets and start server) in one command:
+
 ```
 npm run dev
 ```

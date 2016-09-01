@@ -7,120 +7,16 @@
  * More magic importer features:
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
-@import "~dat-design";
 @import "~dat-design/scss/base.scss";
-@import "site-header.scss";
-@import "status-bar.scss";
-@import "dat-header.scss";
-@import "file-system.scss";
-@import "import-queue.scss";
-@import "panel.scss"; //
-@import "error-page.scss";
-@import "preview.scss"; // TODO: this should move into dat-design - @lauren
-@import "landing-page.scss";
-@import "helper-breakpoints.scss"; // TODO: this should move into dat-design – @kriesse
-
-@import "preview-display.scss"; // TODO: delete this after choo migration
-
-
-// global styles
-
-body {
-  min-width: 480px;
-  > div {
-    min-height: 100vh;
-  }
-}
-
-a, button, input {
-  transition-property: background-color, color;
-  transition-duration: $transition-duration;
-  transition-timing-function: $transition-timing-function;
-  cursor: pointer;
-}
-
-a {
-  color: $color-green;
-}
-
-a:hover, a:focus {
-  color: $color-green--hover;
-  outline: none;
-}
-
-ul,
-li {
-  @include list-plain;
-}
-
-/* box model */
-
-.container {
-  margin: 0 auto;
-  padding: .75rem .625rem;
-  max-width: 1170px;
-  @include breakpoint (sm) {
-    padding-right: 1rem;
-    padding-left: 1rem;
-  }
-  @include breakpoint (md1) {
-    padding-right: 2rem;
-    padding-left: 2rem;
-  }
-}
-
-.breadcrumbs {
-  margin-bottom: 1rem;
-  min-height: 2em;
-}
-
-#add-files {
-  float: right;
-}
-
-#get_link {
-  z-index: 10;
-  position: absolute;
-}
-
-.site-main {
-  .container {
-    position: relative;
-  }
-}
-
-.button-add {
-  $radius: 24px;
-  position: absolute;
-  top: -$radius;
-  right: .5rem;
-  width: 2 * $radius;
-  height: 2 * $radius;
-  box-shadow:
-    0px 2px 10px rgba(0,0,0,.3),
-    0px 0px 1px rgba(0,0,0,.1),
-    inset 0px 1px 0px rgba(255,255,255,.25),
-    inset 0px -1px 0px rgba(0,0,0,.15);
-  background-color: $color-info;
-  color: $color-white;
-  border-radius: 50%;
-  text-align: center;
-  text-indent: -999px;
-  overflow: hidden;
-  &:hover, &:focus {
-    background-color: $color-info--hover;
-  }
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    top: $radius - 1px;
-    left: $radius * .75;
-    background-color: currentColor;
-    width: $radius / 2;
-    height: 2px;
-  }
-  &:after {
-    transform: rotate(90deg);
-  }
-}
+@import "imports/base";
+@import "imports/site-header";
+@import "imports/status-bar";
+@import "imports/dat-header";
+@import "imports/file-system";
+@import "imports/add-button";
+@import "imports/import-queue";
+@import "imports/panel"; //
+@import "imports/error-page";
+@import "imports/preview"; // TODO: this should move into dat-design - @lauren
+@import "imports/landing-page";
+@import "imports/preview-display"; // TODO: delete this after choo migration

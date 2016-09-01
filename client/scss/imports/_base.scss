@@ -1,0 +1,59 @@
+// global dat.land styles
+
+body {
+  min-width: 480px;
+  > div {
+    min-height: 100vh;
+  }
+}
+
+a, button, input {
+  cursor: pointer;
+}
+
+a {
+  &:hover, &:focus {
+    outline: none;
+  }
+}
+
+ul,
+li {
+  @include list-plain;
+}
+
+/* page layout */
+
+.container {
+  margin: 0 auto;
+  padding: .75rem .625rem;
+  max-width: 1170px;
+  @include breakpoint (sm) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  @include breakpoint (md1) {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+.site-main {
+  .container {
+    position: relative;
+  }
+}
+
+.breadcrumbs {
+  margin-bottom: 1rem;
+  min-height: 2em;
+}
+
+#add-files {
+  float: right;
+}
+
+#get_link {
+  z-index: 10;
+  position: absolute;
+}
