@@ -34,15 +34,6 @@ const archivePage = (state, prev, send) => {
           </div>
           <div id="share-link" class="share-link">${state.archive.key}</div>
           ${error(state.archive.error)}
-          <ul>
-          <li>signalhubs:
-            <ul>
-            ${state.archive.signalhubs.map(function (fqdn) {
-              return signalhubs(fqdn)
-            })}
-            </ul>
-          </li>
-          </ul>
           <div class="dat-details">
             <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>
             <div id="hyperdrive-size" class="dat-detail"><p id="size">${prettyBytes(state.archive.size || 0)}</p></div>
