@@ -31,6 +31,12 @@ module.exports = {
     update: (data, state) => {
       return data
     },
+    updateDownloaded: (downloaded, state) => {
+      return {downloaded: (state.downloaded || 0) + downloaded}
+    },
+    updateUploaded: (uploaded, state) => {
+      return {uploaded: (state.uploaded || 0) + uploaded}
+    },
     updatePeers: (data, state) => {
       return {numPeers: state.swarm.connections}
     },
@@ -147,10 +153,10 @@ module.exports = {
         })
       })
       archive.on('upload', function (data) {
-        send('archive:update', {uploaded: data.length + (state.uploaded || 0)}, noop)
+        send('archive:updateUploaded', data.length, noop)
       })
       archive.on('download', function (data) {
-        send('archive:update', {downloaded: data.length + (state.downloaded || 0)}, noop)
+        send('archive:updateDownloaded', data.length, noop)
       })
       archive.open(function () {
         if (archive.content) {
