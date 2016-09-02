@@ -4,6 +4,7 @@ const swarm = require('hyperdrive-archive-swarm')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
+const speedometer = require('speedometer')
 
 var drive = hyperdrive(memdb())
 var noop = function () {}
@@ -32,10 +33,20 @@ module.exports = {
       return data
     },
     updateDownloaded: (downloaded, state) => {
-      return {downloaded: (state.downloaded || 0) + downloaded}
+      const meter = state.download_meter || speedometer(3)
+      return {
+        download_meter: meter,
+        downloaded: (state.downloaded || 0) + downloaded,
+        download_speed: meter(downloaded)
+      }
     },
     updateUploaded: (uploaded, state) => {
-      return {uploaded: (state.uploaded || 0) + uploaded}
+      const meter = state.upload_meter || speedometer(3)
+      return {
+        upload_meter: meter,
+        uploaded: (state.uploaded || 0) + uploaded,
+        upload_speed: meter(uploaded)
+      }
     },
     updatePeers: (data, state) => {
       return {numPeers: state.swarm.connections}
@@ -131,7 +142,7 @@ module.exports = {
       })
     },
     load: function (key, state, send, done) {
-      var archive, sw
+      var archive, sw, timer
       if (state.instance && state.instance.drive) {
         if (state.instance.key.toString('hex') === key) {
           archive = state.instance
@@ -154,9 +165,13 @@ module.exports = {
       })
       archive.on('upload', function (data) {
         send('archive:updateUploaded', data.length, noop)
+        if (timer) window.clearTimeout(timer)
+        timer = setTimeout( () => send('archive:update', {upload_speed: 0, download_speed: 0}, noop), 3000)
       })
       archive.on('download', function (data) {
         send('archive:updateDownloaded', data.length, noop)
+        if (timer) window.clearTimeout(timer)
+        timer = setTimeout( () => send('archive:update', {upload_speed: 0, download_speed: 0}, noop), 3000)
       })
       archive.open(function () {
         if (archive.content) {
