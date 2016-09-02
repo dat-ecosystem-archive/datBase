@@ -2,7 +2,7 @@ const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const path = require('path')
-const hyperdriveImportQueue = require('hyperdrive-import-queue')
+const HyperdriveImportQueue = require('./../../../../hyperdrive-import-queue')
 const drop = require('drag-drop')
 
 var drive = hyperdrive(memdb())
@@ -103,7 +103,10 @@ module.exports = {
           files[i].fullPath = '/' + files[i].name
         }
       }
-      hyperdriveImportQueue(files, archive, {
+      // TODO: verify that archive matches, if not then init new HIQ
+      // TODO: use HID.add(files, cwd) method for repeat calls!
+      // TODO: bump HIQ version in package.json!
+      HyperdriveImportQueue(files, archive, {
         cwd: state.cwd || '',
         progressInterval: 100,
         onQueueNewFile: function (err, file) {
