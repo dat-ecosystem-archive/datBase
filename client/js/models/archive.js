@@ -166,12 +166,12 @@ module.exports = {
       archive.on('upload', function (data) {
         send('archive:updateUploaded', data.length, noop)
         if (timer) window.clearTimeout(timer)
-        timer = setTimeout( () => send('archive:update', {upload_speed: 0, download_speed: 0}, noop), 3000)
+        timer = setTimeout(() => send('archive:update', {upload_speed: 0, download_speed: 0}, noop), 3000)
       })
       archive.on('download', function (data) {
         send('archive:updateDownloaded', data.length, noop)
         if (timer) window.clearTimeout(timer)
-        timer = setTimeout( () => send('archive:update', {upload_speed: 0, download_speed: 0}, noop), 3000)
+        timer = setTimeout(() => send('archive:update', {upload_speed: 0, download_speed: 0}, noop), 3000)
       })
       archive.open(function () {
         if (archive.content) {
