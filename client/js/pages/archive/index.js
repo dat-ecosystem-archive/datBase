@@ -63,8 +63,4 @@ const archivePage = (state, prev, send) => {
     </div>`
 }
 
-const signalhubs = (fqdn) => {
-  return html`<li>- ${fqdn}</li>`
-}
-
 module.exports = archivePage
