@@ -7,16 +7,18 @@ function page (contents, dehydratedAppState) {
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
       </head>
       <body>
-        <div id="browser-warning"></div>
-        <div id="app-root">
-          ${contents}
+        <div id="app">
+          <div id="browser-warning"></div>
+          <div id="app-root">
+            ${contents}
+          </div>
         </div>
       </body>
       <script>
         window.dl = window.dl || {};
         window.dl.init__dehydratedAppState = ${dehydratedAppState};
       </script>
-      <script type="text/javascript" src="client/js/elements/browser-warning/index.js"></script>
+      <script type="text/javascript" src="public/js/browser-warning.js"></script>
       <script type="text/javascript" src="public/js/app.js"></script>
     </html>`
 }
