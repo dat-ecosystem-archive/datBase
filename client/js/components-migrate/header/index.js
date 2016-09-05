@@ -22,7 +22,7 @@ Header.prototype.update = function (state) {
 Header.prototype._render = function () {
   return yo`
     <header class="site-header">
-      <div class="container">
+      <div class="container container--site-header">
         <a href="http://dat-data.com" class="dat-logo">
           <img src="./public/img/dat-data-logo.svg" style="width:40px;" />
         </a>

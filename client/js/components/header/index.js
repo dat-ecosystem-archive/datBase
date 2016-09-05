@@ -9,7 +9,7 @@ const help = (state, prev, send) => {
 
 const header = (state, prev, send) => {
   return html`<header class="site-header"><div id="intro"></div>
-    <div class="container">
+    <div class="container container--site-header">
       <a href="http://dat-data.com" class="dat-logo">
         <img src="./public/img/dat-data-logo.svg" />
       </a>

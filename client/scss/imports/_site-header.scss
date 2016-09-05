@@ -1,11 +1,10 @@
 /* header */
 
 $site-header-height: 4rem;
+$site-header-ui-elements-height: 3rem;
 
 .site-header {
   height: $site-header-height;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
   background-color: $color-green--hover;
   color: $color-white;
 }
@@ -14,15 +13,22 @@ $site-header-height: 4rem;
   float: right;
 }
 
+.container--site-header {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .dat-import {
+  height: $site-header-ui-elements-height;
   display: inline-block;
-  margin-top: -.25rem;
   vertical-align: middle;
+  margin-left: 1rem;
 }
 
 .dat-logo {
   float: left;
-
   img {
     width: 40px;
   }
@@ -31,23 +37,17 @@ $site-header-height: 4rem;
 // dat-button
 .dat-button {
   display: inline-block;
-  padding-top: .4rem;
-  padding-right: .2rem;
-  padding-bottom: .4rem;
-  padding-left: .2rem;
-  background-color: $color-green--hover;
   button {
+    height: $site-header-ui-elements-height;
+    background-color: transparent;
+    color: $color-white;
+    text-transform: uppercase;
+    letter-spacing: .05em;
     &:hover, &:focus, &:active {
-      color: $color-neutral--04;
+      background-color: $color-green--darker;
+      color: $color-white;
       outline: none;
       cursor: pointer;
     }
-  }
-}
-
-.dat-button--new-dat {
-  margin-right: 1rem;
-  button {
-    text-transform: uppercase;
   }
 }
