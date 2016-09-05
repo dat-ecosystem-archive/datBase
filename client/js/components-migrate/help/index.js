@@ -21,5 +21,5 @@ module.exports = function Help () {
     ]})
     _intro.start()
   }
-  return yo`<div class="dat-button">${button({text: '?', click: onclick})}</div>`
+  return yo`<div class="dat-button dat-button--help">${button({text: '? Help', click: onclick})}</div>`
 }
