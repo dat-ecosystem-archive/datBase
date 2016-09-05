@@ -10,6 +10,8 @@ const page = require('./page')
 const router = require('server-router')()
 const Haus = require('./haus')
 
+var haus = Haus()
+
 // serve old pre-choo client-side-only app for migration work:
 router.on('/migrate', {
   get: function (req, res, params) {
