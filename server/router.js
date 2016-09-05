@@ -3,20 +3,14 @@
 const fs = require('fs')
 const assert = require('assert')
 const serializeJS = require('serialize-javascript')
+const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const app = require('../client/js/app').app
 const page = require('./page')
 const router = require('server-router')()
 const Haus = require('./haus')
 
-var wrtc
-try {
-  wrtc = require('electron-webrtc')()
-  wrtc.on('error', function (err) { console.log(err) })
-} catch (e) {
-  console.warn('To enable rtc swarm, run: npm i electron-webrtc')
-}
-var haus = Haus({ wrtc })
+var haus = Haus()
 
 // serve old pre-choo client-side-only app for migration work:
 router.on('/migrate', {
@@ -57,7 +51,7 @@ router.on('/:archiveKey', {
       sendSPA('/:archiveKey', res, state)
     }, 3000)
     state.archive.key = params.archiveKey
-    archive.list(function (err, data) {
+    collect(archive.list({live: true}), function (err, data) {
       if (err) state.archive.error = {message: err.message}
       if (cancelled) return
       clear()
