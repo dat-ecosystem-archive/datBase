@@ -1,5 +1,4 @@
 const html = require('choo/html')
-const browser = require('./../../elements/browser-warning')
 const button = require('./../../elements/button')
 const importButton = require('./../../elements/import-button')
 
