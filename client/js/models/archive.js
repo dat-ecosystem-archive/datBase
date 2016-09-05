@@ -1,6 +1,7 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
+const collect = require('collect-stream')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
@@ -11,6 +12,7 @@ var noop = function () {}
 module.exports = {
   namespace: 'archive',
   state: {
+    metadata: {},
     key: null,
     file: null,
     error: null,
@@ -83,6 +85,14 @@ module.exports = {
       window.history.pushState({}, null, location)
       send('archive:update', {entries: {}}, noop)
       send('archive:load', data, done)
+    },
+    getMetadata: function (data, state, send, done) {
+      var archive = state.instance
+      collect(archive.createFileReadStream('dat.json'), (err, raw) => {
+       if (err) return done()
+       const json = JSON.parse(raw.toString())
+       send('archive:update', {metadata: json}, done)
+      })
     },
     importFiles: function (data, state, send, done) {
       var files = data.files
@@ -159,6 +169,7 @@ module.exports = {
             // XXX: Hack to fetch a small bit of data so size properly updates
           })
         }
+        send('archive:getMetadata', noop)
         var stream = archive.list({live: true})
         var entries = {}
         stream.on('data', function (entry) {
