@@ -1,0 +1,51 @@
+// override introjs styles
+// double class selector to increase specificity
+
+.introjs-helperNumberLayer.introjs-helperNumberLayer {
+  display: none;
+}
+
+.introjs-tooltip.introjs-tooltip {
+  min-width: 240px;
+  position: relative;
+  padding: .5rem 1.5rem .5rem;
+  color: $color-neutral;
+  text-align: center;
+}
+
+.introjs-tooltiptext.introjs-tooltiptext {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.introjs-button.introjs-button {
+  padding: .6rem 0;
+  border: none;
+  color: $color-neutral--50;
+  text-shadow: none;
+  background: transparent;
+  &:hover, &:focus {
+    color: $color-neutral--70;
+    background: transparent;
+    box-shadow: none;
+  }
+  &.introjs-prevbutton {
+    padding-right: 3.5rem;
+    text-align: left;
+  }
+  &.introjs-nextbutton {
+    padding-left: 3.5rem;
+    text-align: right;
+  }
+  &.introjs-skipbutton {
+    position: absolute;
+    top: -.5rem;
+    right: -.5rem;
+  }
+}
+
+.introjs-tooltipbuttons.introjs-tooltipbuttons {
+  margin-top: -1.85rem;
+  text-align: center;
+}
