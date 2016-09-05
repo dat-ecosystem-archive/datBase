@@ -57,18 +57,18 @@ FileQueue.prototype._render = function () {
   var self = this
 
   function empty () {
-    return yo`<ul></ul>`
+    return yo`<table></table>`
   }
 
   if (this._queue && this._queue.length) {
     var newState = this._queue[this._queue.length - 1]
     if (newState && (newState.writing || newState.next.length > 0)) {
-      return yo`<ul>
+      return yo`<table>
         ${newState.writing ? this._renderLi(newState.writing) : undefined}
         ${newState.next.map(function (file) {
           return self._renderLi(file)
         })}
-        </ul>`
+        </table>`
     } else {
       return empty()
     }
@@ -78,10 +78,10 @@ FileQueue.prototype._render = function () {
 }
 
 FileQueue.prototype._renderLi = function (file) {
-  return yo`<li>
-    ${file.fullPath}
-    ${this._renderProgress(file)}
-    </li>`
+  return yo`<tr>
+      <td>${file.fullPath}</td>
+      <td>${this._renderProgress(file)}</td>
+    </tr>`
 }
 
 FileQueue.prototype._renderProgress = function (file) {

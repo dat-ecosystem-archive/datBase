@@ -17,22 +17,22 @@ module.exports = (state, prev, send) => {
 
   function render () {
     if (writing || next.length > 0) {
-      return html`<ul id="import-queue">
+      return html`<table id="import-queue">
         ${writing ? renderLi(writing) : null}
         ${next.map(function (file) {
           return renderLi(file)
         })}
-      </ul>`
+      </table>`
     } else {
-      return html`<ul id="import-queue"></ul>`
+      return html`<table id="import-queue"></table>`
     }
   }
 
   function renderLi (file) {
-    return html`<li>
-      ${file.fullPath}
-      ${renderProgress(file)}
-    </li>`
+    return html`<tr>
+      <td>${file.fullPath}</td>
+      <td>${renderProgress(file)}</td>
+    </tr>`
   }
 
   function renderProgress (file) {
