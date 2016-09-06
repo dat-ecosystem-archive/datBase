@@ -2,10 +2,11 @@ const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const path = require('path')
-const HyperdriveImportQueue = require('./../../../../hyperdrive-import-queue')
+const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 
 var drive = hyperdrive(memdb())
+var hyperdriveImportQueue
 var noop = function () {}
 
 module.exports = {
@@ -76,6 +77,7 @@ module.exports = {
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
       send('archive:import', key, done)
+      send('archive:initImportQueue', {archive}, noop)
     },
     import: function (data, state, send, done) {
       const location = '/' + data
@@ -103,11 +105,10 @@ module.exports = {
           files[i].fullPath = '/' + files[i].name
         }
       }
-      // TODO: verify that archive matches, if not then init new HIQ
-      // TODO: use HID.add(files, cwd) method for repeat calls!
-      // TODO: bump HIQ version in package.json!
-      HyperdriveImportQueue(files, archive, {
-        cwd: state.cwd || '',
+      hyperdriveImportQueue.add(files, state.cwd)
+    },
+    initImportQueue: function (data, state, send, done) {
+      hyperdriveImportQueue = HyperdriveImportQueue(null, data.archive, {
         progressInterval: 100,
         onQueueNewFile: function (err, file) {
           if (err) console.log(err)
@@ -123,8 +124,7 @@ module.exports = {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-        },
-        onCompleteAll: function () {}
+        }
       })
     },
     load: function (key, state, send, done) {
