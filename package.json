@@ -79,7 +79,7 @@
     "hyperdrive": "^7.2.0",
     "hyperdrive-archive-swarm": "^4.0.0",
     "hyperdrive-haus": "^1.0.0",
-    "hyperdrive-import-queue": "^1.0.0",
+    "hyperdrive-import-queue": "^2.0.0",
     "hyperdrive-ui": "^4.0.0",
     "intro.js": "^2.1.0",
     "level": "^1.4.0",
