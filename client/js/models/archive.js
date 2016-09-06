@@ -79,10 +79,14 @@ module.exports = {
   effects: {
     new: function (data, state, send, done) {
       drive = getDrive()
+      var _fs = {}
       const archive = drive.createArchive(null, {
         live: true,
         sparse: true,
-        file: ram
+        file: (name) => {
+          if (!_fs[name]) _fs[name] = ram()
+          return _fs[name]
+        }
       })
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key: key}, noop)
