@@ -49,7 +49,7 @@ module.exports = {
         stateCopy.next = stateCopy.next.slice(1)
       }
       // write progress on current file writing:
-      if (data.writingProgressPct && data.writing && data.writing.fullPath) {
+      if (data.writing && data.writing.fullPath && data.writingProgressPct) {
         if (stateCopy.writing && (stateCopy.writing.fullPath === data.writing.fullPath)) {
           stateCopy.writing.progressPct = data.writingProgressPct
         }
@@ -129,6 +129,14 @@ module.exports = {
         },
         onFileWriteBegin: function (err, file) {
           if (err) console.log(err)
+          if (file && !file.progressHandler) {
+            file.progressPct = 0
+            file.progressHandler = (progress) => {
+              const pct = parseInt(progress.percentage)
+              send('archive:updateImportQueue', {writing: file, writingProgressPct: pct}, function () {})
+            }
+            file.progressListener.on('progress', file.progressHandler)
+          }
           send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
         },
         onFileWriteComplete: function (err, file) {

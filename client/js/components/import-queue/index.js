@@ -4,15 +4,6 @@ module.exports = (state, prev, send) => {
   const writing = state.archive.importQueue.writing
   const next = state.archive.importQueue.next
 
-  if (writing && !writing.progressHandler) {
-    writing.progressPct = 0
-    writing.progressHandler = (progress) => {
-      const pct = parseInt(progress.percentage)
-      send('archive:updateImportQueue', {writingProgressPct: pct, writing: writing}, function () {})
-    }
-    writing.progressListener.on('progress', writing.progressHandler)
-  }
-
   return render()
 
   function render () {
