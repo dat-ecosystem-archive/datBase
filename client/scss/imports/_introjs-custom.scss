@@ -5,6 +5,10 @@
   display: none;
 }
 
+.introjs-helperLayer.introjs-helperLayer {
+  background-color: rgba(255,255,255,.5);
+}
+
 .introjs-tooltip.introjs-tooltip {
   min-width: 240px;
   position: relative;
@@ -25,6 +29,8 @@
   color: $color-neutral--50;
   text-shadow: none;
   background: transparent;
+  text-transform: uppercase;
+  letter-spacing: .05em;
   &:hover, &:focus {
     color: $color-neutral--70;
     background: transparent;
@@ -40,8 +46,43 @@
   }
   &.introjs-skipbutton {
     position: absolute;
-    top: -.5rem;
-    right: -.5rem;
+    top: -.25rem;
+    right: 0;
+  }
+  &.introjs-disabled {
+    visibility: hidden;
+  }
+}
+
+// close button
+.introjs-skipbutton.introjs-skipbutton {
+  $radius: 12px;
+  position: absolute;
+  top: calc(#{-$radius} - #{$padding-site-main});
+  width: 2 * $radius;
+  height: 2 * $radius;
+  background-color: $color-white;
+  border-radius: 50%;
+  text-align: center;
+  text-indent: -999px;
+  overflow: hidden;
+  cursor: pointer;
+  &:hover, &:focus {
+    background-color: $color-white;
+  }
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: $radius - 1px;
+    left: $radius * .5;
+    background-color: currentColor;
+    width: $radius;
+    height: 2px;
+    transform: rotate(-45deg);
+  }
+  &:after {
+    transform: rotate(45deg);
   }
 }
 

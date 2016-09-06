@@ -167,14 +167,15 @@ module.exports = function Help () {
     var _intro = intro.introJs()
     _intro.setOptions({
       steps: [{
-        intro: 'You can create a new dat by clicking <b>Create New Dat</b>'
+        intro: 'You can create a new Dat by clicking <span class="bold nowrap">Create New Dat</span>',
+        element: '#js-button-new'
       },
       {
-        intro: 'Drop some files here',
-        element: '#add-files'
+        intro: 'Add some files here',
+        element: '#js-button-add'
       },
       {
-        intro: 'You can share the dat with this link',
+        intro: 'You can share the Dat with this link',
         element: '#share-link',
         position: 'bottom'
       }

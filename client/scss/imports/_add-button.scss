@@ -16,6 +16,7 @@
   text-align: center;
   text-indent: -999px;
   overflow: hidden;
+  cursor: pointer;
   &:hover, &:focus {
     background-color: $color-info--hover;
   }

@@ -27,7 +27,7 @@ Header.prototype._render = function () {
           <img src="./public/img/dat-data-logo.svg" style="width:40px;" />
         </a>
         <div class="site-header__actions">
-          <div class="dat-button dat-button--new-dat">
+          <div id="js-button-new" class="dat-button dat-button--new-dat">
             ${button({
               text: 'Create new Dat',
               click: this._props.create

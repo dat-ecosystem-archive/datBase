@@ -14,7 +14,7 @@ const header = (state, prev, send) => {
         <img src="./public/img/dat-data-logo.svg" />
       </a>
       <div class="site-header__actions">
-        <div class="dat-button dat-button--new-dat">
+        <div id="js-button-new" class="dat-button dat-button--new-dat">
           ${button({
             text: 'Create new Dat',
             click: () => send('archive:new')
