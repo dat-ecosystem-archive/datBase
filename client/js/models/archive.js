@@ -2,10 +2,11 @@ const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const path = require('path')
-const hyperdriveImportQueue = require('hyperdrive-import-queue')
+const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 
 var drive = hyperdrive(memdb())
+var hyperdriveImportQueue
 var noop = function () {}
 
 module.exports = {
@@ -24,6 +25,7 @@ module.exports = {
     ],
     importQueue: {
       writing: null,
+      writingProgressPct: null,
       next: []
     }
   },
@@ -39,6 +41,7 @@ module.exports = {
       // file.progressListener refs:
       var stateCopy = {}
       stateCopy.writing = state.importQueue.writing
+      stateCopy.writingProgressPct = state.importQueue.writingProgressPct
       stateCopy.next = state.importQueue.next
       // new file is enqueued:
       if (data.onQueueNewFile) stateCopy.next.push(data.file)
@@ -48,19 +51,34 @@ module.exports = {
         stateCopy.next = stateCopy.next.slice(1)
       }
       // write progress on current file writing:
-      if (data.writingProgressPct && data.writing && data.writing.fullPath) {
+      if (data.writing && data.writing.fullPath && data.writingProgressPct) {
         if (stateCopy.writing && (stateCopy.writing.fullPath === data.writing.fullPath)) {
-          stateCopy.writing.progressPct = data.writingProgressPct
+          stateCopy.writingProgressPct = data.writingProgressPct
         }
       }
       // current file is done writing:
       if (data.onFileWriteComplete) {
         stateCopy.writing = null
+        stateCopy.writingProgressPct = null
       }
       return {
         importQueue: {
           writing: stateCopy.writing,
+          writingProgressPct: stateCopy.writingProgressPct,
           next: stateCopy.next
+        }
+      }
+    },
+    resetImportQueue: (data, state) => {
+      var writing = state.importQueue.writing
+      if (writing && writing.progressListener && writing.progressHandler) {
+        writing.progressListener.removeListener('progress', writing.progressHandler)
+      }
+      return {
+        importQueue: {
+          writing: null,
+          writingProgressPct: null,
+          next: []
         }
       }
     }
@@ -76,6 +94,7 @@ module.exports = {
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
       send('archive:import', key, done)
+      send('archive:initImportQueue', {archive}, noop)
     },
     import: function (data, state, send, done) {
       const location = '/' + data
@@ -103,15 +122,25 @@ module.exports = {
           files[i].fullPath = '/' + files[i].name
         }
       }
-      hyperdriveImportQueue(files, archive, {
-        cwd: state.cwd || '',
-        progressInterval: 100,
+      hyperdriveImportQueue.add(files, state.cwd)
+      return done()
+    },
+    initImportQueue: function (data, state, send, done) {
+      send('archive:resetImportQueue', {}, noop)
+      hyperdriveImportQueue = HyperdriveImportQueue(null, data.archive, {
         onQueueNewFile: function (err, file) {
           if (err) console.log(err)
           send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
         },
         onFileWriteBegin: function (err, file) {
           if (err) console.log(err)
+          if (file && !file.progressHandler) {
+            file.progressHandler = (progress) => {
+              const pct = parseInt(progress.percentage)
+              send('archive:updateImportQueue', {writing: file, writingProgressPct: pct}, function () {})
+            }
+            file.progressListener.on('progress', file.progressHandler)
+          }
           send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
         },
         onFileWriteComplete: function (err, file) {
@@ -120,8 +149,7 @@ module.exports = {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-        },
-        onCompleteAll: function () {}
+        }
       })
     },
     load: function (key, state, send, done) {
