@@ -8,6 +8,7 @@ const drop = require('drag-drop')
 
 var noop = function () {}
 var drive
+var _fs = {}
 
 function getDrive () {
   if (!drive) drive = hyperdrive(level('dat.land'))
@@ -79,7 +80,6 @@ module.exports = {
   effects: {
     new: function (data, state, send, done) {
       drive = getDrive()
-      var _fs = {}
       const archive = drive.createArchive(null, {
         live: true,
         sparse: true,
@@ -154,7 +154,14 @@ module.exports = {
       if (!archive) {
         send('archive:update', {key}, noop)
         drive = getDrive()
-        archive = drive.createArchive(key)
+        archive = drive.createArchive(key, {
+          live: true,
+          sparse: true,
+          file: (name) => {
+            if (!_fs[name]) _fs[name] = ram()
+            return _fs[name]
+          }
+        })
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
