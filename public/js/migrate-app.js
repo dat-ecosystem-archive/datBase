@@ -68,18 +68,18 @@ FileQueue.prototype._render = function () {
   var self = this
 
   function empty () {
-    return yo`<ul></ul>`
+    return yo`<table></table>`
   }
 
   if (this._queue && this._queue.length) {
     var newState = this._queue[this._queue.length - 1]
     if (newState && (newState.writing || newState.next.length > 0)) {
-      return yo`<ul>
+      return yo`<tr>
         ${newState.writing ? this._renderLi(newState.writing) : undefined}
         ${newState.next.map(function (file) {
           return self._renderLi(file)
         })}
-        </ul>`
+        </tr>`
     } else {
       return empty()
     }
@@ -89,10 +89,10 @@ FileQueue.prototype._render = function () {
 }
 
 FileQueue.prototype._renderLi = function (file) {
-  return yo`<li>
-    ${file.fullPath}
-    ${this._renderProgress(file)}
-    </li>`
+  return yo`<tr>
+    <td>${file.fullPath}</td>
+    <td>${this._renderProgress(file)}</td>
+    </tr>`
 }
 
 FileQueue.prototype._renderProgress = function (file) {
@@ -68859,12 +68859,12 @@ Tree.prototype.render = function (root, entries, onclick) {
   var displayId = 'display'
   var display = yo`<div id="${displayId}"></div>`
   var fs = yo`<div id="fs">
-    <ul id="file-widget">
+    <table id="file-widget">
       ${backRow()}
       ${visible.map(function (entry) {
         return row(entry)
       })}
-    </ul>
+    </table>
   </div>`
 
   var widget = yo`<div id="yo-fs">
@@ -68885,11 +68885,9 @@ Tree.prototype.render = function (root, entries, onclick) {
 
   function backRow () {
     if (root === '/' || root === '' || root === '.') return
-    return yo`<li class='entry-back' onclick=${backButton}>
-      <a href='javascript:void(0)'>
-        <span class="name">..</span>
-      </a>
-    </li>`
+    return yo`<tr class='entry-back' onclick=${backButton} href='javascript:void(0)'>
+      <td class="name">..</td>
+    </tr>`
   }
 
   function row (entry) {
@@ -68912,13 +68910,11 @@ Tree.prototype.render = function (root, entries, onclick) {
         })
       }
     }
-    return yo`<li class='entry ${entry.type}' onclick=${click}>
-      <a href="javascript:void(0)">
-        <span class="name">${path.basename(entry.name)}</span>
-        <span class="modified">${entry.mtime ? relative(entry.mtime) : ''}</span>
-        <span class="size">${pretty(entry.length)}</span>
-      </a>
-    </li>`
+    return yo`<tr class='entry ${entry.type}' onclick=${click} href="javascript:void(0)">
+      <td class="name">${path.basename(entry.name)}</td>
+      <td class="modified">${entry.mtime ? relative(entry.mtime) : ''}</td>
+      <td class="size">${pretty(entry.length)}</td>
+    </tr>`
   }
 }
 

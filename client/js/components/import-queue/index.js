@@ -9,22 +9,22 @@ module.exports = (state, prev, send) => {
 
   function render () {
     if (writing || next.length > 0) {
-      return html`<ul id="import-queue">
+      return html`<table id="import-queue">
         ${writing ? renderLi(writing, writingProgressPct) : null}
         ${next.map(function (file) {
           return renderLi(file, null)
         })}
-      </ul>`
+      </table>`
     } else {
-      return html`<ul id="import-queue"></ul>`
+      return html`<table id="import-queue"></table>`
     }
   }
 
   function renderLi (file, progressPct) {
-    return html`<li>
-      ${file.fullPath}
-      ${renderProgress(file, progressPct)}
-    </li>`
+    return html`<tr>
+      <td class="name">${file.fullPath}</td>
+      <td>${renderProgress(file, progressPct)}</td>
+    </tr>`
   }
 
   function renderProgress (file, progressPct) {
