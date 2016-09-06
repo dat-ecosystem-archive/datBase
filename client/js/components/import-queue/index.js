@@ -30,7 +30,7 @@ module.exports = (state, prev, send) => {
 
   function renderLi (file) {
     return html`<tr>
-      <td>${file.fullPath}</td>
+      <td class="name">${file.fullPath}</td>
       <td>${renderProgress(file)}</td>
     </tr>`
   }

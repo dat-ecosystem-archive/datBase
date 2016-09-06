@@ -79,7 +79,7 @@ FileQueue.prototype._render = function () {
 
 FileQueue.prototype._renderLi = function (file) {
   return yo`<tr>
-      <td>${file.fullPath}</td>
+      <td class="name">${file.fullPath}</td>
       <td>${this._renderProgress(file)}</td>
     </tr>`
 }
