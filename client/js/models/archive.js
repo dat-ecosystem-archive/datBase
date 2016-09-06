@@ -123,7 +123,6 @@ module.exports = {
     initImportQueue: function (data, state, send, done) {
       send('archive:resetImportQueue', {}, noop)
       hyperdriveImportQueue = HyperdriveImportQueue(null, data.archive, {
-        progressInterval: 100,
         onQueueNewFile: function (err, file) {
           if (err) console.log(err)
           send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
