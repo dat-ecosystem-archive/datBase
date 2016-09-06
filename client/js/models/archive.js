@@ -92,9 +92,9 @@ module.exports = {
       // will update this when we start using accounts and repos
       var archive = state.instance
       collect(archive.createFileReadStream('dat.json'), (err, raw) => {
-       if (err) return done()
-       const json = JSON.parse(raw.toString())
-       send('archive:update', {metadata: json}, done)
+        if (err) return done()
+        const json = JSON.parse(raw.toString())
+        send('archive:update', {metadata: json}, done)
       })
     },
     importFiles: function (data, state, send, done) {
