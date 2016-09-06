@@ -55,6 +55,7 @@ router.on('/:archiveKey', {
     collect(stream, function (err, data) {
       if (err) state.archive.error = {message: err.message}
       if (cancelled) return
+      clear()
       state.archive.entries = data
       sendSPA('/:archiveKey', res, state)
     })
