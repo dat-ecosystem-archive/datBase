@@ -25,6 +25,7 @@ module.exports = {
     ],
     importQueue: {
       writing: null,
+      writingProgressPct: null,
       next: []
     }
   },
@@ -40,6 +41,7 @@ module.exports = {
       // file.progressListener refs:
       var stateCopy = {}
       stateCopy.writing = state.importQueue.writing
+      stateCopy.writingProgressPct = state.importQueue.writingProgressPct
       stateCopy.next = state.importQueue.next
       // new file is enqueued:
       if (data.onQueueNewFile) stateCopy.next.push(data.file)
@@ -51,16 +53,18 @@ module.exports = {
       // write progress on current file writing:
       if (data.writing && data.writing.fullPath && data.writingProgressPct) {
         if (stateCopy.writing && (stateCopy.writing.fullPath === data.writing.fullPath)) {
-          stateCopy.writing.progressPct = data.writingProgressPct
+          stateCopy.writingProgressPct = data.writingProgressPct
         }
       }
       // current file is done writing:
       if (data.onFileWriteComplete) {
         stateCopy.writing = null
+        stateCopy.writingProgressPct = null
       }
       return {
         importQueue: {
           writing: stateCopy.writing,
+          writingProgressPct: stateCopy.writingProgressPct,
           next: stateCopy.next
         }
       }
@@ -73,6 +77,7 @@ module.exports = {
       return {
         importQueue: {
           writing: null,
+          writingProgressPct: null,
           next: []
         }
       }
@@ -130,7 +135,6 @@ module.exports = {
         onFileWriteBegin: function (err, file) {
           if (err) console.log(err)
           if (file && !file.progressHandler) {
-            file.progressPct = 0
             file.progressHandler = (progress) => {
               const pct = parseInt(progress.percentage)
               send('archive:updateImportQueue', {writing: file, writingProgressPct: pct}, function () {})

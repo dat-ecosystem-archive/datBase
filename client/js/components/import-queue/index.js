@@ -2,6 +2,7 @@ const html = require('choo/html')
 
 module.exports = (state, prev, send) => {
   const writing = state.archive.importQueue.writing
+  const writingProgressPct = state.archive.importQueue.writingProgressPct
   const next = state.archive.importQueue.next
 
   return render()
@@ -9,9 +10,9 @@ module.exports = (state, prev, send) => {
   function render () {
     if (writing || next.length > 0) {
       return html`<ul id="import-queue">
-        ${writing ? renderLi(writing) : null}
+        ${writing ? renderLi(writing, writingProgressPct) : null}
         ${next.map(function (file) {
-          return renderLi(file)
+          return renderLi(file, null)
         })}
       </ul>`
     } else {
@@ -19,18 +20,18 @@ module.exports = (state, prev, send) => {
     }
   }
 
-  function renderLi (file) {
+  function renderLi (file, progressPct) {
     return html`<li>
       ${file.fullPath}
-      ${renderProgress(file)}
+      ${renderProgress(file, progressPct)}
     </li>`
   }
 
-  function renderProgress (file) {
+  function renderProgress (file, progressPct) {
     if (file.writeError) {
       return html`<div class="progress error">Error</div>`
     }
-    var loaded = file.progressPct || 0
+    var loaded = progressPct || 0
     var klass = loaded === 100 ? 'progress__line--complete' : 'progress__line--loading'
     return html`<div class="progress">
        <div class="progress__counter">
