@@ -28,7 +28,7 @@ module.exports = (state, prev, send) => {
   }
 
   function renderProgress (file, progressPct) {
-    if (file.writeError) {
+    if (file.importError) {
       return html`<div class="progress error">Error</div>`
     }
     var loaded = progressPct || 0
