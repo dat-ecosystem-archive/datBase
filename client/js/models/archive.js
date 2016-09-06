@@ -1,12 +1,19 @@
-const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
+const level = require('level-browserify')
 const swarm = require('hyperdrive-archive-swarm')
+const ram = require('random-access-memory')
 const path = require('path')
 const hyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 
-var drive = hyperdrive(memdb())
 var noop = function () {}
+var drive
+var _fs = {}
+
+function getDrive () {
+  if (!drive) drive = hyperdrive(level('dat.land'))
+  return drive
+}
 
 module.exports = {
   namespace: 'archive',
@@ -72,9 +79,17 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
-      const archive = drive.createArchive(null, {live: true, sparse: true})
+      drive = getDrive()
+      const archive = drive.createArchive(null, {
+        live: true,
+        sparse: true,
+        file: (name) => {
+          if (!_fs[name]) _fs[name] = ram()
+          return _fs[name]
+        }
+      })
       const key = archive.key.toString('hex')
-      send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
+      send('archive:update', {instance: archive, swarm: swarm(archive), key: key}, noop)
       send('archive:import', key, done)
     },
     import: function (data, state, send, done) {
@@ -85,43 +100,45 @@ module.exports = {
       send('archive:load', data, done)
     },
     importFiles: function (data, state, send, done) {
-      var files = data.files
-      const archive = state.instance
-      if (data.createArchive || !archive) {
+      if (data.createArchive || !state.instance) {
         send('archive:new', null, () => send('archive:importFiles', {files}, done))
         return
       }
-      if (!archive.owner) {
-        // XXX: use error in state
-        window.alert('You can not put files in this archive')
-        return done()
-      }
-      if (!Array.isArray(files)) {
-        // arrayify FileList
-        files = Array.prototype.slice.call(files, 0)
-        for (var i in files) {
-          files[i].fullPath = '/' + files[i].name
+      const archive = state.instance
+      var files = data.files
+      archive.open(function () {
+        if (!archive.owner) {
+          // XXX: use error in state
+          window.alert('You can not put files in this archive')
+          return done()
         }
-      }
-      hyperdriveImportQueue(files, archive, {
-        cwd: state.cwd || '',
-        progressInterval: 100,
-        onQueueNewFile: function (err, file) {
-          if (err) console.log(err)
-          send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
-        },
-        onFileWriteBegin: function (err, file) {
-          if (err) console.log(err)
-          send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
-        },
-        onFileWriteComplete: function (err, file) {
-          if (err) console.log(err)
-          if (file && file.progressListener && file.progressHandler) {
-            file.progressListener.removeListener('progress', file.progressHandler)
+        if (!Array.isArray(files)) {
+          // arrayify FileList
+          files = Array.prototype.slice.call(files, 0)
+          for (var i in files) {
+            files[i].fullPath = '/' + files[i].name
           }
-          send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-        },
-        onCompleteAll: function () {}
+        }
+        hyperdriveImportQueue(files, archive, {
+          cwd: state.cwd || '',
+          progressInterval: 100,
+          onQueueNewFile: function (err, file) {
+            if (err) console.log(err)
+            send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
+          },
+          onFileWriteBegin: function (err, file) {
+            if (err) console.log(err)
+            send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
+          },
+          onFileWriteComplete: function (err, file) {
+            if (err) console.log(err)
+            if (file && file.progressListener && file.progressHandler) {
+              file.progressListener.removeListener('progress', file.progressHandler)
+            }
+            send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
+          },
+          onCompleteAll: function () {}
+        })
       })
     },
     load: function (key, state, send, done) {
@@ -136,7 +153,15 @@ module.exports = {
       }
       if (!archive) {
         send('archive:update', {key}, noop)
-        archive = drive.createArchive(key)
+        drive = getDrive()
+        archive = drive.createArchive(key, {
+          live: true,
+          sparse: true,
+          file: (name) => {
+            if (!_fs[name]) _fs[name] = ram()
+            return _fs[name]
+          }
+        })
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
