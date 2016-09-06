@@ -87,6 +87,9 @@ module.exports = {
       send('archive:load', data, done)
     },
     getMetadata: function (data, state, send, done) {
+      // EXPERIMENTAL:
+      // right now we are reading this from dat.json but perhaps we
+      // will update this when we start using accounts and repos
       var archive = state.instance
       collect(archive.createFileReadStream('dat.json'), (err, raw) => {
        if (err) return done()
