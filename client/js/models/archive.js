@@ -64,6 +64,18 @@ module.exports = {
           next: stateCopy.next
         }
       }
+    },
+    resetImportQueue: (data, state) => {
+      var writing = state.importQueue.writing
+      if (writing && writing.progressListener && writing.progressHandler) {
+        writing.progressListener.removeListener('progress', writing.progressHandler)
+      }
+      return {
+        importQueue: {
+          writing: null,
+          next: []
+        }
+      }
     }
   },
   subscriptions: [
@@ -106,8 +118,10 @@ module.exports = {
         }
       }
       hyperdriveImportQueue.add(files, state.cwd)
+      return done()
     },
     initImportQueue: function (data, state, send, done) {
+      send('archive:resetImportQueue', {}, noop)
       hyperdriveImportQueue = HyperdriveImportQueue(null, data.archive, {
         progressInterval: 100,
         onQueueNewFile: function (err, file) {
