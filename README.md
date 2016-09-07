@@ -50,13 +50,13 @@ Chrome:
 ```
 npm run build
 npm run start &
-DATLAND_CHROME_PATH=/path/to/chrome_bin TEST_SERVER=http://localhost:8080/migrate npm run test:e2e
+DATLAND_CHROME_PATH=/path/to/chrome_bin TEST_SERVER=http://localhost:8080 npm run test:e2e
 ```
 
 Firefox: (currently not working)
 
 ```
-TEST_SERVER=http://localhost:8080/migrate npm run test:e2e:firefox
+TEST_SERVER=http://localhost:8080 npm run test:e2e:firefox
 ```
 
 ### using shipit for deployment and install
