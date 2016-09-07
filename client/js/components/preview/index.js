@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const prettyBytes = require('pretty-bytes')
 const button = require('../../elements/button')
 
 // XXX: server-side data rendering could pull from a cache if we want
@@ -8,6 +9,8 @@ const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const entryName = state.preview.entryName
   const readStream = state.preview.readStream
+  var metadata = state.archive.entries[entryName]
+  var size = (metadata && metadata.length) ? prettyBytes(metadata.length) : 'N/A'
 
   var el = html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
@@ -23,8 +26,7 @@ const preview = (state, prev, send) => {
           ${entryName}
         </div>
         <div class="dat-details">
-          <div class="dat-detail">XX.X KB</div>
-          <div class="dat-detail">some other metadata</div>
+          <div class="dat-detail">${size}</div>
         </div>
       </div>
       <div class="panel-header__action-group">
