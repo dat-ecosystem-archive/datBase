@@ -38,7 +38,7 @@ const archivePage = (state, prev, send) => {
             <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>
             <div id="hyperdrive-size" class="dat-detail"><p id="size">${prettyBytes(state.archive.size || 0)}</p></div>
             <div id="peers" class="dat-detail">${state.archive.numPeers} Source(s)</div>
-            <div style="display: block;" id="speed" class="dat-detail dat-detail--speed"><div>
+            <div id="speed" class="dat-detail dat-detail--speed"><div>
               ${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}
             </div></div>
           </div>
@@ -54,7 +54,7 @@ const archivePage = (state, prev, send) => {
       <div class="status-bar">
         <div class="container">
           <span id="help-text" class="status-bar-status"></span>
-          <div style="display: block;" id="hyperdrive-stats" class="status-bar-stats">
+          <div id="hyperdrive-stats" class="status-bar-stats">
             Total: ${hyperdriveStats({ downloaded: state.archive.downloadTotal, uploaded: state.archive.uploadTotal })}
           </div>
         </div>
