@@ -57,3 +57,16 @@ li {
   z-index: 10;
   position: absolute;
 }
+
+.danger-block {
+  background-color: $color-danger;
+  text-align: center;
+  color: #fff;
+  h1, h2, h3, h4, h5 {
+    color: #fff;
+  }
+  a {
+    text-decoration: underline;
+    color: #fff;
+  }
+}
