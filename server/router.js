@@ -12,17 +12,6 @@ const Haus = require('./haus')
 
 var haus = Haus()
 
-// serve old pre-choo client-side-only app for migration work:
-router.on('/migrate', {
-  get: function (req, res, params) {
-    fs.readFile('./public/html/index.html', 'utf-8', function (err, contents) {
-      if (err) return res.end('nope')
-      res.setHeader('Content-Type', 'text/html')
-      res.end(contents)
-    })
-  }
-})
-
 // landing page
 router.on('/', {
   get: function (req, res, params) {
