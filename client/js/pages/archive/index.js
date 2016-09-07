@@ -54,9 +54,11 @@ const archivePage = (state, prev, send) => {
       <div class="status-bar">
         <div class="container">
           <span id="help-text" class="status-bar-status"></span>
-          <div id="hyperdrive-stats" class="status-bar-stats">
-            Total: ${hyperdriveStats({ downloaded: state.archive.downloadTotal, uploaded: state.archive.uploadTotal })}
-          </div>
+          ${(state.archive.downloadTotal || state.archive.uploadTotal)
+            ? html`<div id="hyperdrive-stats" class="status-bar-stats">
+                Total: ${hyperdriveStats({ downloaded: state.archive.downloadTotal, uploaded: state.archive.uploadTotal })}
+              </div>`
+            : ''}
         </div>
       </div>
       ${preview(state, prev, send)}
