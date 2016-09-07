@@ -39,7 +39,7 @@ const archivePage = (state, prev, send) => {
             <div id="hyperdrive-size" class="dat-detail"><p id="size">${prettyBytes(state.archive.size || 0)}</p></div>
             <div id="peers" class="dat-detail">${state.archive.numPeers} Source(s)</div>
             <div style="display: block;" id="speed" class="dat-detail dat-detail--speed"><div>
-              ${hyperdriveStats({ downloaded: state.archive.download_speed, uploaded: state.archive.upload_speed, hideAfter: '1500ms' })}
+              ${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}
             </div></div>
           </div>
         </div>
@@ -55,7 +55,7 @@ const archivePage = (state, prev, send) => {
         <div class="container">
           <span id="help-text" class="status-bar-status"></span>
           <div style="display: block;" id="hyperdrive-stats" class="status-bar-stats">
-            Total: ${hyperdriveStats({ downloaded: state.archive.downloaded, uploaded: state.archive.uploaded })}
+            Total: ${hyperdriveStats({ downloaded: state.archive.downloadTotal, uploaded: state.archive.uploadTotal })}
           </div>
         </div>
       </div>
