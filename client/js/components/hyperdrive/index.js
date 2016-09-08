@@ -23,10 +23,11 @@ if (module.parent) {
     return require('hyperdrive-ui')(null, {root: state.archive.cwd, entries: state.archive.entries}, (ev, entry) => {
       if (entry.type === 'directory') {
         send('archive:update', {root: entry.name})
+        return true
       } else {
         send('preview:file', {archiveKey: state.archive.key, entryName: entry.name}, noop)
+        return false
       }
-      return false
     })
   }
 }
