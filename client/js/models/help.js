@@ -6,11 +6,12 @@ var getIntro = function () {
     element: '#intro',
     steps: [
       {
-        intro: 'You can create a new dat by clicking <b>Create New Dat</b>'
+        intro: 'You can create a new dat by clicking <span class="bold nowrap">Create New Dat</span>',
+        element: '#js-button-new'
       },
       {
-        intro: 'Drop some files here',
-        element: '#add-files'
+        intro: 'Add some files here',
+        element: '#js-button-add'
       },
       {
         intro: 'You can share the dat with this link',

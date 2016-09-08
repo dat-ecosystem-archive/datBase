@@ -4,17 +4,17 @@ const importButton = require('./../../elements/import-button')
 
 const help = (state, prev, send) => {
   const intro = () => send('help:show')
-  return html`<div class="dat-button">${button({text: '?', click: intro})}</div>`
+  return html`<div class="dat-button dat-button--help">${button({text: '? Help', click: intro})}</div>`
 }
 
 const header = (state, prev, send) => {
   return html`<header class="site-header"><div id="intro"></div>
-    <div class="container">
+    <div class="container container--site-header">
       <a href="http://dat-data.com" class="dat-logo">
         <img src="./public/img/dat-data-logo.svg" />
       </a>
       <div class="site-header__actions">
-        <div class="dat-button dat-button--new-dat">
+        <div id="js-button-new" class="dat-button dat-button--new-dat">
           ${button({
             text: 'Create new Dat',
             click: () => send('archive:new')
