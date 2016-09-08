@@ -1,14 +1,21 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
+const level = require('level-browserify')
+const ram = require('random-access-memory')
 const path = require('path')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
 
-var drive = hyperdrive(memdb())
+var drive
 var hyperdriveImportQueue
 var noop = function () {}
+
+function getDrive () {
+  if (!drive) drive = hyperdrive(level('dat.land'))
+  return drive
+}
 
 module.exports = {
   namespace: 'archive',
@@ -113,7 +120,16 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
-      const archive = drive.createArchive(null, {live: true, sparse: true})
+      drive = getDrive()
+      var _fs = {}
+      const archive = drive.createArchive(null, {
+        live: true,
+        sparse: true,
+        file: function (name) {
+          if (!_fs[name]) _fs[name] = ram()
+          return _fs[name]
+        }
+      })
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
       send('archive:import', key, done)
@@ -186,8 +202,16 @@ module.exports = {
         }
       }
       if (!archive) {
-        send('archive:update', {key}, noop)
-        archive = drive.createArchive(key)
+        drive = getDrive()
+        var _fs = {}
+        archive = drive.createArchive(key, {
+          live: true,
+          sparse: true,
+          file: function (name) {
+            if (!_fs[name]) _fs[name] = ram()
+            return _fs[name]
+          }
+        })
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
