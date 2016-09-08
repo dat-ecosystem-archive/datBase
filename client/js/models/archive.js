@@ -16,6 +16,19 @@ function getDrive () {
   return drive
 }
 
+function createArchive (key, drive) {
+  if (!drive) drive = getDrive()
+  var _fs = {}
+  return drive.createArchive(key, {
+    live: true,
+    sparse: true,
+    file: function (name) {
+      if (!_fs[name]) _fs[name] = ram()
+      return _fs[name]
+    }
+  })
+}
+
 module.exports = {
   namespace: 'archive',
   state: {
@@ -119,16 +132,7 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
-      drive = getDrive()
-      var _fs = {}
-      const archive = drive.createArchive(null, {
-        live: true,
-        sparse: true,
-        file: function (name) {
-          if (!_fs[name]) _fs[name] = ram()
-          return _fs[name]
-        }
-      })
+      const archive = createArchive()
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
       send('archive:import', key, done)
@@ -201,16 +205,7 @@ module.exports = {
         }
       }
       if (!archive) {
-        drive = getDrive()
-        var _fs = {}
-        archive = drive.createArchive(key, {
-          live: true,
-          sparse: true,
-          file: function (name) {
-            if (!_fs[name]) _fs[name] = ram()
-            return _fs[name]
-          }
-        })
+        archive = createArchive(key)
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
