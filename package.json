@@ -27,7 +27,7 @@
     "watch-server": "nodemon --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/main.scss public/css/main.css",
-    "build-js": "browserify client/js/app.js > public/js/app.js",
+    "build-js": "browserify -g yo-yoify -g es2020 client/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
@@ -44,6 +44,7 @@
     "chromedriver": "^2.21.2",
     "dat-design": "^1.4.1",
     "drag-drop": "^2.11.0",
+    "es2020": "^1.1.9",
     "minidux": "^1.0.1",
     "minifier": "^0.7.1",
     "nightwatch": "^0.9.5",
@@ -56,7 +57,8 @@
     "speedometer": "^1.0.0",
     "standard": "^7.1.2",
     "uglify-js": "^2.7.0",
-    "watchify": "~3.6.0"
+    "watchify": "~3.6.0",
+    "yo-yoify": "^3.4.1"
   },
   "dependencies": {
     "choo": "^3.2.0",
