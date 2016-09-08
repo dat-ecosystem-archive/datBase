@@ -123,7 +123,7 @@ module.exports = {
       const location = '/' + data
       send('location:setLocation', { location }, done)
       window.history.pushState({}, null, location)
-      send('archive:update', {entries: {}}, noop)
+      send('archive:update', {entries: {}, numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
       send('archive:load', data, done)
     },
     importFiles: function (data, state, send, done) {
