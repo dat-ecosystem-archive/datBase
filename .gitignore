@@ -3,6 +3,7 @@ node_modules/
 data/*
 public/css/*
 public/js/app.js
+public/js/app.min.js
 .tmp-deploy
 npm-debug.log
 REVISION
