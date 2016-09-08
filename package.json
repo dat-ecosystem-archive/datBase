@@ -42,7 +42,7 @@
   "devDependencies": {
     "browserify": "^13.0.0",
     "chromedriver": "^2.21.2",
-    "dat-design": "^1.4.1",
+    "dat-design": "^1.4.2",
     "drag-drop": "^2.11.0",
     "minidux": "^1.0.1",
     "minifier": "^0.7.1",

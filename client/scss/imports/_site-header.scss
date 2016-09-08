@@ -24,7 +24,7 @@ $site-header-ui-elements-height: 3rem;
   height: $site-header-ui-elements-height;
   display: inline-block;
   vertical-align: middle;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 
 .dat-logo {
@@ -40,7 +40,7 @@ $site-header-ui-elements-height: 3rem;
   button {
     height: $site-header-ui-elements-height;
     text-transform: uppercase;
-    letter-spacing: .05em;
+    letter-spacing: .075em;
     &:hover, &:focus, &:active {
       outline: none;
       cursor: pointer;

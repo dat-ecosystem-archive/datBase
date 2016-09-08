@@ -34,3 +34,34 @@
     transform: rotate(90deg);
   }
 }
+
+.btn {
+  .btn__icon-wrapper {
+    display: flex;
+  }
+  .btn__icon-img {
+    opacity: .64;
+  }
+  .btn__icon-text {
+    margin-left: .5em;
+    transition-property: width, margin, opacity;
+    transition-duration: $transition-duration;
+    transition-timing-function: $transition-timing-function;
+    transition-timing-function: 1s;
+  }
+  &:hover, &:focus {
+    .btn__icon-img {
+      opacity: 1;
+    }
+  }
+}
+
+.btn__reveal-text {
+  &:not(:hover) {
+    .btn__icon-text {
+      width: 0;
+      margin-left: 0;
+      opacity: 0;
+    }
+  }
+}
