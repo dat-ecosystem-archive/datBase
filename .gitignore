@@ -1,5 +1,4 @@
 .DS_Store
-debug.html
 node_modules/
 data/*
 public/css/*

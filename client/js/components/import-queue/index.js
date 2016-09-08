@@ -2,44 +2,36 @@ const html = require('choo/html')
 
 module.exports = (state, prev, send) => {
   const writing = state.archive.importQueue.writing
+  const writingProgressPct = state.archive.importQueue.writingProgressPct
   const next = state.archive.importQueue.next
-
-  if (writing && !writing.progressHandler) {
-    writing.progressPct = 0
-    writing.progressHandler = (progress) => {
-      const pct = parseInt(progress.percentage)
-      send('archive:updateImportQueue', {writingProgressPct: pct, writing: writing}, function () {})
-    }
-    writing.progressListener.on('progress', writing.progressHandler)
-  }
 
   return render()
 
   function render () {
     if (writing || next.length > 0) {
-      return html`<ul id="import-queue">
-        ${writing ? renderLi(writing) : null}
+      return html`<table id="import-queue">
+        ${writing ? renderLi(writing, writingProgressPct) : null}
         ${next.map(function (file) {
-          return renderLi(file)
+          return renderLi(file, null)
         })}
-      </ul>`
+      </table>`
     } else {
-      return html`<ul id="import-queue"></ul>`
+      return html`<table id="import-queue"></table>`
     }
   }
 
-  function renderLi (file) {
-    return html`<li>
-      ${file.fullPath}
-      ${renderProgress(file)}
-    </li>`
+  function renderLi (file, progressPct) {
+    return html`<tr>
+      <td class="name">${file.fullPath}</td>
+      <td>${renderProgress(file, progressPct)}</td>
+    </tr>`
   }
 
-  function renderProgress (file) {
-    if (file.writeError) {
+  function renderProgress (file, progressPct) {
+    if (file.importError) {
       return html`<div class="progress error">Error</div>`
     }
-    var loaded = file.progressPct || 0
+    var loaded = progressPct || 0
     var klass = loaded === 100 ? 'progress__line--complete' : 'progress__line--loading'
     return html`<div class="progress">
        <div class="progress__counter">
