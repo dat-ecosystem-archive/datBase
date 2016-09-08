@@ -14,6 +14,7 @@ module.exports = {
   namespace: 'archive',
   state: {
     key: null,
+    root: '',
     file: null,
     error: null,
     size: null,
@@ -145,7 +146,7 @@ module.exports = {
           files[i].fullPath = '/' + files[i].name
         }
       }
-      hyperdriveImportQueue.add(files, state.cwd)
+      hyperdriveImportQueue.add(files, state.root)
       return done()
     },
     initImportQueue: function (data, state, send, done) {
