@@ -6,6 +6,8 @@ const path = require('path')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
+const Jszip = require('jszip')
+const saveAs = require('file-saver').saveAs
 
 var drive = hyperdrive(memdb())
 var hyperdriveImportQueue
@@ -263,6 +265,23 @@ module.exports = {
       var archive = state.instance
       var readStream = archive.createFileReadStream(data.entryName)
       done(readStream)
+    },
+    download: function (data, state, send, done) {
+      const archive = state.instance
+      const zip = new Jszip()
+      Object.keys(state.entries).sort().forEach((key) => {
+        const entry = state.entries[key]
+        if (entry.type === 'directory') {
+          // XXX: empty directories need to be created explicitly
+        } else {
+          zip.file(key, archive.createFileReadStream(key))
+        }
+      })
+      zip.generateAsync({type: 'blob'})
+      .then((content) => {
+        saveAs(content, `${state.key}.zip`)
+        done()
+      })
     }
   }
 }
