@@ -1,4 +1,3 @@
-const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
 const level = require('level-browserify')
