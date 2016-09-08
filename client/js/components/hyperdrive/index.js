@@ -20,7 +20,7 @@ if (module.parent) {
     }
 
     // Use dumb mode for hyperdrive-ui
-    return require('hyperdrive-ui')(null, {root: state.archive.cwd, entries: state.archive.entries}, (ev, entry) => {
+    return require('hyperdrive-ui')(null, {root: state.archive.root, entries: state.archive.entries}, (ev, entry) => {
       if (entry.type === 'directory') {
         send('archive:update', {root: entry.name})
         return true
