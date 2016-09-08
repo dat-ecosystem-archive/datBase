@@ -93,7 +93,13 @@ module.exports = {
       var archive = state.instance
       collect(archive.createFileReadStream('dat.json'), (err, raw) => {
         if (err) return done()
-        const json = JSON.parse(raw.toString())
+        var json
+        try {
+          json = JSON.parse(raw.toString())
+        } catch (err) {
+          // TODO: inform user
+          json = {}
+        }
         send('archive:update', {metadata: json}, done)
       })
     },
@@ -172,7 +178,7 @@ module.exports = {
             // XXX: Hack to fetch a small bit of data so size properly updates
           })
         }
-        send('archive:getMetadata', noop)
+        send('archive:getMetadata', {}, noop)
         var stream = archive.list({live: true})
         var entries = {}
         stream.on('data', function (entry) {
