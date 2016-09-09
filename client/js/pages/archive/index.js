@@ -30,7 +30,7 @@ const archivePage = (state, prev, send) => {
         <div class="container">
           <div class="dat-header__actions">
             <button class="dat-header-action">Download</button>
-            <button class="dat-header-action">Open in Desktop App</button>
+            <a href="dat://${state.archive.key}" class="dat-header-action">Open in Desktop App</a>
           </div>
           <div id="share-link" class="share-link">${state.archive.metadata.title || state.archive.key}</div>
           ${error(state.archive.error)}

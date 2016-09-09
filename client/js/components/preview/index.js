@@ -31,7 +31,7 @@ const preview = (state, prev, send) => {
       </div>
       <div class="panel-header__action-group">
         <button class="dat-header-action">Download</button>
-        <button class="dat-header-action">Open in Desktop App</button>
+        <a href="dat://${state.archive.key}" class="dat-header-action">Open in Desktop App</a>
       </div>
     </div>
     <div class="panel-main">
