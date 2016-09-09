@@ -1,6 +1,6 @@
 /**
  * Use awesome syntax of `node-sass-magic-importer` to import scss modules
- * "@import ~xxx" resolves to a node module named `xxx`
+ * See import `dat-design` rule below for example.
  * If there's no file path specified after module name, it resolves to the file
  * defined by the imported package.json's `style` property
  *
@@ -19,4 +19,4 @@
 @import "imports/preview"; // TODO: this should move into dat-design - @lauren
 @import "imports/landing-page";
 @import "imports/preview-display"; // TODO: delete this after choo migration
-@import "imports/introjs-custom"; 
+@import "imports/introjs-custom";

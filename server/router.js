@@ -5,9 +5,11 @@ const assert = require('assert')
 const serializeJS = require('serialize-javascript')
 const collect = require('collect-stream')
 const encoding = require('dat-encoding')
+const UrlParams = require('uparams')
+const router = require('server-router')()
+
 const app = require('../client/js/app').app
 const page = require('./page')
-const router = require('server-router')()
 const Haus = require('./haus')
 
 var haus = Haus()
@@ -16,7 +18,7 @@ var haus = Haus()
 router.on('/', {
   get: function (req, res, params) {
     var state = getDefaultAppState()
-    sendSPA('/', res, state)
+    sendSPA('/', req, res, params, state)
   }
 })
 
@@ -30,7 +32,7 @@ router.on('/:archiveKey', {
     } catch (e) {
       state.archive.error = {message: e.message}
       console.warn('error: ' + e.message)
-      return sendSPA('/:archiveKey', res, state)
+      return sendSPA('/:archiveKey', req, res, params, state)
     }
     var archive = haus.getArchive(key)
     state.archive.key = params.archiveKey
@@ -39,14 +41,14 @@ router.on('/:archiveKey', {
     var clear = setTimeout(() => {
       cancelled = true
       console.log('server getArchive() timed out for key: ' + params.archiveKey)
-      sendSPA('/:archiveKey', res, state)
+      sendSPA('/:archiveKey', req, res, params, state)
     }, 3000)
     collect(stream, function (err, data) {
       if (err) state.archive.error = {message: err.message}
       if (cancelled) return
       clear()
       state.archive.entries = data
-      sendSPA('/:archiveKey', res, state)
+      sendSPA('/:archiveKey', req, res, params, state)
     })
   }
 })
@@ -106,11 +108,20 @@ function getDefaultAppState () {
   return state
 }
 
-function sendSPA (route, res, state) {
+function sendSPA (route, req, res, params, state) {
   const frozenState = Object.freeze(state)
   const contents = app.toString(route, frozenState)
+  const urlParams = new UrlParams(req.url)
   res.setHeader('Content-Type', 'text/html')
-  res.end(page(contents, serializeJS(frozenState)))
+  if (urlParams.debug) {
+    return fs.access('./server/page-debug.js', function (err) {
+      if (err) {
+        return res.end('Please run the bin/version-assets script via `npm run version` to debug with un-minified assets.')
+      }
+      return res.end(require('./page-debug')(contents, serializeJS(frozenState)))
+    })
+  }
+  return res.end(page(contents, serializeJS(frozenState)))
 }
 
 module.exports = router
