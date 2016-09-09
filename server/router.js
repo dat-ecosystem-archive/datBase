@@ -5,6 +5,7 @@ const assert = require('assert')
 const serializeJS = require('serialize-javascript')
 const collect = require('collect-stream')
 const encoding = require('dat-encoding')
+const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
 const router = require('server-router')()
 
@@ -36,17 +37,19 @@ router.on('/:archiveKey', {
     }
     var archive = haus.getArchive(key)
     state.archive.key = params.archiveKey
-    var stream = archive.list({live: false})
+    var listStream = archive.list({live: false})
     var cancelled = false
-    var clear = setTimeout(() => {
-      cancelled = true
-      console.log('server getArchive() timed out for key: ' + params.archiveKey)
-      sendSPA('/:archiveKey', req, res, params, state)
-    }, 3000)
-    collect(stream, function (err, data) {
+    var timeout = TimeoutStream({
+        objectMode: true,
+        duration: 10000
+      }, () => {
+        console.log('server getArchive() timed out for key: ' + params.archiveKey)
+        sendSPA('/:archiveKey', req, res, params, state)
+      })
+
+    var stream = listStream.pipe(timeout)
+    collect(listStream.pipe(timeout), function (err, data) {
       if (err) state.archive.error = {message: err.message}
-      if (cancelled) return
-      clear()
       state.archive.entries = data
       sendSPA('/:archiveKey', req, res, params, state)
     })

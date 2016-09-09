@@ -78,6 +78,7 @@
     "render-data": "^2.2.0",
     "serialize-javascript": "^1.3.0",
     "server-router": "^2.1.0",
+    "through-timeout": "^1.0.0",
     "uparams": "^1.3.1"
   }
 }
