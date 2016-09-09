@@ -11,34 +11,37 @@ var drive = hyperdrive(memdb())
 var hyperdriveImportQueue
 var noop = function () {}
 
+var defaultState = {
+  key: null,
+  instance: null,
+  file: null,
+  error: null,
+  metadata: {},
+  entries: [],
+  root: '',
+  size: null,
+  numPeers: 0,
+  swarm: null,
+  signalhubs: [
+    'signalhub.mafintosh.com',
+    'signalhub.dat.land'
+  ],
+  uploadMeter: null,
+  uploadSpeed: 0,
+  uploadTotal: 0,
+  downloadMeter: null,
+  downloadSpeed: 0,
+  downloadTotal: 0,
+  importQueue: {
+    writing: null,
+    writingProgressPct: null,
+    next: []
+  }
+}
+
 module.exports = {
   namespace: 'archive',
-  state: {
-    metadata: {},
-    key: null,
-    root: '',
-    file: null,
-    error: null,
-    size: null,
-    numPeers: 0,
-    entries: [],
-    instance: null,
-    signalhubs: [
-      'signalhub.mafintosh.com',
-      'signalhub.dat.land'
-    ],
-    importQueue: {
-      writing: null,
-      writingProgressPct: null,
-      next: []
-    },
-    uploadMeter: null,
-    uploadSpeed: 0,
-    uploadTotal: 0,
-    downloadMeter: null,
-    downloadSpeed: 0,
-    downloadTotal: 0
-  },
+  state: defaultState,
   reducers: {
     update: (data, state) => {
       return data
@@ -60,7 +63,11 @@ module.exports = {
       }
     },
     updatePeers: (data, state) => {
-      return {numPeers: state.swarm.connections}
+      if (state.swarm.connections) return {numPeers: state.swarm.connections}
+    },
+    reset: (data, state) => {
+      if (state.swarm && state.swarm.close) state.swarm.close(function () {})
+      return defaultState
     },
     updateImportQueue: (data, state) => {
       // shallow copy the last `state` frame so we can preserve
@@ -100,13 +107,7 @@ module.exports = {
       if (writing && writing.progressListener && writing.progressHandler) {
         writing.progressListener.removeListener('progress', writing.progressHandler)
       }
-      return {
-        importQueue: {
-          writing: null,
-          writingProgressPct: null,
-          next: []
-        }
-      }
+      return defaultState.importQueue
     }
   },
   subscriptions: [
@@ -116,6 +117,12 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
+      // reset archive model properly
+      if (state.instance) {
+        send('archive:resetImportQueue', {}, noop)
+        send('archive:reset', {}, noop)
+      }
+      // init new archive model
       const archive = drive.createArchive(null, {live: true, sparse: true})
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
