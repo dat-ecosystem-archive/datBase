@@ -45,6 +45,7 @@ router.on('/:archiveKey', {
     }, () => {
       cancelled = true
       console.log('server getArchive() timed out for key: ' + params.archiveKey)
+      state.archive.entries = []
       sendSPA('/:archiveKey', req, res, params, state)
     })
 
