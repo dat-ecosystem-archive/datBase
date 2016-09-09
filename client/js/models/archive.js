@@ -244,21 +244,8 @@ module.exports = {
           })
         }
         send('archive:getMetadata', {}, noop)
-        var stream = archive.list({live: true})
-        var entries = {}
-        stream.on('data', function (entry) {
-          entries[entry.name] = entry
-          var dir = path.dirname(entry.name)
-          if (!entries[dir]) {
-            entries[dir] = {
-              type: 'directory',
-              name: dir,
-              length: 0
-            }
-          }
-          const size = archive.content.bytes
-          send('archive:update', {entries, size}, noop)
-        })
+        const size = archive.content.bytes
+        send('archive:update', {size}, noop)
       })
     },
     readFile: function (data, state, send, done) {

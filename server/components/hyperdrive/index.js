@@ -3,12 +3,12 @@ const relative = require('relative-date')
 const pretty = require('pretty-bytes')
 const html = require('choo/html')
 
-module.exports = function (state) {
+module.exports = function (root, opts, onclick) {
   return html`
     <div id="yo-fs">
       <div id="fs">
         <table id="file-widget">
-        ${state.entries.map(function (entry) {
+        ${opts.entries.map(function (entry) {
           return listItem(entry)
         })}
         </table>
