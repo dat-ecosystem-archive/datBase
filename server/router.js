@@ -45,12 +45,14 @@ router.on('/:archiveKey', {
     }, () => {
       cancelled = true
       console.log('server getArchive() timed out for key: ' + params.archiveKey)
+      cancelled = true
       sendSPA('/:archiveKey', req, res, params, state)
     })
 
     collect(listStream.pipe(timeout), function (err, data) {
       if (cancelled) return
       if (err) state.archive.error = {message: err.message}
+      if (cancelled) return
       state.archive.entries = data
       sendSPA('/:archiveKey', req, res, params, state)
     })
