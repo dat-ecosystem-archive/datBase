@@ -38,16 +38,14 @@ router.on('/:archiveKey', {
     var archive = haus.getArchive(key)
     state.archive.key = params.archiveKey
     var listStream = archive.list({live: false})
-    var cancelled = false
     var timeout = TimeoutStream({
-        objectMode: true,
-        duration: 10000
-      }, () => {
-        console.log('server getArchive() timed out for key: ' + params.archiveKey)
-        sendSPA('/:archiveKey', req, res, params, state)
-      })
+      objectMode: true,
+      duration: 3000
+    }, () => {
+      console.log('server getArchive() timed out for key: ' + params.archiveKey)
+      sendSPA('/:archiveKey', req, res, params, state)
+    })
 
-    var stream = listStream.pipe(timeout)
     collect(listStream.pipe(timeout), function (err, data) {
       if (err) state.archive.error = {message: err.message}
       state.archive.entries = data
