@@ -45,6 +45,7 @@ router.on('/:archiveKey', {
     }, () => {
       cancelled = true
       console.log('server getArchive() timed out for key: ' + params.archiveKey)
+      state.archive.entries = []
       sendSPA('/:archiveKey', req, res, params, state)
     })
 
@@ -109,7 +110,7 @@ function getDefaultAppState () {
     assert.equal(typeof model.state, 'object', 'getDefaultAppState: model must have a state property that is an object')
     state[model.namespace] = model.state
   })
-  return state
+  return JSON.parse(JSON.stringify(state))
 }
 
 function sendSPA (route, req, res, params, state) {
