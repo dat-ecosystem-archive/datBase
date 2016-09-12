@@ -65,7 +65,7 @@ module.exports = {
       }
     },
     updatePeers: (data, state) => {
-      if (state.swarm.connections) return {numPeers: state.swarm.connections}
+      return {numPeers: state.swarm ? state.swarm.connections : 0}
     },
     reset: (data, state) => {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
