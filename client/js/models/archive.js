@@ -131,12 +131,12 @@ module.exports = {
       send('archive:import', key, done)
       send('archive:initImportQueue', {archive}, noop)
     },
-    import: function (data, state, send, done) {
-      const location = '/' + data
-      send('location:setLocation', { location }, done)
+    import: function (key, state, send, done) {
+      const location = '/' + key
+      send('location:setLocation', { location }, noop)
       window.history.pushState({}, null, location)
       send('archive:update', {entries: {}, numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
-      send('archive:load', data, done)
+      send('archive:load', key, done)
     },
     getMetadata: function (data, state, send, done) {
       // EXPERIMENTAL:
