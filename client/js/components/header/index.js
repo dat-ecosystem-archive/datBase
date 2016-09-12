@@ -29,7 +29,7 @@ const header = (state, prev, send) => {
           })}
         </div>
         ${importButton({
-          handler: (link) => window.location.href = '/' + link
+          handler: function (link) { window.location.href = '/' + link }
         })}
         ${help(state, prev, send)}
       </div>
