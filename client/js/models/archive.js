@@ -128,14 +128,15 @@ module.exports = {
       const archive = drive.createArchive(null, {live: true, sparse: true})
       const key = archive.key.toString('hex')
       send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
-      const location = '/' + key
-      send('location:setLocation', { location }, done)
-      window.history.pushState({}, null, location)
-      send('archive:load', key, done)
+      send('archive:import', key, done)
       send('archive:initImportQueue', {archive}, noop)
     },
-    import: function (data, state, send, done) {
-      window.location.href = '/' + data
+    import: function (key, state, send, done) {
+      const location = '/' + key
+      send('location:setLocation', { location }, noop)
+      window.history.pushState({}, null, location)
+      send('archive:update', {entries: {}, numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
+      send('archive:load', key, done)
     },
     getMetadata: function (data, state, send, done) {
       // EXPERIMENTAL:
