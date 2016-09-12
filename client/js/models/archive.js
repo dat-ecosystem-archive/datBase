@@ -1,12 +1,12 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
-const collect = require('collect-stream')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
+const getMetadata = require('../../../utils/metadata.js')
 
 var drive = hyperdrive(memdb())
 var hyperdriveImportQueue
@@ -142,17 +142,9 @@ module.exports = {
       // right now we are reading this from dat.json but perhaps we
       // will update this when we start using accounts and repos
       var archive = state.instance
-      collect(archive.createFileReadStream('dat.json'), (err, raw) => {
-        if (err) return done()
-        var json
-        try {
-          json = JSON.parse(raw.toString())
-        } catch (err) {
-          // TODO: inform user
-          console.log(err)
-          json = {}
-        }
-        send('archive:update', {metadata: json}, done)
+      getMetadata(state.instance, function (err, metadata) {
+        if (err) return done(err)
+        send('archive:update', {metadata}, done)
       })
     },
     importFiles: function (data, state, send, done) {

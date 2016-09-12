@@ -7,6 +7,7 @@ const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
+const getMetadata = require('../utils/metadata')
 const router = require('server-router')()
 
 const app = require('../client/js/app').app
@@ -51,8 +52,12 @@ router.on('/:archiveKey', {
     collect(listStream.pipe(timeout), function (err, data) {
       if (cancelled) return
       if (err) state.archive.error = {message: err.message}
-      state.archive.entries = data
-      sendSPA('/:archiveKey', req, res, params, state)
+      getMetadata(archive, function (err, metadata) {
+        if (err) state.archive.error = {message: err.message}
+        state.archive.entries = data
+        state.archive.metadata
+        sendSPA('/:archiveKey', req, res, params, state, metadata)
+      })
     })
   }
 })
@@ -112,7 +117,7 @@ function getDefaultAppState () {
   return JSON.parse(JSON.stringify(state))
 }
 
-function sendSPA (route, req, res, params, state) {
+function sendSPA (route, req, res, params, state, metadata) {
   const frozenState = Object.freeze(state)
   const contents = app.toString(route, frozenState)
   const urlParams = new UrlParams(req.url)
@@ -125,7 +130,9 @@ function sendSPA (route, req, res, params, state) {
       return res.end(require('./page-debug')(contents, serializeJS(frozenState)))
     })
   }
-  return res.end(page(contents, serializeJS(frozenState)))
+  if (!metadata) metadata = {}
+  metadata.route = route
+  return res.end(page(contents, metadata, serializeJS(frozenState)))
 }
 
 module.exports = router
