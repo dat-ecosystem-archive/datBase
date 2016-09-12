@@ -33,6 +33,7 @@ const archivePage = (state, prev, send) => {
             <a href="dat://${state.archive.key}" class="dat-header-action">Open in Desktop App</a>
           </div>
           <div id="share-link" class="share-link">${state.archive.metadata.title || state.archive.key}</div>
+          <div class="author-name">${state.archive.metadata.author}</div>
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>

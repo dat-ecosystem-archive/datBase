@@ -137,7 +137,7 @@ module.exports = {
       send('archive:update', {entries: {}, numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
       send('archive:load', key, done)
     },
-    getMetadata: function (data, state, send, done) {
+    updateMetadata: function (data, state, send, done) {
       // EXPERIMENTAL:
       // right now we are reading this from dat.json but perhaps we
       // will update this when we start using accounts and repos
@@ -149,6 +149,7 @@ module.exports = {
           json = JSON.parse(raw.toString())
         } catch (err) {
           // TODO: inform user
+          console.log(err)
           json = {}
         }
         send('archive:update', {metadata: json}, done)
@@ -199,6 +200,7 @@ module.exports = {
           if (file && file.progressListener && file.progressHandler) {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
+          if (file.fullPath === '/dat.json') send('archive:updateMetadata', {}, noop)
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
         }
       })
@@ -214,7 +216,6 @@ module.exports = {
         }
       }
       if (!archive) {
-        send('archive:update', {key}, noop)
         archive = drive.createArchive(key)
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
@@ -232,6 +233,7 @@ module.exports = {
       })
       archive.on('download', function (data) {
         send('archive:updateDownloaded', data.length, noop)
+        send('archive:updateMetadata', {}, noop)
         if (timer) window.clearTimeout(timer)
         timer = setTimeout(() => send('archive:update', {uploadSpeed: 0, downloadSpeed: 0}, noop), 3000)
       })
@@ -242,9 +244,7 @@ module.exports = {
             // XXX: Hack to fetch a small bit of data so size properly updates
           })
         }
-        send('archive:getMetadata', {}, noop)
-        const size = archive.content.bytes
-        send('archive:update', {size}, noop)
+        send('archive:updateMetadata', {}, noop)
       })
     },
     readFile: function (data, state, send, done) {
