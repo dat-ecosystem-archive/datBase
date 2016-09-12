@@ -8,7 +8,9 @@ if (module.parent) {
 }
 
 module.exports = function (state, prev, send) {
-  if (!state.archive.instance && state.archive.key) send('archive:load', state.archive.key)
+  if (!module.parent && !state.archive.instance && state.archive.key) {
+    send('archive:load', state.archive.key)
+  }
   return hyperdriveRenderer(state.archive.instance, {root: state.archive.root, entries: state.archive.entries}, (ev, entry) => {
     if (entry.type === 'directory') {
       send('archive:update', {root: entry.name})
