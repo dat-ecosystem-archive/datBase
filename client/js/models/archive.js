@@ -164,7 +164,7 @@ module.exports = {
       }
       if (!archive.owner) {
         // XXX: use error in state
-        window.alert('You can not put files in this archive')
+        window.alert('You cannot put files in this archive')
         return done()
       }
       if (!Array.isArray(files)) {
