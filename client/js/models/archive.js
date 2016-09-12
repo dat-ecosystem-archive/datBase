@@ -138,10 +138,6 @@ module.exports = {
       send('archive:load', key, done)
     },
     updateMetadata: function (data, state, send, done) {
-      // EXPERIMENTAL:
-      // right now we are reading this from dat.json but perhaps we
-      // will update this when we start using accounts and repos
-      var archive = state.instance
       getMetadata(state.instance, function (err, metadata) {
         if (err) return done(err)
         send('archive:update', {metadata}, done)
