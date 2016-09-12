@@ -82,8 +82,8 @@ module.exports = new function () {
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
     testCases['metadata rendered'] = client => {
-      client.expect.element("#title").text.to.contain('hello world').before(1000)
-      client.expect.element("#author").text.to.contain('joe bob').before(1000)
+      client.expect.element('#title').text.to.contain('hello world').before(1000)
+      client.expect.element('#author').text.to.contain('joe bob').before(1000)
     }
   } else {
     testCases['file synced'] = (client) => {
@@ -91,8 +91,8 @@ module.exports = new function () {
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
     testCases['metadata rendered'] = client => {
-      client.expect.element("#title").text.to.contain('hello world').before(1000)
-      client.expect.element("#author").text.to.contain('joe bob').before(1000)
+      client.expect.element('#title').text.to.contain('hello world').before(1000)
+      client.expect.element('#author').text.to.contain('joe bob').before(1000)
     }
   }
 
