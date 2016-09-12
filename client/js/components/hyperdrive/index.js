@@ -1,5 +1,4 @@
 const from = require('from2')
-var noop = function () {}
 
 if (module.parent) {
   var hyperdriveRenderer = require('./../../app.js').getServerComponent('hyperdrive')
@@ -25,7 +24,7 @@ if (module.parent) {
         send('archive:update', {root: entry.name})
         return true
       } else {
-        send('preview:file', {archiveKey: state.archive.key, entryName: entry.name}, noop)
+        // send('preview:file', {archiveKey: state.archive.key, entryName: entry.name}, noop)
         return false
       }
     })
