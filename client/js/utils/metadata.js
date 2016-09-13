@@ -15,10 +15,15 @@ module.exports = function (archive, cb) {
 }
 
 function done (raw, cb) {
+  console.log('metadata done! called')
   var json
+  console.log('raw.toString():')
+  console.log(raw.toString())
   try {
     json = JSON.parse(raw.toString())
   } catch (err) {
+    console.log('hello 1a')
+    console.log(err)
     return cb(err)
   }
   cb(null, json)

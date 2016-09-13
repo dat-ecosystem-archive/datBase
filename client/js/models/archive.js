@@ -6,7 +6,7 @@ const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
-const getMetadata = require('../../../utils/metadata.js')
+const getMetadata = require('../utils/metadata.js')
 
 var drive = hyperdrive(memdb())
 var hyperdriveImportQueue

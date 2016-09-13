@@ -2,12 +2,11 @@
 
 const fs = require('fs')
 const assert = require('assert')
-const serializeJS = require('serialize-javascript')
 const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
-const getMetadata = require('../utils/metadata')
+const getMetadata = require('../client/js/utils/metadata')
 const router = require('server-router')()
 
 const app = require('../client/js/app').app
@@ -33,7 +32,7 @@ router.on('/:archiveKey', {
       key = encoding.decode(params.archiveKey)
     } catch (e) {
       state.archive.error = {message: e.message}
-      console.warn('error: ' + e.message)
+      console.warn('router.js /:archiveKey route error: ' + e.message)
       return sendSPA('/:archiveKey', req, res, params, state)
     }
     var archive = haus.getArchive(key)
@@ -52,11 +51,17 @@ router.on('/:archiveKey', {
     collect(listStream.pipe(timeout), function (err, data) {
       if (cancelled) return
       if (err) state.archive.error = {message: err.message}
+      state.archive.entries = data
+      console.log('getMetadata')
       getMetadata(archive, function (err, metadata) {
         if (err) state.archive.error = {message: err.message}
-        state.archive.entries = data
-        state.archive.metadata
-        sendSPA('/:archiveKey', req, res, params, state, metadata)
+        console.log('got metadata!')
+        console.log(metadata)
+        if (metadata) {
+          metadata.route = params.archiveRoute
+          state.archive.metadata = metadata
+        }
+        sendSPA('/:archiveKey', req, res, params, state)
       })
     })
   }
@@ -117,7 +122,7 @@ function getDefaultAppState () {
   return JSON.parse(JSON.stringify(state))
 }
 
-function sendSPA (route, req, res, params, state, metadata) {
+function sendSPA (route, req, res, params, state) {
   const frozenState = Object.freeze(state)
   const contents = app.toString(route, frozenState)
   const urlParams = new UrlParams(req.url)
@@ -127,12 +132,10 @@ function sendSPA (route, req, res, params, state, metadata) {
       if (err) {
         return res.end('Please run the bin/version-assets script via `npm run version` to debug with un-minified assets.')
       }
-      return res.end(require('./page-debug')(contents, serializeJS(frozenState)))
+      return res.end(require('./page-debug')(contents, frozenState))
     })
   }
-  if (!metadata) metadata = {}
-  metadata.route = route
-  return res.end(page(contents, metadata, serializeJS(frozenState)))
+  return res.end(page(contents, frozenState))
 }
 
 module.exports = router
