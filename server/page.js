@@ -1,7 +1,7 @@
 const xtend = require('extend')
 const serializeJS = require('serialize-javascript')
 
-function page (contents, appState) {
+function page (route, contents, appState) {
   var dehydratedAppState = serializeJS(appState)
 
   function renderMetaTags () {
@@ -17,7 +17,7 @@ function page (contents, appState) {
       <meta name="author" content="${md.author}" />
       <meta name="description" content="${md.description}" />
       <meta property="og:description" content="${md.description}" />
-      <meta property="og:url" content="http://dat.land/${md.route}" />`
+      <meta property="og:url" content="http://dat.land/${route}" />`
   }
 
   return `<html>

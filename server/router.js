@@ -132,7 +132,7 @@ function sendSPA (route, req, res, params, state) {
       return res.end(require('./page-debug')(contents, frozenState))
     })
   }
-  return res.end(page(contents, frozenState))
+  return res.end(page(route, contents, frozenState))
 }
 
 module.exports = router
