@@ -6,7 +6,7 @@ const collect = require('collect-stream')
 module.exports = function (archive, cb) {
   collect(archive.createFileReadStream('dat.json'), (err, raw) => {
     if (err) {
-      archive.createFileReadStream('datapackage.json', (err, raw) => {
+      collect(archive.createFileReadStream('datapackage.json'), (err, raw) => {
         if (err) return cb(err)
         done(raw, cb)
       })
