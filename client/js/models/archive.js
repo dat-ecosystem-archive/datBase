@@ -241,11 +241,15 @@ module.exports = {
       done(readStream)
     },
     download: function (data, state, send, done) {
+      // XXX: TODO: failover msg when dat is shared from cli, no file contents available
       const archive = state.instance
       const zip = new Jszip()
+      var zipName
       if (data && data.entryName) {
+        zipName = data.entryName
         zip.file(data.entryName, archive.createFileReadStream(data.entryName))
       } else {
+        zipName = state.key
         Object.keys(state.entries).sort().forEach((key) => {
           const entry = state.entries[key]
           if (entry.type === 'directory') {
@@ -257,7 +261,7 @@ module.exports = {
       }
       zip.generateAsync({type: 'blob'})
       .then((content) => {
-        saveAs(content, `${state.key}.zip`)
+        saveAs(content, `${zipName}.zip`)
         done()
       })
     }
