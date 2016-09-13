@@ -243,14 +243,18 @@ module.exports = {
     download: function (data, state, send, done) {
       const archive = state.instance
       const zip = new Jszip()
-      Object.keys(state.entries).sort().forEach((key) => {
-        const entry = state.entries[key]
-        if (entry.type === 'directory') {
-          // XXX: empty directories need to be created explicitly
-        } else {
-          zip.file(key, archive.createFileReadStream(key))
-        }
-      })
+      if (data && data.entryName) {
+        zip.file(data.entryName, archive.createFileReadStream(data.entryName))
+      } else {
+        Object.keys(state.entries).sort().forEach((key) => {
+          const entry = state.entries[key]
+          if (entry.type === 'directory') {
+            // XXX: empty directories need to be created explicitly
+          } else {
+            zip.file(key, archive.createFileReadStream(key))
+          }
+        })
+      }
       zip.generateAsync({type: 'blob'})
       .then((content) => {
         saveAs(content, `${state.key}.zip`)
