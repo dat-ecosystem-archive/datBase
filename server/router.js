@@ -124,15 +124,16 @@ function sendSPA (route, req, res, params, state) {
   const contents = app.toString(route, frozenState)
   const urlParams = new UrlParams(req.url)
   res.setHeader('Content-Type', 'text/html')
+  var url = req.headers.host + req.url
   if (urlParams.debug) {
     return fs.access('./server/page-debug.js', function (err) {
       if (err) {
         return res.end('Please run the bin/version-assets script via `npm run version` to debug with un-minified assets.')
       }
-      return res.end(require('./page-debug')(contents, frozenState))
+      return res.end(require('./page-debug')(url, contents, frozenState))
     })
   }
-  return res.end(page(route, contents, frozenState))
+  return res.end(page(url, contents, frozenState))
 }
 
 module.exports = router

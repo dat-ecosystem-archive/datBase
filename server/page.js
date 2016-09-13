@@ -17,7 +17,7 @@ function page (route, contents, appState) {
       <meta name="author" content="${md.author}" />
       <meta name="description" content="${md.description}" />
       <meta property="og:description" content="${md.description}" />
-      <meta property="og:url" content="http://dat.land/${route}" />`
+      <meta property="og:url" content="${route}" />`
   }
 
   return `<html>
