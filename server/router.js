@@ -55,6 +55,7 @@ router.on('/:archiveKey', {
       getMetadata(archive, function (err, metadata) {
         if (err) state.archive.error = {message: err.message}
         if (metadata) {
+          metadata.route = params.archiveKey
           state.archive.metadata = metadata
         }
         sendSPA('/:archiveKey', req, res, params, state)
@@ -131,7 +132,7 @@ function sendSPA (route, req, res, params, state) {
       return res.end(require('./page-debug')(contents, frozenState))
     })
   }
-  return res.end(page(route, contents, frozenState))
+  return res.end(page(contents, frozenState))
 }
 
 module.exports = router
