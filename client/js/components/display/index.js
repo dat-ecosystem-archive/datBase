@@ -18,6 +18,5 @@ module.exports = function (state, prev, send) {
     })
   }
 
-  console.log(display)
   return display
 }
