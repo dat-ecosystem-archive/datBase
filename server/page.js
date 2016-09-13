@@ -30,7 +30,7 @@ function page (url, contents, appState) {
         ${renderMetaTags()}
         <meta property="og:site_name" content="Dat Land" />
         <meta property="og:type" content="article" />
-        <meta property="og:image" content="http://dat.land/public/img/d.png" />
+        <meta property="og:image" content="http://dat.land/public/img/dat-data-logo.svg" />
       </head>
       <body>
         <div id="app">
