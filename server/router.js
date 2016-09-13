@@ -55,7 +55,6 @@ router.on('/:archiveKey', {
       getMetadata(archive, function (err, metadata) {
         if (err) state.archive.error = {message: err.message}
         if (metadata) {
-          metadata.route = params.archiveKey
           state.archive.metadata = metadata
         }
         sendSPA('/:archiveKey', req, res, params, state)
