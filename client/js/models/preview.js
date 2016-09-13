@@ -13,11 +13,7 @@ module.exports = {
   state: defaultState,
   reducers: {
     update: (data, state) => {
-      return {
-        archiveKey: data.archiveKey || state.archiveKey,
-        entryName: data.entryName || state.entryName,
-        readStream: data.readStream || state.readStream
-      }
+      return data
     },
     openPanel: (data, state) => {
       return {isPanelOpen: true}
@@ -29,11 +25,7 @@ module.exports = {
   effects: {
     file: (data, state, send, done) => {
       send('preview:update', data, noop)
-      send('preview:openPanel', {}, function () {
-        send('archive:readFile', data, function (readStream) {
-          send('preview:update', {readStream: readStream}, noop)
-        })
-      })
+      send('preview:openPanel', {}, done)
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
     }
   }
