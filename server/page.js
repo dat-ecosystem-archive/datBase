@@ -6,9 +6,9 @@ function page (route, contents, appState) {
 
   function renderMetaTags () {
     var defaultMetadata = {
-      title: 'dat.land',
+      title: 'Public Dataset',
       author: 'Dat Project',
-      description: 'Dataset sharing system.'
+      description: 'A public dataset shared with dat.'
     }
     var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : {}
     md = xtend(defaultMetadata, md)
