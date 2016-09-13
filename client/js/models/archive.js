@@ -1,12 +1,12 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
 const swarm = require('hyperdrive-archive-swarm')
-const collect = require('collect-stream')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
+const getMetadata = require('../utils/metadata.js')
 
 var drive = hyperdrive(memdb())
 var hyperdriveImportQueue
@@ -137,21 +137,10 @@ module.exports = {
       send('archive:update', {entries: {}, numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
       send('archive:load', key, done)
     },
-    getMetadata: function (data, state, send, done) {
-      // EXPERIMENTAL:
-      // right now we are reading this from dat.json but perhaps we
-      // will update this when we start using accounts and repos
-      var archive = state.instance
-      collect(archive.createFileReadStream('dat.json'), (err, raw) => {
-        if (err) return done()
-        var json
-        try {
-          json = JSON.parse(raw.toString())
-        } catch (err) {
-          // TODO: inform user
-          json = {}
-        }
-        send('archive:update', {metadata: json}, done)
+    updateMetadata: function (data, state, send, done) {
+      getMetadata(state.instance, function (err, metadata) {
+        if (err) return done(err)
+        send('archive:update', {metadata}, done)
       })
     },
     importFiles: function (data, state, send, done) {
@@ -199,6 +188,7 @@ module.exports = {
           if (file && file.progressListener && file.progressHandler) {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
+          if (file.fullPath === '/dat.json') send('archive:updateMetadata', {}, noop)
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
         }
       })
@@ -214,7 +204,6 @@ module.exports = {
         }
       }
       if (!archive) {
-        send('archive:update', {key}, noop)
         archive = drive.createArchive(key)
         sw = swarm(archive)
         send('archive:update', {instance: archive, swarm: sw, key}, done)
@@ -232,6 +221,7 @@ module.exports = {
       })
       archive.on('download', function (data) {
         send('archive:updateDownloaded', data.length, noop)
+        send('archive:updateMetadata', {}, noop)
         if (timer) window.clearTimeout(timer)
         timer = setTimeout(() => send('archive:update', {uploadSpeed: 0, downloadSpeed: 0}, noop), 3000)
       })
@@ -242,9 +232,7 @@ module.exports = {
             // XXX: Hack to fetch a small bit of data so size properly updates
           })
         }
-        send('archive:getMetadata', {}, noop)
-        const size = archive.content.bytes
-        send('archive:update', {size}, noop)
+        send('archive:updateMetadata', {}, noop)
       })
     },
     readFile: function (data, state, send, done) {

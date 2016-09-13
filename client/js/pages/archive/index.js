@@ -32,7 +32,8 @@ const archivePage = (state, prev, send) => {
             <button class="dat-header-action" onclick=${() => send('archive:download')}>Download</button>
             <a href="dat://${state.archive.key}" class="dat-header-action">Open in Desktop App</a>
           </div>
-          <div id="share-link" class="share-link">${state.archive.metadata.title || state.archive.key}</div>
+          <div id="title" class="share-link">${state.archive.metadata.title || state.archive.key}</div>
+          <div id="author" class="author-name">${state.archive.metadata.author}</div>
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>

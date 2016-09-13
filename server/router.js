@@ -2,11 +2,11 @@
 
 const fs = require('fs')
 const assert = require('assert')
-const serializeJS = require('serialize-javascript')
 const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
+const getMetadata = require('../client/js/utils/metadata')
 const router = require('server-router')()
 
 const app = require('../client/js/app').app
@@ -32,7 +32,7 @@ router.on('/:archiveKey', {
       key = encoding.decode(params.archiveKey)
     } catch (e) {
       state.archive.error = {message: e.message}
-      console.warn('error: ' + e.message)
+      console.warn('router.js /:archiveKey route error: ' + e.message)
       return sendSPA('/:archiveKey', req, res, params, state)
     }
     var archive = haus.getArchive(key)
@@ -52,7 +52,13 @@ router.on('/:archiveKey', {
       if (cancelled) return
       if (err) state.archive.error = {message: err.message}
       state.archive.entries = data
-      sendSPA('/:archiveKey', req, res, params, state)
+      getMetadata(archive, function (err, metadata) {
+        if (err) state.archive.error = {message: err.message}
+        if (metadata) {
+          state.archive.metadata = metadata
+        }
+        sendSPA('/:archiveKey', req, res, params, state)
+      })
     })
   }
 })
@@ -117,15 +123,16 @@ function sendSPA (route, req, res, params, state) {
   const contents = app.toString(route, frozenState)
   const urlParams = new UrlParams(req.url)
   res.setHeader('Content-Type', 'text/html')
+  var url = req.headers.host + req.url
   if (urlParams.debug) {
     return fs.access('./server/page-debug.js', function (err) {
       if (err) {
         return res.end('Please run the bin/version-assets script via `npm run version` to debug with un-minified assets.')
       }
-      return res.end(require('./page-debug')(contents, serializeJS(frozenState)))
+      return res.end(require('./page-debug')(url, contents, frozenState))
     })
   }
-  return res.end(page(contents, serializeJS(frozenState)))
+  return res.end(page(url, contents, frozenState))
 }
 
 module.exports = router

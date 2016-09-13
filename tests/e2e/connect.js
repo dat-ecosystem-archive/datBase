@@ -51,9 +51,9 @@ module.exports = new function () {
 
       client
         .click('.dat-button--new-dat button').pause(1000)
-        .expect.element('#share-link').text.matches(/^(.+)$/).before(10000)
+        .expect.element('#title').text.matches(/^(.+)$/).before(10000)
 
-      client.getText('#share-link', (result) => {
+      client.getText('#title', (result) => {
         console.log('sending', result.value)
         browser2.write(result.value)
       })
@@ -78,13 +78,21 @@ module.exports = new function () {
 
   if (firstClient) {
     testCases['upload file'] = (client) => {
-      client.setValue('#add-files input[type=file]', path.resolve('./package.json'))
-        .expect.element('#fs').text.to.contain('package.json').before(10000)
+      client.setValue('#add-files input[type=file]', path.join(__dirname, '..', 'fixtures', 'dat.json'))
+        .expect.element('#fs').text.to.contain('dat.json').before(10000)
+    }
+    testCases['metadata rendered'] = client => {
+      client.expect.element('#title').text.to.contain('hello world').before(1000)
+      client.expect.element('#author').text.to.contain('joe bob').before(1000)
     }
   } else {
     testCases['file synced'] = (client) => {
       client
-        .expect.element('#fs').text.to.contain('package.json').before(10000)
+        .expect.element('#fs').text.to.contain('dat.json').before(10000)
+    }
+    testCases['metadata rendered'] = client => {
+      client.expect.element('#title').text.to.contain('hello world').before(1000)
+      client.expect.element('#author').text.to.contain('joe bob').before(1000)
     }
   }
 
