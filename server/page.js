@@ -1,28 +1,23 @@
+const xtend = require('extend')
 const serializeJS = require('serialize-javascript')
 
-function page (contents, appState) {
+function page (route, contents, appState) {
   var dehydratedAppState = serializeJS(appState)
 
   function renderMetaTags () {
-    var s = ''
-    var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : null
-    if (!md) return s
-    if (md.title) {
-      s += `<meta name="title" content="${md.title}" />
-            <meta property="og:title" content="${md.title}" />`
+    var defaultMetadata = {
+      title: 'dat.land',
+      author: 'Dat Project',
+      description: 'Dataset sharing system.'
     }
-    if (md.author) {
-      s += `<meta name="author" content="${md.author}" />`
-    }
-    if (md.description) {
-      s += `<meta name="description" content="${md.description}" />
-            <meta property="og:description" content="${md.description}" />`
-    }
-    if (md.route) {
-      s += `<meta property="og:url" content="http://dat.land/${md.route}" />`
-    }
-
-    return s
+    var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : {}
+    md = xtend(defaultMetadata, md)
+    return `<meta name="title" content="${md.title}" />
+      <meta property="og:title" content="${md.title}" />
+      <meta name="author" content="${md.author}" />
+      <meta name="description" content="${md.description}" />
+      <meta property="og:description" content="${md.description}" />
+      <meta property="og:url" content="http://dat.land/${route}" />`
   }
 
   return `<html>
