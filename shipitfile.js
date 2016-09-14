@@ -16,7 +16,7 @@ module.exports = function (shipit) {
       servers: process.env.DATLAND_USER + '@dat.land',
       deployTo: 'src/dat.land/prod',
       branch: 'master'
-    }
+    },
     uat: {
       processName: 'uat',
       servers: process.env.DATLAND_USER + '@dat.land',
