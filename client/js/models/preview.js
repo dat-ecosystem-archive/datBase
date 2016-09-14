@@ -5,7 +5,7 @@ var defaultState = {
   archiveKey: null,
   entryName: null,
   readStream: null,
-  error: null
+  error: false
 }
 
 module.exports = {
@@ -24,6 +24,7 @@ module.exports = {
   },
   effects: {
     file: (data, state, send, done) => {
+      data.error = false
       send('preview:update', data, noop)
       send('preview:openPanel', {}, done)
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
