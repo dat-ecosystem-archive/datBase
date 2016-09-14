@@ -234,6 +234,7 @@ module.exports = {
         }
         send('archive:updateMetadata', {}, noop)
       })
+      return done()
     },
     readFile: function (data, state, send, done) {
       var archive = state.instance
