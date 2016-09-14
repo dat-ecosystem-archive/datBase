@@ -32,7 +32,8 @@
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
     "version": "./bin/git-sha.js && ./bin/version-assets.js",
-    "deploy": "shipit uat deploy && shipit uat install && shipit uat restart"
+    "deploy": "shipit prod deploy && shipit prod install && shipit prod restart",
+    "deploy-uat": "shipit uat deploy && shipit uat install && shipit uat restart"
   },
   "standard": {
     "ignore": [

@@ -11,6 +11,12 @@ module.exports = function (shipit) {
       rsync: ['--del'],
       keepReleases: 2
     },
+    prod: {
+      processName: 'prod',
+      servers: process.env.DATLAND_USER + '@dat.land',
+      deployTo: 'src/dat.land/prod',
+      branch: 'master'
+    }
     uat: {
       processName: 'uat',
       servers: process.env.DATLAND_USER + '@dat.land',
