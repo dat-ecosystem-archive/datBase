@@ -35,6 +35,23 @@
   border-radius: 0;
   background-color: $color-green;
   margin-right: 1rem;
+  position: relative;
+  text-indent: -999px;
+  overflow: hidden;
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 2px);
+    left: calc(50% - #{$site-header-height} / 4);
+    background-color: currentColor;
+    width: $site-header-height / 2;
+    height: 2px;
+    transform: rotate(-45deg);
+  }
+  &:after {
+    transform: rotate(45deg);
+  }
 }
 
 .panel-header__title-group {
