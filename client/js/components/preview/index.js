@@ -19,7 +19,7 @@ const preview = (state, prev, send) => {
         }
       })}
       <div class="panel-header__title-group">
-        <div class="panel-title">
+        <div class="panel-title truncate">
           ${entryName}
         </div>
         <div class="dat-details">
