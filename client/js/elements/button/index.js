@@ -10,7 +10,7 @@ module.exports = (props, click) => {
     child = props.text
   }
   return html`
-    <button onclick=${props.click} class="btn ${props.klass || 'btn--green'}">
+    <button onclick=${props.click} class="${props.klass}">
       ${child}
     </button>`
 }

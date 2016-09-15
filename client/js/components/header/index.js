@@ -8,7 +8,7 @@ const help = (state, prev, send) => {
     ${button({
       icon: './public/img/question.svg',
       text: 'Help',
-      klass: 'btn--green btn__reveal-text',
+      klass: 'btn btn--green btn__reveal-text',
       click: intro
     })}
   </div>`
@@ -25,6 +25,7 @@ const header = (state, prev, send) => {
           ${button({
             icon: './public/img/create-new-dat.svg',
             text: 'Create New Dat',
+            klass: 'btn btn--green',
             click: () => send('archive:new')
           })}
         </div>

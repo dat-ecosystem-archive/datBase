@@ -16,9 +16,11 @@
 }
 
 .dat-header-action {
+  display: inline-block;
   padding-top: .4rem;
   border: 0;
   font-size: .875rem;
+  line-height: 1.25;
   background-color: transparent;
   color: $color-neutral--80;
   &:hover, &:focus {

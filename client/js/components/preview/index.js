@@ -12,7 +12,7 @@ const preview = (state, prev, send) => {
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
       ${button({
-        klass: 'btn--green panel-header__close-button',
+        klass: 'panel-header__close-button',
         text: 'Close',
         click: () => {
           send('preview:closePanel')
@@ -29,12 +29,18 @@ const preview = (state, prev, send) => {
       <div class="panel-header__action-group">
         ${button({
           klass: 'dat-header-action',
+          icon: './public/img/download.svg',
           text: 'Download',
           click: () => {
             send('archive:download', {entryName})
           }
         })}
-        <a href="dat://${state.archive.key}" class="dat-header-action">Open in Desktop App</a>
+        <a href="dat://${state.archive.key}" class="dat-header-action">
+          <div class="btn__icon-wrapper">
+            <img src="./public/img/open-in-desktop.svg" class="btn__icon-img">
+            <span class="btn__icon-text">Open in Desktop App</span>
+          </div>
+        </a>
       </div>
     </div>
     <div class="panel-main">
