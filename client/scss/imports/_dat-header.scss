@@ -17,6 +17,7 @@
 
 .dat-header-action {
   display: inline-block;
+  margin-left: 1rem;
   padding-top: .4rem;
   border: 0;
   font-size: .875rem;
@@ -25,6 +26,10 @@
   color: $color-neutral--80;
   &:hover, &:focus {
     color: $color-neutral;
+  }
+  &:first-child {
+    margin-left: 0;
+    padding-left: 0;
   }
 }
 
