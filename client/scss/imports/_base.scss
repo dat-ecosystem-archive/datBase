@@ -6,7 +6,7 @@ body {
   min-width: 480px;
 }
 
-a, button, input {
+a, button, input[type="submit"] {
   cursor: pointer;
 }
 
