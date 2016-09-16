@@ -53,7 +53,7 @@ router.on('/:archiveKey', {
       if (err) state.archive.error = {message: err.message}
       state.archive.entries = data
       getMetadata(archive, function (err, metadata) {
-        if (err) state.archive.error = {message: err.message}
+        if (err) state.archive.error = {message: 'no metadata'}
         if (metadata) {
           state.archive.metadata = metadata
         }
