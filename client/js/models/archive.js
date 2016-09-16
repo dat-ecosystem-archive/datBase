@@ -134,7 +134,7 @@ module.exports = {
       const location = '/' + key
       send('location:setLocation', { location }, noop)
       window.history.pushState({}, null, location)
-      send('archive:update', {entries: {}, numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
+      send('archive:update', {entries: [], numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
       send('archive:load', key, done)
     },
     updateMetadata: function (data, state, send, done) {
