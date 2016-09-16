@@ -3,7 +3,7 @@ const button = require('./../../elements/button')
 const importButton = require('./../../elements/import-button')
 
 const help = (state, prev, send) => {
-  if (window.location.pathname === '/') return ''
+  if (module.parent || window.location.pathname === '/') return ''
   const intro = () => send('help:show')
   return html`<div class="dat-button dat-button--help">
     ${button({
