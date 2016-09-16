@@ -20,8 +20,10 @@ module.exports = function (state, prev, send) {
   }
 
   // only render/re-render when the entry name changes!
-  if (!entryName || (entryName === previousEntryName)) {
+  if (!entryName) {
     return
+  } else if (entryName === previousEntryName) {
+    return display
   }
 
   if (entryName && archive) {
