@@ -12,6 +12,13 @@ var drive = hyperdrive(memdb())
 var hyperdriveImportQueue
 var noop = function () {}
 
+const DEFAULT_SIGNAL_HUBS = process.env.DATLAND_SIGNAL_HUBS
+? process.env.DATLAND_SIGNAL_HUBS.split(/,/)
+: [
+  'signalhub.mafintosh.com',
+  'signalhub.dat.land'
+]
+
 var defaultState = {
   key: null,
   instance: null,
@@ -23,10 +30,7 @@ var defaultState = {
   size: null,
   numPeers: 0,
   swarm: null,
-  signalhubs: [
-    'signalhub.mafintosh.com',
-    'signalhub.dat.land'
-  ],
+  signalhubs: DEFAULT_SIGNAL_HUBS,
   uploadMeter: null,
   uploadSpeed: 0,
   uploadTotal: 0,
@@ -126,7 +130,7 @@ module.exports = {
       // init new archive model
       const archive = drive.createArchive(null, {live: true, sparse: true})
       const key = archive.key.toString('hex')
-      send('archive:update', {instance: archive, swarm: swarm(archive), key}, noop)
+      send('archive:update', {instance: archive, swarm: swarm(archive, {signalhub: state.signalhubs}), key}, noop)
       send('archive:import', key, done)
       send('archive:initImportQueue', {archive}, noop)
     },
@@ -205,7 +209,7 @@ module.exports = {
       }
       if (!archive) {
         archive = drive.createArchive(key)
-        sw = swarm(archive)
+        sw = swarm(archive, {signalhub: state.signalhubs})
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
       sw.on('connection', function (conn) {
