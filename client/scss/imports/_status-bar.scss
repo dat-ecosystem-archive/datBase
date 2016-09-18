@@ -1,9 +1,11 @@
 .status-bar {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: $color-neutral--04;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
   border-top: 1px solid $color-neutral--10;
+  background-color: $color-neutral--04;
   font-size: .6875rem;
   text-align: center;
   .container {
