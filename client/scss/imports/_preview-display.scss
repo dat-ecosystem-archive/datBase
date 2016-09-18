@@ -3,7 +3,10 @@
   margin-bottom: 4rem;
   img,
   video {
-    margin: 10px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
   iframe {
     width: 100%;
