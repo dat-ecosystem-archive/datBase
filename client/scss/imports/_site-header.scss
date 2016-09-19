@@ -28,9 +28,26 @@ $site-header-ui-elements-height: 3rem;
 }
 
 .dat-logo {
-  float: left;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $color-white;
+  letter-spacing: .025em;
   img {
-    width: 40px;
+    display: block;
+    height: 70%;
+    margin-right: .75rem;
+    transition: transform .5s ease-in-out;
+  }
+  span {
+    opacity: .5;
+  }
+  &:hover, &:focus {
+    color: $color-white;
+    img {
+      transform: rotate(360deg);
+    }
   }
 }
 

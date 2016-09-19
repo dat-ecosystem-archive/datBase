@@ -19,7 +19,8 @@ const header = (state, prev, send) => {
   return html`<header class="site-header"><div id="intro"></div>
     <div class="container container--site-header">
       <a href="/" class="dat-logo">
-        <img src="./public/img/dat-data-logo.svg" />
+        <img src="./public/img/dat-hexagon.svg" />
+        <div>dat<span>.</span>land</div>
       </a>
       <div class="site-header__actions">
         <div id="js-button-new" class="dat-button dat-button--new-dat">
