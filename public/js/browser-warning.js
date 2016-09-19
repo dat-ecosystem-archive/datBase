@@ -7,7 +7,7 @@ function main () {
   var root = document.querySelector('#browser-warning')
   var el = document.createElement('div')
   var html = "<div class='danger-block pt3'>"
-  html += "<h3 class='mb3'>Sorry, we don't support your browser (yet).</h1>"
+  html += "<h3 class='mb1'>Sorry, we don’t support your browser (yet).</h1>"
   html += "<div class='pb3'>We only support the latest version of Google Chrome. <a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download</a></div>"
   html += "</div>"
   root.appendChild(el)

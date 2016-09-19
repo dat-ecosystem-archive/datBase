@@ -21,8 +21,9 @@ $site-header-ui-elements-height: 3rem;
 }
 
 .dat-import {
-  height: $site-header-ui-elements-height;
   display: inline-block;
+  height: $site-header-ui-elements-height;
+  max-width: 12rem;
   vertical-align: middle;
   margin-left: 2rem;
 }
@@ -34,9 +35,17 @@ $site-header-ui-elements-height: 3rem;
   font-weight: 600;
   color: $color-white;
   letter-spacing: .025em;
+  > div {
+    display: none;
+  }
+  @include breakpoint (md1) {
+    div {
+      display: block;
+    }
+  }
   img {
     display: block;
-    height: 70%;
+    max-width: 2.5rem;
     margin-right: .75rem;
     transition: transform .5s ease-in-out;
   }

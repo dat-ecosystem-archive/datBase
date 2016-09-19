@@ -39,20 +39,21 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
+  &:hover, &:focus {
+    .btn__icon-img {
+      opacity: 1;
+    }
+  }
 }
 .btn__icon-img {
-  opacity: .64;
+  opacity: .5;
   display: block;
 }
 .btn__icon-text {
   margin-left: .5em;
   white-space: nowrap;
 }
-&:hover, &:focus {
-  .btn__icon-img {
-    opacity: 1;
-  }
-}
+
 
 .dat-header-action {
   .btn__icon-img {
