@@ -42,7 +42,7 @@ var defaultState = {
 
 module.exports = {
   namespace: 'archive',
-  state: defaultState,
+  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.archive,
   reducers: {
     update: (data, state) => {
       return data
