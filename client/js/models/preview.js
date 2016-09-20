@@ -10,7 +10,7 @@ var defaultState = {
 
 module.exports = {
   namespace: 'preview',
-  state: defaultState,
+  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.preview,
   reducers: {
     update: (data, state) => {
       return data

@@ -31,6 +31,5 @@ if (module.parent) {
     }
   }
 } else {
-  app.model(require('./models/app-rehydrator'))
   app.start('#app-root')
 }
