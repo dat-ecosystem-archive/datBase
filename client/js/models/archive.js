@@ -241,30 +241,49 @@ module.exports = {
       var readStream = archive.createFileReadStream(data.entryName)
       done(readStream)
     },
-    download: function (data, state, send, done) {
-      // XXX: TODO: failover msg when dat is shared from cli, no file contents available
+    downloadAsZip: function (data, state, send, done) {
       const archive = state.instance
       const zip = new Jszip()
       var zipName
       if (data && data.entryName) {
-        zipName = data.entryName
-        zip.file(data.entryName, archive.createFileReadStream(data.entryName))
+        archive.get(data.entryName, {timeout: 1000}, function (err, entry) {
+          if (err) return failoverMsg()
+          if (!archive.isEntryDownloaded(entry)) return failoverMsg()
+          zipName = data.entryName
+          zip.file(data.entryName, archive.createFileReadStream(data.entryName))
+          return finalizeZip(zipName, zip)
+        })
       } else {
         zipName = state.key
-        Object.keys(state.entries).sort().forEach((key) => {
+        var keys = Object.keys(state.entries.sort())
+        var doFinalizeZip = true
+        keys.forEach((key, index) => {
           const entry = state.entries[key]
           if (entry.type === 'directory') {
             // XXX: empty directories need to be created explicitly
           } else {
-            zip.file(key, archive.createFileReadStream(key))
+            if (!archive.isEntryDownloaded(entry)) {
+              doFinalizeZip = false // if one entry is missing, send failoverMsg()
+            } else {
+              zip.file(key, archive.createFileReadStream(key))
+            }
           }
         })
+        if (!doFinalizeZip) return failoverMsg()
+        return finalizeZip(zipName, zip)
       }
-      zip.generateAsync({type: 'blob'})
-      .then((content) => {
-        saveAs(content, `${zipName}.zip`)
-        done()
-      })
+
+      function finalizeZip (zipName, zip) {
+        zip.generateAsync({type: 'blob'})
+        .then((content) => {
+          saveAs(content, `${zipName}.zip`)
+          done()
+        })
+      }
+
+      function failoverMsg () {
+        window.alert('We cannot find peers to download this dat from at this time. Try using the dat desktop app instead.')
+      }
     }
   }
 }
