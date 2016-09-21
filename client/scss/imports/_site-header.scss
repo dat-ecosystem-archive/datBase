@@ -87,6 +87,7 @@ $site-header-ui-elements-height: 3rem;
   position: fixed;
   bottom: 2rem;
   right: .5rem;
+  z-index: 10;
   button {
     $radius: 24px;
     border-radius: $radius;
