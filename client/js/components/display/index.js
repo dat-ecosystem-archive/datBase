@@ -35,22 +35,24 @@ module.exports = function (state, prev, send) {
           return send('preview:update', {error: new Error(err)})
         }
       }
-      // XXX TODO: we might have to check # of blocks downloaded for large files
-      if (archive.isEntryDownloaded(entry)) {
-        var stream = archive.createFileReadStream(entryName)
-        renderData.render({
-          name: entryName,
-          createReadStream: function () { return stream }
-        }, display, function (error) {
-          if (error) {
-            var message = 'Unsupported filetype'
-            if (error.message === 'premature close') message = 'Could not find any peer sources.'
-            send('preview:update', {error: new Error(message)})
-          }
-        })
-      } else {
-        send('preview:update', {error: new Error('Could not find any peer sources.')})
-      }
+      // XXX TODO: handle progress and timeout for download
+      archive.download(entry, function (err) {
+        if (archive.isEntryDownloaded(entry)) {
+          var stream = archive.createFileReadStream(entryName)
+          renderData.render({
+            name: entryName,
+            createReadStream: function () { return stream }
+          }, display, function (error) {
+            if (error) {
+              var message = 'Unsupported filetype'
+              if (error.message === 'premature close') message = 'Could not find any peer sources.'
+              send('preview:update', {error: new Error(message)})
+            }
+          })
+        } else {
+          send('preview:update', {error: new Error(err)})
+        }
+      })
     })
   }
 
