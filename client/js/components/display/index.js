@@ -30,27 +30,20 @@ module.exports = function (state, prev, send) {
     archive.get(entryName, {timeout: 3000}, function (err, entry) {
       if (err) {
         if (err.code && err.code === 'ETIMEDOUT') {
-          return send('preview:update', {error: new Error('Could not find any peer sources.')})
+          return send('preview:update', {error: new Error('Loading...')})
         } else {
           return send('preview:update', {error: new Error(err)})
         }
       }
-      // XXX TODO: handle progress and timeout for download
-      archive.download(entry, function (err) {
-        if (archive.isEntryDownloaded(entry)) {
-          var stream = archive.createFileReadStream(entryName)
-          renderData.render({
-            name: entryName,
-            createReadStream: function () { return stream }
-          }, display, function (error) {
-            if (error) {
-              var message = 'Unsupported filetype'
-              if (error.message === 'premature close') message = 'Could not find any peer sources.'
-              send('preview:update', {error: new Error(message)})
-            }
-          })
-        } else {
-          send('preview:update', {error: new Error(err)})
+      var stream = archive.createFileReadStream(entryName)
+      renderData.render({
+        name: entryName,
+        createReadStream: function () { return stream }
+      }, display, function (error) {
+        if (error) {
+          var message = 'Unsupported filetype'
+          if (error.message === 'premature close') message = 'Could not find any peer sources.'
+          send('preview:update', {error: new Error(message)})
         }
       })
     })
