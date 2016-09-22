@@ -14,7 +14,7 @@ module.exports = function (state, prev, send) {
   if (state.preview.error && !prev.preview.error) {
     return fourohfour({
       header: state.preview.error.message,
-      body: `${state.preview.entryName} cannot be rendered.`,
+      body: state.preview.error.body || `${state.preview.entryName} cannot be rendered.`,
       link: false
     })
   }
@@ -30,9 +30,9 @@ module.exports = function (state, prev, send) {
     archive.get(entryName, {timeout: 3000}, function (err, entry) {
       if (err) {
         if (err.code && err.code === 'ETIMEDOUT') {
-          return send('preview:update', {error: new Error('Loading...')})
+          return send('preview:update', {error: {message: 'Looking for peers...', body: 'It seems to be taking a long time.'}})
         } else {
-          return send('preview:update', {error: new Error(err)})
+          return send('preview:update', {error: err})
         }
       }
       var stream = archive.createFileReadStream(entryName)
