@@ -208,7 +208,7 @@ module.exports = {
         }
       }
       if (!archive) {
-        archive = drive.createArchive(key)
+        archive = drive.createArchive(key, {live: true, sparse: true})
         sw = swarm(archive, {signalhub: state.signalhubs})
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
