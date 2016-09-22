@@ -260,7 +260,7 @@ module.exports = {
           if (entry.type === 'directory') {
             // XXX: empty directories need to be created explicitly
           } else {
-            zip.file(key, archive.createFileReadStream(key))
+            zip.file(entry.name, archive.createFileReadStream(entry.name))
           }
         })
       }
