@@ -1,6 +1,5 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
-const swarm = require('hyperdrive-archive-swarm')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
@@ -188,7 +187,7 @@ module.exports = {
       }
 
       var dat = Dat(drive, key, state.signalhubs, send)
-      var key = dat.archive.key.toString('hex')
+      key = dat.archive.key.toString('hex')
       const location = '/' + key
       send('location:setLocation', { location }, noop)
       window.history.pushState({}, null, location)
