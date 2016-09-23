@@ -122,7 +122,13 @@ module.exports = {
   effects: {
     new: function (data, state, send, done) {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
-      send('archive:update', {entries: []}, noop)
+      var newState = {
+        entries: [],
+        numPeers: 0,
+        downloadTotal: 0,
+        uploadTotal: 0,
+      }
+      send('archive:update', newState, noop)
       send('archive:load', null, done)
     },
     updateMetadata: function (data, state, send, done) {
@@ -191,14 +197,6 @@ module.exports = {
       const location = '/' + key
       send('location:setLocation', { location }, noop)
       window.history.pushState({}, null, location)
-      var newState = {
-        numPeers: 0,
-        downloadTotal: 0,
-        uploadTotal: 0,
-        instance: dat.archive,
-        swarm: dat.swarm,
-        key: key
-      }
       var stream = dat.archive.list({live: true})
       stream.on('data', function (entry) {
         var entries = state.entries
@@ -206,6 +204,11 @@ module.exports = {
         send('archive:update', {entries}, noop)
       })
       send('archive:initImportQueue', {archive: dat.archive}, noop)
+      var newState = {
+        instance: dat.archive,
+        swarm: dat.swarm,
+        key: key
+      }
       send('archive:update', newState, done)
     },
     readFile: function (data, state, send, done) {
