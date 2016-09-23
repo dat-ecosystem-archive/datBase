@@ -31,5 +31,5 @@ if (module.parent) {
     }
   }
 } else {
-  app.start('#app-root')
+  app.start('#app-root', {href: false})
 }
