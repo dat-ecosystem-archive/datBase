@@ -1,7 +1,7 @@
 var process = require('process')
 var net = require('net')
 var path = require('path')
-var browser2
+var browser2, datlink
 
 function makeServer () {
   var server = net.createServer((c) => {
@@ -62,7 +62,7 @@ module.exports = new function () {
     testCases['opening the browser and navigating to the url'] = (client) => {
       client.pause(5000)
       ipcClient.once('data', (data) => {
-        const datlink = data.toString()
+        datlink = data.toString()
         console.info('using datlink', datlink)
         client
           .url(testServer + datlink)
@@ -85,6 +85,21 @@ module.exports = new function () {
     testCases['file synced'] = (client) => {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
+    }
+    testCases['metadata rendered'] = client => {
+      client.expect.element('#title').text.to.contain('hello world').before(1000)
+      client.expect.element('#author').text.to.contain('joe bob').before(1000)
+    }
+    testCases['create new button properly resets view'] = (client) => {
+      client.click('.dat-button--new-dat button').pause(1000)
+      client
+        .expect.element('#fs').text.not.to.contain('dat.json').before(1000)
+      client
+        .expect.element('#title').text.not.to.contain(datlink).before(1000)
+      client
+        .expect.element('#author').text.to.contain('datapackage.json').before(1000)
+      client
+        .expect.element('#peers').text.matches(/0 Source\(s\)/).before(1000)
     }
   }
 
