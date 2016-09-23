@@ -265,7 +265,7 @@ module.exports = {
             if (!archive.isEntryDownloaded(entry)) {
               doFinalizeZip = false // if one entry is missing, send failoverMsg()
             } else {
-              zip.file(key, archive.createFileReadStream(key))
+              zip.file(entry.name, archive.createFileReadStream(key))
             }
           }
         })
