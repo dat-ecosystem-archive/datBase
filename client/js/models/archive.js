@@ -125,7 +125,7 @@ module.exports = {
         entries: [],
         numPeers: 0,
         downloadTotal: 0,
-        uploadTotal: 0,
+        uploadTotal: 0
       }
       send('archive:update', newState, noop)
       send('archive:load', null, done)
