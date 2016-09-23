@@ -123,6 +123,7 @@ module.exports = {
     new: function (data, state, send, done) {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
       var newState = {
+        metadata: {},
         entries: [],
         numPeers: 0,
         downloadTotal: 0,
