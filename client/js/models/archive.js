@@ -246,7 +246,7 @@ module.exports = {
       const zip = new Jszip()
       var zipName
       if (data && data.entryName) {
-        archive.get(data.entryName, {timeout: 1000}, function (err, entry) {
+        archive.get(data.entryName, {timeout: 1500}, function (err, entry) {
           if (err) return failoverMsg()
           if (!archive.isEntryDownloaded(entry)) return failoverMsg()
           zipName = data.entryName
@@ -262,11 +262,10 @@ module.exports = {
           if (entry.type === 'directory') {
             // XXX: empty directories need to be created explicitly
           } else {
-            if (!archive.isEntryDownloaded(entry)) {
-              doFinalizeZip = false // if one entry is missing, send failoverMsg()
-            } else {
-              zip.file(entry.name, archive.createFileReadStream(key))
-            }
+            archive.get(entry.name, {timeout: 1500}, function (err, entry) {
+              if (err) return doFinalizeZip = false
+              zip.file(entry.name, archive.createFileReadStream(data.entryName))
+            })
           }
         })
         if (!doFinalizeZip) return failoverMsg()
