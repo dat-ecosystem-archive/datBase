@@ -232,7 +232,6 @@ module.exports = {
       archive.open(function () {
         if (archive.content) {
           archive.content.get(0, function (data) {
-            send('archive:update', {size: archive.content.bytes}, noop)
             // XXX: Hack to fetch a small bit of data so size properly updates
           })
         }
