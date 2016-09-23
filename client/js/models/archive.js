@@ -210,7 +210,8 @@ module.exports = {
         swarm: dat.swarm,
         key: key
       }
-      send('archive:update', newState, done)
+      send('archive:update', newState)
+      return done()
     },
     readFile: function (data, state, send, done) {
       var archive = state.instance
@@ -227,12 +228,11 @@ module.exports = {
         zip.file(data.entryName, archive.createFileReadStream(data.entryName))
       } else {
         zipName = state.key
-        Object.keys(state.entries).sort().forEach((key) => {
-          const entry = state.entries[key]
+        state.entries.forEach((entry) => {
           if (entry.type === 'directory') {
             // XXX: empty directories need to be created explicitly
           } else {
-            zip.file(key, archive.createFileReadStream(key))
+            zip.file(entry.name, archive.createFileReadStream(entry.name))
           }
         })
       }
