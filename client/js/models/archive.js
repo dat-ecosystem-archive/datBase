@@ -70,9 +70,9 @@ module.exports = {
     updatePeers: (data, state) => {
       return {numPeers: state.swarm ? state.swarm.connections : 0}
     },
-    reset: (data, state) => {		
-      if (state.swarm && state.swarm.close) state.swarm.close(function () {})		
-      return defaultState		
+    reset: (data, state) => {
+      if (state.swarm && state.swarm.close) state.swarm.close(function () {})
+      return defaultState
     },
     updateImportQueue: (data, state) => {
       // shallow copy the last `state` frame so we can preserve
