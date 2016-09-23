@@ -125,6 +125,7 @@ module.exports = {
         metadata: {},
         entries: [],
         numPeers: 0,
+        error: null,
         downloadTotal: 0,
         uploadTotal: 0
       }
