@@ -97,13 +97,13 @@ module.exports = new function () {
     client.expect.element('#author').text.to.contain('joe bob').before(1000)
   }
 
-  testCases.after = (client) => {
+  testCases.after = (client, done) => {
     if (ipcServer) {
       ipcServer.close()
     }
     if (ipcClient) {
       ipcClient.end()
     }
-    client.end()
+    client.end().perform(function () { done() })
   }
 }()
