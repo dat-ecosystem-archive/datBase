@@ -81,23 +81,20 @@ module.exports = new function () {
       client.setValue('#add-files input[type=file]', path.join(__dirname, '..', 'fixtures', 'dat.json'))
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
-    testCases['metadata rendered'] = client => {
-      client.expect.element('#title').text.to.contain('hello world').before(1000)
-      client.expect.element('#author').text.to.contain('joe bob').before(1000)
-    }
   } else {
     testCases['file synced'] = (client) => {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
-    testCases['metadata rendered'] = client => {
-      client.expect.element('#title').text.to.contain('hello world').before(1000)
-      client.expect.element('#author').text.to.contain('joe bob').before(1000)
-    }
   }
 
   testCases.suspend = (client) => {
     client.pause(10000)
+  }
+
+  testCases['metadata rendered'] = client => {
+    client.expect.element('#title').text.to.contain('hello world').before(1000)
+    client.expect.element('#author').text.to.contain('joe bob').before(1000)
   }
 
   testCases.after = (client) => {
