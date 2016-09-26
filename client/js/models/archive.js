@@ -1,12 +1,12 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
-const swarm = require('hyperdrive-archive-swarm')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
 const getMetadata = require('../utils/metadata.js')
+const Dat = require('./dat.js')
 
 var drive = hyperdrive(memdb())
 var hyperdriveImportQueue
@@ -26,7 +26,6 @@ var defaultState = {
   metadata: {},
   entries: [],
   root: '',
-  size: null,
   numPeers: 0,
   swarm: null,
   signalhubs: DEFAULT_SIGNAL_HUBS,
@@ -127,24 +126,17 @@ module.exports = {
   ],
   effects: {
     new: function (data, state, send, done) {
-      // reset archive model properly
-      if (state.instance) {
-        send('archive:resetImportQueue', {}, noop)
-        send('archive:reset', {}, noop)
+      if (state.swarm && state.swarm.close) state.swarm.close(function () {})
+      var newState = {
+        metadata: {},
+        entries: [],
+        numPeers: 0,
+        error: null,
+        downloadTotal: 0,
+        uploadTotal: 0
       }
-      // init new archive model
-      const archive = drive.createArchive(null, {live: true, sparse: true})
-      const key = archive.key.toString('hex')
-      send('archive:update', {instance: archive, swarm: swarm(archive, {signalhub: state.signalhubs}), key}, noop)
-      send('archive:import', key, done)
-      send('archive:initImportQueue', {archive}, noop)
-    },
-    import: function (key, state, send, done) {
-      const location = '/' + key
-      send('location:setLocation', { location }, noop)
-      window.history.pushState({}, null, location)
-      send('archive:update', {entries: [], numPeers: 0, downloadTotal: 0, uploadTotal: 0, size: 0}, noop)
-      send('archive:load', key, done)
+      send('archive:update', newState, noop)
+      send('archive:load', null, done)
     },
     updateMetadata: function (data, state, send, done) {
       getMetadata(state.instance, function (err, metadata) {
@@ -198,52 +190,34 @@ module.exports = {
           if (file && file.progressListener && file.progressHandler) {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
-          if (file.fullPath === '/dat.json') send('archive:updateMetadata', {}, noop)
+          if (file.fullPath === '/dat.json' || file.fullPath === '/datapackage.json') send('archive:updateMetadata', {}, noop)
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
         }
       })
     },
     load: function (key, state, send, done) {
-      var archive, sw, timer
-      if (state.instance && state.instance.drive) {
-        if (state.instance.key.toString('hex') === key) {
-          archive = state.instance
-          sw = state.swarm
-        } else {
-          archive = null
-        }
+      if (state.instance) {
+        if (state.instance.key.toString('hex') === key) return done()
       }
-      if (!archive) {
-        archive = drive.createArchive(key, {live: true, sparse: true})
-        sw = swarm(archive, {signalhub: state.signalhubs})
-        send('archive:update', {instance: archive, swarm: sw, key}, done)
+
+      var dat = Dat(drive, key, state.signalhubs, send)
+      key = dat.archive.key.toString('hex')
+      const location = '/' + key
+      send('location:setLocation', { location }, noop)
+      window.history.pushState({}, null, location)
+      var stream = dat.archive.list({live: true})
+      stream.on('data', function (entry) {
+        var entries = state.entries
+        entries.push(entry)
+        send('archive:update', {entries}, noop)
+      })
+      send('archive:initImportQueue', {archive: dat.archive}, noop)
+      var newState = {
+        instance: dat.archive,
+        swarm: dat.swarm,
+        key: key
       }
-      sw.on('connection', function (conn) {
-        send('archive:updatePeers', noop)
-        conn.on('close', function () {
-          send('archive:updatePeers', noop)
-        })
-      })
-      archive.on('upload', function (data) {
-        send('archive:updateUploaded', data.length, noop)
-        if (timer) window.clearTimeout(timer)
-        timer = setTimeout(() => send('archive:update', {uploadSpeed: 0, downloadSpeed: 0}, noop), 3000)
-      })
-      archive.on('download', function (data) {
-        send('archive:updateDownloaded', data.length, noop)
-        send('archive:updateMetadata', {}, noop)
-        if (timer) window.clearTimeout(timer)
-        timer = setTimeout(() => send('archive:update', {uploadSpeed: 0, downloadSpeed: 0}, noop), 3000)
-      })
-      archive.open(function () {
-        if (archive.content) {
-          archive.content.get(0, function (data) {
-            send('archive:update', {size: archive.content.bytes}, noop)
-            // XXX: Hack to fetch a small bit of data so size properly updates
-          })
-        }
-        send('archive:updateMetadata', {}, noop)
-      })
+      send('archive:update', newState, noop)
       return done()
     },
     readFile: function (data, state, send, done) {
@@ -261,12 +235,11 @@ module.exports = {
         zip.file(data.entryName, archive.createFileReadStream(data.entryName))
       } else {
         zipName = state.key
-        Object.keys(state.entries).sort().forEach((key) => {
-          const entry = state.entries[key]
+        state.entries.forEach((entry) => {
           if (entry.type === 'directory') {
             // XXX: empty directories need to be created explicitly
           } else {
-            zip.file(key, archive.createFileReadStream(key))
+            zip.file(entry.name, archive.createFileReadStream(entry.name))
           }
         })
       }

@@ -5,9 +5,9 @@ const display = require('../display')
 
 const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
-  const entryName = state.preview.entryName
-  const metadata = state.archive.entries[entryName]
-  const size = (metadata && metadata.length) ? prettyBytes(metadata.length) : 'N/A'
+  const entry = state.preview.entry
+  const entryName = entry && entry.name
+  const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
 
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
@@ -23,7 +23,7 @@ const preview = (state, prev, send) => {
           ${entryName}
         </div>
         <div class="dat-details">
-          <div class="dat-detail">${size}</div>
+          <div class="dat-detail size">${size}</div>
         </div>
       </div>
       <div class="panel-header__action-group">
