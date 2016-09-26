@@ -15,12 +15,7 @@ module.exports = function ui (root, entries, onclick) {
       }
     }
   }
-
-  var vals = []
-  for (var key in lookup) {
-    if (lookup.hasOwnProperty(key)) vals.push(lookup[key])
-  }
-
+  var vals = Object.keys(lookup).map(key => lookup[key])
   var tree = yofs(root, vals, onclick)
   return tree.widget
 }

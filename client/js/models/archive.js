@@ -210,8 +210,7 @@ module.exports = {
         swarm: dat.swarm,
         key: key
       }
-      send('archive:update', newState, noop)
-      return done()
+      send('archive:update', newState, done)
     },
     readFile: function (data, state, send, done) {
       var archive = state.instance
