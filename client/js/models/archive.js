@@ -260,7 +260,7 @@ module.exports = {
 
       if (data && data.entryName) { // single file download as zip
         zipName = data.entryName
-        var promise = new Promise(function(resolve, reject) {
+        var promise = new Promise(function (resolve, reject) {
           archive.get(data.entryName, {timeout: 1500}, function (err, entry) {
             if (err) return reject()
             zip.file(data.entryName, archive.createFileReadStream(data.entryName))
