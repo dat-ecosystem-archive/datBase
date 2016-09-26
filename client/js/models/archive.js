@@ -6,6 +6,7 @@ const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
+const Promise = require('es6-promise').Promise
 const getMetadata = require('../utils/metadata.js')
 
 var drive = hyperdrive(memdb())
@@ -245,44 +246,48 @@ module.exports = {
       const archive = state.instance
       const zip = new Jszip()
       var zipName
-      if (data && data.entryName) {
-        archive.get(data.entryName, {timeout: 1500}, function (err, entry) {
-          if (err) return failoverMsg()
-          if (!archive.isEntryDownloaded(entry)) return failoverMsg()
-          zipName = data.entryName
-          zip.file(data.entryName, archive.createFileReadStream(data.entryName))
-          return finalizeZip(zipName, zip)
+      var promises = []
+
+      if (data && data.entryName) { // single file download as zip
+        zipName = data.entryName
+        var promise = new Promise(function(resolve, reject) {
+          archive.get(data.entryName, {timeout: 1500}, function (err, entry) {
+            if (err) return reject()
+            zip.file(data.entryName, archive.createFileReadStream(data.entryName))
+            resolve()
+          })
         })
-      } else {
+        promises.push(promise)
+      } else { // download entire archive as zip
         zipName = state.key
         var keys = Object.keys(state.entries.sort())
-        var doFinalizeZip = true
-        keys.forEach((key, index) => {
+        keys.forEach((key, i) => {
           const entry = state.entries[key]
-          if (entry.type === 'directory') {
-            // XXX: empty directories need to be created explicitly
-          } else {
-            archive.get(entry.name, {timeout: 1500}, function (err, entry) {
-              if (err) return doFinalizeZip = false
-              zip.file(entry.name, archive.createFileReadStream(data.entryName))
+          if (entry && entry.type === 'file') {
+            var promise = new Promise(function (resolve, reject) {
+              archive.get(entry.name, {timeout: 1500}, function (err, entry) {
+                if (err) return reject()
+                zip.file(entry.name, archive.createFileReadStream(entry.name))
+                resolve()
+              })
             })
+            promises.push(promise)
           }
         })
-        if (!doFinalizeZip) return failoverMsg()
-        return finalizeZip(zipName, zip)
       }
 
-      function finalizeZip (zipName, zip) {
-        zip.generateAsync({type: 'blob'})
-        .then((content) => {
-          saveAs(content, `${zipName}.zip`)
-          done()
+      return Promise.all(promises)
+        .then(function () {
+          zip
+          .generateAsync({type: 'blob'})
+          .then((content) => {
+            saveAs(content, `${zipName}.zip`)
+            done()
+          })
         })
-      }
-
-      function failoverMsg () {
-        window.alert('We cannot find peers to download this dat from at this time. Try using the dat desktop app instead.')
-      }
+        .catch(function () {
+          window.alert('We cannot find peers to download this dat from at this time. Try using the dat desktop app instead.')
+        })
     }
   }
 }
