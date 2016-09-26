@@ -199,7 +199,7 @@ module.exports = {
           if (file && file.progressListener && file.progressHandler) {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
-          if (file.fullPath === '/dat.json') send('archive:updateMetadata', {}, noop)
+          if (file.fullPath === '/dat.json' || file.fullPath === '/datapackage.json') send('archive:updateMetadata', {}, noop)
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
         }
       })
