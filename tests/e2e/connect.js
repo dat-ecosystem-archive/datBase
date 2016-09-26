@@ -86,6 +86,15 @@ module.exports = new function () {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
+    testCases['create new button properly resets view'] = (client) => {
+      client.click('.dat-button--new-dat button').pause(1000)
+      client
+        .expect.element('#fs').text.not.to.contain('dat.json').before(1000)
+      client
+        .expect.element('#author').text.to.contain('datapackage.json').before(1000)
+      client
+        .expect.element('#peers').text.matches(/0 Source\(s\)/).before(1000)
+    }
   }
 
   testCases.suspend = (client) => {
@@ -95,6 +104,14 @@ module.exports = new function () {
   testCases['metadata rendered'] = client => {
     client.expect.element('#title').text.to.contain('hello world').before(1000)
     client.expect.element('#author').text.to.contain('joe bob').before(1000)
+  }
+
+  testCases['render file display'] = (client) => {
+    client.click('.entry.file').pause(3000)
+      .expect.element('#preview').to.have.attribute('class').which.contains('open').before(1000)
+    client.expect.element('.dat-detail.size').text.to.contain('48 B').before(1000)
+    client.click('.panel-header__close-button').pause(1000)
+      .expect.element('#preview').to.have.attribute('class').not.to.contain('open').before(1000)
   }
 
   testCases.after = (client, done) => {
