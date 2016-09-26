@@ -3,7 +3,7 @@ var defaultState = {
   isPanelOpen: false,
   isLoading: false,
   archiveKey: null,
-  entryName: null,
+  entry: null,
   readStream: null,
   error: false
 }
