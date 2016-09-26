@@ -3,7 +3,7 @@ const relative = require('relative-date')
 const pretty = require('pretty-bytes')
 const html = require('choo/html')
 
-module.exports = function (root, entries, send) {
+module.exports = function (root, entries) {
   return html`
     <div id="yo-fs">
       <div id="fs">
