@@ -219,6 +219,12 @@ module.exports = {
         sw = swarm(archive, {signalhub: state.signalhubs})
         send('archive:update', {instance: archive, swarm: sw, key}, done)
       }
+      var stream = archive.list({live: true})
+      stream.on('data', function (entry) {
+        var entries = state.entries
+        entries.push(entry)
+        send('archive:update', {entries}, noop)
+      })
       sw.on('connection', function (conn) {
         send('archive:updatePeers', noop)
         conn.on('close', function () {
