@@ -15,8 +15,7 @@ var noop = function () {}
 const DEFAULT_SIGNAL_HUBS = process.env.DATLAND_SIGNAL_HUBS
 ? process.env.DATLAND_SIGNAL_HUBS.split(/,/)
 : [
-  'https://signalhub.mafintosh.com',
-  'https://signalhub.dat.land'
+  'https://signalhub.mafintosh.com'
 ]
 
 var defaultState = {
