@@ -23,7 +23,7 @@ const preview = (state, prev, send) => {
           ${entryName}
         </div>
         <div class="dat-details">
-          <div class="dat-detail">${size}</div>
+          <div class="dat-detail size">${size}</div>
         </div>
       </div>
       <div class="panel-header__action-group">

@@ -81,6 +81,11 @@ module.exports = new function () {
       client.setValue('#add-files input[type=file]', path.join(__dirname, '..', 'fixtures', 'dat.json'))
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
+    testCases['render file display'] = (client) => {
+      client.click('.entry.file').pause(3000)
+        .expect.element('#preview').to.have.attribute('class').which.contains('open').before(1000)
+      client.expect.element('.dat-detail.size').text.to.contain('48 B').before(1000)
+    }
   } else {
     testCases['file synced'] = (client) => {
       client
