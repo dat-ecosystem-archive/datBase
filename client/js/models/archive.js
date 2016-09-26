@@ -72,7 +72,7 @@ module.exports = {
     },
     reset: (data, state) => {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
-      return defaultState
+      return Object.assign({}, defaultState)
     },
     updateImportQueue: (data, state) => {
       // shallow copy the last `state` frame so we can preserve
