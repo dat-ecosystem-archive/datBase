@@ -6,6 +6,7 @@ const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
+const Promise = require('es6-promise').Promise
 const getMetadata = require('../utils/metadata.js')
 
 var drive = hyperdrive(memdb())
@@ -251,30 +252,52 @@ module.exports = {
       var readStream = archive.createFileReadStream(data.entryName)
       done(readStream)
     },
-    download: function (data, state, send, done) {
-      // XXX: TODO: failover msg when dat is shared from cli, no file contents available
+    downloadAsZip: function (data, state, send, done) {
       const archive = state.instance
       const zip = new Jszip()
       var zipName
-      if (data && data.entryName) {
+      var promises = []
+
+      if (data && data.entryName) { // single file download as zip
         zipName = data.entryName
-        zip.file(data.entryName, archive.createFileReadStream(data.entryName))
-      } else {
+        var promise = new Promise(function(resolve, reject) {
+          archive.get(data.entryName, {timeout: 1500}, function (err, entry) {
+            if (err) return reject()
+            zip.file(data.entryName, archive.createFileReadStream(data.entryName))
+            resolve()
+          })
+        })
+        promises.push(promise)
+      } else { // download entire archive as zip
         zipName = state.key
-        Object.keys(state.entries).sort().forEach((key) => {
+        var keys = Object.keys(state.entries.sort())
+        keys.forEach((key, i) => {
           const entry = state.entries[key]
-          if (entry.type === 'directory') {
-            // XXX: empty directories need to be created explicitly
-          } else {
-            zip.file(key, archive.createFileReadStream(key))
+          if (entry && entry.type === 'file') {
+            var promise = new Promise(function (resolve, reject) {
+              archive.get(entry.name, {timeout: 1500}, function (err, entry) {
+                if (err) return reject()
+                zip.file(entry.name, archive.createFileReadStream(entry.name))
+                resolve()
+              })
+            })
+            promises.push(promise)
           }
         })
       }
-      zip.generateAsync({type: 'blob'})
-      .then((content) => {
-        saveAs(content, `${zipName}.zip`)
-        done()
-      })
+
+      return Promise.all(promises)
+        .then(function () {
+          zip
+          .generateAsync({type: 'blob'})
+          .then((content) => {
+            saveAs(content, `${zipName}.zip`)
+            done()
+          })
+        })
+        .catch(function () {
+          window.alert('We cannot find peers to download this dat from at this time. Try using the dat desktop app instead.')
+        })
     }
   }
 }

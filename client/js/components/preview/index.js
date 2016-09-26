@@ -32,7 +32,7 @@ const preview = (state, prev, send) => {
           icon: './public/img/download.svg',
           text: 'Download',
           click: () => {
-            send('archive:download', {entryName})
+            send('archive:downloadAsZip', {entryName})
           }
         })}
         <a href="dat://${state.archive.key}" class="dat-header-action">
