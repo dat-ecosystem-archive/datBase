@@ -72,7 +72,6 @@
     "hyperdrive": "^7.6.0",
     "hyperdrive-archive-swarm": "^4.0.0",
     "hyperdrive-import-queue": "^2.0.0",
-    "hyperdrive-ui": "4.0.0",
     "intro.js": "^2.1.0",
     "jszip": "^3.1.2",
     "level": "^1.4.0",
@@ -84,6 +83,7 @@
     "serialize-javascript": "^1.3.0",
     "server-router": "^2.1.0",
     "through-timeout": "^1.0.0",
-    "uparams": "^1.3.1"
+    "uparams": "^1.3.1",
+    "yo-fs": "^3.0.1"
   }
 }
