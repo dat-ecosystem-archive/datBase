@@ -4,6 +4,7 @@ const swarm = require('hyperdrive-archive-swarm')
 const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
+const copy = require('copy-to-clipboard')
 const Jszip = require('jszip')
 const saveAs = require('file-saver').saveAs
 const Promise = require('es6-promise').Promise
@@ -257,6 +258,10 @@ module.exports = {
       var archive = state.instance
       var readStream = archive.createFileReadStream(data.entryName)
       done(readStream)
+    },
+    share: function (Data, state, send, done) {
+      const link = `dat://${state.instance.key.toString('hex')}`
+      copy(link)
     },
     downloadAsZip: function (data, state, send, done) {
       const archive = state.instance
