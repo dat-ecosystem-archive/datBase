@@ -5,7 +5,7 @@ const display = require('../display')
 
 const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
-  const entry = state.preiew.entry
+  const entry = state.preview.entry
   const entryName = entry && entry.name
   const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
 
