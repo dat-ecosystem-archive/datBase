@@ -25,7 +25,6 @@ const archivePage = (state, prev, send) => {
   }
   var archive = state.archive.instance
   var size = prettyBytes(archive && archive.content ? archive.content.bytes : 0)
-  console.log(size)
 
   return html`
     <div>
