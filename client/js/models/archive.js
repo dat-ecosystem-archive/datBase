@@ -199,7 +199,6 @@ module.exports = {
           if (file && file.progressListener && file.progressHandler) {
             file.progressListener.removeListener('progress', file.progressHandler)
           }
-          if (file.fullPath === '/dat.json' || file.fullPath === '/datapackage.json') send('archive:updateMetadata', {}, noop)
           send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
         }
       })
@@ -223,6 +222,7 @@ module.exports = {
       stream.on('data', function (entry) {
         var entries = state.entries
         entries.push(entry)
+        if (entry.name === 'dat.json' || entry.name === 'datapackage.json') send('archive:updateMetadata', {}, noop)
         send('archive:update', {entries}, noop)
       })
       sw.on('connection', function (conn) {
