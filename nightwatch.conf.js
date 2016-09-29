@@ -75,7 +75,7 @@ module.exports = (function (settings) {
   }
   if (!(process.env.__NIGHTWATCH_ENV_KEY || '').match(/_1$/)) {
     settings.output_folder = false
-    settings.output = false
+    settings.output = true
   }
   return settings
 })(settings)
