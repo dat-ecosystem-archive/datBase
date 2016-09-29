@@ -7,7 +7,7 @@ module.exports = function (archive, cb) {
   collect(archive.createFileReadStream('dat.json'), (err, raw) => {
     if (err) {
       collect(archive.createFileReadStream('datapackage.json'), (err, raw) => {
-        if (err) return cb(err)
+        if (err) return cb(new Error('no metadata'))
         done(raw, cb)
       })
     } else done(raw, cb)
