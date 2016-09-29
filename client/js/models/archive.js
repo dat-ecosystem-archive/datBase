@@ -260,7 +260,7 @@ module.exports = {
       done(readStream)
     },
     share: function (Data, state, send, done) {
-      const link = `dat://${state.instance.key.toString('hex')}`
+      const link = `https://dat.land/${state.instance.key.toString('hex')}`
       copy(link)
     },
     downloadAsZip: function (data, state, send, done) {
