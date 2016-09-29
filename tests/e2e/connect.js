@@ -81,10 +81,29 @@ module.exports = new function () {
       client.setValue('#add-files input[type=file]', path.join(__dirname, '..', 'fixtures', 'dat.json'))
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
     }
+    testCases['archive size updates'] = (client) => {
+      client.expect.element('#hyperdrive-size').text.to.contain('48 B').before(3000)
+    }
   } else {
     testCases['file synced'] = (client) => {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(10000)
+    }
+    testCases['archive size updates'] = (client) => {
+      client.expect.element('#hyperdrive-size').text.to.contain('48 B').before(3000)
+    }
+  }
+
+  if (firstClient) {
+    testCases['upload file 2'] = (client) => {
+      client.setValue('#add-files input[type=file]', path.join(__dirname, '..', 'fixtures', 'hello.csv'))
+        .expect.element('#fs').text.to.contain('hello.csv').before(10000)
+      client.expect.element('#hyperdrive-size').text.to.contain('64 B').before(3000)
+    }
+  } else {
+    testCases['file 2 synced'] = (client) => {
+      client
+        .expect.element('#fs').text.to.contain('hello.csv').before(10000)
     }
   }
 

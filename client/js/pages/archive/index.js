@@ -23,6 +23,10 @@ const archivePage = (state, prev, send) => {
     </div>
     `
   }
+  var archive = state.archive.instance
+  var size = prettyBytes(archive && archive.content ? archive.content.bytes : 0)
+  console.log(size)
+
   return html`
     <div>
       ${header(state, prev, send)}
@@ -47,7 +51,7 @@ const archivePage = (state, prev, send) => {
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>
-            <div id="hyperdrive-size" class="dat-detail"><p id="size">${prettyBytes(state.archive.size || 0)}</p></div>
+            <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
             <div id="peers" class="dat-detail">${state.archive.numPeers} Source(s)</div>
             <div id="speed" class="dat-detail dat-detail--speed"><div>
               ${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}
