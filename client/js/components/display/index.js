@@ -8,13 +8,13 @@ const display = html`<div id="item">${loading()}</div>`
 
 module.exports = function (state, prev, send) {
   const archive = state.archive.instance
-  const entryName = state.preview.entryName
-  const previousEntryName = prev && prev.preview ? prev.preview.entryName : null
+  const entryName = state.preview.entry && state.preview.entry.name
+  const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
   if (state.preview.error && !prev.preview.error) {
     return fourohfour({
       header: state.preview.error.message,
-      body: state.preview.error.body || `${state.preview.entryName} cannot be rendered.`,
+      body: state.preview.error.body || `${entryName} cannot be rendered.`,
       link: false
     })
   }
