@@ -13,7 +13,7 @@ function Haus (opts) {
   this.file = undefined
   this.db = level(opts.db || 'dat.land')
   this.drive = hyperdrive(this.db)
-  this.cache = lru(opts.cacheSize || 100)
+  this.cache = lru(opts.cacheSize || 5)
   this.sw = swarm(defaults({
     hash: false,
     stream: function (info) {
