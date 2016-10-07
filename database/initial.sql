@@ -3,7 +3,7 @@ CREATE DATABASE datland;
 
 \c datland;
 
-CREATE TABLE user (
+CREATE TABLE users (
     id serial PRIMARY KEY,
     nickname varchar NOT NULL,
     password varchar NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE user (
 
 CREATE TABLE dat (
     id serial PRIMARY KEY,
-    user varchar references users(user) NOT NULL,
+    user serial references users(id) NOT NULL,
     name varchar NOT NULL,
     hash varchar NOT NULL,
     title varchar,
