@@ -14,8 +14,8 @@ CREATE TABLE dat (
     id serial PRIMARY KEY,
     user varchar references users(user),
     name varchar NOT NULL,
-    title varchar NOT NULL,
     hash varchar NOT NULL,
+    title varchar,
     description text,
     keywords text[]
 );
