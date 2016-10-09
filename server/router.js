@@ -9,7 +9,7 @@ const UrlParams = require('uparams')
 const getMetadata = require('../client/js/utils/metadata')
 const router = require('server-router')()
 
-const app = require('../client/js/app').app
+const app = require('../client/js/app')
 const page = require('./page')
 const Haus = require('./haus')
 
