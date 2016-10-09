@@ -34,7 +34,7 @@ function Haus (opts) {
     self.sw.listen(0)
   })
   this.cache.on('evict', function (item) {
-    self.sw.leave(Buffer(item.discoveryKey, 'hex'))
+    self.sw.leave(Buffer(item.value.discoveryKey, 'hex'))
     item.value.close()
   })
 }
