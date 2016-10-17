@@ -16,6 +16,7 @@ CREATE TABLE dat (
     name varchar NOT NULL,
     hash varchar NOT NULL,
     title varchar,
+    email_verified boolean,
     description text,
     keywords text[]
 );
