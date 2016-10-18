@@ -2,7 +2,6 @@ var level = require('level')
 var swarm = require('discovery-swarm')
 var defaults = require('datland-swarm-defaults')
 var hyperdrive = require('hyperdrive')
-var lru = require('lru')
 
 module.exports = Haus
 
@@ -13,7 +12,7 @@ function Haus (opts) {
   this.file = undefined
   this.db = level(opts.db || 'dat.land')
   this.drive = hyperdrive(this.db)
-  this.cache = lru(opts.cacheSize || 5)
+  this.cache = {}
   this.sw = swarm(defaults({
     hash: false,
     stream: function (info) {
@@ -23,7 +22,7 @@ function Haus (opts) {
       return stream
 
       function join (key) {
-        var archive = self.cache.get(key.toString('hex'))
+        var archive = self.cache[key.toString('hex')]
         if (archive) archive.replicate({stream: stream})
       }
     }
@@ -33,21 +32,20 @@ function Haus (opts) {
   this.sw.once('error', function () {
     self.sw.listen(0)
   })
-  this.cache.on('evict', function (item) {
-    self.sw.leave(Buffer(item.value.discoveryKey, 'hex'))
-    item.value.close()
-  })
 }
 
-Haus.prototype.getArchive = function (key, cb) {
-  var archive = this.cache.get(key)
-  if (!archive) {
-    archive = this.drive.createArchive(key, {
-      sparse: true,
-      file: this.file
-    })
-    this.cache.set(archive.discoveryKey.toString('hex'), archive)
-    this.sw.join(archive.discoveryKey)
-  }
+Haus.prototype.close = function (archive) {
+  this.sw.leave(Buffer(archive.discoveryKey, 'hex'))
+  this.cache[archive.discoveryKey] = false
+  archive.close()
+}
+
+Haus.prototype.get = function (key, cb) {
+  var archive = this.drive.createArchive(key, {
+    sparse: true,
+    file: this.file
+  })
+  this.sw.join(archive.discoveryKey)
+  this.cache[archive.discoveryKey.toString('hex')] = archive
   return archive
 }
