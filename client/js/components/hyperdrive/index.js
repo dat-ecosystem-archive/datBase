@@ -11,6 +11,7 @@ module.exports = function (state, prev, send) {
       return true
     } else {
       send('preview:file', {archiveKey: state.archive.key, entry: entry}, noop)
+      return false
     }
   }
 
