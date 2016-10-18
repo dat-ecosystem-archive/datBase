@@ -13,8 +13,6 @@ const app = require('../client/js/app')
 const page = require('./page')
 const Dat = require('./haus')
 
-var dat = Dat()
-
 // landing page
 router.on('/', {
   get: function (req, res, params) {
@@ -35,7 +33,8 @@ router.on('/:archiveKey', {
       console.warn('router.js /:archiveKey route error: ' + e.message)
       return sendSPA('/:archiveKey', req, res, params, state)
     }
-    var archive = dat.get(key)
+    var dat = Dat(key)
+    var archive = dat.archive
     state.archive.key = params.archiveKey
     var listStream = archive.list({live: false})
     var cancelled = false
@@ -57,7 +56,7 @@ router.on('/:archiveKey', {
         if (metadata) {
           state.archive.metadata = metadata
         }
-        dat.close(archive)
+        dat.close()
         sendSPA('/:archiveKey', req, res, params, state)
       })
     })

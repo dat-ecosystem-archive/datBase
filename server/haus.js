@@ -1,51 +1,20 @@
-var level = require('level')
-var swarm = require('discovery-swarm')
-var defaults = require('datland-swarm-defaults')
+var memdb = require('memdb')
 var hyperdrive = require('hyperdrive')
+var swarm = require('hyperdrive-archive-swarm')
 
 module.exports = Haus
 
-function Haus (opts) {
-  if (!(this instanceof Haus)) return new Haus(opts)
+function Haus (key, opts) {
+  if (!(this instanceof Haus)) return new Haus(key, opts)
   if (!opts) opts = {}
-  var self = this
-  this.file = undefined
-  this.db = level(opts.db || 'dat.land')
+  this.db = memdb()
   this.drive = hyperdrive(this.db)
-  this.cache = {}
-  this.sw = swarm(defaults({
-    hash: false,
-    stream: function (info) {
-      var stream = self.drive.replicate()
-      if (info.channel) join(info.channel) // we already know the channel, join
-      else stream.once('open', join) // wait for the remote to tell us
-      return stream
-
-      function join (key) {
-        var archive = self.cache[key.toString('hex')]
-        if (archive) archive.replicate({stream: stream})
-      }
-    }
-  }))
-
-  this.sw.listen(3282)
-  this.sw.once('error', function () {
-    self.sw.listen(0)
-  })
+  this.archive = this.drive.createArchive(key)
+  this.swarm = swarm(this.archive)
 }
 
-Haus.prototype.close = function (archive) {
-  this.sw.leave(Buffer(archive.discoveryKey, 'hex'))
-  this.cache[archive.discoveryKey] = false
-  archive.close()
-}
-
-Haus.prototype.get = function (key, cb) {
-  var archive = this.drive.createArchive(key, {
-    sparse: true,
-    file: this.file
-  })
-  this.sw.join(archive.discoveryKey)
-  this.cache[archive.discoveryKey.toString('hex')] = archive
-  return archive
+Haus.prototype.close = function () {
+  this.archive.close()
+  this.swarm.close()
+  this.db.close()
 }
