@@ -27,9 +27,9 @@ const header = (state, prev, send) => {
         <div id="js-button-new" class="dat-button dat-button--new-dat">
           ${button({
             icon: './public/img/create-new-dat.svg',
-            text: 'Create New Dat',
+            text: 'Create new dat',
             klass: 'btn btn--green',
-            click: () => send('archive:new')
+            click: function () { window.location.href = '/create' }
           })}
         </div>
         ${importButton({
