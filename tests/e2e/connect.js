@@ -108,7 +108,7 @@ module.exports = new function () {
   }
 
   testCases.suspend = (client) => {
-    client.pause(10000)
+    client.pause(1000)
   }
 
   testCases['metadata rendered'] = client => {
@@ -116,10 +116,12 @@ module.exports = new function () {
     client.expect.element('#author').text.to.contain('joe bob').before(1000)
   }
 
-  testCases['render file display'] = (client) => {
+  testCases['file display opens'] = (client) => {
     client.click('.entry.file').pause(3000)
       .expect.element('#preview').to.have.attribute('class').which.contains('open').before(1000)
     client.expect.element('.dat-detail.size').text.to.contain('48 B').before(1000)
+    client.frame(0).expect.element('pre').text.to.contain('hello world')
+    client.frame(null)
     client.click('.panel-header__close-button').pause(1000)
       .expect.element('#preview').to.have.attribute('class').not.to.contain('open').before(1000)
   }
