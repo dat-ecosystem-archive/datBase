@@ -32,8 +32,8 @@ const archivePage = (state, prev, send) => {
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header__actions">
-            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')}>
-              <div class="btn__icon-wrapper">
+            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} ${state.archive.numPeers ? '' : 'disabled'}>
+              <div class="btn__icon-wrapper ${state.archive.numPeers ? '' : 'disabled'}">
                 <img src="./public/img/download.svg" class="btn__icon-img">
                 <span class="btn__icon-text">Download</span>
               </div>

@@ -24,12 +24,15 @@
   line-height: 1.25;
   background-color: transparent;
   color: $color-neutral--80;
-  &:hover, &:focus {
+  &:not([disabled]):hover, &:not([disabled]):focus {
     color: $color-neutral;
   }
   &:first-child {
     margin-left: 0;
     padding-left: 0;
+  }
+  &:disabled {
+    opacity: 0.5;
   }
 }
 

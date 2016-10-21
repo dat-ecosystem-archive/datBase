@@ -12,6 +12,9 @@ a, button, input[type="submit"] {
   &:focus {
     outline: none;
   }
+  &:disabled {
+    cursor: default;
+  }
 }
 
 a {

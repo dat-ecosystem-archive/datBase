@@ -39,7 +39,7 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
-  &:hover, &:focus {
+  &:not(.disabled):hover, &:not(.disabled):focus {
     .btn__icon-img {
       opacity: 1;
     }
