@@ -46,11 +46,9 @@ module.exports = new function () {
 
     testCases['opening the browser and navigating to the url'] = (client) => {
       client
-        .url(testServer)
-        .expect.element('.dat-button--new-dat button').to.be.present
-
+        .url(testServer + '/share-new')
+      client.waitForElementVisible('#title', 5000)
       client
-        .click('.dat-button--new-dat button').pause(1000)
         .expect.element('#title').text.matches(/^(.+)$/).before(10000)
 
       client.getText('#title', (result) => {
@@ -130,11 +128,7 @@ module.exports = new function () {
     testCases['create new button properly resets view'] = (client) => {
       client.click('.dat-button--new-dat button').pause(1000)
       client
-        .expect.element('#fs').text.not.to.contain('dat.json').before(1000)
-      client
-        .expect.element('#author').text.not.to.contain('datapackage.json').before(1000)
-      client
-        .expect.element('#peers').text.matches(/0 Source\(s\)/).before(1000)
+        .expect.element('body').text.not.to.contain('dat.json').before(1000)
     }
   }
 

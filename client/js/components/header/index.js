@@ -29,7 +29,7 @@ const header = (state, prev, send) => {
             icon: './public/img/create-new-dat.svg',
             text: 'Create new dat',
             klass: 'btn btn--green',
-            click: function () { window.location.href = '/create' }
+            click: function () { window.location.href = '/share' }
           })}
         </div>
         ${importButton({

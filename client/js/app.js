@@ -13,6 +13,8 @@ app.model(require('./models/preview'))
 // define routes:
 app.router((route) => [
   route('/', require('./pages/landing')),
+  route('/share', require('./pages/share')({new: false})),
+  route('/share-new', require('./pages/share')({new: true})),
   route('/:archiveKey', require('./pages/archive'))
 ])
 

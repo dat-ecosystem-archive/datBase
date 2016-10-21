@@ -21,6 +21,22 @@ router.on('/', {
   }
 })
 
+// share page
+router.on('/share', {
+  get: function (req, res, params) {
+    var state = getDefaultAppState()
+    sendSPA('/share', req, res, params, state)
+  }
+})
+
+// create a new browser-based dat page, hidden from ui for now
+router.on('/share-new', {
+  get: function (req, res, params) {
+    var state = getDefaultAppState()
+    sendSPA('/share-new', req, res, params, state)
+  }
+})
+
 // new choo-based archive route:
 router.on('/:archiveKey', {
   get: function (req, res, params) {
