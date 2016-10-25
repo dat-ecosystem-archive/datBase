@@ -35,15 +35,19 @@ module.exports = function (state, prev, send) {
           return send('preview:update', {error: err})
         }
       }
+      send('preview:update', {isLoading: false})
       var stream = archive.createFileReadStream(entryName)
       renderData.render({
         name: entryName,
         createReadStream: function () { return stream }
       }, display, function (error) {
         if (error) {
+          var update = {}
           var message = 'Unsupported filetype'
           if (error.message === 'premature close') message = 'Could not find any peer sources.'
-          send('preview:update', {error: new Error(message)})
+          else update.isLoading = false // Allow downloads for unsupported files
+          update.error = new Error(message)
+          send('preview:update', update)
         }
       })
     })

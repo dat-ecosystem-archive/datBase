@@ -13,10 +13,11 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.preview,
   reducers: {
     update: (data, state) => {
+      if (!data.error || data.entry) data.isLoading = false
       return data
     },
     openPanel: (data, state) => {
-      return {isPanelOpen: true}
+      return {isPanelOpen: true, isLoading: true}
     },
     closePanel: (data, state) => {
       return defaultState
