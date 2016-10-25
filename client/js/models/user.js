@@ -1,36 +1,52 @@
+var Auth0 = !module.parent ? require('auth0-js') : null
 var defaultState = {
   username: null
 }
 
-var noop = function () {}
-
-function externalLoginCall ({username}, cb) {
-  cb(null, {success: true})
+var client
+if (!module.parent) {
+  client = new Auth0({
+    domain: 'publicbits.auth0.com',
+    clientID: 'DWrTFyyzp3QZq8S3PZ5dfJd3T8xNf5kY'
+  })
 }
+
+var noop = function () {}
 
 module.exports = {
   namespace: 'user',
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
     logout: (data, state) => {
-      return { username: null }
+      localStorage.setItem('idToken', null)
+      return { profile: null }
     },
     update: (data, state) => {
       return {
-        username: data.username || state.username
+        profile: data.profile || state.profile
       }
     }
   },
+  subscriptions: [
+    function (send, done) {
+      client.on('authenticated', function (authResult) {
+        // Use the token in authResult to getProfile() and save it to localStorage
+        client.getProfile(authResult.idToken, function (error, profile) {
+          if (error) {
+            send('user:update', {logging_in: false, error}, done)
+          } else {
+            send('user:update', {logging_in: false, profile}, done)
+          }
+          localStorage.setItem('idToken', authResult.idToken)
+          send('user:update', {profile})
+        })
+      })
+    }
+  ],
   effects: {
     login: (data, state, send, done) => {
       send('user:update', {logging_in: true}, noop)
-      externalLoginCall(data, (err) => {
-        if (err) {
-          send('user:update', {logging_in: false, error: err}, done)
-        } else {
-          send('user:update', {logging_in: false, username: data.username}, done)
-        }
-      })
+      lock.show()
     }
   }
 }

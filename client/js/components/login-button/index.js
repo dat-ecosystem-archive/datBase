@@ -3,7 +3,7 @@ const html = require('choo/html')
 const button = require('./../../elements/button')
 
 module.exports = function (props, prev, send) {
-  if (props.user.username) {
+  if (props.profile) {
     return html`<div class="dat-button dat-button--login">
       ${button({
         text: `${props.user.username} Logout`,
