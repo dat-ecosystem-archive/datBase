@@ -1,6 +1,5 @@
 const memdb = require('memdb')
 const hyperdrive = require('hyperdrive')
-const HyperdriveImportQueue = require('hyperdrive-import-queue')
 const drop = require('drag-drop')
 const speedometer = require('speedometer')
 const Jszip = require('jszip')
@@ -10,7 +9,6 @@ const getMetadata = require('../utils/metadata.js')
 const Dat = require('./dat.js')
 
 var drive = hyperdrive(memdb())
-var hyperdriveImportQueue
 var noop = function () {}
 
 const DEFAULT_SIGNAL_HUBS = process.env.DATLAND_SIGNAL_HUBS
@@ -36,12 +34,7 @@ var defaultState = {
   uploadTotal: 0,
   downloadMeter: null,
   downloadSpeed: 0,
-  downloadTotal: 0,
-  importQueue: {
-    writing: null,
-    writingProgressPct: null,
-    next: []
-  }
+  downloadTotal: 0
 }
 
 module.exports = {
@@ -73,52 +66,6 @@ module.exports = {
     reset: (data, state) => {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
       return Object.assign({}, defaultState)
-    },
-    updateImportQueue: (data, state) => {
-      // shallow copy the last `state` frame so we can preserve
-      // file.progressListener refs:
-      var stateCopy = {}
-      stateCopy.writing = state.importQueue.writing
-      stateCopy.writingProgressPct = state.importQueue.writingProgressPct
-      stateCopy.next = state.importQueue.next
-      // new file is enqueued:
-      if (data.onQueueNewFile) stateCopy.next.push(data.file)
-      // next file begins writing:
-      if (data.onFileWriteBegin) {
-        stateCopy.writing = stateCopy.next[0]
-        stateCopy.next = stateCopy.next.slice(1)
-      }
-      // write progress on current file writing:
-      if (data.writing && data.writing.fullPath && data.writingProgressPct) {
-        if (stateCopy.writing && (stateCopy.writing.fullPath === data.writing.fullPath)) {
-          stateCopy.writingProgressPct = data.writingProgressPct
-        }
-      }
-      // current file is done writing:
-      if (data.onFileWriteComplete) {
-        stateCopy.writing = null
-        stateCopy.writingProgressPct = null
-      }
-      return {
-        importQueue: {
-          writing: stateCopy.writing,
-          writingProgressPct: stateCopy.writingProgressPct,
-          next: stateCopy.next
-        }
-      }
-    },
-    resetImportQueue: (data, state) => {
-      var writing = state.importQueue.writing
-      if (writing && writing.progressListener && writing.progressHandler) {
-        writing.progressListener.removeListener('progress', writing.progressHandler)
-      }
-      return {
-        importQueue: {
-          writing: null,
-          writingProgressPct: null,
-          next: []
-        }
-      }
     }
   },
   subscriptions: [
@@ -165,36 +112,8 @@ module.exports = {
           files[i].fullPath = '/' + files[i].name
         }
       }
-      hyperdriveImportQueue.add(files, state.root)
+      send('importQueue:add', {files: files, root: state.root}, noop)
       return done()
-    },
-    initImportQueue: function (data, state, send, done) {
-      send('archive:resetImportQueue', {}, noop)
-      hyperdriveImportQueue = HyperdriveImportQueue(null, data.archive, {
-        progressInterval: 500,
-        onQueueNewFile: function (err, file) {
-          if (err) console.log(err)
-          send('archive:updateImportQueue', {onQueueNewFile: true, file: file}, noop)
-        },
-        onFileWriteBegin: function (err, file) {
-          if (err) console.log(err)
-          if (file && !file.progressHandler) {
-            file.progressHandler = (progress) => {
-              const pct = parseInt(progress.percentage)
-              send('archive:updateImportQueue', {writing: file, writingProgressPct: pct}, function () {})
-            }
-            file.progressListener.on('progress', file.progressHandler)
-          }
-          send('archive:updateImportQueue', {onFileWriteBegin: true}, noop)
-        },
-        onFileWriteComplete: function (err, file) {
-          if (err) console.log(err)
-          if (file && file.progressListener && file.progressHandler) {
-            file.progressListener.removeListener('progress', file.progressHandler)
-          }
-          send('archive:updateImportQueue', {onFileWriteComplete: true}, noop)
-        }
-      })
     },
     load: function (key, state, send, done) {
       if (state.instance && state.instance.key.toString('hex') === key) return done()
@@ -210,7 +129,7 @@ module.exports = {
         if (entry.name === 'dat.json' || entry.name === 'datapackage.json') send('archive:updateMetadata', {}, noop)
         send('archive:update', {entries}, noop)
       })
-      send('archive:initImportQueue', {archive: dat.archive}, noop)
+      send('importQueue:init', {archive: dat.archive}, noop)
       var newState = {
         instance: dat.archive,
         swarm: dat.swarm,

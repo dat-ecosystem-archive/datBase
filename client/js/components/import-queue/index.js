@@ -1,9 +1,9 @@
 const html = require('choo/html')
 
 module.exports = (state, prev, send) => {
-  const writing = state.archive.importQueue.writing
-  const writingProgressPct = state.archive.importQueue.writingProgressPct
-  const next = state.archive.importQueue.next
+  const writing = state.importQueue.writing
+  const writingProgressPct = state.importQueue.writingProgressPct
+  const next = state.importQueue.next
 
   return render()
 
