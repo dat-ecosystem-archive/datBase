@@ -9,6 +9,8 @@ const preview = (state, prev, send) => {
   const entryName = entry && entry.name
   const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
 
+  state.preview.isPanelOpen ? document.body.classList.add('panel-open') : document.body.classList.remove('panel-open')
+
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
       ${button({

@@ -17,11 +17,9 @@ module.exports = {
       return data
     },
     openPanel: (data, state) => {
-      document.body.classList.add('panel-open') // not ideal
       return {isPanelOpen: true, isLoading: true}
     },
     closePanel: (data, state) => {
-      document.body.classList.remove('panel-open')
       return defaultState
     }
   },
