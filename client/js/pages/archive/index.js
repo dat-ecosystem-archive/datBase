@@ -75,7 +75,7 @@ const archivePage = (state, prev, send) => {
             : ''}
         </div>
       </div>
-      ${state.preview.isPanelOpen ? preview(state, prev, send) : ''}
+      ${state.preview.isPanelOpen ? preview(state, prev, send) : document.body.classList.remove('panel-open')}
     </div>`
 }
 
