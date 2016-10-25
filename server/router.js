@@ -1,7 +1,9 @@
 'use strict'
 
 const fs = require('fs')
+const url = require('url')
 const assert = require('assert')
+const querystring = require('querystring')
 const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
@@ -12,12 +14,35 @@ const router = require('server-router')()
 const app = require('../client/js/app')
 const page = require('./page')
 const Dat = require('./haus')
+const users = require('./users')
 
 // landing page
 router.on('/', {
   get: function (req, res, params) {
     var state = getDefaultAppState()
     sendSPA('/', req, res, params, state)
+  }
+})
+
+router.on('/user/callback', {
+  get: function (req, res, params) {
+    var state = getDefaultAppState()
+    var u = url.parse(req.url)
+    var qs = querystring.parse(u.query)
+    state.user.idToken = qs.code
+    users.getProfile(state.user.idToken, function (err, profile) {
+      if (err) state.user.error = err
+      state.user.profile = profile
+      sendSPA('/profile', req, res, params, state)
+    })
+  }
+})
+
+router.on('/user/:username', {
+  get: function (req, res, params) {
+    var state = getDefaultAppState()
+    state.username = params.username
+    sendSPA('/user/:username', req, res, params, state)
   }
 })
 

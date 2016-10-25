@@ -35,9 +35,7 @@ const header = (state, prev, send) => {
         ${importButton({
           handler: function (link) { window.location.href = '/' + link }
         })}
-        ${loginButton({
-          user: state.user
-        }, prev, send)}
+        ${loginButton(state, prev, send)}
         ${help(state, prev, send)}
       </div>
     </div>
