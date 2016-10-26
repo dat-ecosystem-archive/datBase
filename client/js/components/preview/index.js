@@ -6,14 +6,13 @@ const display = require('../display')
 const preview = (state, prev, send) => {
   if (!state.preview.isPanelOpen) {
     if (typeof document !== 'undefined') document.body.classList.remove('panel-open')
-    return ''
   }
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const entry = state.preview.entry
   const entryName = entry && entry.name
   const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
 
-  document.body.classList.add('panel-open')
+  if (typeof document !== 'undefined') document.body.classList.add('panel-open')
 
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
