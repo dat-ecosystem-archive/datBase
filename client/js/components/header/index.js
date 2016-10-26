@@ -7,7 +7,7 @@ const help = (state, prev, send) => {
   const intro = () => send('help:show')
   return html`<div class="dat-button dat-button--help">
     ${button({
-      icon: './public/img/question.svg',
+      icon: 'question',
       text: 'Help',
       klass: 'btn btn--green btn__reveal-text',
       click: intro
@@ -25,7 +25,7 @@ const header = (state, prev, send) => {
       <div class="site-header__actions">
         <div id="js-button-new" class="dat-button dat-button--new-dat">
           ${button({
-            icon: './public/img/create-new-dat.svg',
+            icon: 'create-new-dat',
             text: 'Create New Dat',
             klass: 'btn btn--green',
             click: () => send('archive:new')

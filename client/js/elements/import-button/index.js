@@ -1,5 +1,6 @@
 'use strict'
 const html = require('choo/html')
+const icon = require('../icon')
 
 module.exports = function (props) {
   const keydown = (e) => {
@@ -15,7 +16,7 @@ module.exports = function (props) {
   }
   return html`<div class="dat-import">
     <div class="dat-import--icon">
-      <img src="./public/img/link.svg" />
+      ${icon('import-dat')}
     </div>
     <input type="text" placeholder="Enter Dat Link" onkeydown=${keydown} class="dat-import--input">
   </div>`

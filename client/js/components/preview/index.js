@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const prettyBytes = require('pretty-bytes')
 const button = require('../../elements/button')
+const icon = require('../../elements/icon')
 const display = require('../display')
 
 const preview = (state, prev, send) => {
@@ -33,7 +34,7 @@ const preview = (state, prev, send) => {
       <div class="panel-header__action-group">
         ${button({
           klass: 'dat-header-action',
-          icon: './public/img/download.svg',
+          icon: 'download',
           text: 'Download',
           disabled: state.preview.isLoading,
           click: () => {
@@ -42,7 +43,7 @@ const preview = (state, prev, send) => {
         })}
         <a href="dat://${state.archive.key}" class="dat-header-action">
           <div class="btn__icon-wrapper">
-            <img src="./public/img/open-in-desktop.svg" class="btn__icon-img">
+            ${icon('open-in-desktop')}
             <span class="btn__icon-text">Open in Desktop App</span>
           </div>
         </a>

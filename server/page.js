@@ -1,4 +1,5 @@
 const xtend = require('extend')
+const svgSprite = require('dat-icons')
 const serializeJS = require('serialize-javascript')
 
 function page (url, contents, appState) {
@@ -39,6 +40,7 @@ function page (url, contents, appState) {
             ${contents}
           </div>
         </div>
+        ${svgSprite()}
       </body>
       <script>
         window.dl = window.dl || {};
