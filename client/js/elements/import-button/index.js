@@ -4,9 +4,12 @@ const html = require('choo/html')
 module.exports = function (props) {
   const keydown = (e) => {
     if (e.keyCode === 13) {
-      const link = e.target.value
+      var link = e.target.value
       e.target.value = ''
       // TODO: basic parsing, validation of archive link before server-render
+      link = link.toLowerCase()
+      link = link.replace('dat://', '')
+      link = link.replace('dat.land/', '').replace(/^(http|https):\/\//, '')
       props.handler(link)
     }
   }
