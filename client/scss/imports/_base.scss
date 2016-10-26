@@ -5,6 +5,10 @@ $padding-site-main: 3rem;
 body {
   min-width: 480px;
   position: relative; // this is to position the bottom bar
+
+  &.panel-open {
+    overflow-y: hidden;
+  }
 }
 
 a, button, input[type="submit"] {
