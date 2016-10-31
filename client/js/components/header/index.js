@@ -1,5 +1,6 @@
 const html = require('choo/html')
 const button = require('./../../elements/button')
+const loginButton = require('../login-button')
 const importButton = require('./../../elements/import-button')
 
 const help = (state, prev, send) => {
@@ -26,14 +27,15 @@ const header = (state, prev, send) => {
         <div id="js-button-new" class="dat-button dat-button--new-dat">
           ${button({
             icon: './public/img/create-new-dat.svg',
-            text: 'Create New Dat',
+            text: 'Create new dat',
             klass: 'btn btn--green',
-            click: () => send('archive:new')
+            click: function () { window.location.href = '/share' }
           })}
         </div>
         ${importButton({
           handler: function (link) { window.location.href = '/' + link }
         })}
+        ${loginButton(state, prev, send)}
         ${help(state, prev, send)}
       </div>
     </div>
