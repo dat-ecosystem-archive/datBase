@@ -6,9 +6,11 @@ const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
+const bole = require('bole')
 const getMetadata = require('../client/js/utils/metadata')
 const router = require('server-router')()
 
+const log = bole(__filename)
 const app = require('../client/js/app')
 const page = require('./page')
 const Dat = require('./haus')
@@ -30,7 +32,7 @@ router.on('/:archiveKey', {
       key = encoding.decode(params.archiveKey)
     } catch (e) {
       state.archive.error = {message: e.message}
-      console.warn('router.js /:archiveKey route error: ' + e.message)
+      log.warn('router.js /:archiveKey route error: ' + e.message)
       return sendSPA('/:archiveKey', req, res, params, state)
     }
     var dat = Dat(key)
@@ -43,7 +45,7 @@ router.on('/:archiveKey', {
       duration: 3000
     }, () => {
       cancelled = true
-      console.log('server getArchive() timed out for key: ' + params.archiveKey)
+      log.warn('server getArchive() timed out for key: ' + params.archiveKey)
       sendSPA('/:archiveKey', req, res, params, state)
     })
 
@@ -73,7 +75,6 @@ router.on('/:archiveKey/:filePath', {
 // TODO: decide on a real static asset setup with cacheing strategy
 router.on('/public/css/:asset', {
   get: function (req, res, params) {
-    console.log('GET ' + req.url)
     fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
       if (err) return res.end('nope')
       res.setHeader('Content-Type', 'text/css')
@@ -85,7 +86,6 @@ router.on('/public/css/:asset', {
 // TODO: decide on a real static asset setup with cacheing strategy
 router.on('/public/js/:asset', {
   get: function (req, res, params) {
-    console.log('GET ' + req.url)
     fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
       if (err) return res.end('nope')
       res.setHeader('Content-Type', 'text/javascript')
@@ -97,7 +97,6 @@ router.on('/public/js/:asset', {
 // TODO: decide on a real static asset setup with cacheing strategy
 router.on('/public/img/:asset', {
   get: function (req, res, params) {
-    console.log('GET ' + req.url)
     fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
       if (err) return res.end('nope')
       res.setHeader('Content-Type', 'image/svg+xml')
