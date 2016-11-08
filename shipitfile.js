@@ -33,7 +33,7 @@ module.exports = function (shipit) {
     var current = shipit.config.deployTo + '/current'
     shipit.log('running `shipit install` in remote ' + current)
     return shipit.remote(
-      `cd ${current} && npm install && npm run build && npm run minify && npm run version`
+      `cd ${current} && npm install --production && npm run build && npm run minify && npm run version`
     )
   })
 
