@@ -60,6 +60,7 @@
     "watchify": "~3.6.0"
   },
   "dependencies": {
+    "bole": "^3.0.1",
     "choo": "^3.2.0",
     "collect-stream": "^1.1.1",
     "dat-encoding": "^3.0.0",
