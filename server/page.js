@@ -34,13 +34,13 @@ function page (url, contents, appState) {
         <meta property="og:image" content="http://dat.land/public/img/dat-data-logo.svg" />
       </head>
       <body>
+        ${svgSprite()}
         <div id="app">
           <div id="browser-warning"></div>
           <div id="app-root">
             ${contents}
           </div>
         </div>
-        ${svgSprite()}
       </body>
       <script>
         window.dl = window.dl || {};
