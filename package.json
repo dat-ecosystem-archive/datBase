@@ -15,13 +15,12 @@
     "server/**/*": false
   },
   "scripts": {
-    "dev": "npm run watch",
-    "start": "node ./server",
+    "server": "node ./server",
     "lint": "standard",
     "test": "standard",
     "test:e2e": "nightwatch --env chrome,chrome",
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
-    "watch": "npm run watch-js & npm run watch-css & npm run watch-server",
+    "start": "npm run watch-js & npm run watch-css & npm run watch-server",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "watch-js": "watchify --debug -g es2040 client/js/app.js -o public/js/app.js",
     "watch-server": "nodemon --watch server --watch client",

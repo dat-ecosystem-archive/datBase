@@ -19,13 +19,13 @@ npm install
 Do all of the below (watch assets and start server) in one command:
 
 ```
-npm run dev
+npm start
 ```
 
 Start the server:
 
 ```
-npm start
+npm run server
 ```
 
 To watch and build scss and javascript changes as you go (in a separate terminal):

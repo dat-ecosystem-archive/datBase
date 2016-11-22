@@ -16,7 +16,7 @@ before_install:
 before_script:
   - npm run build
   - node_modules/.bin/signalhub listen -p 8089 -q &
-  - DATLAND_SIGNAL_HUBS=localhost:8089 npm run start &
+  - DATLAND_SIGNAL_HUBS=localhost:8089 npm run server &
 
 script:
   - npm run test
