@@ -4,6 +4,8 @@ const helpers = require('../helpers')
 
 helpers.server(config, function (db, close) {
   var users = helpers.users
+  delete users.joe.password
+  delete users.bob.password
 
   test('database should create users', function (t) {
     db.models.users.create(users.joe, function (err, body) {

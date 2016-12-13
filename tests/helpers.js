@@ -26,8 +26,8 @@ module.exports = {
     })
   },
   users: {
-    bob: {username: 'joe', password: 'very secret', id: 'deadbeef', email: 'hi@bob.com', description: 'hello i am a description', role: 'user'},
-    joe: {username: 'bob', password: 'so secret', id: 'healthybeef', email: 'hi@joe.com', description: 'i like it', role: 'user'},
-    admin: {username: 'pam', password: 'secret123', id: 'alivebeef', email: 'hi@pam.com', description: 'i dont eat it', role: 'admin'}
+    bob: {username: 'joe', password: 'very secret', id: 'deadbeef', email: 'hi@bob.com', description: 'hello i am a description', token: null, role: 'user'},
+    joe: {username: 'bob', password: 'so secret', id: 'healthybeef', email: 'hi@joe.com', description: 'i like it', token: null, role: 'user'},
+    admin: {username: 'pam', password: 'secret123', id: 'alivebeef', email: 'hi@pam.com', description: 'i dont eat it', token: null, role: 'admin'}
   }
 }
