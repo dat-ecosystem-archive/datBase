@@ -15,7 +15,8 @@ var config = {
   production: {
     secret: process.env.TOWNSHIP_SECRET,
     db: path.join(os.homedir(), 'township.db')
-  }
+  },
+  whitelist: false // otherwise path to whitelist email txt file
 }
 
 var env = process.env.NODE_ENV || 'development'

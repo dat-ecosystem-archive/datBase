@@ -36,3 +36,11 @@ test('user signup whitelist invalid file', function (t) {
     t.end()
   })
 })
+
+test('user signup with no whitelist', function (t) {
+  verify('nazgul@mordornet.ru', {whitelist: false}, function (err, status) {
+    t.ifErr(err, 'should not error')
+    t.equals(status, 200)
+    t.end()
+  })
+})
