@@ -117,9 +117,13 @@ module.exports = function (opts) {
 
   router.on('/auth/v1/register/', {
     post: function (req, res, params) {
-      ship.register(req, res, params, function (err, obj) {
-        if (err) return error(400, err.message).pipe(res)
-        send(obj).pipe(res)
+      if (!params.email) return error(400, 'must specify email').pipe(res)
+      verify(params.email, function (err) {
+        if (err) return error(401, err.message).pipe(res)
+        ship.register(req, res, params, function (err, obj) {
+          if (err) return error(400, err.message).pipe(res)
+          send(obj).pipe(res)
+        })        
       })
     }
   })
