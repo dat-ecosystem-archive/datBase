@@ -22,6 +22,7 @@ module.exports = function (opts) {
   const app = require('../client/js/app')
   const page = require('./page')
   const Dat = require('./haus')
+  const verify = require('./verify')
   const db = level(opts.db || path.join(__dirname, 'township.db'))
   const ship = township(opts.config, db)
 
@@ -123,7 +124,7 @@ module.exports = function (opts) {
         ship.register(req, res, params, function (err, obj) {
           if (err) return error(400, err.message).pipe(res)
           send(obj).pipe(res)
-        })        
+        })
       })
     }
   })

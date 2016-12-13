@@ -1,6 +1,7 @@
 var test = require('tape')
+var path = require('path')
 var verify = require('../server/verify.js')
-var opts = {whitelist: __dirname + '/whitelist.txt'}
+var opts = {whitelist: path.join(__dirname, '/whitelist.txt')}
 
 test('user signup whitelist should reject', function (t) {
   verify({email: 'gandalf@aol.com'}, opts, function (err, status) {

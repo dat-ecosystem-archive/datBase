@@ -1,7 +1,6 @@
 // WARNING reads fs on every call
 
 var fs = require('fs')
-var path = require('path')
 
 module.exports = function verifyAccount (email, options, cb) {
   if (typeof options === 'function') {
