@@ -1,6 +1,4 @@
 const http = require('http')
-const os = require('os')
-const path = require('path')
 const createRouter = require('./router')
 const bole = require('bole')
 
@@ -12,9 +10,10 @@ bole.output({
 const log = bole(__filename)
 
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
+const config = require('./config')
 const router = createRouter({
-  db: path.join(os.homedir(), 'township.db'),
-  config: require('../config/township')
+  config: config,
+  db: config.db
 })
 const server = http.createServer(function (req, res) {
   var time = Date.now()
