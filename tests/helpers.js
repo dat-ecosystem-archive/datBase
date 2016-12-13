@@ -9,11 +9,7 @@ module.exports = {
     const server = http.createServer(router)
     initDb(config.db, function (err, db) {
       if (err) throw err
-
-      function close () {
-        server.close()
-      }
-      server.listen(config.port, function () { cb(close) })
+      server.listen(config.port, function () { cb(server.close.bind(server)) })
     })
   }
 }

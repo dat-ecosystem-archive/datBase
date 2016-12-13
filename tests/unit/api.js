@@ -72,9 +72,11 @@ helpers.server(config, function (close) {
   })
 
   test.onFinish(function () {
-    close()
     fs.unlink(townshipPath, function () {
       fs.unlink(sqlitePath, function () {
+        close(function () {
+          process.exit(0) // hack to close the db
+        })
       })
     })
   })
