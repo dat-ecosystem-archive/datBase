@@ -25,9 +25,9 @@ module.exports = function api (model) {
       jsonBody(req, res, function (err, body) {
         if (err) return onerror(err, res)
         if (!body.id) return onerror(new Error('id required'), res)
-        model.update({id: body.id}, body, function (err, data) {
+        model.update({id: body.id}, body, function (err, num) {
           if (err) return onerror(err, res)
-          send(data).pipe(res)
+          send({updated: num}).pipe(res)
         })
       })
     },

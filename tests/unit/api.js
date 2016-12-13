@@ -1,26 +1,12 @@
-var test = require('tape')
-var path = require('path')
-var helpers = require('../helpers')
-var fs = require('fs')
-var request = require('request')
-
-var townshipPath = path.join(__dirname, 'test-township.db')
-var sqlitePath = path.join(__dirname, 'test-sqlite.db')
-var config = {
-  township: {
-    db: townshipPath
-  },
-  db: {
-    dialect: 'sqlite3',
-    connection: { filename: sqlitePath }
-  },
-  port: 8111
-}
+const test = require('tape')
+const request = require('request')
+const helpers = require('../helpers')
+const config = require('../config')
 
 var url = 'http://localhost:' + config.port + '/api/v1'
 
-helpers.server(config, function (close) {
-  var user = {id: 'bahah', username: 'bob', email: 'hello', description: 'hello i am a description'}
+helpers.server(config, function (db, close) {
+  var users = helpers.users
   test('api should get users', function (t) {
     request(url + '/users', function (err, resp, body) {
       t.ifError(err)
@@ -29,55 +15,55 @@ helpers.server(config, function (close) {
     })
   })
 
-  test('api should create users', function (t) {
-    request.post({url: url + '/users', body: user, json: true}, function (err, resp, body) {
+  test('database should create users', function (t) {
+    db.models.users.create(users.joe, function (err, body) {
       t.ifError(err)
-      t.same(body, user, 'user successfully created')
-      t.end()
+      t.same(body, users.joe, 'user successfully created')
+      db.models.users.create(users.bob, function (err, body) {
+        t.ifError(err)
+        t.same(body, users.bob, 'user successfully created')
+        db.models.users.create(users.admin, function (err, body) {
+          t.ifError(err)
+          t.same(body, users.admin, 'user successfully created')
+          t.end()
+        })
+      })
     })
   })
 
   test('api should get the user we created', function (t) {
     request({url: url + '/users', json: true}, function (err, resp, body) {
       t.ifError(err)
-      t.same(body.length, 1, 'has one user')
-      t.same(body[0], user, 'user is same as the one we have')
+      t.same(body.length, 3, 'has three users')
+      t.same(body[0], users.joe, 'users are same as the ones we have')
       t.end()
     })
   })
 
   test('api should update user', function (t) {
-    request.put({url: url + '/users', body: {id: user.id, username: 'joe'}, json: true}, function (err, resp, body) {
+    request.put({url: url + '/users', body: {id: users.joe.id, username: 'margaret'}, json: true}, function (err, resp, body) {
       t.ifError(err)
-      t.same(body.username, 'joe', 'updated one user')
+      t.same(body.username, 'margaret', 'updated one user')
       request({url: url + '/users', json: true}, function (err, resp, body) {
         t.ifError(err)
-        t.same(body.length, 1, 'has one user')
-        t.same(body[0].username, 'joe', 'user has new username')
+        t.same(body.length, 3, 'has one user')
+        t.same(body[0].username, 'margaret', 'user has new username')
         t.end()
       })
     })
   })
 
   test('api should delete users', function (t) {
-    request.delete({url: url + '/users', body: {id: user.id}, json: true}, function (err, resp, body) {
+    request.delete({url: url + '/users', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
       t.ifError(err)
       t.same(body.deleted, 1, 'deletes one row')
       request({url: url + '/users', json: true}, function (err, resp, body) {
         t.ifError(err)
-        t.same(body.length, 0, 'has zero users')
+        t.same(body.length, 2, 'has two users')
         t.end()
       })
     })
   })
 
-  test.onFinish(function () {
-    fs.unlink(townshipPath, function () {
-      fs.unlink(sqlitePath, function () {
-        close(function () {
-          process.exit(0) // hack to close the db
-        })
-      })
-    })
-  })
+  helpers.tearDown(test, close)
 })

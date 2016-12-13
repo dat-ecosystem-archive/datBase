@@ -8,6 +8,7 @@ function init (config, cb) {
     table.uuid('id').primary()
     table.string('username')
     table.string('email')
+    table.string('role')
     table.text('description')
   })
   .createTableIfNotExists('dats', function (table) {

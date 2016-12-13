@@ -12,6 +12,7 @@ module.exports = function (knex, model, opts) {
         .catch(cb)
     },
     get: function (where, cb) {
+      if (!where) return cb(new Error('Query required as an argument to model.get'))
       knex(model)
         .select()
         .where(where)
@@ -19,23 +20,17 @@ module.exports = function (knex, model, opts) {
         .catch(cb)
     },
     update: function (where, values, cb) {
-      async.waterfall([
-        function (done) {
-          knex(model)
-          .where(where)
-          .update(values)
-          .then(function () { done(null) })
-          .catch(done)
-        }, function (done) {
-          var where = {}
-          where[primaryKey] = values.id
-          knex(model)
-          .where(where)
-          .then(function (data) { done(null, data[0]) })
-          .catch(done)
-        }], cb)
+      if (!where) return cb(new Error('Query required as an argument to model.update'))
+      if (!values) return cb(new Error('Values required as an argument to model.update'))
+      knex(model)
+      .where(where)
+      .update(values)
+      .then(function (data) { cb(null, data) })
+      .catch(cb)
     },
     create: function (values, cb) {
+      if (!values) return cb(new Error('Values required as an argument to model.create'))
+
       async.waterfall([
         function (done) {
           knex(model)
@@ -52,6 +47,7 @@ module.exports = function (knex, model, opts) {
         }], cb)
     },
     delete: function (where, cb) {
+      if (!where) return cb(new Error('Query required as an argument to model.delete'))
       knex(model)
         .where(where)
         .del()

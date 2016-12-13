@@ -44,6 +44,7 @@
     "nightwatch": "^0.9.5",
     "nodemon": "^1.10.0",
     "request": "^2.79.0",
+    "rimraf": "^2.5.4",
     "selenium-server-standalone-jar": "^2.53.1",
     "shipit-deploy": "^2.2.0",
     "standard": "^7.1.2",

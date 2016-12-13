@@ -28,15 +28,13 @@ Params:
 
 ##### ```PUT /api/v1/users```
 
-Update a user. Returns the user that was updated.
+Update a user.
 
-##### ```POST /api/v1/users```
-
-Create a user. Returns the new user info.
+Success returns number of updated rows ```{updated: num}```
 
 ##### ```DELETE /api/v1/users```
 
-Delete a user. 
+Delete a user.
 
 Success returns number of deleted rows ```{deleted: 1}```
 

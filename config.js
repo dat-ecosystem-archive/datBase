@@ -12,6 +12,10 @@ var config = {
         postmarkAPIKey: 'your api key'
       },
       whitelist: false // otherwise path to whitelist email txt file
+    },
+    db: {
+      dialect: 'sqlite3',
+      connection: { filename: './sqlite.db' }
     }
   },
   development: {},
