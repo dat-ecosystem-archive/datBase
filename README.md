@@ -10,6 +10,36 @@ An online place for dats.
 
 We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergoing heavy development for the next few months.
 
+### API
+
+#### User profiles.
+
+`id` always required.
+
+##### ```GET /api/v1/users```
+
+Responds with a list of users that match the query.
+
+Params:
+- `id`
+- `username`
+- `email`
+- `description`
+
+##### ```PUT /api/v1/users```
+
+Update a user. 
+
+##### ```POST /api/v1/users```
+
+Create a user. 
+
+##### ```DELETE /api/v1/users```
+
+Delete a user. 
+
+Success returns number of deleted rows ```{deleted: 1}```
+
 ### develop
 
 ```
