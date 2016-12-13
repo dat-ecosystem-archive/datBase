@@ -17,7 +17,7 @@
   "scripts": {
     "server": "node ./server",
     "lint": "standard",
-    "test": "standard",
+    "test": "standard && node tests/verify.js",
     "test:e2e": "nightwatch --env chrome,chrome",
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
     "start": "npm run watch-js & npm run watch-css & npm run watch-server",
