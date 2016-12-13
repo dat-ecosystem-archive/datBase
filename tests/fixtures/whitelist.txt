@@ -1,3 +1,6 @@
 bilbo@baggins.co.nz
- 
+me@joe.com
+me@bob.com
+me@pam.com
+
 # nazgul@mordornet.ru

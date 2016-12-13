@@ -2,13 +2,19 @@ const database = require('./')
 
 module.exports = init
 
-function init (config, cb) {
-  var db = database(config)
+/**
+ * Initializes the database.
+ * @param  {[type]}   dbConfig  An opts object from config.db
+ * @param  {Function} cb        When done, calls cb with (err, db)
+ */
+function init (dbConfig, cb) {
+  var db = database(dbConfig)
   db.knex.schema.createTableIfNotExists('users', function (table) {
     table.uuid('id').primary()
     table.string('username')
-    table.string('email')
     table.string('role')
+    table.string('email')
+    table.text('token')
     table.text('description')
   })
   .createTableIfNotExists('dats', function (table) {
@@ -29,7 +35,7 @@ function init (config, cb) {
 
 if (!module.parent) {
   const defaultConfig = require('../../config')
-  init(defaultConfig, function (err) {
+  init(defaultConfig.db, function (err) {
     if (err) throw err
     console.log('Successfully created tables.')
     process.exit(0)

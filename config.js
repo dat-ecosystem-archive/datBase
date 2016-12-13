@@ -15,7 +15,10 @@ var config = {
     },
     db: {
       dialect: 'sqlite3',
-      connection: { filename: './sqlite.db' }
+      connection: {
+        filename: './sqlite.db'
+      },
+      useNullAsDefault: true
     }
   },
   development: {},
