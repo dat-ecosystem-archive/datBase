@@ -19,20 +19,30 @@ module.exports = function (knex, model, opts) {
         .catch(cb)
     },
     update: function (where, values, cb) {
-      knex(model)
-      .where(where)
-      .update(values)
-      .then(function (id) { cb(null, id) })
-      .catch(cb)
+      async.waterfall([
+        function (done) {
+          knex(model)
+          .where(where)
+          .update(values)
+          .then(function () { done(null) })
+          .catch(done)
+        }, function (done) {
+          var where = {}
+          where[primaryKey] = values.id
+          knex(model)
+          .where(where)
+          .then(function (data) { done(null, data[0]) })
+          .catch(done)
+        }], cb)
     },
     create: function (values, cb) {
       async.waterfall([
         function (done) {
           knex(model)
           .insert(values)
-          .then(function (id) { done(null, id) })
+          .then(function () { done(null) })
           .catch(done)
-        }, function (results, done) {
+        }, function (done) {
           var where = {}
           where[primaryKey] = values.id
           knex(model)

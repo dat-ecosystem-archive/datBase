@@ -49,7 +49,7 @@ helpers.server(config, function (close) {
   test('api should update user', function (t) {
     request.put({url: url + '/users', body: {id: user.id, username: 'joe'}, json: true}, function (err, resp, body) {
       t.ifError(err)
-      t.same(body.updated, 1, 'updated one user')
+      t.same(body.username, 'joe', 'updated one user')
       request({url: url + '/users', json: true}, function (err, resp, body) {
         t.ifError(err)
         t.same(body.length, 1, 'has one user')
