@@ -70,7 +70,6 @@
     "hyperdrive-import-queue": "^2.0.0",
     "intro.js": "^2.1.0",
     "jszip": "^3.1.2",
-    "knex": "^0.12.6",
     "level": "^1.4.0",
     "level-party": "^3.0.4",
     "lru": "^3.1.0",
