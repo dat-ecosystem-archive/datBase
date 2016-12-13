@@ -12,9 +12,10 @@ const log = bole(__filename)
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
 const config = require('../config')
 const router = createRouter({
-  config: config,
+  township: config.township,
   db: config.db
 })
+
 const server = http.createServer(function (req, res) {
   var time = Date.now()
   log.info({message: 'request', method: req.method, url: req.url})

@@ -14,6 +14,8 @@ const township = require('township')
 const level = require('level-party')
 const send = require('appa/send')
 const error = require('appa/error')
+const database = require('./database')
+const api = require('./api')
 
 module.exports = function (opts) {
   opts = opts || {}
@@ -23,8 +25,14 @@ module.exports = function (opts) {
   const page = require('./page')
   const Dat = require('./haus')
   const verify = require('./verify')
-  const db = level(opts.db || path.join(__dirname, 'township.db'))
-  const ship = township(opts.config, db)
+  const townshipDb = level(opts.township.db || path.join(__dirname, 'township.db'))
+  const ship = township(opts.township, townshipDb)
+
+  const db = database(opts.db)
+  for (var name in db.models) {
+    var model = db.models[name]
+    router.on('/api/v1/' + name, api(model))
+  }
 
   // landing page
   router.on('/', {

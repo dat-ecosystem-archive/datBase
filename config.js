@@ -4,19 +4,24 @@ var xtend = require('xtend')
 
 var config = {
   shared: {
-    secret: 'very very not secret',
-    db: path.join(__dirname, 'township.db'),
-    email: {
-      fromEmail: 'hi@example.com',
-      postmarkAPIKey: 'your api key'
+    township: {
+      secret: 'very very not secret',
+      db: path.join(__dirname, 'township.db'),
+      email: {
+        fromEmail: 'hi@example.com',
+        postmarkAPIKey: 'your api key'
+      },
+      whitelist: false // otherwise path to whitelist email txt file
     }
   },
   development: {},
   production: {
-    secret: process.env.TOWNSHIP_SECRET,
-    db: path.join(os.homedir(), 'township.db')
-  },
-  whitelist: false // otherwise path to whitelist email txt file
+    township: {
+      secret: process.env.TOWNSHIP_SECRET,
+      db: path.join(os.homedir(), 'township.db'),
+      whitelist: false
+    }
+  }
 }
 
 var env = process.env.NODE_ENV || 'development'
