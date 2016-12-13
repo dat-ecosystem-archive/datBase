@@ -46,6 +46,7 @@
     "selenium-server-standalone-jar": "^2.53.1",
     "shipit-deploy": "^2.2.0",
     "standard": "^7.1.2",
+    "tape": "^4.6.3",
     "watchify": "~3.6.0"
   },
   "dependencies": {
