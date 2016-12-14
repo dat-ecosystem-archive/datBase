@@ -21,6 +21,7 @@ module.exports = function (router, db, opts) {
             if (err) return error(400, err.message).pipe(res)
             db.models.users.create({email: body.email, id: obj.key}, function (err, body) {
               if (err) return error(400, err.message).pipe(res)
+              body.token = obj.token
               return send(body).pipe(res)
             })
           })

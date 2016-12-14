@@ -41,19 +41,21 @@ test('api', function (t) {
     })
 
     test('api should register users', function (t) {
-      console.log(users.joe)
       client.register(users.joe, function (err, resp, body) {
         t.ifError(err)
         if (body) users.joe.id = body.id
-        t.same(body.email, users.joe.email)
+        t.same(body.email, users.joe.email, 'email the same')
+        t.ok(body.token, 'token there')
         client.register(users.bob, function (err, resp, body) {
           t.ifError(err)
           if (body) users.bob.id = body.id
           t.same(body.email, users.bob.email)
+          t.ok(body.token, 'token there')
           client.register(users.admin, function (err, resp, body) {
             t.ifError(err)
             if (body) users.admin.id = body.id
             t.same(body.email, users.admin.email, 'gives back email upon register')
+            t.ok(body.token, 'token there')
             t.end()
           })
         })
