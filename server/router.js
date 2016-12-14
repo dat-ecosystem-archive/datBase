@@ -35,7 +35,7 @@ module.exports = function (opts) {
   })
 
   // new choo-based archive route:
-  router.on('/dat/:archiveKey', {
+  router.on('/:archiveKey', {
     get: function (req, res, params) {
       var state = getDefaultAppState()
       var key
@@ -44,7 +44,7 @@ module.exports = function (opts) {
       } catch (e) {
         state.archive.error = {message: e.message}
         log.warn('router.js /:archiveKey route error: ' + e.message)
-        return sendSPA('/dat/:archiveKey', req, res, params, state)
+        return sendSPA('/:archiveKey', req, res, params, state)
       }
       var dat = Dat(key)
       var archive = dat.archive
@@ -57,7 +57,7 @@ module.exports = function (opts) {
       }, () => {
         cancelled = true
         log.warn('server getArchive() timed out for key: ' + params.archiveKey)
-        sendSPA('/dat/:archiveKey', req, res, params, state)
+        sendSPA('/:archiveKey', req, res, params, state)
       })
 
       collect(listStream.pipe(timeout), function (err, data) {
@@ -70,14 +70,14 @@ module.exports = function (opts) {
             state.archive.metadata = metadata
           }
           dat.close()
-          sendSPA('/dat/:archiveKey', req, res, params, state)
+          sendSPA('/:archiveKey', req, res, params, state)
         })
       })
     }
   })
 
   // TODO: better recursion for nested filepaths on archives
-  router.on('/dat/:archiveKey/:filePath', {
+  router.on('/:archiveKey/:filePath', {
     get: function (req, res, params) {
       res.end('route is: /' + params.archiveKey + '/' + params.filePath)
     }
