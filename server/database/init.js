@@ -16,6 +16,7 @@ function init (dbConfig, cb) {
     table.string('email')
     table.text('token')
     table.text('description')
+    table.timestamps()
   })
   .createTableIfNotExists('dats', function (table) {
     table.uuid('id').primary()
@@ -23,9 +24,10 @@ function init (dbConfig, cb) {
     table.string('name')
     table.string('url')
     table.string('title')
-    table.unique(['name', 'user_id'])
     table.text('description')
     table.text('keywords')
+    table.timestamps()
+    table.unique(['name', 'user_id'])
   })
   .then(function () {
     cb(null, db)

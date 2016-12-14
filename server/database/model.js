@@ -24,6 +24,7 @@ module.exports = function (knex, model, opts) {
     update: function (where, values, cb) {
       if (!where) return cb(new Error('Query required as an argument to model.update'))
       if (!values) return cb(new Error('Values required as an argument to model.update'))
+      if (!values.updated_at) values.updated_at = Date.now()
       knex(model)
       .where(where)
       .update(values)
@@ -33,6 +34,8 @@ module.exports = function (knex, model, opts) {
     create: function (values, cb) {
       if (!values) return cb(new Error('Values required as an argument to model.create'))
       if (!values.id) values.id = uuid.v4()
+      if (!values.created_at) values.created_at = Date.now()
+      if (!values.updated_at) values.updated_at = Date.now()
       async.waterfall([
         function (done) {
           knex(model)
