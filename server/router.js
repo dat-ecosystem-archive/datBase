@@ -9,18 +9,16 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const Router = require('server-router')
 const getMetadata = require('../client/js/utils/metadata')
-const database = require('./database')
 const auth = require('./auth')
 const api = require('./api')
 
-module.exports = function (opts) {
+module.exports = function (opts, db) {
   opts = opts || {}
 
   const log = bole(__filename)
   const app = require('../client/js/app')
   const page = require('./page')
   const Dat = require('./haus')
-  const db = database(opts.db)
 
   var router = Router()
   const ship = auth(router, db, opts)

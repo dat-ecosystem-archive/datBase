@@ -3,26 +3,28 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 const createRouter = require('../server/router')
 const initDb = require('../server/database/init')
-const config = require('./config')
 
 module.exports = {
   server: function (config, cb) {
-    const router = createRouter(config)
-    const server = http.createServer(router)
     initDb(config.db, function (err, db) {
       if (err) throw err
-      server.listen(config.port, function () { cb(db, server.close.bind(server)) })
+      const router = createRouter(config, db)
+      const server = http.createServer(router)
+      server.listen(config.port, function () {
+        cb(db, close)
+      })
+      function close (cb) {
+        server.close(function () {
+          db.knex.destroy(cb)
+        })
+      }
     })
   },
-  tearDown: function (test, close) {
-    test.onFinish(function () {
-      rimraf(config.township.db, function () {
-        fs.unlink(config.townshipClient.filepath, function () {
-          fs.unlink(config.db.connection.filename, function () {
-            close(function () {
-              process.exit(0) // hack to close the db
-            })
-          })
+  tearDown: function (config, close) {
+    rimraf(config.township.db, function () {
+      fs.unlink(config.townshipClient.filepath, function () {
+        fs.unlink(config.db.connection.filename, function () {
+          close()
         })
       })
     })

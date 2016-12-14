@@ -1,4 +1,5 @@
 const http = require('http')
+const database = require('./database')
 const createRouter = require('./router')
 const bole = require('bole')
 
@@ -11,7 +12,8 @@ const log = bole(__filename)
 
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
 const config = require('../config')
-const router = createRouter(config)
+const db = database(config.db)
+const router = createRouter(config, db)
 
 const server = http.createServer(function (req, res) {
   var time = Date.now()
