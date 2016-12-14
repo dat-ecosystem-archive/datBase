@@ -1,5 +1,3 @@
-const uuid = require('uuid')
-
 module.exports = Dats
 
 function Dats (model) {
@@ -9,7 +7,6 @@ function Dats (model) {
 
 Dats.prototype.post = function (ctx, cb) {
   if (!ctx.user && !ctx.user.id) return cb(new Error('Must be logged in to do that.'))
-  ctx.body.id = uuid.v4()
   ctx.body.user_id = ctx.user.id
   this.model.create(ctx.body, cb)
 }

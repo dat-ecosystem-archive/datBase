@@ -67,6 +67,19 @@ helpers.server(config, function (db, close) {
     })
   })
 
+  test('cant create two dats with the same name in the same account', function (t) {
+    helpers.dats.cats.user_id = users.bob.id
+    db.models.dats.create(helpers.dats.cats, function (err, body) {
+      t.ifError(err)
+      t.same(body, helpers.dats.cats, 'created the cats')
+      db.models.dats.create(helpers.dats.cats, function (err, body) {
+        t.ok(err)
+        t.ok(err.message.indexOf('already exists'), 'already exists message')
+        t.end()
+      })
+    })
+  })
+
   test('database should delete a single user', function (t) {
     users.bob.username = 'i am not bob actually'
     db.models.users.delete({id: users.bob.id}, function (err, body) {
