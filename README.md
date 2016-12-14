@@ -12,31 +12,49 @@ We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.
 
 ### API
 
-#### User profiles.
+#### Users
 
 `id` always required.
 
-##### ```GET /api/v1/users```
-
-Responds with a list of users that match the query.
-
-Params:
+Fields:
 - `id`
 - `username`
 - `email`
 - `description`
 
-##### ```PUT /api/v1/users```
+NOTE: ```POST /api/v1/users``` Method not allowed. Use /auth/v1/register instead.
 
-Update a user.
+#### Dats
+
+Fields:
+- `id`
+- `user_id`
+- `name`
+- `title`
+- `hash`
+- `description`
+
+##### ```GET /api/v1/:model```
+
+Responds with a list of results that match the query. Can pass query parameters
+like `?username='martha'` or `?name=cats` to filter results.
+
+##### ```PUT /api/v1/:model```
+
+`id` required.
 
 Success returns number of updated rows ```{updated: num}```
 
-##### ```DELETE /api/v1/users```
+##### ```DELETE /api/v1/:model```
 
-Delete a user.
+`id` required. 
 
 Success returns number of deleted rows ```{deleted: 1}```
+
+#### ```POST /api/v1/:model```
+
+Success returns the model as it exists in the database.
+
 
 ### develop
 
@@ -44,25 +62,17 @@ Success returns number of deleted rows ```{deleted: 1}```
 npm install
 ```
 
-Do all of the below (watch assets and start server) in one command:
+Watch assets and start server in one command:
 
 ```
 npm start
 ```
 
-Start the server:
+### Initialize database
 
 ```
-npm run server
+node server/database/init.js
 ```
-
-To watch and build scss and javascript changes as you go (in a separate terminal):
-
-```
-npm run watch-css
-npm run watch-js
-```
-
 
 ### build for production
 ```

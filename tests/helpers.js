@@ -31,5 +31,9 @@ module.exports = {
     bob: {username: 'joe', password: 'very secret', email: 'hi@bob.com', description: 'hello i am a description', token: null, role: 'user'},
     joe: {username: 'bob', password: 'so secret', email: 'hi@joe.com', description: 'i like it', token: null, role: 'user'},
     admin: {username: 'pam', password: 'secret123', email: 'hi@pam.com', description: 'i dont eat it', token: null, role: 'admin'}
+  },
+  dats: {
+    cats: {name: 'cats', hash: 'ahashfordats', title: 'all of the cats', description: 'live on the corner of washington and 7th', keywords: 'furry, fluffy'},
+    dogs: {name: 'dogs', hash: 'ahashfordogs', title: 'all of the dogs', description: 'lives in your house', keywords: 'sloppy, loud'}
   }
 }

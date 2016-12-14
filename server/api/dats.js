@@ -1,3 +1,5 @@
+const uuid = require('uuid')
+
 module.exports = Dats
 
 function Dats (model) {
@@ -6,7 +8,9 @@ function Dats (model) {
 }
 
 Dats.prototype.post = function (ctx, cb) {
-  if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
+  if (!ctx.user && !ctx.user.id) return cb(new Error('Must be logged in to do that.'))
+  ctx.body.id = uuid.v4()
+  ctx.body.user_id = ctx.user.id
   this.model.create(ctx.body, cb)
 }
 
@@ -26,9 +30,15 @@ Dats.prototype.get = function (ctx, cb) {
 }
 
 Dats.prototype.delete = function (ctx, cb) {
+  var self = this
   if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
-  this.model.delete({id: ctx.body.id}, function (err, data) {
+  self.model.get({id: ctx.body.id}, function (err, results) {
     if (err) return cb(err)
-    cb(null, {deleted: data})
+    if (!results) return cb(new Error('Dat does not exist.'))
+    if (results[0].user_id !== ctx.user.id) return cb(new Error('Cannot delete someone elses dat.'))
+    self.model.delete({id: ctx.body.id}, function (err, data) {
+      if (err) return cb(err)
+      cb(null, {deleted: data})
+    })
   })
 }

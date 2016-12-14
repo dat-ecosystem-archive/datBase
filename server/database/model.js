@@ -34,6 +34,7 @@ module.exports = function (knex, model, opts) {
         function (done) {
           knex(model)
           .insert(values)
+          .returning('id')
           .then(function () { done(null) })
           .catch(done)
         }, function (done) {

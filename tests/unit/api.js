@@ -121,8 +121,71 @@ helpers.server(config, function (db, close) {
     })
   })
 
-  test('api can delete yourself', function (t) {
-    client.secureRequest({method: 'DELETE', url: '/api/v1/users', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
+  test('api can create a dat', function (t) {
+    client.secureRequest({method: 'POST', url: '/api/v1/dats', body: helpers.dats.cats, json: true}, function (err, resp, body) {
+      t.ifError(err)
+      t.ok(body.id, 'has an id')
+      helpers.dats.cats.id = body.id
+      helpers.dats.cats.user_id = body.user_id
+      client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.length, 1)
+        t.end()
+      })
+    })
+  })
+
+  test('api can get a dat', function (t) {
+    client.secureRequest({url: '/api/v1/dats?id=' + helpers.dats.cats.id, json: true}, function (err, resp, body) {
+      t.ifError(err)
+      t.same(body.length, 1, 'has one dat')
+      if (body.length) t.same(body[0], helpers.dats.cats, 'is the right dat')
+      t.end()
+    })
+  })
+
+  test('api cannot delete a dat that doesnt exist', function (t) {
+    client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: 'notanid'}, json: true}, function (err, resp, body) {
+      t.ok(err)
+      t.same(err.statusCode, 400, 'request denied')
+      t.end()
+    })
+  })
+
+  test('api bob cannot delete joes dat', function (t) {
+    client.logout(function () {
+      client.login(users.bob, function (err) {
+        t.ifError(err)
+        client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: helpers.dats.cats.id}, json: true}, function (err, resp, body) {
+          t.ok(err)
+          t.same(err.statusCode, 400, 'request denied')
+          t.end()
+        })
+      })
+    })
+  })
+
+  test('api bob can delete his own dat', function (t) {
+    client.secureRequest({method: 'POST', url: '/api/v1/dats', body: helpers.dats.dogs, json: true}, function (err, resp, body) {
+      t.ifError(err)
+      t.ok(body.id, 'has an id')
+      helpers.dats.dogs.id = body.id
+      helpers.dats.dogs.user_id = body.user_id
+      t.same(body, helpers.dats.dogs, 'is the right dat')
+      client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: helpers.dats.dogs.id}, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.deleted, 1, 'deletes one row')
+        client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.length, 1, 'only one dat')
+          t.end()
+        })
+      })
+    })
+  })
+
+  test('api bob can delete himself', function (t) {
+    client.secureRequest({method: 'DELETE', url: '/api/v1/users', body: {id: users.bob.id}, json: true}, function (err, resp, body) {
       t.ifError(err)
       t.same(body.deleted, 1, 'deletes one row')
       client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
