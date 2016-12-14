@@ -14,5 +14,5 @@ module.exports = {
     filepath: path.join(__dirname, '.townshiprc')
   },
   whitelist: path.join(__dirname, 'fixtures', 'whitelist.txt'),
-  port: 8111
+  port: process.env.PORT || 8888
 }
