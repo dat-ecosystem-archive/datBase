@@ -17,7 +17,7 @@
   "scripts": {
     "server": "node ./server",
     "lint": "standard",
-    "test": "standard && node tests/unit/* | tap-spec",
+    "test": "standard && tape tests/unit/*.js | tap-spec",
     "test:e2e": "nightwatch --env chrome,chrome",
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
     "start": "npm run watch-js & npm run watch-css & npm run watch-server",

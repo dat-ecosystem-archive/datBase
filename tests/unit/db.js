@@ -8,6 +8,7 @@ helpers.server(config, function (db, close) {
   delete users.bob.password
 
   test('database should create users', function (t) {
+    users.joe.id = 'anewid'
     db.models.users.create(users.joe, function (err, body) {
       t.ifError(err)
       t.same(body, users.joe, 'user successfully created')
@@ -25,6 +26,7 @@ helpers.server(config, function (db, close) {
   })
 
   test('database should create users', function (t) {
+    users.bob.id = 'deadbeef'
     db.models.users.create(users.bob, function (err, body) {
       t.ifError(err)
       t.same(body, users.bob, 'user successfully created')
