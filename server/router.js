@@ -7,11 +7,11 @@ const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
 const bole = require('bole')
+const Router = require('server-router')
 const getMetadata = require('../client/js/utils/metadata')
-const router = require('server-router')()
 const database = require('./database')
-const api = require('./api')
 const auth = require('./auth')
+const api = require('./api')
 
 module.exports = function (opts) {
   opts = opts || {}
@@ -21,12 +21,10 @@ module.exports = function (opts) {
   const page = require('./page')
   const Dat = require('./haus')
   const db = database(opts.db)
+
+  var router = Router()
   const ship = auth(router, db, opts)
-  
-  for (var name in db.models) {
-    var model = db.models[name]
-    router.on('/api/v1/' + name, api(model, ship))
-  }
+  api(router, db, ship)
 
   // landing page
   router.on('/', {
@@ -37,7 +35,7 @@ module.exports = function (opts) {
   })
 
   // new choo-based archive route:
-  router.on('/:archiveKey', {
+  router.on('/dat/:archiveKey', {
     get: function (req, res, params) {
       var state = getDefaultAppState()
       var key
@@ -46,7 +44,7 @@ module.exports = function (opts) {
       } catch (e) {
         state.archive.error = {message: e.message}
         log.warn('router.js /:archiveKey route error: ' + e.message)
-        return sendSPA('/:archiveKey', req, res, params, state)
+        return sendSPA('/dat/:archiveKey', req, res, params, state)
       }
       var dat = Dat(key)
       var archive = dat.archive
@@ -59,7 +57,7 @@ module.exports = function (opts) {
       }, () => {
         cancelled = true
         log.warn('server getArchive() timed out for key: ' + params.archiveKey)
-        sendSPA('/:archiveKey', req, res, params, state)
+        sendSPA('/dat/:archiveKey', req, res, params, state)
       })
 
       collect(listStream.pipe(timeout), function (err, data) {
@@ -72,14 +70,14 @@ module.exports = function (opts) {
             state.archive.metadata = metadata
           }
           dat.close()
-          sendSPA('/:archiveKey', req, res, params, state)
+          sendSPA('/dat/:archiveKey', req, res, params, state)
         })
       })
     }
   })
 
   // TODO: better recursion for nested filepaths on archives
-  router.on('/:archiveKey/:filePath', {
+  router.on('/dat/:archiveKey/:filePath', {
     get: function (req, res, params) {
       res.end('route is: /' + params.archiveKey + '/' + params.filePath)
     }

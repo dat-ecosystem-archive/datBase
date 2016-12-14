@@ -30,7 +30,6 @@ module.exports = function (knex, model, opts) {
     },
     create: function (values, cb) {
       if (!values) return cb(new Error('Values required as an argument to model.create'))
-
       async.waterfall([
         function (done) {
           knex(model)
