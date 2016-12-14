@@ -6,20 +6,14 @@ An online place for dats.
 
 [Try dat.land now](http://dat.land)
 
-## News
-
-We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergoing heavy development for the next few months.
-
-### API
+## API
 
 #### Users
 
-`id` always required.
-
 Fields:
-- `id`
+- `id` (required)
+- `email` (required)
 - `username`
-- `email`
 - `description`
 
 NOTE: ```POST /api/v1/users``` Method not allowed. Use /auth/v1/register instead.
@@ -43,13 +37,13 @@ like `?username='martha'` or `?name=cats` to filter results.
 
 `id` required.
 
-Success returns number of updated rows ```{updated: num}```
+Success returns number of updated rows (e.g., ```{updated: 1}```)
 
 ##### ```DELETE /api/v1/:model```
 
 `id` required. 
 
-Success returns number of deleted rows ```{deleted: 1}```
+Success returns number of deleted rows (e.g., ```{deleted: 1}```)
 
 #### ```POST /api/v1/:model```
 
