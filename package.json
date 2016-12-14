@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "appa": "^6.0.0",
+    "async": "^2.1.4",
     "body": "^5.1.0",
     "bole": "^3.0.1",
     "browserify": "^13.0.0",
