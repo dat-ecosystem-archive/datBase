@@ -1,4 +1,3 @@
-'use strict'
 const html = require('choo/html')
 
 module.exports = (props, click) => {
