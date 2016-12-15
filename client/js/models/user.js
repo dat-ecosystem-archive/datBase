@@ -1,6 +1,8 @@
 var township = require('township-client')
 var defaultState = {
-  username: null
+  username: null,
+  email: null,
+  token: null
 }
 
 function getClient () {
@@ -18,9 +20,7 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
     update: (data, state) => {
-      return {
-        username: data.username || state.username
-      }
+      return data
     }
   },
   effects: {
@@ -29,13 +29,14 @@ module.exports = {
       client.login(data, function (err, resp, data) {
         if (err) console.error(err)
         console.log(data)
+        send('user:update', data, done)
       })
     },
     register: (data, state, send, done) => {
       const client = getClient()
       client.register(data, function (err, resp, data) {
         if (err) console.error(err)
-        console.log(data)
+        send('user:update', data, done)
       })
     }
   }
