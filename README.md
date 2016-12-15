@@ -2,7 +2,7 @@
 
 An online place for dats.
 
-[![Build Status](https://travis-ci.org/datproject/dat.land.svg?branch=master)](https://travis-ci.org/datproject/dat.land)
+[![Build Status](https://travis-ci.org/datproject/datfolder.svg?branch=master)](https://travis-ci.org/datproject/datfolder)
 
 [Try dat.land now](http://dat.land)
 
