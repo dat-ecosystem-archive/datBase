@@ -24,6 +24,7 @@ module.exports = {
       const client = getClient()
       client.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
+        console.log('succes', data)
         send('user:update', data, function () {
           send('message:success', 'Logged in successfully.', done)
         })
