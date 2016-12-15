@@ -8,7 +8,7 @@ module.exports = function (state, prev, send) {
   return html`
     ${button({
       text: 'Login',
-      click: () => console.log('show login panel')
+      click: () => send('user:showLogin', {})
     })}
   `
 }

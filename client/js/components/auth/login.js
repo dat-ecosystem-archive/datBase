@@ -9,12 +9,23 @@ const login = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="login">
+  return html`<div class="login ${state.user.login}">
+    <h3>Login</h3>
     <form onsubmit=${onSubmit}>
-      <h3 class="error">${state.error ? state.error.message : ''}</h3>
-      <input type="text" placeholder="E-mail" name="email" />
-      <input type="text" placeholder="Password" name="password" />
-      <input type="submit" value="Login" />
+      <h2 class="error">${state.error ? state.error.message : ''}</h2>
+      <div class="dat-import">
+        <div class="dat-import--icon">
+          <img src="/public/img/link.svg" />
+        </div>
+        <input type="text" placeholder="E-mail" class="dat-import--input" name="email" />
+      </div>
+      <div class="dat-import">
+        <div class="dat-import--icon">
+          <img src="/public/img/link.svg" />
+        </div>
+        <input type="password" placeholder="Password" class="dat-import--input" name="password" />
+      </div>
+      <input type="submit" value="Login" class="btn btn--green btn__reveal-text" />
     </form>
   </div>`
 }

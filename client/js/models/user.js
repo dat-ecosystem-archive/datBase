@@ -2,7 +2,8 @@ var township = require('township-client')
 var defaultState = {
   username: null,
   email: null,
-  token: null
+  token: null,
+  login: 'hidden'
 }
 
 function getClient () {
@@ -17,6 +18,12 @@ module.exports = {
   reducers: {
     update: (data, state) => {
       return data
+    },
+    showLogin: (data, state) => {
+      return {login: ''}
+    },
+    hideLogin: (data, state) => {
+      return {login: 'hidden'}
     }
   },
   effects: {
@@ -24,7 +31,7 @@ module.exports = {
       const client = getClient()
       client.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
-        console.log('succes', data)
+        data.login = 'hidden'
         send('user:update', data, function () {
           send('message:success', 'Logged in successfully.', done)
         })
