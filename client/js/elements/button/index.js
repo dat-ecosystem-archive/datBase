@@ -1,10 +1,11 @@
 const html = require('choo/html')
+const icon = require('../icon')
 
 module.exports = (props, click) => {
   if (typeof click === 'function') props.click = click
   var child
   if (props.icon) {
-    child = html`<div class="btn__icon-wrapper ${props.disabled ? 'disabled' : ''}"><img class="btn__icon-img" src="${props.icon}" /><span class="btn__icon-text">${props.text}</span></div>`
+    child = icon(props.icon)
   } else {
     child = props.text
   }

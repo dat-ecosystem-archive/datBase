@@ -6,6 +6,7 @@ const fourohfour = require('../../elements/404')
 const addFiles = require('../../elements/add-files')
 const header = require('../../components/header')
 const error = require('../../elements/error')
+const icon = require('../../elements/icon')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 const preview = require('../../components/preview')
@@ -34,13 +35,13 @@ const archivePage = (state, prev, send) => {
           <div class="dat-header__actions">
             <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} ${state.archive.numPeers ? '' : 'disabled'}>
               <div class="btn__icon-wrapper ${state.archive.numPeers ? '' : 'disabled'}">
-                <img src="./public/img/download.svg" class="btn__icon-img">
+                ${icon('download')}
                 <span class="btn__icon-text">Download</span>
               </div>
             </button>
             <a href="dat://${state.archive.key}" class="dat-header-action">
               <div class="btn__icon-wrapper">
-                <img src="./public/img/open-in-desktop.svg" class="btn__icon-img">
+                ${icon('open-in-desktop')}
                 <span class="btn__icon-text">Open in Desktop App</span>
               </div>
             </a>

@@ -1,4 +1,5 @@
 const xtend = require('extend')
+const svgSprite = require('dat-icons')
 const serializeJS = require('serialize-javascript')
 
 function page (url, contents, appState) {
@@ -33,6 +34,7 @@ function page (url, contents, appState) {
         <meta property="og:image" content="http://dat.land/public/img/dat-data-logo.svg" />
       </head>
       <body>
+        ${svgSprite()}
         <div id="app">
           <div id="browser-warning"></div>
           <div id="app-root">
