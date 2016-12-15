@@ -14,7 +14,8 @@ app.model(require('./models/preview'))
 app.router((route) => [
   route('/', require('./pages/landing')),
   route('/view/:archiveKey', require('./pages/archive')),
-  route('/:username/:dataset', require('./pages/archive'))
+  route('/:username/:dataset', require('./pages/archive')),
+  route('/404', require('./pages/fourohfour'))
 ])
 
 if (module.parent) {

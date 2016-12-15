@@ -60,11 +60,19 @@ module.exports = function (opts, db) {
       // TOOD: do it in one db query not two
       db.models.users.get({username: params.username}, function (err, user) {
         if (err) return res.end(err.message)
+        if (!user.id) return sendSPA('/404', req, res, params, {})
         db.models.dats.get({user_id: user.id, name: params.dataset}, function (err, dat) {
           if (err) return res.end(err.message)
-          archiveRoute(datKey.string(dat.url), function (state) {
-            sendSPA('/:username/:dataset', req, res, params, state)
-          })
+          var key
+          try {
+            key = datKey.string(dat.url)
+            console.log(key)
+            archiveRoute(key, function (state) {
+              sendSPA('/:username/:dataset', req, res, params, state)
+            })
+          } catch (e) {
+            sendSPA('/404', req, res, params, {})
+          }
         })
       })
     }
