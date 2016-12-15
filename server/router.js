@@ -1,14 +1,12 @@
 const fs = require('fs')
+const getMetadata = require('../client/js/utils/metadata')
 const assert = require('assert')
-const collect = require('collect-stream')
-const encoding = require('dat-encoding')
-const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const Router = require('server-router')
-const getMetadata = require('../client/js/utils/metadata')
 const auth = require('./auth')
 const api = require('./api')
+const getDat = require('./dat')
 
 module.exports = function (opts, db) {
   opts = opts || {}
@@ -16,7 +14,6 @@ module.exports = function (opts, db) {
   const log = bole(__filename)
   const app = require('../client/js/app')
   const page = require('./page')
-  const Dat = require('./haus')
 
   var router = Router()
   const ship = auth(router, db, opts)
@@ -29,42 +26,23 @@ module.exports = function (opts, db) {
       sendSPA('/', req, res, params, state)
     }
   })
+
   router.on('/view/:archiveKey', {
     get: function (req, res, params) {
       var state = getDefaultAppState()
-      var key
-      try {
-        key = encoding.decode(params.archiveKey)
-      } catch (e) {
-        state.archive.error = {message: e.message}
-        log.warn('router.js /view/:archiveKey route error: ' + e.message)
-        return sendSPA('/view/:archiveKey', req, res, params, state)
-      }
-      var dat = Dat(key)
-      var archive = dat.archive
       state.archive.key = params.archiveKey
-      var listStream = archive.list({live: false})
-      var cancelled = false
-      var timeout = TimeoutStream({
-        objectMode: true,
-        duration: 3000
-      }, () => {
-        cancelled = true
-        log.warn('server getArchive() timed out for key: ' + params.archiveKey)
-        sendSPA('/view/:archiveKey', req, res, params, state)
-      })
-
-      collect(listStream.pipe(timeout), function (err, data) {
-        if (cancelled) return
-        if (err) state.archive.error = {message: err.message}
-        state.archive.entries = data
-        getMetadata(archive, function (err, metadata) {
-          if (err) state.archive.error = {message: 'no metadata'}
-          if (metadata) {
-            state.archive.metadata = metadata
-          }
+      getDat(params.archiveKey, function (err, dat, entries) {
+        if (err && !entries) {
+          log.warn(req.url + ' timed out', err)
+          state.archive.error = {message: err.message}
+          return sendSPA('/view/:archiveKey', req, res, params, state)
+        }
+        state.archive.entries = entries
+        getMetadata(dat.archive, function (err, metadata) {
+          if (err) err = new Error('no metadata')
+          if (metadata) state.archive.metadata = metadata
           dat.close()
-          sendSPA('/view/:archiveKey', req, res, params, state)
+          return sendSPA('/view/:archiveKey', req, res, params, state)
         })
       })
     }
@@ -72,7 +50,10 @@ module.exports = function (opts, db) {
 
   router.on('/:username/:dataset', {
     get: function (req, res, params) {
-      db.knex.select().where()
+      var state = getDefaultAppState()
+      // db.knex.select().where()
+      state.archive.key = 'hello'
+      sendSPA('/view/:archiveKey', req, res, params, state)
     }
   })
 
