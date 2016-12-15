@@ -1,6 +1,6 @@
 const async = require('async')
-const errors = require('./errors')
 const uuid = require('uuid')
+const errors = require('../errors')
 
 module.exports = function (knex, model, opts) {
   if (!opts) opts = {}

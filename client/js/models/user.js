@@ -27,15 +27,14 @@ module.exports = {
     login: (data, state, send, done) => {
       const client = getClient()
       client.login(data, function (err, resp, data) {
-        if (err) console.error(err)
-        console.log(data)
+        if (err) return send('error:new', err, done)
         send('user:update', data, done)
       })
     },
     register: (data, state, send, done) => {
       const client = getClient()
       client.register(data, function (err, resp, data) {
-        if (err) console.error(err)
+        if (err) return send('error:new', err, done)
         send('user:update', data, done)
       })
     }

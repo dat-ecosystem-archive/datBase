@@ -6,10 +6,12 @@ const login = (state, prev, send) => {
     const data = form(e.target)
     send('user:login', data)
     e.preventDefault()
+    return false
   }
 
   return html`<div class="login">
     <form onsubmit=${onSubmit}>
+      <h3 class="error">${state.error ? state.error.message : ''}</h3>
       <input type="text" placeholder="E-mail" name="email" />
       <input type="text" placeholder="Password" name="password" />
       <input type="submit" value="Login" />
