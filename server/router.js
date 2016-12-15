@@ -1,6 +1,7 @@
 const fs = require('fs')
 const getMetadata = require('../client/js/utils/metadata')
 const assert = require('assert')
+const datKey = require('dat-key-as')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const Router = require('server-router')
@@ -61,7 +62,7 @@ module.exports = function (opts, db) {
         if (err) return res.end(err.message)
         db.models.dats.get({user_id: user.id, name: params.dataset}, function (err, dat) {
           if (err) return res.end(err.message)
-          archiveRoute(dat.hash, function (state) {
+          archiveRoute(datKey.string(dat.url), function (state) {
             sendSPA('/:username/:dataset', req, res, params, state)
           })
         })
