@@ -1,4 +1,6 @@
 const parse = require('body/json')
+const url = require('url')
+const qs = require('qs')
 const error = require('appa/error')
 const send = require('appa/send')
 const isType = require('type-is')
@@ -37,6 +39,7 @@ module.exports = function (router, db, ship) {
       function done (req, res, ctx) {
         var route = model[req.method.toLowerCase()].bind(model)
         if (!route) return onerror(new Error('No ' + req.method + ' route for ' + params.model), res)
+        ctx.query = qs.parse(url.parse(req.url).query)
         route(ctx, function (err, data) {
           if (err) return onerror(err, res)
           send(data).pipe(res)

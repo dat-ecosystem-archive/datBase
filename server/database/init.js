@@ -12,6 +12,7 @@ function init (dbConfig, cb) {
   db.knex.schema.createTableIfNotExists('users', function (table) {
     table.uuid('id').primary()
     table.string('username')
+    table.unique('username')
     table.string('role')
     table.string('email')
     table.text('token')
