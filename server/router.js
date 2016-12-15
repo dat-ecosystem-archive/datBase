@@ -61,16 +61,16 @@ module.exports = function (opts, db) {
       db.models.users.get({username: params.username}, function (err, user) {
         if (err) return res.end(err.message)
         if (!user.id) return sendSPA('/404', req, res, params, {})
-        db.models.dats.get({user_id: user.id, name: params.dataset}, function (err, dat) {
+        db.models.dats.get({user_id: user.id, name: params.dataset}, function (err, results) {
           if (err) return res.end(err.message)
-          var key
+          var dat = results[0]
+          if (!dat) return sendSPA('/404', req, res, params, {})
           try {
-            key = datKey.string(dat.url)
-            console.log(key)
-            archiveRoute(key, function (state) {
+            archiveRoute(datKey.string(dat.url), function (state) {
               sendSPA('/:username/:dataset', req, res, params, state)
             })
           } catch (e) {
+            log.warn('archive route busted', err)
             sendSPA('/404', req, res, params, {})
           }
         })
