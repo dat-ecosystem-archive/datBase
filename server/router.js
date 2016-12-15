@@ -1,6 +1,7 @@
 const fs = require('fs')
 const getMetadata = require('../client/js/utils/metadata')
 const assert = require('assert')
+const datKey = require('dat-key-as')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const Router = require('server-router')
@@ -27,33 +28,53 @@ module.exports = function (opts, db) {
     }
   })
 
+  function archiveRoute (key, cb) {
+    var state = getDefaultAppState()
+    state.archive.key = key
+    getDat(key, function (err, dat, entries) {
+      if (err && !entries) {
+        log.warn(key + ' timed out', err)
+        state.archive.error = err
+        return cb(state)
+      }
+      state.archive.entries = entries
+      getMetadata(dat.archive, function (err, metadata) {
+        if (err) state.archive.error = new Error('no metadata')
+        if (metadata) state.archive.metadata = metadata
+        dat.close()
+        return cb(state)
+      })
+    })
+  }
+
   router.on('/view/:archiveKey', {
     get: function (req, res, params) {
-      var state = getDefaultAppState()
-      state.archive.key = params.archiveKey
-      getDat(params.archiveKey, function (err, dat, entries) {
-        if (err && !entries) {
-          log.warn(req.url + ' timed out', err)
-          state.archive.error = {message: err.message}
-          return sendSPA('/view/:archiveKey', req, res, params, state)
-        }
-        state.archive.entries = entries
-        getMetadata(dat.archive, function (err, metadata) {
-          if (err) err = new Error('no metadata')
-          if (metadata) state.archive.metadata = metadata
-          dat.close()
-          return sendSPA('/view/:archiveKey', req, res, params, state)
-        })
+      archiveRoute(params.archiveKey, function (state) {
+        return sendSPA('/view/:archiveKey', req, res, params, state)
       })
     }
   })
 
   router.on('/:username/:dataset', {
     get: function (req, res, params) {
-      var state = getDefaultAppState()
-      // db.knex.select().where()
-      state.archive.key = 'hello'
-      sendSPA('/view/:archiveKey', req, res, params, state)
+      // TOOD: do it in one db query not two
+      db.models.users.get({username: params.username}, function (err, user) {
+        if (err) return res.end(err.message)
+        if (!user.id) return sendSPA('/404', req, res, params, {})
+        db.models.dats.get({user_id: user.id, name: params.dataset}, function (err, results) {
+          if (err) return res.end(err.message)
+          var dat = results[0]
+          if (!dat) return sendSPA('/404', req, res, params, {})
+          try {
+            archiveRoute(datKey.string(dat.url), function (state) {
+              sendSPA('/:username/:dataset', req, res, params, state)
+            })
+          } catch (e) {
+            log.warn('archive route busted', err)
+            sendSPA('/404', req, res, params, {})
+          }
+        })
+      })
     }
   })
 
