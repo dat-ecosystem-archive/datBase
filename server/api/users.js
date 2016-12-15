@@ -7,7 +7,7 @@ function Users (model) {
 }
 
 Users.prototype.post = function (ctx, cb) {
-  return cb(new Error('Use /auth/v1/register to create a new user.'))
+  return cb(new Error('Use /api/v1/register to create a new user.'))
 }
 
 Users.prototype.put = function (ctx, cb) {

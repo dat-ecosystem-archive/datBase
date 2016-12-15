@@ -7,11 +7,7 @@ var defaultState = {
 
 function getClient () {
   return township({
-    server: window.location.origin,
-    routes: {
-      register: '/auth/v1/register',
-      login: '/auth/v1/login'
-    }
+    server: window.location.origin + '/api/v1'
   })
 }
 

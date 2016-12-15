@@ -15,7 +15,7 @@ module.exports = function (router, db, opts) {
     return error(400, errors.humanize(err).message).pipe(res)
   }
 
-  router.on('/auth/v1/register', {
+  router.on('/api/v1/register', {
     post: function (req, res) {
       jsonBody(req, res, function (err, body) {
         if (err) return onerror(err, res)
@@ -37,7 +37,7 @@ module.exports = function (router, db, opts) {
     }
   })
 
-  router.on('/auth/v1/login', {
+  router.on('/api/v1/login', {
     post: function (req, res, params) {
       jsonBody(req, res, function (err, body) {
         if (err) return onerror(err, res)
