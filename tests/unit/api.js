@@ -154,6 +154,20 @@ test('api', function (t) {
       })
     })
 
+    test('api can create another dat', function (t) {
+      client.secureRequest({method: 'POST', url: '/api/v1/dats', body: dats.penguins, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.ok(body.id, 'has an id')
+        dats.penguins.id = body.id
+        dats.penguins.user_id = body.user_id
+        client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.length, 2)
+          t.end()
+        })
+      })
+    })
+
     test('api cannot delete a dat that doesnt exist', function (t) {
       client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: 'notanid'}, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -187,7 +201,7 @@ test('api', function (t) {
           t.same(body.deleted, 1, 'deletes one row')
           client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
             t.ifError(err)
-            t.same(body.length, 1, 'only one dat')
+            t.same(body.length, 2, 'only two dat')
             t.end()
           })
         })
