@@ -6,9 +6,49 @@ An online place for dats.
 
 [Try dat.land now](http://dat.land)
 
-## News
+## API
 
-We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.knightfoundation.org/grants/201551933/) to get started on this project. It will be undergoing heavy development for the next few months.
+#### Users
+
+Fields:
+- `id` (required)
+- `email` (required)
+- `username`
+- `description`
+
+NOTE: ```POST /api/v1/users``` Method not allowed. Use /auth/v1/register instead.
+
+#### Dats
+
+Fields:
+- `id`
+- `user_id`
+- `name`
+- `title`
+- `hash`
+- `description`
+
+##### ```GET /api/v1/:model```
+
+Responds with a list of results that match the query. Can pass query parameters
+like `?username='martha'` or `?name=cats` to filter results.
+
+##### ```PUT /api/v1/:model```
+
+`id` required.
+
+Success returns number of updated rows (e.g., ```{updated: 1}```)
+
+##### ```DELETE /api/v1/:model```
+
+`id` required. 
+
+Success returns number of deleted rows (e.g., ```{deleted: 1}```)
+
+#### ```POST /api/v1/:model```
+
+Success returns the model as it exists in the database.
+
 
 ### develop
 
@@ -16,25 +56,17 @@ We were recently awarded a [$420,000 grant by the Knight Foundation](http://www.
 npm install
 ```
 
-Do all of the below (watch assets and start server) in one command:
+Watch assets and start server in one command:
 
 ```
 npm start
 ```
 
-Start the server:
+### Initialize database
 
 ```
-npm run server
+node server/database/init.js
 ```
-
-To watch and build scss and javascript changes as you go (in a separate terminal):
-
-```
-npm run watch-css
-npm run watch-js
-```
-
 
 ### build for production
 ```

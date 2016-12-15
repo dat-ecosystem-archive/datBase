@@ -1,51 +1,29 @@
 const http = require('http')
 const createRouter = require('./router')
-const bole = require('bole')
 
-bole.output({
-  level: 'info',
-  stream: process.stdout
-})
+module.exports = function (config, db, opts) {
+  if (!opts) opts = {}
+  const router = createRouter(config, db)
+  return http.createServer(function (req, res) {
+    var time = Date.now()
+    if (opts.log) opts.log.info({message: 'request', method: req.method, url: req.url})
+    res.on('finish', end)
+    res.on('close', end)
+    router(req, res)
 
-const log = bole(__filename)
-
-const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
-const config = require('../config')
-const router = createRouter({
-  config: config,
-  db: config.db
-})
-const server = http.createServer(function (req, res) {
-  var time = Date.now()
-  log.info({message: 'request', method: req.method, url: req.url})
-  res.on('finish', end)
-  res.on('close', end)
-  router(req, res)
-
-  function end () {
-    res.removeListener('close', end)
-    res.removeListener('finish', end)
-    log.info({
-      message: 'response',
-      finished: res.finished,
-      method: req.method,
-      url: req.url,
-      statusCode: res.statusCode,
-      requestTime: Date.now() - time
-    })
-  }
-})
-
-server.listen(PORT, function () {
-  log.info({
-    message: 'listening',
-    port: server.address().port,
-    env: process.env.NODE || 'undefined'
+    function end () {
+      res.removeListener('close', end)
+      res.removeListener('finish', end)
+      if (opts.log) {
+        opts.log.info({
+          message: 'response',
+          finished: res.finished,
+          method: req.method,
+          url: req.url,
+          statusCode: res.statusCode,
+          requestTime: Date.now() - time
+        })
+      }
+    }
   })
-})
-
-process.once('uncaughtException', function (err) {
-  log.error({message: 'error', error: err.message, stack: err.stack})
-  console.error(err.stack)
-  process.exit(1)
-})
+}

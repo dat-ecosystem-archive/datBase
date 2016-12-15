@@ -1,30 +1,26 @@
-'use strict'
-
 const fs = require('fs')
-const path = require('path')
 const assert = require('assert')
 const collect = require('collect-stream')
 const encoding = require('dat-encoding')
 const TimeoutStream = require('through-timeout')
 const UrlParams = require('uparams')
 const bole = require('bole')
+const Router = require('server-router')
 const getMetadata = require('../client/js/utils/metadata')
-const router = require('server-router')()
-const township = require('township')
-const level = require('level-party')
-const send = require('appa/send')
-const error = require('appa/error')
+const auth = require('./auth')
+const api = require('./api')
 
-module.exports = function (opts) {
+module.exports = function (opts, db) {
   opts = opts || {}
 
   const log = bole(__filename)
   const app = require('../client/js/app')
   const page = require('./page')
   const Dat = require('./haus')
-  const verify = require('./verify')
-  const db = level(opts.db || path.join(__dirname, 'township.db'))
-  const ship = township(opts.config, db)
+
+  var router = Router()
+  const ship = auth(router, db, opts)
+  api(router, db, ship)
 
   // landing page
   router.on('/', {
@@ -112,28 +108,6 @@ module.exports = function (opts) {
         if (err) return res.end('nope')
         res.setHeader('Content-Type', 'image/svg+xml')
         res.end(contents)
-      })
-    }
-  })
-
-  router.on('/auth/v1/register/', {
-    post: function (req, res, params) {
-      if (!params.email) return error(400, 'must specify email').pipe(res)
-      verify(params.email, function (err) {
-        if (err) return error(401, err.message).pipe(res)
-        ship.register(req, res, params, function (err, obj) {
-          if (err) return error(400, err.message).pipe(res)
-          send(obj).pipe(res)
-        })
-      })
-    }
-  })
-
-  router.on('/auth/v1/login/', {
-    post: function (req, res, params) {
-      ship.login(req, res, params, function (err, obj) {
-        if (err) return error(400, err.message).pipe(res)
-        send(obj).pipe(res)
       })
     }
   })

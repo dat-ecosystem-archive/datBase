@@ -1,6 +1,6 @@
 var test = require('tape')
 var path = require('path')
-var verify = require('../../server/verify.js')
+var verify = require('../../server/auth/verify.js')
 var opts = {whitelist: path.join(__dirname, '..', 'fixtures', 'whitelist.txt')}
 
 test('user signup whitelist should reject', function (t) {
