@@ -7,7 +7,7 @@ const help = (state, prev, send) => {
   const intro = () => send('help:show')
   return html`<div class="dat-button dat-button--help">
     ${button({
-      icon: './public/img/question.svg',
+      icon: '/public/img/question.svg',
       text: 'Help',
       klass: 'btn btn--green btn__reveal-text',
       click: intro
@@ -19,20 +19,20 @@ const header = (state, prev, send) => {
   return html`<header class="site-header"><div id="intro"></div>
     <div class="container container--site-header">
       <a href="/" class="dat-logo">
-        <img src="./public/img/dat-hexagon.svg" />
+        <img src="/public/img/dat-hexagon.svg" />
         <div>dat<span>.</span>land</div>
       </a>
       <div class="site-header__actions">
         <div id="js-button-new" class="dat-button dat-button--new-dat">
           ${button({
-            icon: './public/img/create-new-dat.svg',
+            icon: '/public/img/create-new-dat.svg',
             text: 'Create New Dat',
             klass: 'btn btn--green',
             click: () => send('archive:new')
           })}
         </div>
         ${importButton({
-          handler: function (link) { window.location.href = '/' + link }
+          handler: function (link) { window.location.href = '/view/' + link }
         })}
         ${help(state, prev, send)}
       </div>

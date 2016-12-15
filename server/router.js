@@ -29,15 +29,7 @@ module.exports = function (opts, db) {
       sendSPA('/', req, res, params, state)
     }
   })
-
-  router.on('/:username/:dataset', {
-    get: function (req, res, params) {
-      db.knex.select().where()
-    }
-  })
-
-  // new choo-based archive route:
-  router.on('/hash/:archiveKey', {
+  router.on('/view/:archiveKey', {
     get: function (req, res, params) {
       var state = getDefaultAppState()
       var key
@@ -45,8 +37,8 @@ module.exports = function (opts, db) {
         key = encoding.decode(params.archiveKey)
       } catch (e) {
         state.archive.error = {message: e.message}
-        log.warn('router.js /hash/:archiveKey route error: ' + e.message)
-        return sendSPA('/hash/:archiveKey', req, res, params, state)
+        log.warn('router.js /view/:archiveKey route error: ' + e.message)
+        return sendSPA('/view/:archiveKey', req, res, params, state)
       }
       var dat = Dat(key)
       var archive = dat.archive
@@ -59,7 +51,7 @@ module.exports = function (opts, db) {
       }, () => {
         cancelled = true
         log.warn('server getArchive() timed out for key: ' + params.archiveKey)
-        sendSPA('/hash/:archiveKey', req, res, params, state)
+        sendSPA('/view/:archiveKey', req, res, params, state)
       })
 
       collect(listStream.pipe(timeout), function (err, data) {
@@ -72,9 +64,15 @@ module.exports = function (opts, db) {
             state.archive.metadata = metadata
           }
           dat.close()
-          sendSPA('/hash/:archiveKey', req, res, params, state)
+          sendSPA('/view/:archiveKey', req, res, params, state)
         })
       })
+    }
+  })
+
+  router.on('/:username/:dataset', {
+    get: function (req, res, params) {
+      db.knex.select().where()
     }
   })
 
@@ -130,7 +128,7 @@ module.exports = function (opts, db) {
     const contents = app.toString(route, frozenState)
     const urlParams = new UrlParams(req.url)
     res.setHeader('Content-Type', 'text/html')
-    var url = req.headers.host + req.url
+    var url = req.headers.host + route
     if (urlParams.debug) {
       return fs.access('./server/page-debug.js', function (err) {
         if (err) {

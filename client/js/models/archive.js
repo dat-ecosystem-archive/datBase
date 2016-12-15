@@ -119,7 +119,7 @@ module.exports = {
       if (state.instance && state.instance.key.toString('hex') === key) return done()
       var dat = Dat(drive, key, state.signalhubs, send)
       key = dat.archive.key.toString('hex')
-      const location = '/' + key
+      const location = '/dat/' + key
       send('location:setLocation', { location }, noop)
       window.history.pushState({}, null, location)
       var stream = dat.archive.list({live: true})
