@@ -24,14 +24,18 @@ module.exports = {
       const client = getClient()
       client.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
-        send('user:update', data, done)
+        send('user:update', data, function () {
+          send('message:new', 'Logged in successfully.', done)
+        })
       })
     },
     register: (data, state, send, done) => {
       const client = getClient()
       client.register(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
-        send('user:update', data, done)
+        send('user:update', data, function () {
+          send('message:new', 'Registered successfully.', done)
+        })
       })
     }
   }
