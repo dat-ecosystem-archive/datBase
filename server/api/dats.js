@@ -13,11 +13,17 @@ Dats.prototype.post = function (ctx, cb) {
 }
 
 Dats.prototype.put = function (ctx, cb) {
+  var self = this
   if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
   if (!ctx.body.id) return cb(new Error('id required'))
-  this.model.update({id: ctx.body.id}, function (err, data) {
+  self.model.get({id: ctx.body.id}, function (err, results) {
     if (err) return cb(err)
-    cb(null, {updated: data})
+    if (!results) return cb(new Error('Dat does not exist.'))
+    if (results[0].user_id !== ctx.user.id) return cb(new Error('Cannot update someone elses dat.'))
+    self.model.update({id: ctx.body.id}, function (err, data) {
+      if (err) return cb(err)
+      cb(null, {updated: data})
+    })
   })
 }
 
