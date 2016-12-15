@@ -5,7 +5,7 @@ var defaultState = {
 
 function getClient () {
   return township({
-    url: '',
+    server: window.location.origin,
     routes: {
       register: '/auth/v1/register',
       login: '/auth/v1/login'
@@ -26,14 +26,16 @@ module.exports = {
   effects: {
     login: (data, state, send, done) => {
       const client = getClient()
-      client.login(data, function (err, data) {
+      client.login(data, function (err, resp, data) {
         if (err) console.error(err)
+        console.log(data)
       })
     },
     register: (data, state, send, done) => {
       const client = getClient()
-      client.register(data, function (err, data) {
+      client.register(data, function (err, resp, data) {
         if (err) console.error(err)
+        console.log(data)
       })
     }
   }
