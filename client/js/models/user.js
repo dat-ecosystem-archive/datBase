@@ -25,7 +25,7 @@ module.exports = {
       client.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
         send('user:update', data, function () {
-          send('message:new', 'Logged in successfully.', done)
+          send('message:success', 'Logged in successfully.', done)
         })
       })
     },
@@ -34,7 +34,7 @@ module.exports = {
       client.register(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
         send('user:update', data, function () {
-          send('message:new', 'Registered successfully.', done)
+          send('message:success', 'Registered successfully.', done)
         })
       })
     }

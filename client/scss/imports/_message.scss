@@ -1,0 +1,17 @@
+.message {
+  position: absolute;
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  text-align: center;
+  z-index: 999;
+  &.success {
+    background-color: green;
+  }
+  &.error {
+    background-color: red;
+  }
+  &.warning {
+    background-color: yellow;
+  }
+}
