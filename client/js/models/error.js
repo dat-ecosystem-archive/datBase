@@ -18,11 +18,6 @@ module.exports = {
       send('error:update', error, function () {
         done()
       })
-      setTimeout(function () {
-        send('error:update', error, function () {
-          send('error:clear', null, done)
-        })
-      }, 3000)
     }
   }
 }
