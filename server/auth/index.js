@@ -14,12 +14,13 @@ module.exports = function (router, db, opts) {
     post: function (req, res) {
       jsonBody(req, res, function (err, body) {
         if (err) return error(401, err.message).pipe(res)
-        if (!body.email) return error(400, 'must specify email').pipe(res)
+        if (!body.email) return error(400, 'Email required.').pipe(res)
+        if (!body.username) return error(400, 'Username required.').pipe(res)
         verify(body.email, function (err) {
           if (err) return error(401, err.message).pipe(res)
           ship.register(req, res, {body: body}, function (err, statusCode, obj) {
             if (err) return error(400, err.message).pipe(res)
-            db.models.users.create({email: body.email, id: obj.key}, function (err, body) {
+            db.models.users.create({email: body.email, username: body.username, id: obj.key}, function (err, body) {
               if (err) return error(400, err.message).pipe(res)
               body.token = obj.token
               return send(body).pipe(res)

@@ -13,7 +13,8 @@ app.model(require('./models/preview'))
 // define routes:
 app.router((route) => [
   route('/', require('./pages/landing')),
-  route('/:archiveKey', require('./pages/archive'))
+  route('/view/:archiveKey', require('./pages/archive')),
+  route('/:username/:dataset', require('./pages/archive'))
 ])
 
 if (module.parent) {

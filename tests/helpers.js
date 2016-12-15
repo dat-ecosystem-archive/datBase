@@ -28,8 +28,8 @@ module.exports = {
     })
   },
   users: {
-    bob: {username: 'joe', password: 'very secret', email: 'hi@bob.com', description: 'hello i am a description', token: null, role: 'user'},
-    joe: {username: 'bob', password: 'so secret', email: 'hi@joe.com', description: 'i like it', token: null, role: 'user'},
+    joe: {username: 'joe', password: 'very secret', email: 'hi@joe.com', description: 'hello i am a description', token: null, role: 'user'},
+    bob: {username: 'bob', password: 'so secret', email: 'hi@bob.com', description: 'i like it', token: null, role: 'user'},
     admin: {username: 'pam', password: 'secret123', email: 'hi@pam.com', description: 'i dont eat it', token: null, role: 'admin'}
   },
   dats: {

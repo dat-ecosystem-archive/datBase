@@ -53,7 +53,7 @@
     "standard": "^7.1.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "township-client": "^1.2.0",
+    "township-client": "^1.2.2",
     "watchify": "~3.6.0"
   },
   "dependencies": {
