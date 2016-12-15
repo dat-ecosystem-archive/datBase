@@ -20,9 +20,10 @@ module.exports = function (router, db, opts) {
           if (err) return error(401, err.message).pipe(res)
           ship.register(req, res, {body: body}, function (err, statusCode, obj) {
             if (err) return error(400, err.message).pipe(res)
-            db.models.users.create({email: body.email, username: body.username, id: obj.key}, function (err, body) {
+            db.models.users.create({email: body.email, username: body.username}, function (err, body) {
               if (err) return error(400, err.message).pipe(res)
               body.token = obj.token
+              body.key = obj.key
               return send(body).pipe(res)
             })
           })
@@ -35,9 +36,18 @@ module.exports = function (router, db, opts) {
     post: function (req, res, params) {
       jsonBody(req, res, function (err, body) {
         if (err) return error(401, err.message).pipe(res)
-        ship.login(req, res, {body: body}, function (err, resp, body) {
+        ship.login(req, res, {body: body}, function (err, resp, obj) {
           if (err) return error(400, err.message).pipe(res)
-          send(body).pipe(res)
+          db.models.users.get({email: body.email}, function (err, results) {
+            if (err) return error(400, err.message).pipe(res)
+            if (!results) return error(400, 'Failed to create user.').pipe(res)
+            var user = results[0]
+            obj.email = user.email
+            obj.username = user.username
+            obj.role = user.role
+            obj.description = user.description
+            send(obj).pipe(res)
+          })
         })
       })
     }

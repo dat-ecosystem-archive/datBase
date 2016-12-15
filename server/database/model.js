@@ -33,9 +33,9 @@ module.exports = function (knex, model, opts) {
     },
     create: function (values, cb) {
       if (!values) return cb(new Error('Values required as an argument to model.create'))
-      if (!values.id) values.id = uuid.v4()
       if (!values.created_at) values.created_at = Date.now()
       if (!values.updated_at) values.updated_at = Date.now()
+      values[primaryKey] = uuid.v4()
       async.waterfall([
         function (done) {
           knex(model)
@@ -45,7 +45,7 @@ module.exports = function (knex, model, opts) {
           .catch(done)
         }, function (done) {
           var where = {}
-          where[primaryKey] = values.id
+          where[primaryKey] = values[primaryKey]
           knex(model)
           .where(where)
           .then(function (data) { done(null, data[0]) })

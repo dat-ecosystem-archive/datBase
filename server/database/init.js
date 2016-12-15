@@ -11,10 +11,9 @@ function init (dbConfig, cb) {
   var db = database(dbConfig)
   db.knex.schema.createTableIfNotExists('users', function (table) {
     table.uuid('id').primary()
-    table.string('username')
-    table.unique('username')
+    table.string('username').unique()
+    table.string('email').unique()
     table.string('role')
-    table.string('email')
     table.text('token')
     table.text('description')
     table.timestamps()
