@@ -22,7 +22,7 @@ function init (dbConfig, cb) {
     table.uuid('id').primary()
     table.uuid('user_id').references('users.id')
     table.string('name')
-    table.string('url')
+    table.string('hash')
     table.string('title')
     table.text('description')
     table.text('keywords')
