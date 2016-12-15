@@ -11,8 +11,9 @@
     "url": "https://github.com/datproject/dat.land/issues"
   },
   "main": "server/index.js",
+  "bin": "server/cli.js",
   "browser": {
-    "server/**/*": false
+    "server/**/**/*": false
   },
   "scripts": {
     "server": "node ./server",

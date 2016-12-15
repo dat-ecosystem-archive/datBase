@@ -1,15 +1,13 @@
-const http = require('http')
 const fs = require('fs')
 const rimraf = require('rimraf')
-const createRouter = require('../server/router')
 const initDb = require('../server/database/init')
+const Server = require('../server')
 
 module.exports = {
   server: function (config, cb) {
     initDb(config.db, function (err, db) {
       if (err) throw err
-      const router = createRouter(config, db)
-      const server = http.createServer(router)
+      const server = Server(config, db)
       server.listen(config.port, function () {
         cb(db, close)
       })
