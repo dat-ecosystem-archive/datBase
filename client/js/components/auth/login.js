@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const form = require('get-form-data')
 
 const login = (state, prev, send) => {
@@ -9,8 +10,26 @@ const login = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="login ${state.user.login}">
-    <h3>Login</h3>
+  var prefix = css`
+    :host {
+      .x {
+        top: 0;
+        right: 0;
+        position: absolute;
+        margin: 5px;
+      }
+      form {
+        text-align: center;
+      }
+
+      max-width: 600px;
+      margin: auto;
+      background-color: #F6F7F8;
+    }
+  `
+
+  return html`<div class="login ${state.user.login} ${prefix}">
+    <a class="x" onclick=${() => send('user:hideLogin', {})}>X</a>
     <form onsubmit=${onSubmit}>
       <h2 class="error">${state.error ? state.error.message : ''}</h2>
       <div class="dat-import">

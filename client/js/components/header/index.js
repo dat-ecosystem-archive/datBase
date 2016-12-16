@@ -1,7 +1,8 @@
 const html = require('choo/html')
+const login = require('./../../components/auth/login')
+const loginButton = require('./../../components/login-button')
 const button = require('./../../elements/button')
 const importButton = require('./../../elements/import-button')
-const loginButton = require('./../../elements/login-button')
 const message = require('./../../elements/message')
 
 const help = (state, prev, send) => {
@@ -18,30 +19,33 @@ const help = (state, prev, send) => {
 }
 
 const header = (state, prev, send) => {
-  return html`<header class="site-header"><div id="intro"></div>
-    ${message(state.message)}
-    <div class="container container--site-header">
-      <a href="/" class="dat-logo">
-        <img src="/public/img/dat-hexagon.svg" />
-        <div>dat<span>.</span>land</div>
-      </a>
-      <div class="site-header__actions">
-        <div id="js-button-new" class="dat-button dat-button--new-dat">
-          ${button({
-            icon: '/public/img/create-new-dat.svg',
-            text: 'Create New Dat',
-            klass: 'btn btn--green',
-            click: () => send('archive:new')
+  return html`<div>
+    ${login(state, prev, send)}
+    <header class="site-header"><div id="intro"></div>
+      ${message(state.message)}
+      <div class="container container--site-header">
+        <a href="/" class="dat-logo">
+          <img src="/public/img/dat-hexagon.svg" />
+          <div>dat<span>.</span>land</div>
+        </a>
+        <div class="site-header__actions">
+          <div id="js-button-new" class="dat-button dat-button--new-dat">
+            ${button({
+              icon: '/public/img/create-new-dat.svg',
+              text: 'Create New Dat',
+              klass: 'btn btn--green',
+              click: () => send('archive:new')
+            })}
+          </div>
+          ${importButton({
+            handler: function (link) { window.location.href = '/view/' + link }
           })}
+          ${loginButton(state, prev, send)}
+          ${help(state, prev, send)}
         </div>
-        ${importButton({
-          handler: function (link) { window.location.href = '/view/' + link }
-        })}
-        ${loginButton(state, prev, send)}
-        ${help(state, prev, send)}
       </div>
-    </div>
-  </header>`
+    </header>
+  </div>`
 }
 
 module.exports = header

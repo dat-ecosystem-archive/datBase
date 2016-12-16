@@ -1,9 +1,8 @@
 const html = require('choo/html')
-const button = require('../button')
-const gravatar = require('../gravatar')
+const button = require('../../elements/button')
+const gravatar = require('../../elements/gravatar')
 
 module.exports = function (state, prev, send) {
-  console.log(state.user)
   if (state.user.email) return gravatar(state.user)
   return html`
     ${button({

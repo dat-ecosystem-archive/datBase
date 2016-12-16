@@ -26,7 +26,20 @@ module.exports = {
       return {login: 'hidden'}
     }
   },
+  subscriptions: {
+    checkUser: function (state, send) {
+      setInterval(function () {
+        if (!state.user) send('user:whoami', {})
+      }, 5000)
+    }
+  },
   effects: {
+    whoami: (data, state, send, done) => {
+      const client = getClient()
+      var user = client.getLogin()
+      if (user) send('user:update', user, done)
+      else done()
+    },
     login: (data, state, send, done) => {
       const client = getClient()
       client.login(data, function (err, resp, data) {
