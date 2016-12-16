@@ -3,7 +3,8 @@ var defaultState = {
   username: null,
   email: null,
   token: null,
-  login: 'hidden'
+  login: 'hidden',
+  panel: 'hidden'
 }
 
 function getClient () {
@@ -19,17 +20,18 @@ module.exports = {
     update: (data, state) => {
       return data
     },
-    showLogin: (data, state) => {
-      return {login: ''}
+    panel: (showPanel, state) => {
+      return {panel: showPanel ? '' : 'hidden'}
     },
-    hideLogin: (data, state) => {
-      return {login: 'hidden'}
+    loginPanel: (showPanel, state) => {
+      return {login: showPanel ? '' : 'hidden'}
     }
   },
   subscriptions: {
-    checkUser: function (state, send) {
+    checkUser: function (send, done) {
+      send('user:whoami', {}, done)
       setInterval(function () {
-        if (!state.user) send('user:whoami', {})
+        send('user:whoami', {}, done)
       }, 5000)
     }
   },
@@ -39,6 +41,19 @@ module.exports = {
       var user = client.getLogin()
       if (user) send('user:update', user, done)
       else done()
+    },
+    logout: (data, state, send, done) => {
+      const client = getClient()
+      client.logout(data, function (err, resp, data) {
+        if (err) return send('error:new', err, done)
+        state.username = null
+        state.email = null
+        state.panel = 'hidden'
+        state.token = null
+        send('user:update', data, function () {
+          send('message:success', 'Logged out.', done)
+        })
+      })
     },
     login: (data, state, send, done) => {
       const client = getClient()

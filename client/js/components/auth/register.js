@@ -14,7 +14,7 @@ const login = (state, prev, send) => {
       <h3 class="error">${state.error ? state.error.message : ''}</h3>
       <input type="text" placeholder="Username" name="username" />
       <input type="text" placeholder="E-mail" name="email" />
-      <input type="text" placeholder="Password" name="password" />
+      <input type="password" placeholder="Password" name="password" />
       <input type="submit" value="Register" />
     </form>
   </div>`

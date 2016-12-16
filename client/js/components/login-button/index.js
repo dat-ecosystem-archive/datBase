@@ -3,11 +3,19 @@ const button = require('../../elements/button')
 const gravatar = require('../../elements/gravatar')
 
 module.exports = function (state, prev, send) {
-  if (state.user.email) return gravatar(state.user)
+  var text, click
+  if (state.user.email) {
+    text = gravatar(state.user)
+    click = () => send('user:panel', true)
+  } else {
+    click = () => send('user:loginPanel', true)
+    text = 'Login'
+  }
+
   return html`
     ${button({
-      text: 'Login',
-      click: () => send('user:showLogin', {})
+      text: text,
+      click: click
     })}
   `
 }

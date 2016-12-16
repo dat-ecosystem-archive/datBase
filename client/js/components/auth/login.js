@@ -29,7 +29,7 @@ const login = (state, prev, send) => {
   `
 
   return html`<div class="login ${state.user.login} ${prefix}">
-    <a class="x" onclick=${() => send('user:hideLogin', {})}>X</a>
+    <a class="x" onclick=${() => send('user:loginPanel', false)}>X</a>
     <form onsubmit=${onSubmit}>
       <h2 class="error">${state.error ? state.error.message : ''}</h2>
       <div class="dat-import">

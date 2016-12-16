@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const panel = require('./../../components/auth/user-panel')
 const login = require('./../../components/auth/login')
 const loginButton = require('./../../components/login-button')
 const button = require('./../../elements/button')
@@ -20,6 +21,7 @@ const help = (state, prev, send) => {
 
 const header = (state, prev, send) => {
   return html`<div>
+    ${panel(state, prev, send)}
     ${login(state, prev, send)}
     <header class="site-header"><div id="intro"></div>
       ${message(state.message)}
