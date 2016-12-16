@@ -7,6 +7,8 @@ const app = choo()
 app.model(require('./models/archive'))
 app.model(require('./models/import-queue'))
 app.model(require('./models/user'))
+app.model(require('./models/error'))
+app.model(require('./models/message'))
 app.model(require('./models/help'))
 app.model(require('./models/preview'))
 

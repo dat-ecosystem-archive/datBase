@@ -5,8 +5,7 @@ const request = require('request')
 const helpers = require('../helpers')
 const config = JSON.parse(JSON.stringify(require('../config')))
 
-var url = 'http://localhost:' + config.port
-var api = url + '/api/v1'
+var api = 'http://localhost:' + config.port + '/api/v1'
 test('api', function (t) {
   config.db.connection.filename = path.join(__dirname, 'test-api.sqlite')
   helpers.server(config, function (db, close) {
@@ -14,12 +13,8 @@ test('api', function (t) {
     var dats = JSON.parse(JSON.stringify(helpers.dats))
 
     var client = TownshipClient({
-      server: 'http://localhost:' + config.port,
-      config: config.townshipClient,
-      routes: {
-        register: '/auth/v1/register',
-        login: '/auth/v1/login'
-      }
+      server: api,
+      config: config.townshipClient
     })
 
     t.end()
@@ -72,7 +67,7 @@ test('api', function (t) {
     })
 
     test('api id should not update even after a failure ', function (t) {
-      client.secureRequest({url: '/api/v1/users?id=' + users.joe.id, method: 'GET', json: true}, function (err, resp, body) {
+      client.secureRequest({url: '/users?id=' + users.joe.id, method: 'GET', json: true}, function (err, resp, body) {
         t.ifError(err)
         t.same(body.length, 1, 'joe is still there')
         t.same(body[0].id, users.joe.id, 'same id in body and joe')
@@ -81,7 +76,7 @@ test('api', function (t) {
     })
 
     test('api should get the users we created', function (t) {
-      client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
+      client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
         t.ifError(err)
         t.same(body.length, 3, 'has three users')
         if (body.length) {
@@ -101,10 +96,10 @@ test('api', function (t) {
           t.ok(body.token, 'has token')
           t.ok(body.key, 'has key')
           t.same(body.username, users.joe.username, 'has username')
-          client.secureRequest({url: '/api/v1/users', method: 'PUT', body: {id: users.joe.id, username: 'margaret'}, json: true}, function (err, resp, body) {
+          client.secureRequest({url: '/users', method: 'PUT', body: {id: users.joe.id, username: 'margaret'}, json: true}, function (err, resp, body) {
             t.ifError(err)
             t.same(body && body.updated, 1, 'updated one user')
-            client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
+            client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
               t.ifError(err)
               t.same(body.length, 3, 'has three users')
               if (body.length) t.same(body[0].username, 'margaret', 'user has new username')
@@ -116,10 +111,10 @@ test('api', function (t) {
     })
 
     test('api joe cannot update bob', function (t) {
-      client.secureRequest({url: '/api/v1/users', method: 'put', body: {id: users.bob.id, email: 'joebob@email.com'}, json: true}, function (err, resp, body) {
+      client.secureRequest({url: '/users', method: 'put', body: {id: users.bob.id, email: 'joebob@email.com'}, json: true}, function (err, resp, body) {
         t.ok(err)
         t.same(err.statusCode, 400, 'request denied')
-        client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.length, 3, 'has three users')
           if (body.length) t.same(body[1].email, users.bob.email, 'bob has the same email')
@@ -129,10 +124,10 @@ test('api', function (t) {
     })
 
     test('api joe cannot delete bob', function (t) {
-      client.secureRequest({method: 'DELETE', url: '/api/v1/users', body: {id: users.bob.id}, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'DELETE', url: '/users', body: {id: users.bob.id}, json: true}, function (err, resp, body) {
         t.ok(err)
         t.same(err.statusCode, 400, 'request denied')
-        client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.length, 3, 'has three users')
           t.end()
@@ -141,12 +136,12 @@ test('api', function (t) {
     })
 
     test('api can create a dat', function (t) {
-      client.secureRequest({method: 'POST', url: '/api/v1/dats', body: dats.cats, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.ok(body.id, 'has an id')
         dats.cats.id = body.id
         dats.cats.user_id = body.user_id
-        client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.length, 1)
           t.end()
@@ -155,7 +150,7 @@ test('api', function (t) {
     })
 
     test('api can get a dat', function (t) {
-      client.secureRequest({url: '/api/v1/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
+      client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.same(body.length, 1, 'has one dat')
         if (body.length) t.same(body[0].name, dats.cats.name, 'is the right dat')
@@ -164,12 +159,12 @@ test('api', function (t) {
     })
 
     test('api can create another dat', function (t) {
-      client.secureRequest({method: 'POST', url: '/api/v1/dats', body: dats.penguins, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.ok(body.id, 'has an id')
         dats.penguins.id = body.id
         dats.penguins.user_id = body.user_id
-        client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.length, 2)
           t.end()
@@ -178,7 +173,7 @@ test('api', function (t) {
     })
 
     test('api cannot delete a dat that doesnt exist', function (t) {
-      client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: 'notanid'}, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'DELETE', url: '/dats', body: {id: 'notanid'}, json: true}, function (err, resp, body) {
         t.ok(err)
         t.same(err.statusCode, 400, 'request denied')
         t.end()
@@ -189,7 +184,7 @@ test('api', function (t) {
       client.logout(function () {
         client.login(users.bob, function (err) {
           t.ifError(err)
-          client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: dats.cats.id}, json: true}, function (err, resp, body) {
+          client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.cats.id}, json: true}, function (err, resp, body) {
             t.ok(err)
             t.same(err.statusCode, 400, 'request denied')
             t.end()
@@ -199,10 +194,10 @@ test('api', function (t) {
     })
 
     test('api bob cannot update joes dat', function (t) {
-      client.secureRequest({method: 'PUT', url: '/api/v1/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'PUT', url: '/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
         t.ok(err)
         t.same(err.statusCode, 400, 'request denied')
-        client.secureRequest({url: '/api/v1/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.length, 1, 'got the dat')
           t.same(body[0].name, dats.cats.name, 'name is the same')
@@ -212,16 +207,16 @@ test('api', function (t) {
     })
 
     test('api bob can delete his own dat', function (t) {
-      client.secureRequest({method: 'POST', url: '/api/v1/dats', body: dats.dogs, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.dogs, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.ok(body.id, 'has an id')
         dats.dogs.id = body.id
         dats.dogs.user_id = body.user_id
         t.same(body.name, dats.dogs.name, 'is the right dat')
-        client.secureRequest({method: 'DELETE', url: '/api/v1/dats', body: {id: dats.dogs.id}, json: true}, function (err, resp, body) {
+        client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.dogs.id}, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.deleted, 1, 'deletes one row')
-          client.secureRequest({url: '/api/v1/dats', json: true}, function (err, resp, body) {
+          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
             t.ifError(err)
             t.same(body.length, 2, 'only two dat')
             t.end()
@@ -231,10 +226,10 @@ test('api', function (t) {
     })
 
     test('api bob can delete himself', function (t) {
-      client.secureRequest({method: 'DELETE', url: '/api/v1/users', body: {id: users.bob.id}, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'DELETE', url: '/users', body: {id: users.bob.id}, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.same(body.deleted, 1, 'deletes one row')
-        client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
           t.ok(err)
           t.same(err.statusCode, 400, 'once bob is gone he cant use the api')
           t.end()
@@ -245,7 +240,7 @@ test('api', function (t) {
     test('api no trace of bob after deletion', function (t) {
       client.login(users.joe, function (err) {
         t.ifError(err)
-        client.secureRequest({url: '/api/v1/users', json: true}, function (err, resp, body) {
+        client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.length, 2, 'has two users')
           t.end()

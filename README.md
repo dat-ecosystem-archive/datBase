@@ -16,7 +16,7 @@ Fields:
 - `username`
 - `description`
 
-NOTE: ```POST /api/v1/users``` Method not allowed. Use /auth/v1/register instead.
+NOTE: ```POST /api/v1/users``` Method not allowed. Use /api/v1/register instead.
 
 #### Dats
 
