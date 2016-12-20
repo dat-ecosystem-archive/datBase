@@ -23,7 +23,7 @@
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
     "start": "npm run watch-js & npm run watch-css & npm run watch-server",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-    "watch-js": "watchify --debug -g [ babelify --blacklist strict  ] client/js/app.js -o public/js/app.js",
+    "watch-js": "watchify --fast --verbose -g [ babelify --blacklist strict  ] client/js/app.js -o public/js/app.js",
     "watch-server": "nodemon server/cli --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/main.scss public/css/main.css",
