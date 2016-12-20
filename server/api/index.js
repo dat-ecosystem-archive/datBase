@@ -1,6 +1,7 @@
 const parse = require('body/json')
 const url = require('url')
 const qs = require('qs')
+const datKey = require('dat-key-as')
 const error = require('appa/error')
 const send = require('appa/send')
 const isType = require('type-is')
@@ -52,6 +53,27 @@ module.exports = function (router, db, ship) {
       send(data).pipe(res)
     }
   }
+
+  router.on('api/v1/registry/:username/:dataset', {
+    get: function (req, res, params) {
+      // TODO: do it in one db query not two
+      db.models.users.get({username: params.username}, function (err, user) {
+        if (err) return onerror(err, res)
+        if (!user.length) return error(404, 'Not found').pipe(res)
+        user = user[0]
+        db.models.dats.get({user_id: user.id, name: params.dataset}, function (err, results) {
+          if (err) return onerror(err, res)
+          var dat = results[0]
+          if (!dat) return error(404, 'Not found').pipe(res)
+          try {
+            send(200, {key: datKey.string(dat.url)}).pipe(res)
+          } catch (e) {
+            error(500, 'Error reading dat url').pipe(res)
+          }
+        })
+      })
+    }
+  })
 
   router.on('/api/v1/:model', {
     get: apiRouter,
