@@ -1,7 +1,6 @@
 const fs = require('fs')
 const getMetadata = require('../client/js/utils/metadata')
 const assert = require('assert')
-const datKey = require('dat-key-as')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
@@ -48,27 +47,6 @@ module.exports = function (opts, db) {
   router.get('/view/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA('/view/:archiveKey', req, res, state)
-    })
-  })
-
-  router.get('/:username/:dataset', function (req, res) {
-    // TOOD: do it in one db query not two
-    db.models.users.get({username: req.params.username}, function (err, user) {
-      if (err) return res.end(err.message)
-      if (!user.id) return sendSPA('/404', req, res)
-      db.models.dats.get({user_id: user.id, name: req.params.dataset}, function (err, results) {
-        if (err) return res.end(err.message)
-        var dat = results[0]
-        if (!dat) return sendSPA('/404', req, res)
-        try {
-          archiveRoute(datKey.string(dat.url), function (state) {
-            sendSPA('/:username/:dataset', req, res, state)
-          })
-        } catch (e) {
-          log.warn('archive route busted', err)
-          sendSPA('/404', req, res)
-        }
-      })
     })
   })
 
