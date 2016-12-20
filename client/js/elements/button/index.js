@@ -9,7 +9,9 @@ module.exports = (props, click) => {
     child = props.text
   }
   return html`
+  <div class="dat-button">
     <button onclick=${props.click} class="${props.klass}" ${props.disabled ? 'disabled' : ''}>
       ${child}
-    </button>`
+    </button>
+  </div>`
 }

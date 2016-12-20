@@ -24,7 +24,6 @@ const login = (state, prev, send) => {
 
       max-width: 600px;
       margin: auto;
-      background-color: #F6F7F8;
     }
   `
 
