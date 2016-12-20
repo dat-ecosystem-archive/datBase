@@ -15,47 +15,43 @@ module.exports = function (router, db, opts) {
     return error(400, errors.humanize(err).message).pipe(res)
   }
 
-  router.on('/api/v1/register', {
-    post: function (req, res) {
-      jsonBody(req, res, function (err, body) {
+  router.post('/api/v1/register', function (req, res) {
+    jsonBody(req, res, function (err, body) {
+      if (err) return onerror(err, res)
+      if (!body.email) return error(400, 'Email required.').pipe(res)
+      if (!body.username) return error(400, 'Username required.').pipe(res)
+      verify(body.email, function (err) {
         if (err) return onerror(err, res)
-        if (!body.email) return error(400, 'Email required.').pipe(res)
-        if (!body.username) return error(400, 'Username required.').pipe(res)
-        verify(body.email, function (err) {
+        ship.register(req, res, {body: body}, function (err, statusCode, obj) {
           if (err) return onerror(err, res)
-          ship.register(req, res, {body: body}, function (err, statusCode, obj) {
+          db.models.users.create({email: body.email, username: body.username}, function (err, body) {
             if (err) return onerror(err, res)
-            db.models.users.create({email: body.email, username: body.username}, function (err, body) {
-              if (err) return onerror(err, res)
-              body.token = obj.token
-              body.key = obj.key
-              return send(body).pipe(res)
-            })
+            body.token = obj.token
+            body.key = obj.key
+            return send(body).pipe(res)
           })
         })
       })
-    }
+    })
   })
 
-  router.on('/api/v1/login', {
-    post: function (req, res, params) {
-      jsonBody(req, res, function (err, body) {
+  router.post('/api/v1/login', function (req, res) {
+    jsonBody(req, res, function (err, body) {
+      if (err) return onerror(err, res)
+      ship.login(req, res, {body: body}, function (err, resp, obj) {
         if (err) return onerror(err, res)
-        ship.login(req, res, {body: body}, function (err, resp, obj) {
+        db.models.users.get({email: body.email}, function (err, results) {
           if (err) return onerror(err, res)
-          db.models.users.get({email: body.email}, function (err, results) {
-            if (err) return onerror(err, res)
-            if (!results) return error(400, 'Failed to create user.').pipe(res)
-            var user = results[0]
-            obj.email = user.email
-            obj.username = user.username
-            obj.role = user.role
-            obj.description = user.description
-            send(obj).pipe(res)
-          })
+          if (!results) return error(400, 'Failed to create user.').pipe(res)
+          var user = results[0]
+          obj.email = user.email
+          obj.username = user.username
+          obj.role = user.role
+          obj.description = user.description
+          send(obj).pipe(res)
         })
       })
-    }
+    })
   })
 
   return ship

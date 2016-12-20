@@ -96,13 +96,13 @@ test('api', function (t) {
           t.ok(body.token, 'has token')
           t.ok(body.key, 'has key')
           t.same(body.username, users.joe.username, 'has username')
-          client.secureRequest({url: '/users', method: 'PUT', body: {id: users.joe.id, username: 'margaret'}, json: true}, function (err, resp, body) {
+          client.secureRequest({url: '/users', method: 'PUT', body: {id: users.joe.id, description: 'this is a new description'}, json: true}, function (err, resp, body) {
             t.ifError(err)
-            t.same(body && body.updated, 1, 'updated one user')
+            t.same(body.updated, 1, 'updated one user')
             client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
               t.ifError(err)
               t.same(body.length, 3, 'has three users')
-              if (body.length) t.same(body[0].username, 'margaret', 'user has new username')
+              if (body.length) t.same(body[0].description, 'this is a new description', 'user has new description')
               t.end()
             })
           })
@@ -154,6 +154,14 @@ test('api', function (t) {
         t.ifError(err)
         t.same(body.length, 1, 'has one dat')
         if (body.length) t.same(body[0].name, dats.cats.name, 'is the right dat')
+        t.end()
+      })
+    })
+
+    test('api can get a dat by username/dataset combo', function (t) {
+      client.secureRequest({url: '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, user) {
+        t.ifError(err)
+        t.same(user.name, dats.cats.name, 'is the right dat')
         t.end()
       })
     })
