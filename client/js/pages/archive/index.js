@@ -26,7 +26,7 @@ const archivePage = (state, prev, send) => {
   var archive = state.archive.instance
   var health = state.archive.health
   var bytes = archive && archive.content ? archive.content.bytes
-    : health ? health.connected : 0
+    : health ? health.bytes : 0
   var size = prettyBytes(bytes)
 
   return html`
