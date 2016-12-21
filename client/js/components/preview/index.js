@@ -15,13 +15,9 @@ const preview = (state, prev, send) => {
 
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
-      ${button({
-        klass: 'panel-header__close-button',
-        text: 'Close',
-        click: () => {
-          send('preview:closePanel')
-        }
-      })}
+      <button onclick=${() => send('preview:closePanel')} class="panel-header__close-button">
+      Close
+      </button>
       <div class="panel-header__title-group">
         <div class="panel-title truncate">
           ${entryName}

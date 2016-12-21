@@ -6,9 +6,9 @@ module.exports = function (drive, key, signalhub, send) {
   var archive = drive.createArchive(key, {live: true, sparse: true})
   var sw = swarm(archive, {signalhub: signalhub})
   sw.on('connection', function (conn) {
-    send('archive:updatePeers', noop)
+    send('archive:update', noop)
     conn.on('close', function () {
-      send('archive:updatePeers', noop)
+      send('archive:update', noop)
     })
   })
   archive.on('upload', function (data) {

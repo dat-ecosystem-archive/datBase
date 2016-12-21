@@ -25,9 +25,13 @@ const archivePage = (state, prev, send) => {
   }
   var archive = state.archive.instance
   var health = state.archive.health
+  var swarm = state.archive.swarm // webrtc swarm
+  var webrtcPeers = swarm ? swarm.connections : 0
+  var sources = webrtcPeers + health.connected
   var bytes = archive && archive.content ? archive.content.bytes
     : health ? health.bytes : 0
   var size = prettyBytes(bytes)
+  var downloadBtnDisabled = webrtcPeers > 0 ? '' : 'disabled'
 
   return html`
     <div>
@@ -35,8 +39,8 @@ const archivePage = (state, prev, send) => {
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header__actions">
-            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} ${state.archive.numPeers ? '' : 'disabled'}>
-              <div class="btn__icon-wrapper ${state.archive.numPeers ? '' : 'disabled'}">
+            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} ${downloadBtnDisabled}>
+              <div class="btn__icon-wrapper ${downloadBtnDisabled}">
                 <img src="/public/img/download.svg" class="btn__icon-img">
                 <span class="btn__icon-text">Download</span>
               </div>
@@ -54,7 +58,7 @@ const archivePage = (state, prev, send) => {
           <div class="dat-details">
             <div id="permissions" class="dat-detail">${permissions({owner: archive ? archive.owner : false})}</div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
-            <div id="peers" class="dat-detail">${state.archive.numPeers + health.connected} Source(s)</div>
+            <div id="peers" class="dat-detail">${sources} Source(s)</div>
             <div id="speed" class="dat-detail dat-detail--speed"><div>
               ${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}
             </div></div>

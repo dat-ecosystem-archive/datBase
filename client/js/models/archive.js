@@ -66,9 +66,6 @@ module.exports = {
         uploadSpeed: meter(uploaded)
       }
     },
-    updatePeers: (data, state) => {
-      return {numPeers: state.swarm ? state.swarm.connections : 0}
-    },
     reset: (data, state) => {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
       return Object.assign({}, defaultState)
@@ -82,15 +79,7 @@ module.exports = {
   effects: {
     new: function (data, state, send, done) {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
-      var newState = {
-        metadata: {},
-        entries: [],
-        numPeers: 0,
-        error: null,
-        downloadTotal: 0,
-        uploadTotal: 0
-      }
-      send('archive:update', newState, noop)
+      send('archive:reset', noop)
       send('archive:create', null, function (_, key) {
         const location = '/view/' + key
         send('location:setLocation', { location }, noop)
