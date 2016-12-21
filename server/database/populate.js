@@ -13,7 +13,7 @@ var dat = {
   name: 'test-dat',
   title: 'I like to test dats',
   description: 'THis is a way to test dats',
-  url: 'aurl',
+  url: 'dat://587db7de5a030b9b91ddcb1882cf0e4b67b4609568997eee0d4dfe74ce31d198',
   keywords: 'hi, bye'
 }
 

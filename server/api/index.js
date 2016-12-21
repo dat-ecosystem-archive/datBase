@@ -55,16 +55,9 @@ module.exports = function (router, db, ship) {
 
   router.get('/api/v1/:username/:dataset', function (req, res) {
     // TODO: do it in one db query not two
-    db.models.users.get({username: req.params.username}, function (err, results) {
+    db.queries.getDatByShortname(req.params, function (err, dat) {
       if (err) return onerror(err, res)
-      if (!results.length) return error(404, 'Not found').pipe(res)
-      var user = results[0]
-      db.models.dats.get({user_id: user.id, name: req.params.dataset}, function (err, results) {
-        if (err) return onerror(err, res)
-        var dat = results[0]
-        if (!dat) return error(404, 'Not found').pipe(res)
-        send(200, dat).pipe(res)
-      })
+      send(200, dat).pipe(res)
     })
   })
 
