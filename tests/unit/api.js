@@ -1,9 +1,13 @@
 const test = require('tape')
+const encoding = require('dat-encoding')
 const path = require('path')
 const TownshipClient = require('township-client')
 const request = require('request')
 const helpers = require('../helpers')
 const config = JSON.parse(JSON.stringify(require('../config')))
+const Dat = require('dat-js')
+
+const dat = new Dat()
 
 var api = 'http://localhost:' + config.port + '/api/v1'
 test('api', function (t) {
@@ -136,15 +140,18 @@ test('api', function (t) {
     })
 
     test('api can create a dat', function (t) {
-      client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
-        t.ifError(err)
-        t.ok(body.id, 'has an id')
-        dats.cats.id = body.id
-        dats.cats.user_id = body.user_id
-        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+      dat.add(function (repo) {
+        dats.cats.url = encoding.toStr(repo.key)
+        client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.same(body.length, 1)
-          t.end()
+          t.ok(body.id, 'has an id')
+          dats.cats.id = body.id
+          dats.cats.user_id = body.user_id
+          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 1)
+            t.end()
+          })
         })
       })
     })
@@ -155,6 +162,31 @@ test('api', function (t) {
         t.same(body.length, 1, 'has one dat')
         if (body.length) t.same(body[0].name, dats.cats.name, 'is the right dat')
         t.end()
+      })
+    })
+
+    test('api can get a dats health', function (t) {
+      var stream = client.secureRequest({stream: true, url: '/dats/health?key=' + dats.cats.url, json: true})
+      stream.on('error', function (err) {
+        t.ifError(err)
+      })
+      var repo = dat.get(dats.cats.url)
+      var writer = repo.archive.createFileWriteStream('hello.txt')
+      writer.write('world')
+      writer.end()
+      stream.on('data', function (body) {
+        if (!body) return
+        var data = JSON.parse(body.toString())
+        t.same(data.connected, 1, 'has one connected')
+        t.same(data.bytes, 5, 'has five bytes')
+        if (data.peers && data.peers.length > 0) {
+          t.ok(data.peers[0].blocks, 'found the peers')
+          stream.abort()
+          stream.destroy()
+        }
+        stream.on('end', function () {
+          t.end()
+        })
       })
     })
 
@@ -177,15 +209,18 @@ test('api', function (t) {
     })
 
     test('api can create another dat', function (t) {
-      client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
-        t.ifError(err)
-        t.ok(body.id, 'has an id')
-        dats.penguins.id = body.id
-        dats.penguins.user_id = body.user_id
-        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+      dat.add(function (repo) {
+        dats.penguins.url = encoding.toStr(repo.key)
+        client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.same(body.length, 2)
-          t.end()
+          t.ok(body.id, 'has an id')
+          dats.penguins.id = body.id
+          dats.penguins.user_id = body.user_id
+          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 2)
+            t.end()
+          })
         })
       })
     })
@@ -270,6 +305,7 @@ test('api', function (t) {
       client.logout(function () {
         helpers.tearDown(config, function () {
           close(function () {
+            dat.close()
             t.end()
           })
         })
