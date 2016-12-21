@@ -24,7 +24,10 @@ const archivePage = (state, prev, send) => {
     `
   }
   var archive = state.archive.instance
-  var size = prettyBytes(archive && archive.content ? archive.content.bytes : 0)
+  var health = state.archive.health
+  var bytes = archive && archive.content ? archive.content.bytes
+    : health ? health.connected : 0
+  var size = prettyBytes(bytes)
 
   return html`
     <div>
@@ -49,9 +52,9 @@ const archivePage = (state, prev, send) => {
           <div id="author" class="author-name">${state.archive.metadata.author}</div>
           ${error(state.archive.error)}
           <div class="dat-details">
-            <div id="permissions" class="dat-detail">${permissions({owner: state.archive.instance ? state.archive.instance.owner : false})}</div>
+            <div id="permissions" class="dat-detail">${permissions({owner: archive ? archive.owner : false})}</div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
-            <div id="peers" class="dat-detail">${state.archive.numPeers} Source(s)</div>
+            <div id="peers" class="dat-detail">${state.archive.numPeers + health.connected} Source(s)</div>
             <div id="speed" class="dat-detail dat-detail--speed"><div>
               ${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}
             </div></div>
@@ -60,7 +63,7 @@ const archivePage = (state, prev, send) => {
       </div>
       <main class="site-main">
         <div class="container">
-          <div id="add-files">${state.archive.instance && state.archive.instance.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', {files}) }) : ''}</div>
+          <div id="add-files">${archive && archive.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', {files}) }) : ''}</div>
           ${importQueue(state, prev, send)}
           ${hyperdrive(state, prev, send)}
         </div>

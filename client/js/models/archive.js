@@ -20,6 +20,12 @@ const DEFAULT_SIGNAL_HUBS = process.env.DATLAND_SIGNAL_HUBS
 var defaultState = {
   key: null,
   instance: null,
+  health: {
+    connected: 0,
+    blocks: 0,
+    peers: [],
+    bytes: 0
+  },
   file: null,
   error: null,
   metadata: {},
