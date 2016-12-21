@@ -69,6 +69,7 @@
     "watchify": "~3.6.0"
   },
   "dependencies": {
+    "hyperdrive-archive-swarm": "^4.0.0",
     "appa": "^6.0.0",
     "async": "^2.1.4",
     "body": "^5.1.0",
