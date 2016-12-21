@@ -47,10 +47,10 @@ module.exports = new function () {
     testCases['opening the browser and navigating to the url'] = (client) => {
       client
         .url(testServer)
-        .expect.element('.dat-button--new-dat button').to.be.present
+        .expect.element('.new-dat').to.be.present
 
       client
-        .click('.dat-button--new-dat button').pause(1000)
+        .click('.new-dat').pause(1000)
         .expect.element('#title').text.matches(/^(.+)$/).before(10000)
 
       client.getText('#title', (result) => {
@@ -128,7 +128,7 @@ module.exports = new function () {
 
   if (firstClient) {
     testCases['create new button properly resets view'] = (client) => {
-      client.click('.dat-button--new-dat button').pause(1000)
+      client.click('.new-dat').pause(1000)
       client
         .expect.element('#fs').text.not.to.contain('dat.json').before(1000)
       client

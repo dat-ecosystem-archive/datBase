@@ -158,6 +158,16 @@ test('api', function (t) {
       })
     })
 
+    test('api dats need to have correct names', function (t) {
+      var bad = Object.assign({}, dats.penguins)
+      bad.name = 'this is a bad name'
+      client.secureRequest({method: 'POST', url: '/dats', body: bad, json: true}, function (err, resp, body) {
+        t.ok(err)
+        t.ok(err.message.indexOf('name pattern mismatch') > -1, 'has pattern mismatch error')
+        t.end()
+      })
+    })
+
     test('api can get a dat by username/dataset combo', function (t) {
       client.secureRequest({url: '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, user) {
         t.ifError(err)

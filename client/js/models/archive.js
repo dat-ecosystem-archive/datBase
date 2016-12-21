@@ -85,7 +85,11 @@ module.exports = {
         uploadTotal: 0
       }
       send('archive:update', newState, noop)
-      send('archive:load', null, done)
+      send('archive:create', null, function (_, key) {
+        const location = '/view/' + key
+        send('location:setLocation', { location }, noop)
+        window.history.pushState({}, null, location)
+      })
     },
     updateMetadata: function (data, state, send, done) {
       getMetadata(state.instance, function (err, metadata) {
@@ -115,13 +119,10 @@ module.exports = {
       send('importQueue:add', {files: files, root: state.root}, noop)
       return done()
     },
-    load: function (key, state, send, done) {
+    create: function (key, state, send, done) {
       if (state.instance && state.instance.key.toString('hex') === key) return done()
       var dat = Dat(drive, key, state.signalhubs, send)
       key = dat.archive.key.toString('hex')
-      const location = '/view/' + key
-      send('location:setLocation', { location }, noop)
-      window.history.pushState({}, null, location)
       var stream = dat.archive.list({live: true})
       stream.on('data', function (entry) {
         var entries = state.entries
@@ -135,7 +136,11 @@ module.exports = {
         swarm: dat.swarm,
         key: key
       }
-      send('archive:update', newState, done)
+      send('archive:update', newState, function () {
+        done(null, key)
+      })
+    },
+    load: function (key, state, send, done) {
     },
     readFile: function (data, state, send, done) {
       var archive = state.instance

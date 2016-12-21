@@ -68,6 +68,12 @@ npm start
 node server/database/init.js
 ```
 
+### Load some test data
+
+```
+node server/database/populate.js
+```
+
 ### build for production
 ```
 npm run build

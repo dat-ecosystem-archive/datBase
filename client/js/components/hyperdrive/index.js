@@ -3,7 +3,7 @@ const noop = function () {}
 
 module.exports = function (state, prev, send) {
   if (!module.parent && !state.archive.instance && state.archive.key) {
-    send('archive:load', state.archive.key)
+    send('archive:create', state.archive.key)
   }
   var onclick = (ev, entry) => {
     if (entry.type === 'directory') {

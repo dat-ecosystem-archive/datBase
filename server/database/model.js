@@ -1,10 +1,12 @@
 const async = require('async')
 const uuid = require('uuid')
 const errors = require('../errors')
+const validators = require('./validate')
 
 module.exports = function (knex, model, opts) {
   if (!opts) opts = {}
   var primaryKey = opts.primaryKey || 'id'
+  var validate = validators[model]
 
   return {
     list: function (cb) {
@@ -24,6 +26,10 @@ module.exports = function (knex, model, opts) {
     update: function (where, values, cb) {
       if (!where) return cb(new Error('Query required as an argument to model.update'))
       if (!values) return cb(new Error('Values required as an argument to model.update'))
+      if (validate) {
+        validate(values)
+        if (validate.errors) return cb(new Error(validate.errors[0].field + ' ' + validate.errors[0].message))
+      }
       if (!values.updated_at) values.updated_at = Date.now()
       knex(model)
       .where(where)
@@ -33,6 +39,10 @@ module.exports = function (knex, model, opts) {
     },
     create: function (values, cb) {
       if (!values) return cb(new Error('Values required as an argument to model.create'))
+      if (validate) {
+        validate(values)
+        if (validate.errors) return cb(new Error(validate.errors[0].field + ' ' + validate.errors[0].message))
+      }
       if (!values.created_at) values.created_at = Date.now()
       if (!values.updated_at) values.updated_at = Date.now()
       values[primaryKey] = uuid.v4()

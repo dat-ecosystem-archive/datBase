@@ -1,6 +1,7 @@
 const fs = require('fs')
 const getMetadata = require('../client/js/utils/metadata')
 const assert = require('assert')
+const datKeyAs = require('dat-key-as')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
@@ -25,9 +26,39 @@ module.exports = function (opts, db) {
     sendSPA('/', req, res, state)
   })
 
+  router.get('/view/:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA('/view/:archiveKey', req, res, state)
+    })
+  })
+
+  router.get('/:username/:dataset', function (req, res) {
+    db.queries.getDatByShortname(req.params, function (err, dat) {
+      if (err) {
+        var state = getDefaultAppState()
+        state.archive.error = err
+        log.warn('could not get dat with ' + req.params, err)
+        return sendSPA('/:username/:dataset', req, res, state)
+      }
+      archiveRoute(dat.url, function (state) {
+        log.info('sending', state)
+        state.archive.username = req.params.username
+        state.archive.dataset = req.params.dataset
+        return sendSPA('/:username/:dataset', req, res, state)
+      })
+    })
+  })
+
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
     state.archive.key = key
+    try {
+      state.archive.key = datKeyAs.str(key)
+    } catch (err) {
+      log.warn(key + ' not valid', err)
+      state.archive.error = err
+      return cb(state)
+    }
     getDat(key, function (err, dat, entries) {
       if (err && !entries) {
         log.warn(key + ' timed out', err)
@@ -43,12 +74,6 @@ module.exports = function (opts, db) {
       })
     })
   }
-
-  router.get('/view/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA('/view/:archiveKey', req, res, state)
-    })
-  })
 
   // TODO: decide on a real static asset setup with cacheing strategy
   router.get('/public/css/:asset', function (req, res, params) {

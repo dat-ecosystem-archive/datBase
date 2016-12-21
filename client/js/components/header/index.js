@@ -46,7 +46,7 @@ const header = (state, prev, send) => {
         ${button({
           icon: '/public/img/create-new-dat.svg',
           text: 'Create New Dat',
-          klass: 'btn btn--green',
+          klass: 'btn btn--green new-dat',
           click: () => send('archive:new')
         })}
           ${importButton({
