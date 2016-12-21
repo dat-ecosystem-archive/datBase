@@ -10,9 +10,9 @@ if (!email) {
 }
 
 var dat = {
-  name: 'test-dat',
-  title: 'I like to test dats',
-  description: 'THis is a way to test dats',
+  name: 'more-tweets-more-votes',
+  title: 'More Tweets More Votes',
+  description: "Is social media a valid indicator of political behavior? There is considerable debate about the validity of data extracted from social media for studying offline behavior. To address this issue, we show that there is a statistically significant association between tweets that mention a candidate for the U.S. House of Representatives and his or her subsequent electoral performance. We demonstrate this result with an analysis of 542,969 tweets mentioning candidates selected from a random sample of 3,570,054,618, as well as Federal Election Commission data from 795 competitive races in the 2010 and 2012 U.S. congressional elections. This finding persists even when controlling for incumbency, district partisanship, media coverage of the race, time, and demographic variables such as the district's racial and gender composition. Our findings show that reliable data about political behavior can be extracted from social media",
   url: 'dat://587db7de5a030b9b91ddcb1882cf0e4b67b4609568997eee0d4dfe74ce31d198',
   keywords: 'hi, bye'
 }

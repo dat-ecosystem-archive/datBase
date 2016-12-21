@@ -33,7 +33,6 @@ module.exports = function (opts, db) {
   })
 
   router.get('/:username/:dataset', function (req, res) {
-    log.info('retrieving', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
@@ -43,6 +42,8 @@ module.exports = function (opts, db) {
       }
       archiveRoute(dat.url, function (state) {
         log.info('sending', state)
+        state.archive.username = req.params.username
+        state.archive.dataset = req.params.dataset
         return sendSPA('/:username/:dataset', req, res, state)
       })
     })
