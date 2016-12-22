@@ -1,7 +1,8 @@
 const fs = require('fs')
 const getMetadata = require('../client/js/utils/metadata')
+const bodyParser = require('body-parser')
 const assert = require('assert')
-const datKeyAs = require('dat-key-as')
+const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
@@ -17,6 +18,7 @@ module.exports = function (opts, db) {
   const page = require('./page')
 
   var router = express()
+  router.use(bodyParser.json()) // support json encoded bodies
   const ship = auth(router, db, opts)
   api(router, db, ship)
 
@@ -53,7 +55,7 @@ module.exports = function (opts, db) {
     var state = getDefaultAppState()
     state.archive.key = key
     try {
-      state.archive.key = datKeyAs.str(key)
+      state.archive.key = encoding.toStr(key)
     } catch (err) {
       log.warn(key + ' not valid', err)
       state.archive.error = err
@@ -69,6 +71,7 @@ module.exports = function (opts, db) {
       getMetadata(dat.archive, function (err, metadata) {
         if (err) state.archive.error = new Error('no metadata')
         if (metadata) state.archive.metadata = metadata
+        state.archive.health = dat.health.get()
         dat.close()
         return cb(state)
       })

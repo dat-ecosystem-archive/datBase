@@ -1,12 +1,12 @@
 const Dat = require('./haus')
-const datKey = require('dat-key-as')
+const encoding = require('dat-encoding')
 const collect = require('collect-stream')
 const TimeoutStream = require('through-timeout')
 
 module.exports = function (key, cb) {
   var decoded
   try {
-    decoded = datKey.buf(key)
+    decoded = encoding.toBuf(key)
   } catch (err) {
     return cb(err)
   }

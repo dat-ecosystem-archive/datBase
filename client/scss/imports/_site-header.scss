@@ -7,6 +7,12 @@ $site-header-ui-elements-height: 3rem;
   height: $site-header-height;
   background-color: $color-green--hover;
   color: $color-white;
+  .dat-button button:not(.dat-button--help) {
+    background-color: transparent;
+    &:hover, &:focus, &:active {
+      background-color: $color-green--darker;
+    }
+  }
 }
 
 .site-header__actions {

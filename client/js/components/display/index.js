@@ -11,7 +11,7 @@ module.exports = function (state, prev, send) {
   const entryName = state.preview.entry && state.preview.entry.name
   const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
-  if (state.preview.error && !prev.preview.error) {
+  if (state.preview.error) {
     return fourohfour({
       header: state.preview.error.message,
       body: state.preview.error.body || `${entryName} cannot be rendered.`,
@@ -26,30 +26,24 @@ module.exports = function (state, prev, send) {
     return display
   }
 
+  send('preview:update', {isLoading: true})
+
   if (entryName && archive) {
-    archive.get(entryName, {timeout: 3000}, function (err, entry) {
-      if (err) {
-        if (err.code && err.code === 'ETIMEDOUT') {
-          return send('preview:update', {error: {message: 'Looking for peers...', body: 'It seems to be taking a long time.'}})
-        } else {
-          return send('preview:update', {error: err})
-        }
+    send('preview:update', {error: {message: 'Looking for peers...', body: 'If it is taking a long time, use the desktop app.'}})
+    var stream = archive.createFileReadStream(entryName)
+    renderData.render({
+      name: entryName,
+      createReadStream: function () { return stream }
+    }, display, function (error) {
+      if (error) {
+        var update = {}
+        var message = 'Unsupported filetype'
+        if (error.message === 'premature close') message = 'Could not find any peer sources.'
+        else update.isLoading = false // Allow downloads for unsupported files
+        update.error = {message: message}
+        return send('preview:update', update)
       }
-      send('preview:update', {isLoading: false})
-      var stream = archive.createFileReadStream(entryName)
-      renderData.render({
-        name: entryName,
-        createReadStream: function () { return stream }
-      }, display, function (error) {
-        if (error) {
-          var update = {}
-          var message = 'Unsupported filetype'
-          if (error.message === 'premature close') message = 'Could not find any peer sources.'
-          else update.isLoading = false // Allow downloads for unsupported files
-          update.error = new Error(message)
-          send('preview:update', update)
-        }
-      })
+      send('preview:update', {isLoading: false, error: error})
     })
   }
 
