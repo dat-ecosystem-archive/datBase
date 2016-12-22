@@ -166,7 +166,11 @@ test('api', function (t) {
     })
 
     test('api can get a dats health', function (t) {
-      var stream = client.secureRequest({stream: true, url: '/dats/health?key=' + dats.cats.url, json: true})
+      var stream = client.secureRequest({
+        stream: true,
+        url: '/dats/health?key=' + dats.cats.url,
+        forever: true
+      })
       stream.on('error', function (err) {
         t.ifError(err)
       })
@@ -182,7 +186,7 @@ test('api', function (t) {
         if (data.peers && data.peers.length > 0) {
           t.ok(data.peers[0].blocks, 'found the peers')
           stream.abort()
-          stream.destroy()
+          stream.agent.destroy()
         }
         stream.on('end', function () {
           t.end()
