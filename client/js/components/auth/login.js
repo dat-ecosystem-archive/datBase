@@ -21,6 +21,9 @@ const login = (state, prev, send) => {
       form {
         text-align: center;
       }
+      input {
+        text-transform: none;
+      }
 
       max-width: 600px;
       margin: auto;
