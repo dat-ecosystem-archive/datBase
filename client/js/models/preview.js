@@ -1,10 +1,9 @@
+var xtend = require('xtend')
 var noop = function () {}
 var defaultState = {
   isPanelOpen: false,
   isLoading: false,
-  archiveKey: null,
   entryName: null,
-  readStream: null,
   error: false
 }
 
@@ -13,7 +12,7 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.preview,
   reducers: {
     update: (data, state) => {
-      return data
+      return xtend(state, data)
     },
     openPanel: (data, state) => {
       return {isPanelOpen: true}

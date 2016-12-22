@@ -11,7 +11,7 @@ module.exports = function (state, prev, send) {
   const entryName = state.preview.entry && state.preview.entry.name
   const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
-  if (state.preview.error && !prev.preview.error) {
+  if (state.preview.error) {
     return fourohfour({
       header: state.preview.error.message,
       body: state.preview.error.body || `${entryName} cannot be rendered.`,
@@ -40,10 +40,10 @@ module.exports = function (state, prev, send) {
         var message = 'Unsupported filetype'
         if (error.message === 'premature close') message = 'Could not find any peer sources.'
         else update.isLoading = false // Allow downloads for unsupported files
-        update.error = new Error(message)
-        send('preview:update', update)
+        update.error = {message: message}
+        return send('preview:update', update)
       }
-      send('preview:update', {isLoading: false})
+      send('preview:update', {isLoading: false, error: error})
     })
   }
 
