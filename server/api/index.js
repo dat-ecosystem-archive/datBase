@@ -60,9 +60,10 @@ module.exports = function (router, db, ship) {
         res.write(JSON.stringify(dat.health.get()) + '\n')
       }, req.query.interval || 2000)
       res.on('finish', function () {
-        dat.close()
-        clearInterval(interval)
-        res.end()
+        dat.close(function () {
+          clearInterval(interval)
+          res.end()
+        })
       })
     })
   })

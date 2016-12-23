@@ -14,8 +14,11 @@ function Haus (key, opts) {
   this.swarm = this.health.swarm
 }
 
-Haus.prototype.close = function () {
-  this.archive.close()
-  this.swarm.close()
-  this.db.close()
+Haus.prototype.close = function (cb) {
+  var self = this
+  this.swarm.close(function () {
+    self.archive.close(function () {
+      self.db.close(cb)
+    })
+  })
 }

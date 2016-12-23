@@ -72,8 +72,9 @@ module.exports = function (opts, db) {
         if (err) state.archive.error = new Error('no metadata')
         if (metadata) state.archive.metadata = metadata
         state.archive.health = dat.health.get()
-        dat.close()
-        return cb(state)
+        dat.close(function () {
+          return cb(state)
+        })
       })
     })
   }
