@@ -14,10 +14,8 @@ var config = {
       whitelist: false // otherwise path to whitelist email txt file
     },
     db: {
-      dialect: 'sqlite3',
-      connection: {
-        filename: './sqlite.db'
-      },
+      dialect: 'pg',
+      connection: process.env.PG_CONNECTION_STRING || 'postgres://datfolder:datfolder@localhost/datfolder',
       useNullAsDefault: true
     }
   },
@@ -27,6 +25,9 @@ var config = {
       secret: process.env.TOWNSHIP_SECRET,
       db: path.join(os.homedir(), 'township.db'),
       whitelist: false
+    },
+    db: {
+      connection: process.env.PG_CONNECTION_STRING
     }
   }
 }
