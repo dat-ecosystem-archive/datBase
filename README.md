@@ -45,43 +45,70 @@ Success returns number of updated rows (e.g., ```{updated: 1}```)
 
 Success returns number of deleted rows (e.g., ```{deleted: 1}```)
 
-#### ```POST /api/v1/:model```
+##### ```POST /api/v1/:model```
 
 Success returns the model as it exists in the database.
 
 
-### develop
+### Develop
+
+1. Install dependencies.
 
 ```
 npm install
 ```
 
-Watch assets and start server in one command:
+2. Create config file.
+
+You can use defaults by copying the example config to `config.js` like so:
 
 ```
-npm start
+cp example.config.js config.js
 ```
 
-### Initialize database
+3. Install Postgres on your machine.
+
+Open the psql terminal and create user `datfolder` with password `datfolder`
+with database `datfolder`. 
+
+Run the following in psql to set up your database:
+```
+create user datfolder with password 'datfolder';
+create database datfolder;
+grant all privileges on database datfolder to datfolder;
+```
+
+If you want to use sqlite or some other database, you can change these defaults in `config.js`.
+
+4. Initialize the database.
+
+You only have to do this once:
 
 ```
 node server/database/init.js
 ```
 
-### Load some test data
+
+5. Watch assets and start server in one command:
+
+```
+npm start
+```
+
+6 (optional). Load some test data
 
 ```
 node server/database/populate.js
 ```
 
-### build for production
+### Build for production
 ```
 npm run build
 npm run minify
 npm run version
 ```
 
-### end-to-end tests
+### Running end-to-end tests
 
 Chrome:
 
@@ -97,7 +124,7 @@ Firefox: (currently not working)
 TEST_SERVER=http://localhost:8080 npm run test:e2e:firefox
 ```
 
-### using shipit for deployment and install
+### Using shipit for deployment and install
 [shipit](https://github.com/shipitjs/shipit) and [shipit-deploy](https://github.com/shipitjs/shipit-deploy) depends on rsync version 3+, git version 1.7.8+, and OpenSSH version 5+. To upgrade rsync on a macosx machine, [follow instructions here](https://static.afp548.com/mactips/rsync.html) (see "compile rsync 3.0.7" section).
 
 install shipit-cli locally, globally:
