@@ -30,7 +30,7 @@ module.exports = function (knex, model, opts) {
         validate(values)
         if (validate.errors) return cb(new Error(validate.errors[0].field + ' ' + validate.errors[0].message))
       }
-      if (!values.updated_at) values.updated_at = Date.now()
+      if (!values.updated_at) values.updated_at = knex.fn.now()
       knex(model)
       .where(where)
       .update(values)
@@ -43,8 +43,7 @@ module.exports = function (knex, model, opts) {
         validate(values)
         if (validate.errors) return cb(new Error(validate.errors[0].field + ' ' + validate.errors[0].message))
       }
-      if (!values.created_at) values.created_at = Date.now()
-      if (!values.updated_at) values.updated_at = Date.now()
+      if (!values.updated_at) values.updated_at = knex.fn.now()
       values[primaryKey] = uuid.v4()
       async.waterfall([
         function (done) {

@@ -16,7 +16,8 @@ function init (dbConfig, cb) {
     table.string('role')
     table.text('token')
     table.text('description')
-    table.timestamps()
+    table.timestamp('created_at').defaultTo(db.knex.fn.now())
+    table.timestamp('updated_at')
   })
   .createTableIfNotExists('dats', function (table) {
     table.uuid('id').primary()
@@ -26,7 +27,8 @@ function init (dbConfig, cb) {
     table.string('title')
     table.text('description')
     table.text('keywords')
-    table.timestamps()
+    table.timestamp('created_at').defaultTo(db.knex.fn.now())
+    table.timestamp('updated_at')
     table.unique(['name', 'user_id'])
   })
   .then(function () {
