@@ -33,7 +33,7 @@ const header = (state, prev, send) => {
         <div class="site-header__actions">
         ${button({
           icon: '/public/img/create-new-dat.svg',
-          text: 'Share data now',
+          text: 'Create new Dat',
           klass: 'btn btn--green new-dat',
           click: () => send('archive:new')
         })}

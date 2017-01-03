@@ -18,8 +18,7 @@ const createPage = (state, prev, send) => {
         <div class="row">
           <h5>2. Create an archive</h5>
           <code>
-            $ dat create path/to/my/data<br>
-            $ dat sync path/to/my/data
+            $ dat path/to/my/data
           </code>
         </div>
         <div class="row">
