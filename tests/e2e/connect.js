@@ -51,6 +51,7 @@ module.exports = new function () {
 
       client
         .click('.new-dat').pause(1000)
+        .click('.share-button').pause(1000)
         .expect.element('#title').text.matches(/^(.+)$/).before(10000)
 
       client.getText('#title', (result) => {
