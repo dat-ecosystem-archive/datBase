@@ -78,6 +78,7 @@
     "browserify": "^13.0.0",
     "choo": "^3.2.0",
     "collect-stream": "^1.1.1",
+    "compression": "^1.6.2",
     "dat-design": "^1.4.2",
     "datland-swarm-defaults": "^1.0.2",
     "discovery-swarm": "^4.0.2",

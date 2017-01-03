@@ -1,4 +1,6 @@
 const fs = require('fs')
+const path = require('path')
+const compression = require('compression')
 const getMetadata = require('../client/js/utils/metadata')
 const bodyParser = require('body-parser')
 const assert = require('assert')
@@ -6,6 +8,8 @@ const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
+const app = require('../client/js/app')
+const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
 const getDat = require('./dat')
@@ -13,12 +17,12 @@ const getDat = require('./dat')
 module.exports = function (opts, db) {
   opts = opts || {}
 
-  const log = bole(__filename)
-  const app = require('../client/js/app')
-  const page = require('./page')
-
   var router = express()
+  router.use(compression())
+  router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
+  const log = bole(__filename)
+
   const ship = auth(router, db, opts)
   api(router, db, ship)
 
@@ -78,33 +82,6 @@ module.exports = function (opts, db) {
       })
     })
   }
-
-  // TODO: decide on a real static asset setup with cacheing strategy
-  router.get('/public/css/:asset', function (req, res, params) {
-    fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
-      if (err) return res.end('nope')
-      res.setHeader('Content-Type', 'text/css')
-      res.end(contents)
-    })
-  })
-
-  // TODO: decide on a real static asset setup with cacheing strategy
-  router.get('/public/js/:asset', function (req, res, params) {
-    fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
-      if (err) return res.end('nope')
-      res.setHeader('Content-Type', 'text/javascript')
-      res.end(contents)
-    })
-  })
-
-  // TODO: decide on a real static asset setup with cacheing strategy
-  router.get('/public/img/:asset', function (req, res, params) {
-    fs.readFile('.' + req.url, 'utf-8', function (err, contents) {
-      if (err) return res.end('nope')
-      res.setHeader('Content-Type', 'image/svg+xml')
-      res.end(contents)
-    })
-  })
 
   return router
 
