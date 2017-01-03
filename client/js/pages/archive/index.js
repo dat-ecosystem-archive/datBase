@@ -45,7 +45,7 @@ const archivePage = (state, prev, send) => {
                 <span class="btn__icon-text">Download</span>
               </div>
             </button>
-            <a href="dat://${state.archive.key}" class="dat-header-action">
+            <a href="https://github.com/datproject/dat-desktop" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
                 <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
                 <span class="btn__icon-text">Open in Desktop App</span>
