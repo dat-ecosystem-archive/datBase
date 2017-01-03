@@ -1,16 +1,16 @@
 const html = require('choo/html')
-const importButton = require('./../../elements/import-button')
 const css = require('sheetify')
 const header = require('./../../components/header')
 
 const landingPage = (state, prev, send) => {
   const prefix = css`
     :host {
-      .head {
+      margin: auto;
+      max-width: 720px;
+      .center {
         text-align: center;
       }
       .create {
-        width: 340px;
         margin: auto;
       }
       .row {
@@ -23,37 +23,21 @@ const landingPage = (state, prev, send) => {
     }
   `
   return html`
-    <div class="landing ${prefix}">
-      <div class="head">
+    <div class="${prefix}">
+      <div class="center">
         <img src="/public/img/dat-data-logo.svg" />
-        <h1>datfolder.org</h1>
-        <h3>Share, sync, and update data on the distributed web.</h3>
-        <p><a href="https://github.com/datproject/dat-desktop">Desktop App for Mac</a> | <a href="http://docs.datproject.org">Documentation</a></p>
-      </div>
-      <div class="create">
+        <h3>Share, version, and sync data on the distributed web.</h3>
         <div class="row">
-        <h5>1. Install dat</h5>
-          <code>
-            $ npm install -g dat
-          </code>
+        <p><b>Live sync</b> folders by sharing files as they are added or changed. <b>Distribute large files</b> without copying data to a central server by connecting directly to peers. <b>Intelligently sync</b> by deduplicating data between versions. <b>Verify data integrity</b> using strong cryptographic hashes.
+          <a href="http://docs.datproject.org">Read More.</a></p>
         </div>
+        <h5><a href="https://github.com/datproject/dat-desktop">Download the Desktop App for Mac</a></h5>
+        <h5><a href="/create">Share data now</a></h5>
+      </div>
+
+      <div class="center">
         <div class="row">
-          <h5>2. Create a project</h5>
-          <code>
-            $ dat create path/to/my/data
-          </code>
-       </div>
-        <div class="row">
-          <h5>3. Sync the data</h5>
-          <code>
-            $ dat sync path/to/my/data
-          </code>
-       </div>
-        <div class="row">
-          <h5>4. Share the link (dat://):</h5>
-          ${importButton({
-            handler: function (link) { window.location.href = '/view/' + link }
-          })}
+          <h4><a href="https://datproject.org">About Dat</a> | <a href="https://github.com/datproject/dat">GitHub</a> | <a href="https://twitter.com/dat_project">Twitter</a> | <a href="http://tinyletter.com/datdata">Mailing List</a>
         </div>
       </div>
     </div>`
