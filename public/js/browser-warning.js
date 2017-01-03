@@ -1,14 +1,16 @@
 var MIN_VERSION = 52
+var MIN_VERSION_FIREFOX = 50
 main()
 function main () {
   var browser = detectBrowser(navigator.userAgent)
-  if (browser.name === 'chrome' && Number(browser.version.split('.')[0]) >= MIN_VERSION) return
+  if ((browser.name === 'chrome' && Number(browser.version.split('.')[0]) >= MIN_VERSION) ||
+   (browser.name === 'firefox' && Number(browser.version.split('.')[0]) >= MIN_VERSION_FIREFOX)) return
 
   var root = document.querySelector('#browser-warning')
   var el = document.createElement('div')
   var html = "<div class='danger-block pt3'>"
   html += "<h3 class='mb1'>Sorry, we don’t support your browser (yet).</h1>"
-  html += "<div class='pb3'>We only support the latest version of Google Chrome. <a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download</a></div>"
+  html += "<div class='pb3'>We recommend the latest version of Google Chrome. <a href='https://www.google.com/chrome/browser/desktop/' target='_blank'>Download</a></div>"
   html += "</div>"
   root.appendChild(el)
   el.innerHTML = html
