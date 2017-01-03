@@ -56,13 +56,16 @@ const archivePage = (state, prev, send) => {
           <div id="author" class="author-name">${state.archive.metadata.author}</div>
           ${error(state.archive.error)}
           <div class="dat-details">
-            <div id="permissions" class="dat-detail">${permissions({owner: archive ? archive.owner : false})}</div>
+            <div id="permissions" class="dat-detail">
+              ${permissions({owner: archive ? archive.owner : false})}
+            </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
             <div id="peers" class="dat-detail">${sources} Source(s)</div>
-            <div id="speed" class="dat-detail dat-detail--speed"><div>
-              ${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}
-            </div></div>
+            <div id="speed" class="dat-detail dat-detail--speed"><div>${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}</div></div>
           </div>
+            <div class="dat-detail">
+            ${ archive && archive.owner ? 'Data is deleted once the browser tab is closed.' : '' }
+            </div>
         </div>
       </div>
       <main class="site-main">

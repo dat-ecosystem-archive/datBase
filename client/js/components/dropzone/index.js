@@ -7,7 +7,7 @@ module.exports = (state, prev, send) => {
   }>
 
     <a class="share-button" onclick=${() => send('archive:new')}><h3>Share browser-to-browser</h3>
-    <p>Drag and drop files to upload and start sharing your data. Data is deleted once the browser tab is closed.</p>
+    <p>Drag and drop files to upload and start sharing your data.</p>
     </a>
   </div>`
 }
