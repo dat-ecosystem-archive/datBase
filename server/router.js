@@ -32,6 +32,16 @@ module.exports = function (opts, db) {
     sendSPA('/', req, res, state)
   })
 
+  router.get('/create', function (req, res) {
+    var state = getDefaultAppState()
+    sendSPA('/create', req, res, state)
+  })
+
+  router.get('/browser', function (req, res) {
+    var state = getDefaultAppState()
+    sendSPA('/browser', req, res, state)
+  })
+
   router.get('/view/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA('/view/:archiveKey', req, res, state)

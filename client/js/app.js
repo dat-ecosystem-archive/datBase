@@ -15,6 +15,8 @@ app.model(require('./models/preview'))
 // define routes:
 app.router((route) => [
   route('/', require('./pages/landing')),
+  route('/create', require('./pages/create')),
+  route('/browser', require('./pages/create/browser')),
   route('/view/:archiveKey', require('./pages/archive')),
   route('/:username/:dataset', require('./pages/archive')),
   route('/404', require('./pages/fourohfour'))
