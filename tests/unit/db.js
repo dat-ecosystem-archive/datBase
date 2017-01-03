@@ -78,7 +78,8 @@ test('db', function (t) {
       dats.cats.user_id = users.bob.id
       db.models.dats.create(dats.cats, function (err, body) {
         t.ifError(err)
-        t.same(body, dats.cats, 'created the cats')
+        t.same(body.description, dats.cats.description, 'created the cats')
+        t.ok(body.created_at, 'has created_at')
         db.models.dats.create(dats.cats, function (err, body) {
           t.ok(err)
           t.ok(err.message.indexOf('already exists'), 'already exists message')

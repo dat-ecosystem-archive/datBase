@@ -30,12 +30,16 @@ module.exports = function (knex, model, opts) {
         validate(values)
         if (validate.errors) return cb(new Error(validate.errors[0].field + ' ' + validate.errors[0].message))
       }
-      if (!values.updated_at) values.updated_at = knex.fn.now()
+      if (!values.updated_at) values.updated_at = Date.now()
       knex(model)
       .where(where)
       .update(values)
       .then(function (data) { cb(null, data) })
-      .catch(function (err) { return cb(errors.humanize(err)) })
+      .catch(onerror)
+
+      function onerror (err) {
+        return cb(errors.humanize(err))
+      }
     },
     create: function (values, cb) {
       if (!values) return cb(new Error('Values required as an argument to model.create'))
@@ -43,7 +47,7 @@ module.exports = function (knex, model, opts) {
         validate(values)
         if (validate.errors) return cb(new Error(validate.errors[0].field + ' ' + validate.errors[0].message))
       }
-      if (!values.updated_at) values.updated_at = knex.fn.now()
+
       values[primaryKey] = uuid.v4()
       async.waterfall([
         function (done) {
@@ -60,7 +64,8 @@ module.exports = function (knex, model, opts) {
           .then(function (data) { done(null, data[0]) })
           .catch(done)
         }],
-      finish)
+        finish
+      )
 
       function finish (err, data) {
         if (err) return cb(errors.humanize(err))
