@@ -1,5 +1,4 @@
 const html = require('choo/html')
-const header = require('./../../components/header')
 const drop = require('drag-drop')
 
 module.exports = (state, prev, send) => {

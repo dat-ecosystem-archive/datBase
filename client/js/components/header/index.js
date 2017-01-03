@@ -28,12 +28,12 @@ const header = (state, prev, send) => {
       <div class="container container--site-header">
         <a href="/" class="dat-logo">
           <img src="/public/img/dat-hexagon.svg" />
-          <div>dat<span>.</span>land</div>
+          <div>dat</div>
         </a>
         <div class="site-header__actions">
         ${button({
           icon: '/public/img/create-new-dat.svg',
-          text: 'Create New Dat',
+          text: 'Share data now',
           klass: 'btn btn--green new-dat',
           click: () => send('archive:new')
         })}
