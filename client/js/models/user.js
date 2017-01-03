@@ -20,8 +20,8 @@ module.exports = {
     update: (data, state) => {
       return data
     },
-    panel: (showPanel, state) => {
-      return {panel: showPanel ? '' : 'hidden'}
+    panel: (data, state) => {
+      return {panel: state.panel === 'hidden' ? '' : 'hidden'}
     },
     loginPanel: (showPanel, state) => {
       return {login: showPanel ? '' : 'hidden'}
