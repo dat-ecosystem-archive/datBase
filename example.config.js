@@ -14,8 +14,10 @@ var config = {
       whitelist: false // otherwise path to whitelist email txt file
     },
     db: {
-      dialect: 'pg',
-      connection: process.env.PG_CONNECTION_STRING || 'postgres://datfolder:datfolder@localhost/datfolder',
+      dialect: 'sqlite3'
+      connection: {
+        filename: './sqlite.db'
+      }
       useNullAsDefault: true
     }
   },
@@ -23,11 +25,15 @@ var config = {
   production: {
     township: {
       secret: process.env.TOWNSHIP_SECRET,
-      db: path.join(os.homedir(), 'township.db'),
+      db: path.join(os.homedir(), 'datland-township.db'),
       whitelist: false
     },
     db: {
-      connection: process.env.PG_CONNECTION_STRING
+      dialect: 'sqlite3'
+      connection: {
+        filename: path.join(os.homedir(), 'datland-production.db')
+      }
+      useNullAsDefault: true
     }
   }
 }

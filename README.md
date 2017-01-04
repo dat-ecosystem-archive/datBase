@@ -66,21 +66,9 @@ You can use defaults by copying the example config to `config.js` like so:
 cp example.config.js config.js
 ```
 
-3. Install Postgres on your machine.
+If you want to some other database, you can change these defaults in `config.js`.
 
-Open the psql terminal and create user `datfolder` with password `datfolder`
-with database `datfolder`. 
-
-Run the following in psql to set up your database:
-```
-create user datfolder with password 'datfolder';
-create database datfolder;
-grant all privileges on database datfolder to datfolder;
-```
-
-If you want to use sqlite or some other database, you can change these defaults in `config.js`.
-
-4. Initialize the database.
+3. Initialize the database.
 
 You only have to do this once:
 
@@ -89,13 +77,13 @@ node server/database/init.js
 ```
 
 
-5. Watch assets and start server in one command:
+4. Watch assets and start server in one command:
 
 ```
 npm start
 ```
 
-6 (optional). Load some test data
+5 (optional). Load some test data
 
 ```
 node server/database/populate.js
