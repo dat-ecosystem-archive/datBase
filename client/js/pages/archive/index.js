@@ -64,7 +64,7 @@ const archivePage = (state, prev, send) => {
             <div id="speed" class="dat-detail dat-detail--speed"><div>${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}</div></div>
           </div>
             <div class="dat-detail">
-            ${ archive && archive.owner ? 'Data is deleted once the browser tab is closed.' : '' }
+            ${archive && archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}
             </div>
         </div>
       </div>
