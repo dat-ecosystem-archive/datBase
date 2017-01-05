@@ -1,14 +1,19 @@
 $landing-header-height: 6rem;
 
+.landing {
+  background-color: $color-neutral;
+}
+
 .landing-header {
+  margin: auto;
+  max-width: 720px;
   height: $landing-header-height;
-  background-color: $color-green--hover;
   text-align: center;
   color: $color-white;
 }
 
 .landing-main {
-  height: calc(100vh - #{$site-header-height} - #{$landing-header-height});
+  height: calc(100vh);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
