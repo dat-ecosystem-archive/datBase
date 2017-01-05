@@ -52,38 +52,34 @@ Success returns the model as it exists in the database.
 
 ### Develop
 
-1. Install dependencies.
+Install dependencies.
 
 ```
 npm install
 ```
 
-2. Create config file.
+Create config file.
 
-You can use defaults by copying the example config to `config.js` like so:
+You can use defaults by copying the example config to `config.js`. If you want to some other database, you can change these defaults in `config.js`.
 
 ```
 cp example.config.js config.js
 ```
 
-If you want to some other database, you can change these defaults in `config.js`.
-
-3. Initialize the database.
-
-You only have to do this once:
+Initialize the database. You only have to do this once:
 
 ```
 node server/database/init.js
 ```
 
 
-4. Watch assets and start server in one command:
+Watch assets and start server in one command:
 
 ```
 npm start
 ```
 
-5 (optional). Load some test data
+Load some test data (optional).
 
 ```
 node server/database/populate.js
