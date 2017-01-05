@@ -46,11 +46,8 @@ module.exports = new function () {
 
     testCases['opening the browser and navigating to the url'] = (client) => {
       client
-        .url(testServer)
-        .expect.element('.new-dat').to.be.present
-
-      client
-        .click('.new-dat').pause(1000)
+        .url(testServer + '/create')
+        .expect.element('.share-button').to.be.present
         .click('.share-button').pause(1000)
         .expect.element('#title').text.matches(/^(.+)$/).before(10000)
 
