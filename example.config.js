@@ -14,10 +14,10 @@ var config = {
       whitelist: false // otherwise path to whitelist email txt file
     },
     db: {
-      dialect: 'sqlite3'
+      dialect: 'sqlite3',
       connection: {
         filename: './sqlite.db'
-      }
+      },
       useNullAsDefault: true
     }
   },
@@ -29,10 +29,10 @@ var config = {
       whitelist: false
     },
     db: {
-      dialect: 'sqlite3'
+      dialect: 'sqlite3',
       connection: {
         filename: path.join(os.homedir(), 'datland-production.db')
-      }
+      },
       useNullAsDefault: true
     }
   }

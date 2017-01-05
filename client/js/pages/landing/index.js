@@ -1,6 +1,5 @@
 const html = require('choo/html')
 const css = require('sheetify')
-const header = require('./../../components/header')
 
 const landingPage = (state, prev, send) => {
   const prefix = css`
@@ -24,7 +23,6 @@ const landingPage = (state, prev, send) => {
   `
   return html`
     <div class="landing">
-      ${header(state, prev, send)}
       <div class="${prefix}">
         <div class="example">
         </div>
