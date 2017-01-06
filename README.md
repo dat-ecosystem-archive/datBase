@@ -33,6 +33,13 @@ Fields:
 Responds with a list of results that match the query. Can pass query parameters
 like `?username='martha'` or `?name=cats` to filter results.
 
+
+Additional options:
+
+  * `limit`: 100 (default)
+  * `offset`: 0 (default)
+
+
 ##### ```PUT /api/v1/:model```
 
 `id` required.
