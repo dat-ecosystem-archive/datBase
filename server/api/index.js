@@ -24,7 +24,7 @@ module.exports = function (router, db, ship) {
       if (!route) return onerror(new Error('No ' + req.method + ' route.'), res)
 
       req.user = null
-      if (!decoded) return route(req, route)
+      if (!decoded) return route(req, done)
       db.models.users.get({email: decoded.auth.basic.email}, function (err, results) {
         if (err) return onerror(err, res)
         req.user = results[0]

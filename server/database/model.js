@@ -17,9 +17,16 @@ module.exports = function (knex, model, opts) {
     },
     get: function (where, cb) {
       if (!where) return cb(new Error('Query required as an argument to model.get'))
+      var limit = Number(where.limit) || 100
+      var offset = Number(where.offset) || 0
+      delete where.limit
+      delete where.offset
+
       knex(model)
         .select()
         .where(where)
+        .limit(limit)
+        .offset(offset)
         .then(function (data) { cb(null, data) })
         .catch(function (err) { return cb(errors.humanize(err)) })
     },

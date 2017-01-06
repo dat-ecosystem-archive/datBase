@@ -229,6 +229,15 @@ test('api', function (t) {
       })
     })
 
+    test('api can get dats with limit and offset', function (t) {
+      client.secureRequest({url: '/dats?limit=1&offset=1', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.length, 1, 'has one dat')
+        t.same(body[0].name, dats.penguins.name, 'is the right dat')
+        t.end()
+      })
+    })
+
     test('api cannot delete a dat that doesnt exist', function (t) {
       client.secureRequest({method: 'DELETE', url: '/dats', body: {id: 'notanid'}, json: true}, function (err, resp, body) {
         t.ok(err)
