@@ -2,11 +2,14 @@
 
 var fs = require('fs')
 
-module.exports = function verifyAccount (email, options, cb) {
+module.exports = function verifyAccount (user, options, cb) {
   if (typeof options === 'function') {
     cb = options
     options = {}
   }
+  var notAllowed = ['users', 'dats']
+  if (notAllowed.indexOf(user.username) > -1) return cb(new Error('Username not allowed'))
+
   if (!options.whitelist) {
     process.nextTick(function () {
       cb(null, 200) // if no whitelist configured, approve all
@@ -21,7 +24,7 @@ module.exports = function verifyAccount (email, options, cb) {
       if (!l || l[0] === '#') return false
       return true
     })
-    if (emails.indexOf(email) === -1) return cb(new Error('email not in invite list'), 401)
+    if (emails.indexOf(user.email) === -1) return cb(new Error('email not in invite list'), 401)
     return cb(null, 200)
   })
 }

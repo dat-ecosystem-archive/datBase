@@ -13,15 +13,22 @@ test('user signup whitelist should reject', function (t) {
 })
 
 test('user signup whitelist should allow', function (t) {
-  verify('bilbo@baggins.co.nz', opts, function (err, status) {
+  verify({email: 'bilbo@baggins.co.nz'}, opts, function (err, status) {
     t.ifErr(err, 'should not error')
     t.equals(status, 200)
     t.end()
   })
 })
 
+test('user bad username should reject ', function (t) {
+  verify({email: 'bilbo@baggins.co.nz', username: 'dats'}, opts, function (err, status) {
+    t.true(err, 'should error')
+    t.end()
+  })
+})
+
 test('user signup whitelist should ignore hashtag lines', function (t) {
-  verify('nazgul@mordornet.ru', opts, function (err, status) {
+  verify({email: 'nazgul@mordornet.ru'}, opts, function (err, status) {
     t.true(err, 'should error')
     t.equals(status, 401)
     t.equals(err.message, 'email not in invite list')
@@ -30,7 +37,7 @@ test('user signup whitelist should ignore hashtag lines', function (t) {
 })
 
 test('user signup whitelist invalid file', function (t) {
-  verify('nazgul@mordornet.ru', {whitelist: './fakefile.txt'}, function (err, status) {
+  verify({email: 'nazgul@mordornet.ru'}, {whitelist: './fakefile.txt'}, function (err, status) {
     t.true(err, 'should error')
     t.equals(err.message, 'error reading invite file')
     t.equals(status, 400)
@@ -39,7 +46,7 @@ test('user signup whitelist invalid file', function (t) {
 })
 
 test('user signup with no whitelist', function (t) {
-  verify('nazgul@mordornet.ru', {whitelist: false}, function (err, status) {
+  verify({email: 'nazgul@mordornet.ru'}, {whitelist: false}, function (err, status) {
     t.ifErr(err, 'should not error')
     t.equals(status, 200)
     t.end()

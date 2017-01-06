@@ -17,7 +17,7 @@ module.exports = function (router, db, opts) {
   router.post('/api/v1/register', function (req, res) {
     if (!req.body.email) return error(400, 'Email required.').pipe(res)
     if (!req.body.username) return error(400, 'Username required.').pipe(res)
-    verify(req.body.email, function (err) {
+    verify(req.body, opts, function (err) {
       if (err) return onerror(err, res)
       ship.register(req, res, {body: req.body}, function (err, statusCode, obj) {
         if (err) return onerror(err, res)
