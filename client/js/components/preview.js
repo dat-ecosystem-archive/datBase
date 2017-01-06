@@ -1,7 +1,7 @@
 const html = require('choo/html')
 const prettyBytes = require('pretty-bytes')
-const button = require('../../elements/button')
-const display = require('../display')
+const button = require('../elements/button')
+const display = require('./display')
 
 const preview = (state, prev, send) => {
   if (typeof document !== 'undefined') {

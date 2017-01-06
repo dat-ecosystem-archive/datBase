@@ -37,6 +37,16 @@ module.exports = function (opts, db) {
     sendSPA('/create', req, res, state)
   })
 
+  router.get('/list', function (req, res) {
+    var state = getDefaultAppState()
+    db.models.dats.get({limit: 10}, function (err, body) {
+      if (err) state.error.message = err.message
+      console.log('hi', body)
+      state.list.data = body
+      sendSPA('/list', req, res, state)
+    })
+  })
+
   router.get('/register', function (req, res) {
     var state = getDefaultAppState()
     sendSPA('/register', req, res, state)

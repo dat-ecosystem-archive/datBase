@@ -9,12 +9,6 @@ module.exports = function (knex, model, opts) {
   var validate = validators[model]
 
   return {
-    list: function (cb) {
-      knex(model)
-        .select()
-        .then(function (data) { cb(null, data) })
-        .catch(function (err) { return cb(errors.humanize(err)) })
-    },
     get: function (where, cb) {
       if (!where) return cb(new Error('Query required as an argument to model.get'))
       var limit = Number(where.limit) || 100

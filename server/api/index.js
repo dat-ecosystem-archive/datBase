@@ -69,7 +69,6 @@ module.exports = function (router, db, ship) {
   })
 
   router.get('/api/v1/:username/:dataset', function (req, res) {
-    // TODO: do it in one db query not two
     db.queries.getDatByShortname(req.params, function (err, dat) {
       if (err) return onerror(err, res)
       res.json(dat)

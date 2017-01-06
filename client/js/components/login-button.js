@@ -1,6 +1,6 @@
 const html = require('choo/html')
-const button = require('../../elements/button')
-const gravatar = require('../../elements/gravatar')
+const button = require('../elements/button')
+const gravatar = require('../elements/gravatar')
 
 module.exports = function (state, prev, send) {
   var text, click

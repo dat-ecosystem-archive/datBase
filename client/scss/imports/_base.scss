@@ -12,7 +12,7 @@ body {
 }
 
 .hidden {
-  display: none; 
+  display: none;
 }
 
 a, button, input[type="submit"] {
@@ -84,4 +84,34 @@ li {
     text-decoration: underline;
     color: #fff;
   }
+}
+
+.create {
+  display: flex;
+
+  .box {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .row {
+    margin-top: 10px;
+  }
+  h5 {
+    margin-bottom: 5px;
+  }
+  .landing-create-new-dat {
+    text-align: center;
+    a {
+      color: inherit;
+    }
+    a:hover {
+      background-color: #293648;
+      color: #eee;
+    }
+  }
+}
+
+.clipboard:hover {
+  cursor: pointer;
 }

@@ -1,19 +1,21 @@
 $landing-header-height: 6rem;
 
 .landing {
-  background-color: $color-neutral;
+}
+.footer {
+  text-align: center;
 }
 
 .landing-header {
   margin: auto;
   max-width: 720px;
-  height: $landing-header-height;
   text-align: center;
   color: $color-white;
 }
 
 .landing-main {
-  height: calc(100vh);
+  background-color: $color-neutral;
+  height: calc(100vh - #{$landing-header-height});
   display: flex;
   flex-direction: column;
   justify-content: space-between;

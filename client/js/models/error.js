@@ -4,7 +4,7 @@ var defaultState = {
 
 module.exports = {
   namespace: 'error',
-  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
+  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.error,
   reducers: {
     update: (error, state) => {
       return {message: error ? error.message : ''}

@@ -1,6 +1,6 @@
 const html = require('choo/html')
-const loading = require('../../elements/loading')
-const fourohfour = require('../../elements/404')
+const loading = require('../elements/loading')
+const fourohfour = require('../elements/404')
 
 // XXX: server-side data rendering could pull from a cache if we want
 const renderData = module.parent ? function () { } : require('render-data')

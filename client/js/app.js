@@ -7,6 +7,7 @@ const app = choo()
 app.model(require('./models/archive'))
 app.model(require('./models/import-queue'))
 app.model(require('./models/user'))
+app.model(require('./models/list'))
 app.model(require('./models/error'))
 app.model(require('./models/message'))
 app.model(require('./models/help'))
@@ -17,6 +18,7 @@ app.router((route) => [
   route('/', require('./pages/landing')),
   route('/create', require('./pages/create')),
   route('/browser', require('./pages/create/browser')),
+  route('/list', require('./pages/list')),
   route('/register', require('./pages/auth/register')),
   route('/view/:archiveKey', require('./pages/archive')),
   route('/:username/:dataset', require('./pages/archive')),

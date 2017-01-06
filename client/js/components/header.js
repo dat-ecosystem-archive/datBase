@@ -1,10 +1,10 @@
 const html = require('choo/html')
-const panel = require('./../../components/auth/user-panel')
-const login = require('./../../components/auth/login')
-const loginButton = require('./../../components/login-button')
-const button = require('./../../elements/button')
-const importButton = require('./../../elements/import-button')
-const message = require('./../../elements/message')
+const panel = require('./auth/user-panel')
+const login = require('./auth/login')
+const loginButton = require('./login-button')
+const button = require('../elements/button')
+const importButton = require('../elements/import-button')
+const message = require('../elements/message')
 
 const help = (state, prev, send) => {
   if (module.parent || window.location.pathname === '/') return ''

@@ -4,7 +4,7 @@ var defaultState = {
 
 module.exports = {
   namespace: 'message',
-  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
+  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.message,
   reducers: {
     update: (data, state) => {
       return {message: data.message, type: data.type}
