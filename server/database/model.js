@@ -9,19 +9,30 @@ module.exports = function (knex, model, opts) {
   var validate = validators[model]
 
   return {
-    get: function (where, cb) {
-      if (!where) return cb(new Error('Query required as an argument to model.get'))
+    get: function (where, join, cb) {
+      if (typeof where === 'function') {
+        cb = where
+        where = {}
+        join = null
+      }
+      if (typeof join === 'function') {
+        cb = join
+        join = null
+      }
       var limit = Number(where.limit) || 100
       var offset = Number(where.offset) || 0
       delete where.limit
       delete where.offset
 
-      knex(model)
+      var query = knex(model)
         .select()
         .where(where)
         .limit(limit)
         .offset(offset)
-        .then(function (data) { cb(null, data) })
+
+      if (join) query.join(join[0], join[1], join[2])
+
+      query.then(function (data) { cb(null, data) })
         .catch(function (err) { return cb(errors.humanize(err)) })
     },
     update: function (where, values, cb) {

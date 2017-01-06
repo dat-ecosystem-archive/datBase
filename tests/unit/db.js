@@ -24,7 +24,7 @@ test('db', function (t) {
     })
 
     test('database should get users', function (t) {
-      db.models.users.list(function (err, body) {
+      db.models.users.get(function (err, body) {
         t.ifError(err)
         t.same(body.length, 1, 'only one user')
         t.same(body[0].username, users.joe.username, 'new user is in the list')
@@ -42,7 +42,7 @@ test('db', function (t) {
     })
 
     test('database should get new users', function (t) {
-      db.models.users.list(function (err, body) {
+      db.models.users.get(function (err, body) {
         t.ifError(err)
         t.same(body.length, 2, 'has two users')
         t.same(body[0].username, users.joe.username, 'joe is in the list')

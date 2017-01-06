@@ -22,8 +22,7 @@ Users.prototype.put = function (ctx, cb) {
 
 Users.prototype.get = function (ctx, cb) {
   if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
-  if (Object.keys(ctx.query).length > 0) return this.model.get(ctx.query, cb)
-  return this.model.list(cb)
+  return this.model.get(ctx.query, cb)
 }
 
 Users.prototype.delete = function (ctx, cb) {
