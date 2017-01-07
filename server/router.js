@@ -27,39 +27,37 @@ module.exports = function (opts, db) {
   api(router, db, ship)
 
   // landing page
-  router.get('/', function (req, res) {
-    var state = getDefaultAppState()
-    sendSPA('/', req, res, state)
-  })
-
   router.get('/create', function (req, res) {
     var state = getDefaultAppState()
-    sendSPA('/create', req, res, state)
+    sendSPA(req, res, state)
   })
 
-  router.get('/list', function (req, res) {
+  router.get('/', list)
+  router.get('/list', list)
+
+  function list (req, res) {
     var state = getDefaultAppState()
     var join = ['users', 'users.id', 'dats.user_id']
     db.models.dats.get({limit: 10}, join, function (err, body) {
       if (err) state.error.message = err.message
       state.list.data = body
-      sendSPA('/list', req, res, state)
+      sendSPA(req, res, state)
     })
-  })
+  }
 
   router.get('/register', function (req, res) {
     var state = getDefaultAppState()
-    sendSPA('/register', req, res, state)
+    sendSPA(req, res, state)
   })
 
   router.get('/browser', function (req, res) {
     var state = getDefaultAppState()
-    sendSPA('/browser', req, res, state)
+    sendSPA(req, res, state)
   })
 
   router.get('/view/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA('/view/:archiveKey', req, res, state)
+      return sendSPA(req, res, state)
     })
   })
 
@@ -69,13 +67,13 @@ module.exports = function (opts, db) {
         var state = getDefaultAppState()
         state.archive.error = err
         log.warn('could not get dat with ' + req.params, err)
-        return sendSPA('/:username/:dataset', req, res, state)
+        return sendSPA(req, res, state)
       }
       archiveRoute(dat.url, function (state) {
         log.info('sending', state)
         state.archive.username = req.params.username
         state.archive.dataset = req.params.dataset
-        return sendSPA('/:username/:dataset', req, res, state)
+        return sendSPA(req, res, state)
       })
     })
   })
@@ -122,7 +120,8 @@ module.exports = function (opts, db) {
     return JSON.parse(JSON.stringify(state))
   }
 
-  function sendSPA (route, req, res, state) {
+  function sendSPA (req, res, state) {
+    var route = req.url
     if (!state) state = {}
     const frozenState = Object.freeze(state)
     const contents = app.toString(route, frozenState)

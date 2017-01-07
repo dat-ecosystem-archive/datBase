@@ -1,3 +1,4 @@
+const list = require('../../components/list')
 const html = require('choo/html')
 
 const landingPage = (state, prev, send) => {
@@ -10,8 +11,9 @@ const landingPage = (state, prev, send) => {
         <button href="https://github.com/datproject/dat-desktop" class="btn btn--green">Download the Desktop App</button>
       </div>
     </div>
-    <div class="">
-
+    <div class="example-dats">
+      <h2>Examples</h2>
+      ${list(state, prev, send)}
     </div>
     <div class="footer">
       <p><a href="https://datproject.org">About Dat</a> | <a href="https://github.com/datproject/dat">GitHub</a> | <a href="https://twitter.com/dat_project">Twitter</a> | <a href="http://tinyletter.com/datdata">Mailing List</a>
