@@ -1,13 +1,12 @@
 const html = require('choo/html')
 const importButton = require('./../../elements/import-button')
-const dropzone = require('./../../components/dropzone')
 const header = require('./../../components/header')
 
 const createPage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="container create">
+      <div class="container">
       <div class="box">
         <h1>Share data persistently</h1>
         <div class="row">
@@ -28,9 +27,8 @@ const createPage = (state, prev, send) => {
             handler: function (link) { window.location.href = '/view/' + link }
           })}
         </div>
+        </div>
       </div>
-      ${dropzone(state, prev, send)}
-    </div>
     </div>`
 }
 
