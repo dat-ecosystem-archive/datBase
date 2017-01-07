@@ -11,9 +11,10 @@ const listPage = (state, prev, send) => {
         ${dats.map(function (dat) {
           return html`
             <div class="dat-list-item">
-              <h3>${dat.name}</h3>
+              <div class="share-link"><a href="/${dat.username}/${dat.name}">${dat.username}/${dat.name}</a></div>
               <div class="dat-list-item-actions">
-              ${copyButton(dat, send)}
+                ${copyButton(dat.url, send)}
+              </div>
             </div>
             `
         })}

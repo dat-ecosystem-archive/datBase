@@ -39,9 +39,9 @@ module.exports = function (opts, db) {
 
   router.get('/list', function (req, res) {
     var state = getDefaultAppState()
-    db.models.dats.get({limit: 10}, function (err, body) {
+    var join = ['users', 'users.id', 'dats.user_id']
+    db.models.dats.get({limit: 10}, join, function (err, body) {
       if (err) state.error.message = err.message
-      console.log('hi', body)
       state.list.data = body
       sendSPA('/list', req, res, state)
     })

@@ -1,14 +1,15 @@
 const html = require('choo/html')
 const importQueue = require('../../components/import-queue')
 const hyperdrive = require('../../components/hyperdrive')
+const copyButton = require('../../components/copy-button')
+const header = require('../../components/header')
+const preview = require('../../components/preview')
 const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
 const addFiles = require('../../elements/add-files')
-const header = require('../../components/header')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
-const preview = require('../../components/preview')
 
 const archivePage = (state, prev, send) => {
   // XXX: have an error enum?
@@ -39,6 +40,9 @@ const archivePage = (state, prev, send) => {
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header__actions">
+            <div class="dat-header-action">
+              ${copyButton(state.archive.key, send)}
+           </div>
             <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} ${downloadBtnDisabled}>
               <div class="btn__icon-wrapper ${downloadBtnDisabled}">
                 <img src="/public/img/download.svg" class="btn__icon-img">
