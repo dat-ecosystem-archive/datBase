@@ -32,7 +32,7 @@ const archivePage = (state, prev, send) => {
   var bytes = archive && archive.content ? archive.content.bytes
     : health ? health.bytes : 0
   var size = prettyBytes(bytes)
-  var downloadBtnDisabled = webrtcPeers > 0 ? '' : 'disabled'
+  var downloadBtnDisabled = webrtcPeers > 0 ? '' : 'display:none;'
 
   return html`
     <div>
@@ -43,7 +43,7 @@ const archivePage = (state, prev, send) => {
             <div class="dat-header-action">
               ${copyButton(state.archive.key, send)}
            </div>
-            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} ${downloadBtnDisabled}>
+            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
               <div class="btn__icon-wrapper ${downloadBtnDisabled}">
                 <img src="/public/img/download.svg" class="btn__icon-img">
                 <span class="btn__icon-text">Download</span>
