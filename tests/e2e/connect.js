@@ -46,7 +46,7 @@ module.exports = new function () {
 
     testCases['opening the browser and navigating to the url'] = (client) => {
       client
-        .url(testServer + '/browser')
+        .url(testServer + 'browser')
         .click('.share-button').pause(1000)
         .expect.element('#title').text.matches(/^(.+)$/).before(10000)
 
@@ -127,6 +127,7 @@ module.exports = new function () {
     testCases['create new button properly resets view'] = (client) => {
       client.click('.new-dat').pause(1000)
       client
+        .click('.share-button').pause(1000)
         .expect.element('#fs').text.not.to.contain('dat.json').before(1000)
       client
         .expect.element('#author').text.not.to.contain('datapackage.json').before(1000)
