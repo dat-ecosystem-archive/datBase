@@ -6,27 +6,34 @@ const createPage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="container">
-      <div class="box">
-        <h1>Share data persistently</h1>
-        <div class="row">
-        <h5>1. Install dat</h5>
+      <div class="create-page">
+        <div class="container create-container">
+          <h2>Create a new dat</h2>
+          <p>A dat contains all of the files for your project, including the version history.</p>
+          <div class="row">
+              ${importButton({
+                handler: function (link) { window.location.href = '/view/' + link }
+              })}
+          </div>
+        </div>
+        <div class="side-by-side">
+          <div class="row">
+          <a href="https://github.com/datproject/dat-desktop">
+            <img src="/public/img/logo-dat-desktop-dark.svg" />
+            <h2>Download for Mac</h2>
+          </a>
+          </div>
+          <div class="row">
+          <a href="http://docs.datproject.org">
+            <img src="/public/img/terminal-icon.png" />
+            <h2>In the terminal</h2>
+          </a>
           <code>
-            $ npm install -g dat
+          $ npm install -g dat<br>
+          $ dat create path/to/my/data<br>
+          $ dat sync path/to/my/data
           </code>
-        </div>
-        <div class="row">
-          <h5>2. Create an archive</h5>
-          <code>
-            $ dat path/to/my/data
-          </code>
-        </div>
-        <div class="row">
-          <h5>3. Share the link (dat://):</h5>
-          ${importButton({
-            handler: function (link) { window.location.href = '/view/' + link }
-          })}
-        </div>
+          </div>
         </div>
       </div>
     </div>`

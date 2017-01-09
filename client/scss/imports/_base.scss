@@ -43,6 +43,9 @@ li {
   padding-right: .625rem;
   padding-left: .625rem;
   max-width: 1170px;
+  img {
+    max-width: 100%;
+  }
   @include breakpoint (sm) {
     padding-right: 1rem;
     padding-left: 1rem;
@@ -51,6 +54,24 @@ li {
     padding-right: 2rem;
     padding-left: 2rem;
   }
+}
+
+.side-by-side {
+  display: flex;
+  justify-content: space-around;
+  img {
+    width: 250px;
+    height: 250px;
+    margin: 1em;
+  }
+  h2 {
+    text-align: center;
+  }
+
+}
+
+.dark-background {
+  background-color: $color-neutral;
 }
 
 .site-main {
@@ -86,30 +107,17 @@ li {
   }
 }
 
-.create {
-  display: flex;
+.create-page {
+  padding: 2em;
+  margin: auto;
+  width: 726px;
+  .create-container {
 
-  .box {
-    padding: 20px;
-    margin: 20px;
   }
+}
 
-  .row {
-    margin-top: 10px;
-  }
-  h5 {
-    margin-bottom: 5px;
-  }
-  .landing-create-new-dat {
-    text-align: center;
-    a {
-      color: inherit;
-    }
-    a:hover {
-      background-color: #293648;
-      color: #eee;
-    }
-  }
+.row {
+  margin-top: 10px;
 }
 
 .clipboard:hover {
