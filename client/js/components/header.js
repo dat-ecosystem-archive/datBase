@@ -41,7 +41,6 @@ const header = (state, prev, send) => {
             handler: function (link) { window.location.href = '/view/' + link }
           })}
           ${loginButton(state, prev, send)}
-          ${help(state, prev, send)}
         </div>
       </div>
     </header>
