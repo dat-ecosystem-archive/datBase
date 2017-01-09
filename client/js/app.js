@@ -15,7 +15,7 @@ app.model(require('./models/preview'))
 
 // define routes:
 app.router((route) => [
-  route('/', require('./pages/landing')),
+  route('/', require('./pages/list')),
   route('/create', require('./pages/create')),
   route('/browser', require('./pages/create/browser')),
   route('/list', require('./pages/list')),

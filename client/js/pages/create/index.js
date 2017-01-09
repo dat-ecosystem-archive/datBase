@@ -18,13 +18,13 @@ const createPage = (state, prev, send) => {
         </div>
         <div class="side-by-side">
           <div class="row">
-          <a href="https://github.com/datproject/dat-desktop">
+          <a href="https://github.com/datproject/dat-desktop" target="_blank">
             <img src="/public/img/logo-dat-desktop-dark.svg" />
             <h2>Download for Mac</h2>
           </a>
           </div>
           <div class="row">
-          <a href="http://docs.datproject.org">
+          <a href="http://docs.datproject.org" target="_blank">
             <img src="/public/img/terminal-icon.png" />
             <h2>In the terminal</h2>
           </a>
