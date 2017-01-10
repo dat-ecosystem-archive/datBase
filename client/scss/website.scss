@@ -1,0 +1,405 @@
+/**
+ * Use awesome syntax of `node-sass-magic-importer` to import scss modules
+ * See import `dat-design` rule below for example.
+ * If there's no file path specified after module name, it resolves to the file
+ * defined by the imported package.json's `style` property
+ *
+ * More magic importer features:
+ * https://github.com/maoberlehner/node-sass-magic-importer
+ */
+@import "~dat-design/scss/base.scss";
+@import "imports/base";
+
+@import "includes/variables";
+
+@import "vendor/bootstrap.min.css";
+@import "vendor/railscasts.css"; // this is not used anymore? – @kriesse
+
+@import "includes/layout";
+@import "includes/headers";
+@import "includes/cli-tutorial";
+@import "includes/sponsor-logos";
+@import "includes/example-datasets";
+@import "includes/video";
+
+@import "includes/tachyons";
+
+html {
+  font-size: 87.5%;
+  @media screen and (min-width: 640px) {
+    font-size: 100%;
+  }
+}
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  background-color: $color-white;
+  color: $color-neutral;
+}
+
+.mono {
+  font-family: monospace;
+}
+
+.header-continue {
+  margin: 30px 0 50px;
+}
+
+.content-box {
+  padding: 40px 40px 20px 40px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  .content-title {
+    line-height: 3.5rem;
+    margin-top: .5rem;
+    padding-top: 0;
+  }
+  iframe {
+    max-width: 480px;
+    width: 100%;
+  }
+}
+
+a {
+  color: $color-info;
+  font-weight: 300;
+  text-decoration: none;
+  &:hover, &:focus {
+    color: $color-info--hover;
+    text-decoration: none;
+  }
+}
+
+ul,
+p {
+  font-size: 1.125rem;
+}
+
+p {
+  padding: 5px 0;
+}
+
+pre {
+  padding: .5em;
+  font-size: .875rem;
+  background-color: $color-neutral;
+  color: $color-neutral--10;
+  border: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+}
+
+.button {
+  display: inline-block;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  background-color: $color-green;
+  padding: .5rem .875rem;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  &.button-light {
+    background-color: white;
+  }
+  &:hover, &:focus {
+    background-color: $color-green--hover;
+    color: white;
+    text-decoration: none;
+  }
+}
+
+ul {
+  list-style: initial;
+  padding-left: 20px;
+}
+
+.mobile-only {
+  display: block;
+  @media screen and (min-width: 650px) {
+    display: none;
+  }
+}
+
+/** SPLASH **/
+.rsaquo {
+  color: $color-green;
+  margin-right: 10px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.25rem;
+}
+.desktop {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  width: 16px;
+  height: 16px;
+  background-image: url('/static/img/daticon-desktop.svg');
+  margin-right: 10px;
+}
+.octocat {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  width: 16px;
+  height: 16px;
+  background-image: url('/static/img/octocat.png');
+  margin-right: 10px;
+}
+.octocat-green {
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  width: 17px;
+  height: 17px;
+  background-image: url('/static/img/octocat-green.png');
+  margin-right: 10px;
+}
+.twitter-green {
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  width: 17px;
+  height: 17px;
+  background-image: url('/static/img/twitter-green.png');
+  margin-right: 10px;
+}
+
+section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  @media screen and (min-width: 640px) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  @media screen and (min-width: 960px) {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.section-hero {
+  padding-top: 0;
+  padding-bottom: 0;
+  .container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  @media screen and (min-width: 768px) {
+    background-image: url(/static/img/screenshot-dat-desktop.png);
+    background-repeat: no-repeat;
+    background-color: $color-white;
+    background-position: 215% 100%;
+    background-size: 78%;
+  }
+  @media screen and (min-width: 960px) {
+    background-position: 130% 100%;
+    background-size: 60%;
+  }
+  @media screen and (min-width: 1180px) {
+    background-position: 100% 100%;
+    background-size: 50%;
+    .container {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  }
+  @media screen and (min-width: 1440px) {
+    background-position: 100% 100%;
+    background-size: 50%;
+  }
+}
+
+.bg-white {
+  background-color: $color-white;
+}
+
+.bg-neutral-04 {
+  background-color: $color-neutral--04;
+}
+
+.bg-neutral {
+  background-color: $color-neutral;
+}
+
+.content-title {
+  font-size: 2rem;
+  font-weight: 700;
+  padding-top: 1rem;
+  padding-bottom: .5rem;
+}
+.content-subtitle {
+  font-size: 1.25rem;
+  color: $color-neutral--70;
+  padding-bottom: 15px;
+}
+
+.horizontal-rule {
+  &:after {
+    content: '';
+    display: block;
+    width: 4rem;
+    height: 5px;
+    background-color: $color-neutral--30;
+    margin-top: 1.25rem;
+    margin-bottom: 2rem;
+  }
+}
+.content-code-intro {
+  text-align: left;
+  margin-bottom: 60px;
+}
+.content-card {
+  position: relative;
+  background-color: white;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 30px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+.content-card-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: $color-neutral;
+}
+.content-card-subtitle {
+  color: $color-neutral--70;
+  line-height: 1.75;
+}
+
+.p-intro {
+  font-size: 1.25rem;
+  color: $color-neutral--70;
+  margin-bottom: 1.5rem;
+}
+
+
+.spacer {
+  padding: 20px;
+}
+
+/** footer **/
+.footer {
+  background-color: $color-neutral;
+  overflow: auto;
+  color: $color-neutral--60;
+  a {
+    color: $color-neutral--20;
+    &:hover, &:focus {
+      color: $color-neutral--30;
+    }
+  }
+}
+
+
+
+.footer-directory {
+  overflow: auto;
+  padding: 20px;
+  @media screen and (min-width: 1115px) {
+    padding: 50px 0;
+  }
+  border-bottom: 1px solid $color-neutral--80;
+}
+.footer-credits {
+  font-size: .75rem;
+  padding: 20px;
+  text-align: center;
+}
+.footer-heading {
+  font-size: 1.5rem;
+  color: white;
+}
+.horizontal-rule-footer {
+  &:after {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 4px;
+    background-color: $color-neutral--70;
+    margin-top: .75rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.footer-nav-list {
+  list-style-type: none;
+  padding-left: 0;
+  font-weight: 600;
+  color: $color-white;
+}
+.footer-nav-list li {
+  margin-bottom: 3px;
+  a {
+    display: block;
+    line-height: 28px;
+  }
+}
+.footer-emphasized {
+  font-weight: 700;
+}
+.footer-subtitle {
+  padding-top: 10px;
+}
+
+.blog-layout {
+  display: flex;
+  flex-direction: column;
+  @media screen and (min-width: $medium) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+a.load-document {
+  text-decoration: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  color: $color-neutral;
+  transition: .25s;
+}
+
+.sidebar-list {
+  max-width: 100%;
+  @media screen and (min-width: $small) {
+    max-width: 25%;
+  }
+
+  .document {
+    padding: 2rem 0;
+    width: 100%;
+    border-bottom: 1px solid $color-neutral--10;
+    &.active {
+      h2 {
+        font-weight: bold;
+      }
+    }
+    &:hover, &:focus {
+      color: $color-info;
+    }
+  }
+}
+
+.post {
+  @media screen and (min-width: $small) {
+    max-width: $small;
+    padding-right: 2rem;
+  }
+  padding-bottom: 5rem;
+  img {
+    max-width: 100%
+  }
+}
+
+td, th {
+  padding: 10px;
+  border: 1px solid black;
+}

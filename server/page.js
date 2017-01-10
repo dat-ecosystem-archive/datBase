@@ -24,7 +24,7 @@ function page (url, contents, appState) {
       <head>
         <meta charset="utf-8" />
         <link rel="icon" type="image/png" href="/public/img/dat-data-blank.png" />
-        <link rel="stylesheet" type="text/css" href="/public/css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="/public/css/app.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
 
         ${renderMetaTags()}
