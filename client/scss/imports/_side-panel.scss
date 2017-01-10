@@ -1,0 +1,92 @@
+$user-panel-side-padding: 1.75rem;
+
+.user-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: $color-neutral--04;
+    z-index: 100;
+    min-width: 250px;
+
+  .top-part {
+    background-color: $color-info;
+    position: relative;
+    padding: 0.8rem $user-panel-side-padding 1rem;
+    color: $color-neutral--20;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  .close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    &:hover {
+      &::before, &::after {
+        background: $color-green;
+      }
+    }
+
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      left: 0;
+      height: 2px;
+      margin-top: -1px;
+      background: $color-neutral--20;
+    }
+    &::before {
+      transform: rotate(45deg);
+    }
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+
+  .gravatar {
+    border-radius: 65px;
+    width: 65px;
+    margin: 0.5rem auto 1rem;
+    display: block;
+    border: 2px solid $color-neutral--04;
+  }
+
+  .body-part {
+    margin: 1rem $user-panel-side-padding;
+    color: $color-neutral;
+    font-weight: bold;
+    li {
+      margin:1.5rem 0;
+    }
+  }
+
+  .footer-part {
+    position: absolute;
+    bottom: 0;
+    margin: 1rem $user-panel-side-padding;
+    color: $color-neutral--50;
+    font-size: 0.7rem;
+
+    .btn {
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin: 0;
+      a:not(:first-child) {
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+      a:first-child {
+        padding-right:5px;
+      }
+    }
+  }
+}
