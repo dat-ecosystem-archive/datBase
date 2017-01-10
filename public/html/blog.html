@@ -1,19 +1,41 @@
-<div class="blog-layout">
-  <div class="container post">
-    <div id="post">{{{content}}}</div>
-  </div>
-  <div class="sidebar-list">
-    {{#posts}}
-    {{#if date}}
-      <a class="load-document" href="/blog/{{name}}">
-        <div class="document" id="{{name}}">
-          <div class="published">{{date}}</div>
-          <div class="author">{{author}}</div>
-          <h2 class="title">{{title}}</h2>
-          <p class="teaser">{{teaser}}</p>
-        </div>
-      </a>
-    {{/if}}
-    {{/posts}}
+<div class="container">
+  <div class="blog-layout">
+    <div class="post">
+      <div id="post">{{{content}}}</div>
+    </div>
+    <div class="sidebar-list">
+      {{#posts}}
+      {{#if date}}
+        <a class="load-document" href="/blog/{{name}}">
+          <div class="document" id="{{name}}">
+            <h2 class="title f5 lh-title">{{title}}</h2>
+            <div class="f6">
+              <span class="published">{{date}}</span>
+              &bull;
+              <span class="author">{{author}}</span>
+            </div>
+            <div class="f6">
+              {{teaser}}
+            </div>
+          </div>
+        </a>
+      {{/if}}
+      {{/posts}}
+
+      {{#posts}}
+      {{#if date}}
+        <a class="load-document" href="/blog/{{name}}">
+          <div class="document" id="{{name}}">
+            <h2 class="title f5 lh-title">{{title}}</h2>
+            <div class="f6">
+              <span class="published">{{date}}</span>
+              &bull;
+              <span class="author">{{author}}</span>
+            </div>
+          </div>
+        </a>
+      {{/if}}
+      {{/posts}}
+    </div>
   </div>
 </div>
