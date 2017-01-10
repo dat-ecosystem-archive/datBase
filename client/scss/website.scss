@@ -137,7 +137,7 @@ ul {
   top: 1px;
   width: 16px;
   height: 16px;
-  background-image: url('/static/img/daticon-desktop.svg');
+  background-image: url('/public/img/daticon-desktop.svg');
   margin-right: 10px;
 }
 .octocat {
@@ -146,7 +146,7 @@ ul {
   top: 1px;
   width: 16px;
   height: 16px;
-  background-image: url('/static/img/octocat.png');
+  background-image: url('/public/img/octocat.png');
   margin-right: 10px;
 }
 .octocat-green {
@@ -155,7 +155,7 @@ ul {
   top: 3px;
   width: 17px;
   height: 17px;
-  background-image: url('/static/img/octocat-green.png');
+  background-image: url('/public/img/octocat-green.png');
   margin-right: 10px;
 }
 .twitter-green {
@@ -164,7 +164,7 @@ ul {
   top: 3px;
   width: 17px;
   height: 17px;
-  background-image: url('/static/img/twitter-green.png');
+  background-image: url('/public/img/twitter-green.png');
   margin-right: 10px;
 }
 
@@ -189,7 +189,7 @@ section {
     padding-bottom: 2rem;
   }
   @media screen and (min-width: 768px) {
-    background-image: url(/static/img/screenshot-dat-desktop.png);
+    background-image: url(/public/img/screenshot-dat-desktop.png);
     background-repeat: no-repeat;
     background-color: $color-white;
     background-position: 215% 100%;
