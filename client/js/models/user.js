@@ -1,5 +1,8 @@
-var township = require('township-client')
-var defaultState = {
+const township = require('township-client')
+const qs = require('querystring')
+const http = require('choo/http')
+
+const defaultState = {
   username: null,
   email: null,
   token: null,
@@ -37,11 +40,24 @@ module.exports = {
     }
   },
   effects: {
+    dats: (data, state, send, done) => {
+      const params = qs.stringify({username: data.username})
+      const client = getClient()
+      http.get(window.location.origin + '/api/v1/dats?' + params, {
+        headers: { authorization: 'Bearer ' + data.token },
+        json: true
+      }, function (err, resp, json) {
+        if (err) throw err
+        send('user:update', {dats: json}, done)
+      })
+    },
     whoami: (data, state, send, done) => {
       const client = getClient()
-      var user = client.getLogin()
-      if (user) send('user:update', user, done)
-      else done()
+      const user = client.getLogin()
+      if (user) {
+        send('user:update', user, done)
+        send('user:dats', user, done)
+      } else done()
     },
     logout: (data, state, send, done) => {
       const client = getClient()
@@ -74,6 +90,6 @@ module.exports = {
           send('message:success', 'Registered successfully.', done)
         })
       })
-    }
+    },
   }
 }

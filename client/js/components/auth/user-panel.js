@@ -18,8 +18,10 @@ module.exports = function (state, prev, send) {
     </div>
     <div class="body-part">
     <ul>
-      <li>List item #1</li>
-      <li>List item #2</li>
+      <li>First Thing - Not a Dat</li>
+      ${state.user.dats.map(dat => {
+        return html`<li><a href="/${state.user.username}/${dat.name}">${dat.name}</a></li>`
+      })}
     </ul>
     </div>
     <div class="footer-part">
