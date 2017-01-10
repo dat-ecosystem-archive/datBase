@@ -10,9 +10,9 @@ module.exports = function (state, prev, send) {
 
     }
   `
-  return html`<div class="user-panel ${prefix} ${state.user.panel}">
+  return html`<div class="user-panel ${prefix} ${state.user.sidePanel}">
     <div class="top-part">
-      <a class="close" href="#" onclick=${() => send('user:panel')}></a>
+      <a class="close" href="#" onclick=${() => send('user:sidePanel')}></a>
       ${gravatar(state.user)}
       ${state.user.email}
     </div>

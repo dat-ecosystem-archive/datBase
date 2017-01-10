@@ -6,7 +6,7 @@ module.exports = function (state, prev, send) {
   var text, click
   if (state.user.email) {
     text = gravatar(state.user)
-    click = () => send('user:panel')
+    click = () => send('user:sidePanel')
   } else {
     click = () => send('user:loginPanel', true)
     text = 'Login'

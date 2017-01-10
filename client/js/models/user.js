@@ -4,7 +4,8 @@ var defaultState = {
   email: null,
   token: null,
   login: 'hidden',
-  panel: 'hidden'
+  sidePanel: 'hidden',
+  dats: []
 }
 
 function getClient () {
@@ -20,8 +21,8 @@ module.exports = {
     update: (data, state) => {
       return data
     },
-    panel: (data, state) => {
-      return {panel: state.panel === 'hidden' ? '' : 'hidden'}
+    sidePanel: (data, state) => {
+      return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
     },
     loginPanel: (showPanel, state) => {
       return {login: showPanel ? '' : 'hidden'}
@@ -48,7 +49,7 @@ module.exports = {
         if (err) return send('error:new', err, done)
         state.username = null
         state.email = null
-        state.panel = 'hidden'
+        state.sidePanel = 'hidden'
         state.token = null
         send('user:update', data, function () {
           send('message:success', 'Logged out.', done)
