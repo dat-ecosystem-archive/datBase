@@ -20,6 +20,8 @@ const login = (state, prev, send) => {
       }
       form {
         text-align: center;
+        margin: 0;
+        padding: 1rem 0;
       }
       input {
         text-transform: none;
@@ -33,7 +35,7 @@ const login = (state, prev, send) => {
   return html`<div class="login ${state.user.login} ${prefix}">
     <a class="x" onclick=${() => send('user:loginPanel', false)}>X</a>
     <form onsubmit=${onSubmit}>
-      <h2 class="error">${state.error ? state.error.message : ''}</h2>
+      <div class="error">${state.error ? state.error.message : ''}</div>
       <div class="dat-import">
         <div class="dat-import--icon">
           <img src="/public/img/link.svg" />
