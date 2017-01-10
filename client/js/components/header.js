@@ -6,19 +6,6 @@ const button = require('../elements/button')
 const importButton = require('../elements/import-button')
 const message = require('../elements/message')
 
-const help = (state, prev, send) => {
-  if (module.parent || window.location.pathname === '/') return ''
-  const intro = () => send('help:show')
-  return html`
-    ${button({
-      icon: '/public/img/question.svg',
-      text: 'Help',
-      klass: 'btn btn--green btn__reveal-text dat-button--help',
-      click: intro
-    })}
-    `
-}
-
 const header = (state, prev, send) => {
   return html`<div>
     ${panel(state, prev, send)}
