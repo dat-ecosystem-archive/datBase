@@ -32,7 +32,7 @@
     "test:e2e": "nightwatch --env chrome,chrome",
     "test:e2e:firefox": "nightwatch --env firefox,firefox",
     "start": "npm run watch-js & npm run watch-css & npm run watch-server",
-    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
+    "watch-css": "nodemon --watch public -e scss,html,js -x \"npm run build-css && node bin/render-static.js\"",
     "watch-js": "watchify --fast --verbose -g [ babelify --blacklist strict  ] client/js/app.js -o public/js/app.js",
     "watch-server": "nodemon server/cli --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
