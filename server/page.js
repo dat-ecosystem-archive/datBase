@@ -26,6 +26,7 @@ function page (url, contents, appState) {
         <link rel="icon" type="image/png" href="/public/img/dat-data-blank.png" />
         <link rel="stylesheet" type="text/css" href="/public/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.1.0/introjs.min.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500|Source+Sans+Pro:400,600,700" rel="stylesheet">
 
         ${renderMetaTags()}
         <meta property="og:site_name" content="Dat Land" />
