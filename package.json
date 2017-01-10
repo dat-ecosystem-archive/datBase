@@ -37,7 +37,7 @@
     "watch-server": "nodemon server/cli --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/main.scss public/css/main.css",
-    "build-js": "browserify -g [ babelify --blacklist strict  ] client/js/app.js > public/js/app.js",
+    "build-js": "node bin/render-static.js && browserify -g [ babelify --blacklist strict  ] client/js/app.js > public/js/app.js",
     "build-js-prod": "NODE_ENV=production node --max-executable-size=2000 ./node_modules/.bin/browserify -g [ babelify --blacklist strict  ] -t envify client/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/main.css > public/css/main.min.css",
@@ -52,9 +52,12 @@
     ]
   },
   "devDependencies": {
+    "cheerio": "^0.22.0",
     "chromedriver": "^2.21.2",
     "dat-encoding": "^4.0.1",
     "dat-js": "^5.0.0",
+    "handlebars": "^4.0.6",
+    "marked": "^0.3.6",
     "nightwatch": "^0.9.5",
     "nodemon": "^1.10.0",
     "request": "^2.79.0",

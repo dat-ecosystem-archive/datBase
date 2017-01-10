@@ -25,6 +25,11 @@ module.exports = function (opts, db) {
 
   const ship = auth(router, db, opts)
   api(router, db, ship)
+  router.use('/', express.static(path.join(__dirname, '..', 'public', 'rendered'), {
+    setHeaders: function (res, path) {
+      res.setHeader('Content-Type', 'text/html')
+    }
+  }))
 
   // landing page
   router.get('/create', function (req, res) {
@@ -32,7 +37,6 @@ module.exports = function (opts, db) {
     sendSPA(req, res, state)
   })
 
-  router.get('/', list)
   router.get('/list', list)
 
   function list (req, res) {

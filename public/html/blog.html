@@ -1,0 +1,19 @@
+<div class="blog-layout">
+  <div class="container post">
+    <div id="post">{{{content}}}</div>
+  </div>
+  <div class="sidebar-list">
+    {{#posts}}
+    {{#if date}}
+      <a class="load-document" href="/blog/{{name}}">
+        <div class="document" id="{{name}}">
+          <div class="published">{{date}}</div>
+          <div class="author">{{author}}</div>
+          <h2 class="title">{{title}}</h2>
+          <p class="teaser">{{teaser}}</p>
+        </div>
+      </a>
+    {{/if}}
+    {{/posts}}
+  </div>
+</div>
