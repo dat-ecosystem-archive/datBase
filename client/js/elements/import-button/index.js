@@ -16,6 +16,6 @@ module.exports = function (props) {
     <div class="dat-import--icon">
       <img src="/public/img/link.svg" />
     </div>
-    <input type="text" placeholder="Enter Dat Link" onkeydown=${keydown} class="dat-import--input">
+    <input type="text" placeholder="Import Dat" onkeydown=${keydown} class="dat-import--input">
   </div>`
 }
