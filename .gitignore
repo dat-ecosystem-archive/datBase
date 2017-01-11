@@ -16,3 +16,5 @@ selenium-debug.log
 dat.land
 township.db
 sqlite.db
+config.js
+public/rendered

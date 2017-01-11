@@ -1,14 +1,13 @@
 /* header */
 
 $site-header-height: 4rem;
-$site-header-ui-elements-height: 3rem;
 
 .site-header {
   height: $site-header-height;
-  background-color: $color-green--hover;
+  background-color: $color-neutral;
   color: $color-white;
   .dat-button button:not(.dat-button--help) {
-    background-color: transparent;
+  //  background-color: transparent;
     &:hover, &:focus, &:active {
       background-color: $color-green--darker;
     }
@@ -28,7 +27,6 @@ $site-header-ui-elements-height: 3rem;
 
 .dat-import {
   display: inline-block;
-  height: $site-header-ui-elements-height;
   max-width: 14rem;
   vertical-align: middle;
 }
@@ -50,7 +48,7 @@ $site-header-ui-elements-height: 3rem;
   }
   img {
     display: block;
-    max-width: 2.5rem;
+    max-width: 2rem;
     margin-right: .75rem;
     transition: transform .5s ease-in-out;
   }
@@ -69,7 +67,6 @@ $site-header-ui-elements-height: 3rem;
 .dat-button {
   display: inline-block;
   button {
-    height: $site-header-ui-elements-height;
     text-transform: uppercase;
     letter-spacing: .075em;
     &:hover, &:focus, &:active {
