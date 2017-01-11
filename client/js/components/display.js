@@ -29,7 +29,7 @@ module.exports = function (state, prev, send) {
   send('preview:update', {isLoading: true})
 
   if (entryName && archive) {
-    send('preview:update', {error: {message: 'Looking for peers...', body: 'If it is taking a long time, use the desktop app.'}})
+    send('preview:update', {error: {message: 'Looking for peers …', body: 'If this is taking a long time, use the desktop app.'}})
     var stream = archive.createFileReadStream(entryName)
     renderData.render({
       name: entryName,
