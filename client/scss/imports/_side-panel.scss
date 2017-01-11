@@ -5,7 +5,6 @@ $user-panel-side-padding: 1.75rem;
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: $color-neutral--04;
     z-index: 100;
     min-width: 250px;
 
@@ -59,18 +58,27 @@ $user-panel-side-padding: 1.75rem;
   }
 
   .body-part {
-    margin: 1rem $user-panel-side-padding;
+    margin:0;
+    padding: 1rem $user-panel-side-padding;
+    background-color: $color-neutral--04;
+    box-shadow: -4px 0px 10px -2px $color-neutral--04;
+  }
+
+  .content {
+    height:100%;
     color: $color-neutral;
     font-weight: bold;
     li {
       margin:1.5rem 0;
     }
+
   }
 
   .footer-part {
     position: absolute;
-    bottom: 0;
-    margin: 1rem $user-panel-side-padding;
+    bottom: 1rem;
+    width:100%;
+    background-color: $color-neutral--04;
     color: $color-neutral--50;
     font-size: 0.7rem;
 

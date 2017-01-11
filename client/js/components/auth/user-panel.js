@@ -17,18 +17,20 @@ module.exports = function (state, prev, send) {
       ${state.user.email}
     </div>
     <div class="body-part">
-    <ul>
-      <li>First Thing - Not a Dat</li>
-      ${state.user.dats.map(dat => {
-        return html`<li><a href="/${state.user.username}/${dat.name}">${dat.name}</a></li>`
-      })}
-    </ul>
-    </div>
-    <div class="footer-part">
-      <button class="btn btn--large btn--green" onclick=${() => send('user:logout', {})}>LOGOUT</button>
-      <p>DatLand TODO version</p>
-      <p><span><a href="http://github.com/datproject/datfolder/issues" target="_blank">Report Bug</a> |
-      <a href="http://github.com/datproject/datfolder" target="_blank">Contribute</a></span></p>
+      <div class="content">
+        <ul>
+          <li>First Thing - Not a Dat</li>
+          ${state.user.dats.map(dat => {
+            return html`<li><a href="/${state.user.username}/${dat.name}">${dat.name}</a></li>`
+          })}
+        </ul>
+      </div>
+      <div class="footer-part">
+        <button class="btn btn--large btn--green" onclick=${() => send('user:logout', {})}>LOGOUT</button>
+        <p>DatLand TODO version</p>
+        <p><span><a href="http://github.com/datproject/datfolder/issues" target="_blank">Report Bug</a> |
+        <a href="http://github.com/datproject/datfolder" target="_blank">Contribute</a></span></p>
+      </div>
     </div>
   </div>`
 }
