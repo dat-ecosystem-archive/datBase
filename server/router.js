@@ -13,6 +13,7 @@ const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
 const getDat = require('./dat')
+const pkg = require('../package.json')
 
 module.exports = function (opts, db) {
   opts = opts || {}
@@ -126,6 +127,7 @@ module.exports = function (opts, db) {
       assert.equal(typeof model.state, 'object', 'getDefaultAppState: model must have a state property that is an object')
       state[model.namespace] = model.state
     })
+    state.user.version = pkg.version
     return JSON.parse(JSON.stringify(state))
   }
 

@@ -1,10 +1,14 @@
-var township = require('township-client')
-var defaultState = {
+const township = require('township-client')
+const qs = require('querystring')
+const http = require('choo/http')
+
+const defaultState = {
   username: null,
   email: null,
   token: null,
   login: 'hidden',
-  panel: 'hidden'
+  sidePanel: 'hidden',
+  dats: []
 }
 
 function getClient () {
@@ -20,8 +24,8 @@ module.exports = {
     update: (data, state) => {
       return data
     },
-    panel: (data, state) => {
-      return {panel: state.panel === 'hidden' ? '' : 'hidden'}
+    sidePanel: (data, state) => {
+      return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
     },
     loginPanel: (showPanel, state) => {
       return {login: showPanel ? '' : 'hidden'}
@@ -36,11 +40,26 @@ module.exports = {
     }
   },
   effects: {
+    dats: (data, state, send, done) => {
+      const params = qs.stringify({username: data.username})
+      http.get(window.location.origin + '/api/v1/dats?' + params, {
+        headers: { authorization: 'Bearer ' + data.token },
+        json: true
+      }, function (err, resp, json) {
+        if (resp.statusCode === 400 && resp.body.indexOf('jwt expired')) {
+          // TODO: sometimes jwt expires but app still thinks logged in...
+        }
+        if (err || resp.statusCode !== 200) return done()
+        send('user:update', {dats: json}, done)
+      })
+    },
     whoami: (data, state, send, done) => {
       const client = getClient()
-      var user = client.getLogin()
-      if (user) send('user:update', user, done)
-      else done()
+      const user = client.getLogin()
+      if (user) {
+        send('user:update', user, done)
+        send('user:dats', user, done)
+      } else done()
     },
     logout: (data, state, send, done) => {
       const client = getClient()
@@ -48,7 +67,7 @@ module.exports = {
         if (err) return send('error:new', err, done)
         state.username = null
         state.email = null
-        state.panel = 'hidden'
+        state.sidePanel = 'hidden'
         state.token = null
         send('user:update', data, function () {
           send('message:success', 'Logged out.', done)
