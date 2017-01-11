@@ -42,12 +42,14 @@ module.exports = {
   effects: {
     dats: (data, state, send, done) => {
       const params = qs.stringify({username: data.username})
-      const client = getClient()
       http.get(window.location.origin + '/api/v1/dats?' + params, {
         headers: { authorization: 'Bearer ' + data.token },
         json: true
       }, function (err, resp, json) {
-        if (err) throw err
+        if (resp.statusCode === 400 && resp.body.indexOf('jwt expired')) {
+          // TODO: sometimes jwt expires but app still thinks logged in...
+        }
+        if (err || resp.statusCode !== 200) return done()
         send('user:update', {dats: json}, done)
       })
     },

@@ -66,8 +66,15 @@ $user-panel-side-padding: 1.75rem;
 
   .content {
     height:100%;
-    color: $color-neutral;
+    color: $color-neutral--80;
     font-weight: bold;
+    font-size: 1rem;
+    a {
+      color: $color-neutral--80;
+      &:hover {
+        color: $color-neutral--40;
+      }
+    }
     li {
       margin:1.5rem 0;
     }
