@@ -1,7 +1,7 @@
 var path = require('path')
 var yofs = require('yo-fs')
 
-module.exports = function ui (root, entries, onclick) {
+module.exports = function ui (root, entries, opts, onclick) {
   var lookup = {}
   for (var i in entries) {
     var entry = entries[i]
@@ -16,6 +16,6 @@ module.exports = function ui (root, entries, onclick) {
     }
   }
   var vals = Object.keys(lookup).map(key => lookup[key])
-  var tree = yofs(root, vals, onclick)
+  var tree = yofs(root, vals, opts, onclick)
   return tree.widget
 }

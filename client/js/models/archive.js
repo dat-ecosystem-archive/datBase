@@ -40,7 +40,9 @@ var defaultState = {
   uploadTotal: 0,
   downloadMeter: null,
   downloadSpeed: 0,
-  downloadTotal: 0
+  downloadTotal: 0,
+  offset: 0,
+  limit: 5
 }
 
 module.exports = {
