@@ -7,5 +7,6 @@ module.exports = (state, prev, send) => {
   return html`
     <div class="landing">
       ${header(state, prev, send)}
+      ${state.user.username ? html`<h1>Logged in as ${state.user.username}</h1>` : ''}
     </div>`
 }
