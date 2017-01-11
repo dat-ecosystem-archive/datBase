@@ -8,8 +8,7 @@ module.exports = function (state, prev, send) {
     text = gravatar(state.user)
     click = () => send('user:panel')
   } else {
-    click = () => send('user:loginPanel', true)
-    text = 'Login'
+    return ''
   }
 
   return html`

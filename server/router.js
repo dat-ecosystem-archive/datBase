@@ -54,6 +54,11 @@ module.exports = function (opts, db) {
     sendSPA(req, res, state)
   })
 
+  router.get('/login', function (req, res) {
+    var state = getDefaultAppState()
+    sendSPA(req, res, state)
+  })
+
   router.get('/browser', function (req, res) {
     var state = getDefaultAppState()
     sendSPA(req, res, state)
