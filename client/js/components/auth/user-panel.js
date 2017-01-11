@@ -27,7 +27,7 @@ module.exports = function (state, prev, send) {
       </div>
       <div class="footer-part">
         <button class="btn btn--large btn--green" onclick=${() => send('user:logout', {})}>LOGOUT</button>
-        <p>DatLand TODO version</p>
+        <p>Dat Project v${state.user.version}</p>
         <p><span><a href="http://github.com/datproject/datfolder/issues" target="_blank">Report Bug</a> |
         <a href="http://github.com/datproject/datfolder" target="_blank">Contribute</a></span></p>
       </div>
