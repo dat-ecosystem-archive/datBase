@@ -86,11 +86,15 @@ Watch assets and start server in one command:
 npm start
 ```
 
-Load some test data (optional).
+### Getting test user and dat
+
+Run the following command to create a user with the given email address. The
+user will have the password `dogsandcats.`
 
 ```
-node server/database/populate.js
+node server/database/populate.js <email-address>
 ```
+
 
 ### Build for production
 ```

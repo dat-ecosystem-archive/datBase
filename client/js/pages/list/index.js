@@ -7,7 +7,6 @@ const listPage = (state, prev, send) => {
   <div>
     ${header(state, prev, send)}
     <div class="container">
-    <h2>Recent dats</h2>
     ${list(state, prev, send)}
     </div>
   </div>`

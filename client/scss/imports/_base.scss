@@ -46,11 +46,11 @@ li {
   img {
     max-width: 100%;
   }
-  @include breakpoint (sm) {
+  @include breakpoint (md1) {
     padding-right: 1rem;
     padding-left: 1rem;
   }
-  @include breakpoint (md1) {
+  @include breakpoint (xl) {
     padding-right: 2rem;
     padding-left: 2rem;
   }
