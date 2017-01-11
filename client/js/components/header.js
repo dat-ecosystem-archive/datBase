@@ -15,17 +15,17 @@ const header = (state, prev, send) => {
       <div class="container container--site-header">
         <a href="/" class="dat-logo">
           <img src="/public/img/dat-hexagon.svg" />
-          <div>dat</div>
+          <div>Dat</div>
         </a>
         <div class="site-header__actions">
-        ${button({
-          icon: '/public/img/create-new-dat.svg',
-          text: 'Create new Dat',
-          klass: 'btn btn--green new-dat',
-          click: function () { window.location.href = '/create' }
-        })}
           ${importButton({
             handler: function (link) { window.location.href = '/view/' + link }
+          })}
+          ${button({
+            icon: '/public/img/create-new-dat.svg',
+            text: 'Create new Dat',
+            klass: 'btn btn--green new-dat',
+            click: function () { window.location.href = '/create' }
           })}
           ${loginButton(state, prev, send)}
         </div>
