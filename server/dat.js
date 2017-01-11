@@ -18,7 +18,7 @@ module.exports = function (key, cb) {
     duration: 3000
   }, () => {
     cancelled = true
-    var msg = 'Looking for sources...'
+    var msg = 'Looking for sources …'
     return cb(new Error(msg), dat)
   })
 
