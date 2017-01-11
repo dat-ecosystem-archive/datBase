@@ -1,0 +1,22 @@
+.copy-link {
+  color: $color-neutral--60;
+  &:hover, &:focus {
+    color: $color-neutral--10;
+  }
+}
+
+.copy-link,
+.open-desktop {
+  svg {
+    max-width: 1em;
+    height: 1em;
+    fill: currentColor;
+    vertical-align: -9%;
+  }
+}
+
+.example-data-img {
+  display: block;
+  max-width: 80px;
+  margin: 0 auto;
+}
