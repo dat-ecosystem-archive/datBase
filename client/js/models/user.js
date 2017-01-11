@@ -92,6 +92,6 @@ module.exports = {
           send('message:success', 'Registered successfully.', done)
         })
       })
-    },
+    }
   }
 }
