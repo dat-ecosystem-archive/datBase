@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const panel = require('./auth/user-panel')
 const login = require('./auth/login')
+const loginButton = require('./login-button')
 const button = require('../elements/button')
 const importButton = require('../elements/import-button')
 const message = require('../elements/message')
@@ -26,6 +27,7 @@ const header = (state, prev, send) => {
           ${importButton({
             handler: function (link) { window.location.href = '/view/' + link }
           })}
+          ${loginButton(state, prev, send)}
         </div>
       </div>
     </header>
