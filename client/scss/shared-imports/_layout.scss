@@ -3,15 +3,20 @@
   padding-left: .5rem;
   margin-right: auto;
   margin-left: auto;
-  max-width: 1280px;
+  max-width: 1080px;
   @media screen and (min-width: $xsmall) {
     padding-right: 1rem;
     padding-left: 1rem;
   }
-  @media screen and (min-width: $medium) {
+  @media screen and (min-width: $small) {
     padding-right: 2rem;
     padding-left: 2rem;
   }
+}
+
+.container--full {
+  width: auto;
+  max-width: 100%;
 }
 
 .container--narrow {

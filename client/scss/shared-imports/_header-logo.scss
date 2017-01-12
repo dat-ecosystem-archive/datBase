@@ -3,29 +3,32 @@
   align-items: center;
   font-size: 1.5rem;
   font-weight: 600;
-  color: $color-white;
+  color: $color-neutral;
   letter-spacing: .025em;
-  > div {
-    display: none;
-  }
-  @include breakpoint (md1) {
-    div {
-      display: block;
-    }
-  }
   img {
     display: block;
     max-width: 2rem;
     margin-right: .75rem;
     transition: transform .5s ease-in-out;
   }
-  span {
-    opacity: .5;
-  }
   &:hover, &:focus {
-    color: $color-white;
+    color: $color-neutral;
     img {
       transform: rotate(360deg);
     }
+  }
+}
+
+.dat-logo--on-dark {
+  color: $color-white;
+  &:hover, &:focus {
+    color: $color-white;
+  }
+}
+
+.dat-logo__word {
+  display: none;
+  @include breakpoint (md1) {
+    display: block;
   }
 }
