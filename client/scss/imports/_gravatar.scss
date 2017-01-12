@@ -3,8 +3,11 @@
   width: 2rem;
   height: auto;
   border-radius: 1rem;
-  border: 3px solid $color-neutral;
+  border: 2px solid $color-neutral-40;
   margin: auto;
   display: block;
   vertical-align: middle;
+  &:hover, &:focus {
+    border-color: $color-neutral-04;
+  }
 }

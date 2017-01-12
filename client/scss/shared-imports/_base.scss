@@ -36,44 +36,6 @@ li {
   @include list-plain;
 }
 
-/* page layout */
-
-.container {
-  margin: 0 auto;
-  padding-right: .625rem;
-  padding-left: .625rem;
-  max-width: 1170px;
-  img {
-    max-width: 100%;
-  }
-  @include breakpoint (md1) {
-    padding-right: 1rem;
-    padding-left: 1rem;
-  }
-  @include breakpoint (xl) {
-    padding-right: 2rem;
-    padding-left: 2rem;
-  }
-}
-
-.side-by-side {
-  display: flex;
-  justify-content: space-around;
-  img {
-    width: 250px;
-    height: 250px;
-    margin: 1em;
-  }
-  h2 {
-    text-align: center;
-  }
-
-}
-
-.dark-background {
-  background-color: $color-neutral;
-}
-
 .site-main {
   position: relative;
   padding-top: $padding-site-main;
@@ -97,29 +59,28 @@ li {
 .danger-block {
   background-color: $color-danger;
   text-align: center;
-  color: #fff;
+  color: $color-white;
   h1, h2, h3, h4, h5 {
-    color: #fff;
+    color: $color-white;
   }
   a {
     text-decoration: underline;
-    color: #fff;
+    color: $color-white;
   }
-}
-
-.create-page {
-  padding: 2em;
-  margin: auto;
-  width: 726px;
-  .create-container {
-
-  }
-}
-
-.row {
-  margin-top: 10px;
 }
 
 .clipboard:hover {
   cursor: pointer;
+}
+
+.bg-white {
+  background-color: $color-white;
+}
+
+.bg-neutral-04 {
+  background-color: $color-neutral-04;
+}
+
+.bg-neutral {
+  background-color: $color-neutral;
 }

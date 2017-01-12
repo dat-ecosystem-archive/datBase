@@ -6,36 +6,36 @@ const createPage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="create-page">
-        <div class="container create-container">
-          <h2>Create a new dat</h2>
+      <section>
+        <div class="container">
+          <h2>Create A New Dat</h2>
           <p>A dat contains all of the files for your project, including the version history.</p>
-          <div class="row">
-              ${importButton({
-                handler: function (link) { window.location.href = '/view/' + link }
-              })}
+          <div>
+            ${importButton({
+              handler: function (link) { window.location.href = '/view/' + link }
+            })}
           </div>
-        </div>
-        <div class="side-by-side">
-          <div class="row">
+      </section>
+      <section class="bg-neutral-04">
+        <div class="container">
+          <h2>Dat Desktop</h2>
           <a href="https://github.com/datproject/dat-desktop" target="_blank">
             <img src="/public/img/logo-dat-desktop-dark.svg" />
-            <h2>Download for Mac</h2>
+            <p>Download for Mac</p>
           </a>
-          </div>
-          <div class="row">
+
+          <h2>Dat CLI</h2>
           <a href="http://docs.datproject.org" target="_blank">
             <img src="/public/img/terminal-icon.png" />
-            <h2>In the terminal</h2>
+            <p>Use Dat in the terminal</p>
           </a>
           <code>
-          $ npm install -g dat<br>
-          $ dat create path/to/my/data<br>
-          $ dat sync path/to/my/data
+            $ npm install -g dat<br>
+            $ dat create path/to/my/data<br>
+            $ dat sync path/to/my/data
           </code>
-          </div>
         </div>
-      </div>
+      </section>
     </div>`
 }
 

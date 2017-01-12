@@ -10,7 +10,7 @@ const header = (state, prev, send) => {
   return html`<div>
     ${panel(state, prev, send)}
     ${login(state, prev, send)}
-    <header class="site-header"><div id="intro"></div>
+    <header class="site-header">
       ${message(state.message)}
       <div class="container container--site-header">
         <a href="/" class="dat-logo">

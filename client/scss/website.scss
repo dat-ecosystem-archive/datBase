@@ -8,19 +8,21 @@
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
 @import "~dat-design/scss/base.scss";
-@import "imports/base";
 
-@import "includes/variables";
+@import "shared-imports/variables";
+@import "shared-imports/base";
+@import "shared-imports/layout";
+@import "shared-imports/site-header";
+@import "shared-imports/header-logo";
 
-@import "vendor/bootstrap.min.css";
-@import "vendor/railscasts.css"; // this is not used anymore? – @kriesse
+// @import "vendor/bootstrap.min.css";
 
-@import "includes/layout";
-@import "includes/headers";
 @import "includes/cli-tutorial";
 @import "includes/sponsor-logos";
 @import "includes/example-datasets";
+@import "includes/gallery";
 @import "includes/video";
+@import "includes/blog";
 
 @import "includes/tachyons";
 
@@ -213,18 +215,6 @@ section {
   }
 }
 
-.bg-white {
-  background-color: $color-white;
-}
-
-.bg-neutral-04 {
-  background-color: $color-neutral-04;
-}
-
-.bg-neutral {
-  background-color: $color-neutral;
-}
-
 .content-title {
   font-size: 2rem;
   font-weight: 700;
@@ -346,60 +336,4 @@ section {
 }
 .footer-subtitle {
   padding-top: 10px;
-}
-
-.blog-layout {
-  display: flex;
-  flex-direction: column;
-  @media screen and (min-width: $medium) {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-a.load-document {
-  text-decoration: none;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  display: inline-flex;
-  color: $color-neutral;
-  transition: .25s;
-}
-
-.sidebar-list {
-  max-width: 100%;
-  @media screen and (min-width: $small) {
-    max-width: 25%;
-  }
-
-  .document {
-    padding: 2rem 0;
-    width: 100%;
-    border-bottom: 1px solid $color-neutral-10;
-    &.active {
-      h2 {
-        font-weight: bold;
-      }
-    }
-    &:hover, &:focus {
-      color: $color-info;
-    }
-  }
-}
-
-.post {
-  @media screen and (min-width: $small) {
-    max-width: $small;
-    padding-right: 2rem;
-  }
-  padding-bottom: 5rem;
-  img {
-    max-width: 100%
-  }
-}
-
-td, th {
-  padding: 10px;
-  border: 1px solid black;
 }

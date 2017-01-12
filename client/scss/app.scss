@@ -8,9 +8,14 @@
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
 @import "~dat-design/scss/base.scss";
-@import "imports/base";
+
+@import "shared-imports/variables";
+@import "shared-imports/base";
+@import "shared-imports/layout";
+@import "shared-imports/site-header";
+@import "shared-imports/header-logo";
+
 @import "imports/inline-error";
-@import "imports/site-header";
 @import "imports/status-bar";
 @import "imports/dat-header";
 @import "imports/message";
@@ -23,6 +28,5 @@
 @import "imports/landing-page";
 @import "imports/preview-display"; // TODO: delete this after choo migration
 @import "imports/landing-page";
-@import "imports/introjs-custom";
 @import "imports/list";
 @import "imports/side-panel";
