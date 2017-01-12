@@ -1,4 +1,5 @@
 const fs = require('fs')
+const collect = require('collect-stream')
 const path = require('path')
 const compression = require('compression')
 const getMetadata = require('../client/js/utils/metadata')
@@ -9,10 +10,11 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const app = require('../client/js/app')
+const Dat = require('./haus')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
-const getDat = require('./dat')
+const entryStream = require('./entryStream')
 const pkg = require('../package.json')
 
 module.exports = function (opts, db) {
@@ -22,6 +24,10 @@ module.exports = function (opts, db) {
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
+  router.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+  })
   const log = bole(__filename)
 
   const ship = auth(router, db, opts)
@@ -91,19 +97,31 @@ module.exports = function (opts, db) {
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
     state.archive.key = key
+    var dat
     try {
       state.archive.key = encoding.toStr(key)
+      dat = Dat(key)
     } catch (err) {
       log.warn(key + ' not valid', err)
       state.archive.error = err
       return cb(state)
     }
-    getDat(key, function (err, dat, entries) {
-      if (err && !entries) {
+    var cancelled = false
+    var stream = entryStream(dat, function ontimeout (err) {
+      if (err) {
+        cancelled = true
         log.warn(key + ' timed out', err)
         state.archive.error = err
         return cb(state)
       }
+    })
+    collect(stream, function (err, entries) {
+      if (err) {
+        log.warn(key + ' errored', err)
+        state.archive.error = err
+        return cb(state)
+      }
+      if (cancelled) return
       state.archive.entries = entries
       getMetadata(dat.archive, function (err, metadata) {
         if (err) state.archive.error = new Error('no metadata')

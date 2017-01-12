@@ -1,3 +1,4 @@
+const encoding = require('dat-encoding')
 var memdb = require('memdb')
 var hyperdrive = require('hyperdrive')
 var hyperhealth = require('hyperhealth')
@@ -6,7 +7,9 @@ module.exports = Haus
 
 function Haus (key, opts) {
   if (!(this instanceof Haus)) return new Haus(key, opts)
+  if (typeof opts === 'function') return new Haus(key, {}, opts)
   if (!opts) opts = {}
+  key = encoding.toBuf(key)
   this.db = memdb()
   this.drive = hyperdrive(this.db)
   this.archive = this.drive.createArchive(key, {sparse: true, live: true})
