@@ -1,7 +1,7 @@
 
 .header {
   background-color: $color-white;
-  border-bottom: 1px solid $color-neutral--04;
+  border-bottom: 1px solid $color-neutral-04;
 }
 
 .header-nav-link {
@@ -10,7 +10,7 @@
     color: $color-info;
   }
   &:hover, &:focus {
-    color: $color-neutral--80;
+    color: $color-neutral-80;
   }
 }
 
@@ -29,7 +29,7 @@
   overflow: hidden;
   max-width: 48px;
   &:hover, &:focus {
-    color: $color-neutral--80;
+    color: $color-neutral-80;
     text-decoration: none;
   }
   @media screen and (min-width: 400px) {

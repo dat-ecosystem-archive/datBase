@@ -32,9 +32,9 @@ $landing-header-height: 6rem;
   justify-content: center;
   margin-top: 2rem;
   border-radius: .5rem;
-  border: 4px dashed $color-neutral--20;
+  border: 4px dashed $color-neutral-20;
   h3 {
-    color: $color-green--hover;
+    color: $color-green-hover;
   }
 }
 
@@ -45,7 +45,7 @@ $landing-header-height: 6rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
   h3 {
-    color: $color-green--hover;
+    color: $color-green-hover;
     display: inline-block;
   }
 }

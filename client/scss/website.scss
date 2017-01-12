@@ -68,7 +68,7 @@ a {
   font-weight: 300;
   text-decoration: none;
   &:hover, &:focus {
-    color: $color-info--hover;
+    color: $color-info-hover;
     text-decoration: none;
   }
 }
@@ -86,7 +86,7 @@ pre {
   padding: .5em;
   font-size: .875rem;
   background-color: $color-neutral;
-  color: $color-neutral--10;
+  color: $color-neutral-10;
   border: none;
   box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
 }
@@ -106,7 +106,7 @@ pre {
     background-color: white;
   }
   &:hover, &:focus {
-    background-color: $color-green--hover;
+    background-color: $color-green-hover;
     color: white;
     text-decoration: none;
   }
@@ -218,7 +218,7 @@ section {
 }
 
 .bg-neutral-04 {
-  background-color: $color-neutral--04;
+  background-color: $color-neutral-04;
 }
 
 .bg-neutral {
@@ -233,7 +233,7 @@ section {
 }
 .content-subtitle {
   font-size: 1.25rem;
-  color: $color-neutral--70;
+  color: $color-neutral-70;
   padding-bottom: 15px;
 }
 
@@ -243,7 +243,7 @@ section {
     display: block;
     width: 4rem;
     height: 5px;
-    background-color: $color-neutral--30;
+    background-color: $color-neutral-30;
     margin-top: 1.25rem;
     margin-bottom: 2rem;
   }
@@ -269,13 +269,13 @@ section {
   color: $color-neutral;
 }
 .content-card-subtitle {
-  color: $color-neutral--70;
+  color: $color-neutral-70;
   line-height: 1.75;
 }
 
 .p-intro {
   font-size: 1.25rem;
-  color: $color-neutral--70;
+  color: $color-neutral-70;
   margin-bottom: 1.5rem;
 }
 
@@ -288,11 +288,11 @@ section {
 .footer {
   background-color: $color-neutral;
   overflow: auto;
-  color: $color-neutral--60;
+  color: $color-neutral-60;
   a {
-    color: $color-neutral--20;
+    color: $color-neutral-20;
     &:hover, &:focus {
-      color: $color-neutral--30;
+      color: $color-neutral-30;
     }
   }
 }
@@ -305,7 +305,7 @@ section {
   @media screen and (min-width: 1115px) {
     padding: 50px 0;
   }
-  border-bottom: 1px solid $color-neutral--80;
+  border-bottom: 1px solid $color-neutral-80;
 }
 .footer-credits {
   font-size: .75rem;
@@ -322,7 +322,7 @@ section {
     display: block;
     width: 2rem;
     height: 4px;
-    background-color: $color-neutral--70;
+    background-color: $color-neutral-70;
     margin-top: .75rem;
     margin-bottom: 2rem;
   }
@@ -376,7 +376,7 @@ a.load-document {
   .document {
     padding: 2rem 0;
     width: 100%;
-    border-bottom: 1px solid $color-neutral--10;
+    border-bottom: 1px solid $color-neutral-10;
     &.active {
       h2 {
         font-weight: bold;

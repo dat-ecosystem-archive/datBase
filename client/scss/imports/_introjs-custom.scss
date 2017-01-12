@@ -26,13 +26,13 @@
 .introjs-button.introjs-button {
   padding: .6rem 0;
   border: none;
-  color: $color-neutral--50;
+  color: $color-neutral-50;
   text-shadow: none;
   background: transparent;
   text-transform: uppercase;
   letter-spacing: .05em;
   &:hover, &:focus {
-    color: $color-neutral--70;
+    color: $color-neutral-70;
     background: transparent;
     box-shadow: none;
   }

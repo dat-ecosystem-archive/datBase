@@ -7,9 +7,9 @@ $site-header-height: 4rem;
   background-color: $color-neutral;
   color: $color-white;
   .dat-button button:not(.dat-button--help) {
-  //  background-color: transparent;
+   background-color: transparent;
     &:hover, &:focus, &:active {
-      background-color: $color-green--darker;
+      background-color: $color-neutral;
     }
   }
 }
@@ -25,6 +25,7 @@ $site-header-height: 4rem;
   justify-content: space-between;
 }
 
+// replace with styles out fo dat-design - @kriesse
 .dat-import {
   display: inline-block;
   max-width: 14rem;
