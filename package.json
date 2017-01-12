@@ -58,7 +58,6 @@
   "devDependencies": {
     "cheerio": "^0.22.0",
     "chromedriver": "^2.21.2",
-    "dat-encoding": "^4.0.1",
     "dat-js": "^5.0.0",
     "handlebars": "^4.0.6",
     "marked": "^0.3.6",
@@ -87,6 +86,7 @@
     "collect-stream": "^1.1.1",
     "compression": "^1.6.2",
     "dat-design": "^1.4.2",
+    "dat-encoding": "^4.0.1",
     "datland-swarm-defaults": "^1.0.2",
     "discovery-swarm": "^4.0.2",
     "drag-drop": "^2.11.0",
