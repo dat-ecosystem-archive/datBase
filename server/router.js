@@ -1,4 +1,5 @@
 const fs = require('fs')
+const collect = require('collect-stream')
 const path = require('path')
 const compression = require('compression')
 const getMetadata = require('../client/js/utils/metadata')
@@ -9,10 +10,11 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const app = require('../client/js/app')
+const Dat = require('./haus')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
-const getDat = require('./dat')
+const entryStream = require('./entryStream')
 const pkg = require('../package.json')
 
 module.exports = function (opts, db) {
@@ -75,7 +77,7 @@ module.exports = function (opts, db) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
-        state.archive.error = err
+        state.archive.error = {message: err.message}
         log.warn('could not get dat with ' + req.params, err)
         return sendSPA(req, res, state)
       }
@@ -91,22 +93,34 @@ module.exports = function (opts, db) {
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
     state.archive.key = key
+    var dat
     try {
       state.archive.key = encoding.toStr(key)
+      dat = Dat(key)
     } catch (err) {
-      log.warn(key + ' not valid', err)
-      state.archive.error = err
+      return onerror('not valid', err)
+    }
+
+    function onerror (message, err) {
+      log.warn(key + ' ' + message, err)
+      state.archive.error = {message: err.message}
+      if (dat) return dat.close(function () { cb(state) })
       return cb(state)
     }
-    getDat(key, function (err, dat, entries) {
-      if (err && !entries) {
-        log.warn(key + ' timed out', err)
-        state.archive.error = err
-        return cb(state)
+
+    var cancelled = false
+    var stream = entryStream(dat, function ontimeout (err) {
+      if (err) {
+        cancelled = true
+        onerror('timed out', err)
       }
+    })
+    collect(stream, function (err, entries) {
+      if (cancelled) return
+      if (err) return onerror('errored', err)
       state.archive.entries = entries
       getMetadata(dat.archive, function (err, metadata) {
-        if (err) state.archive.error = new Error('no metadata')
+        if (err) state.archive.error = {message: 'no metadata'}
         if (metadata) state.archive.metadata = metadata
         state.archive.health = dat.health.get()
         dat.close(function () {

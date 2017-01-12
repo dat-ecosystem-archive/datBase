@@ -7,6 +7,7 @@ const saveAs = require('file-saver').saveAs
 const Promise = require('es6-promise').Promise
 const getMetadata = require('../utils/metadata.js')
 const Dat = require('./dat.js')
+const xtend = require('xtend')
 
 var drive = hyperdrive(memdb())
 var noop = function () {}
@@ -31,7 +32,6 @@ var defaultState = {
   metadata: {},
   entries: [],
   root: '',
-  size: null,
   numPeers: 0,
   swarm: null,
   signalhubs: DEFAULT_SIGNAL_HUBS,
@@ -48,7 +48,7 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.archive,
   reducers: {
     update: (data, state) => {
-      return data
+      return xtend(state, data)
     },
     updateDownloaded: (downloaded, state) => {
       const meter = state.downloadMeter || speedometer(3)

@@ -28,7 +28,6 @@ Dats.prototype.put = function (ctx, cb) {
 }
 
 Dats.prototype.get = function (ctx, cb) {
-  if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
   var join = ['users', 'users.id', 'dats.user_id']
   if (ctx.query.id) {
     ctx.query['dats.id'] = ctx.query.id
