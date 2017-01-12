@@ -16,12 +16,17 @@ module.exports = function (router, db, ship) {
   }
 
   function apiRouter (req, res) {
-    console.log(req.body)
     var model = routes[req.params.model]
     if (!model) return onerror(new Error('Model ' + req.params.model + ' not found.'), res)
     var route = model[req.method.toLowerCase()].bind(model)
     if (!route) return onerror(new Error('No ' + req.method + ' route.'), res)
-    if (!req.body.token) return route(req, done)
+
+    var authHeader = req.headers.authorization
+    if (authHeader && authHeader.indexOf('Bearer') > -1) {
+      var token = authHeader.split('Bearer ')[1]
+      if (!token) return route(req, done)
+    }
+    if (!authHeader) return route(req, done)
     req.user = null
 
     ship.verify(req, res, function (err, decoded, token) {

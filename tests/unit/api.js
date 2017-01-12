@@ -39,6 +39,14 @@ test('api', function (t) {
       })
     })
 
+    test('api GET dats should pass without login', function (t) {
+      request({url: api + '/dats', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body, [], 'zero dats')
+        t.end()
+      })
+    })
+
     test('api should register users', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ifError(err)
