@@ -4,7 +4,7 @@ const app = choo()
 // try { localStorage.debug = 'webrtc-swarm' } catch (e) {}
 
 // define models:
-app.model(require('./models/archive'))
+app.model(require('./models/read-only-archive'))
 app.model(require('./models/import-queue'))
 app.model(require('./models/user'))
 app.model(require('./models/list'))
@@ -20,8 +20,8 @@ app.router((route) => [
   route('/list', require('./pages/list')),
   route('/register', require('./pages/auth/register')),
   route('/login', require('./pages/auth/login')),
-  route('/view/:archiveKey', require('./pages/archive')),
-  route('/:username/:dataset', require('./pages/archive')),
+  route('/view/:archiveKey', require('./pages/archive/read-only')),
+  route('/:username/:dataset', require('./pages/archive/read-only')),
   route('/404', require('./pages/fourohfour'))
 ])
 
