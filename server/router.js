@@ -24,10 +24,6 @@ module.exports = function (opts, db) {
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
-  router.use(function (err, req, res, next) {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
-  })
   const log = bole(__filename)
 
   const ship = auth(router, db, opts)
@@ -81,7 +77,7 @@ module.exports = function (opts, db) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
-        state.archive.error = err
+        state.archive.error = {message: err.message}
         log.warn('could not get dat with ' + req.params, err)
         return sendSPA(req, res, state)
       }
@@ -102,29 +98,29 @@ module.exports = function (opts, db) {
       state.archive.key = encoding.toStr(key)
       dat = Dat(key)
     } catch (err) {
-      log.warn(key + ' not valid', err)
-      state.archive.error = err
+      return onerror('not valid', err)
+    }
+
+    function onerror (message, err) {
+      log.warn(key + ' ' + message, err)
+      state.archive.error = {message: err.message}
+      if (dat) return dat.close(function () { cb(state) })
       return cb(state)
     }
+
     var cancelled = false
     var stream = entryStream(dat, function ontimeout (err) {
       if (err) {
         cancelled = true
-        log.warn(key + ' timed out', err)
-        state.archive.error = err
-        return cb(state)
+        onerror('timed out', err)
       }
     })
     collect(stream, function (err, entries) {
-      if (err) {
-        log.warn(key + ' errored', err)
-        state.archive.error = err
-        return cb(state)
-      }
       if (cancelled) return
+      if (err) return onerror('errored', err)
       state.archive.entries = entries
       getMetadata(dat.archive, function (err, metadata) {
-        if (err) state.archive.error = new Error('no metadata')
+        if (err) state.archive.error = {message: 'no metadata'}
         if (metadata) state.archive.metadata = metadata
         state.archive.health = dat.health.get()
         dat.close(function () {
