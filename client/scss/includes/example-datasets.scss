@@ -7,6 +7,7 @@
 
 .copy-link,
 .open-desktop {
+  white-space: nowrap;
   svg {
     max-width: 1em;
     height: 1em;
@@ -17,6 +18,7 @@
 
 .example-data-img {
   display: block;
+  width: 100%;
   max-width: 80px;
   margin: 0 auto;
 }
