@@ -26,7 +26,7 @@ const createPage = (state, prev, send) => {
 
           <h2>Dat CLI</h2>
           <a href="http://docs.datproject.org" target="_blank">
-            <img src="/public/img/terminal-icon.png" />
+            <img src="/public/img/dat-terminal.svg" />
             <p>Use Dat in the terminal</p>
           </a>
           <code>
