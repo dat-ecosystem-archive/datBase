@@ -1,6 +1,3 @@
-# An Introduction To Persisent Identifiers
-by [Max Ogden](http://maxogden.com)
-
 This week in Reykjavik, Iceland I attended PIDapalooza, the first community conference dedicated to the topic of persisent identifiers (PIDs) for the scholarly web. As a relative newcomer to this community I wanted to share my experience diving in head first into this subject.
 
 I also had the chance to give a presentation on possible uses of [public key cryptography in PID systems](https://github.com/maxogden/pidapalooza2016), an area that is very relevant to our work on the [Dat protocol](https://github.com/datproject/docs/blob/master/papers/dat-paper.pdf).

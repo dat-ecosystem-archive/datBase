@@ -1,6 +1,3 @@
-# Live peer to peer sync in the Browser
-by [Karissa McKelvey](http://karissa.github.io)
-
 Today we are happy to announce [dat.land](http://dat.land) -- a new browser-based demonstration of dat.
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/w9er-XcZLCU" frameborder="0" allowfullscreen></iframe>

@@ -1,7 +1,4 @@
-# A Brief History of Dat
-by [Max Ogden](http://maxogden.com)
-
-We have some exciting news to share about Dat: We're working on a 1.0 release! It's not out just yet, but you can try what we have so far by checking out [the `master` branch on GitHub](https://github.com/maxogden/dat) or with `npm install dat@next -g`.
+We have some exciting news to share about Dat: We're working on a 1.0 release! It's not out just yet, but you can try what we have so far by checking out [the `master` branch on GitHub](https://github.com/maxogden/dat) or with npm install dat@next -g
 
 I'd like to explain the history of the project and the design choices over the last 2 years since the project started, as the project has made some pretty substantial changes in direction during that time. We have been in a constant cycle of R&D during this period, and have rewritten the Dat CLI four times.
 

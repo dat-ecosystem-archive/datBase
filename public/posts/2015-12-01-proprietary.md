@@ -1,13 +1,10 @@
-# Where is the Iron Mountain for open data?
-by [Karissa McKelvey](http://karissa.github.io)
-
 **Proprietary services such as Google, GitHub, Dropbox, PLOS, Figshare, and AWS provide data hosting and sharing at a low cost. They've become the most popular platforms for data sharing in science. However, using them can be dangerous, because when the money runs out, so does your data.**
 
 Imagine a scenario 30 years in the future, when most of the world's scientific data has been hosted on Dropbox...and the company closes its doors. They might give users a chance to download that data before it is deleted permanently, or they might not anticipate their demise to make that possible. Even if they do, and even if many people download their data, scientists do not have the same incentive to download and store their data for the simple purpose of archiving and reproducibility. Most scientists will not do this. The data will disappear.
 
 This is already a serious problem _without_ a Dropbox closure, discovered when the question "Where are the original scripts and data you used?" is answered with "I don't know," or a referral to another person. Much of the content produced on these closed, proprietary systems will be deleted, with those valuable scientific artifacts lost forever.
 
-Most of the companies around today won't exist in 50 years. The average lifespan of a company has decreased from 67 years in the 1920s to just [15 years today](http://www.bbc.com/news/business-16611040). If Galileo stored photos from his telescope on Dropbox in 1610, somebody would have had to re-host that data somewhere between 11 and 33 times for it to be available today. 
+Most of the companies around today won't exist in 50 years. The average lifespan of a company has decreased from 67 years in the 1920s to just [15 years today](http://www.bbc.com/news/business-16611040). If Galileo stored photos from his telescope on Dropbox in 1610, somebody would have had to re-host that data somewhere between 11 and 33 times for it to be available today.
 For decades, we've been copying paper records and storing them in literal [mountains of iron](http://www.ironmountain.com/) on microfilm, a hardy material that has [a life expectancy of a few hundred years](https://en.wikipedia.org/wiki/Microform). When information can be copied to other formats, it has higher redundancy, increasing the chance that it will be around forever. To this end, it should be made trivial to duplicate scientific data from a digital hosting service. When we want data to be around forever, it must be free to be retrieved and copied at any point in time.
 
 ## So how did we get here in the first place?

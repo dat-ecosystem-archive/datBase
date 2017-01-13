@@ -1,10 +1,9 @@
 
 .blog-layout {
-  display: flex;
-  flex-direction: column;
-  @media screen and (min-width: $medium) {
-    flex-direction: row;
-    justify-content: space-between;
+  margin: 30px;
+  .post {
+    padding: 20px 0px;
+    border-bottom: 2px solid $color-neutral-10;
   }
 }
 
@@ -40,13 +39,24 @@ a.load-document {
 }
 
 .post {
-  @media screen and (min-width: $small) {
-    max-width: $small;
-    padding-right: 2rem;
+  margin: auto;
+  max-width: 720px;
+
+  h3 {
+    font-size: 1.25rem;
+    margin: 10px 0px;
   }
-  padding-bottom: 5rem;
+  h1 {
+    margin: 0px;
+  }
+  .teaser {
+
+  }
   img {
     max-width: 100%
+  }
+  p {
+    margin-bottom: 0px;
   }
 }
 
