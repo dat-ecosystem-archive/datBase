@@ -41,8 +41,12 @@ a.load-document {
 .post {
   margin: auto;
   max-width: 720px;
+  ul, li {
+    list-style: inherit;
+    list-style-type: inherit;
+  }
 
-  h3 {
+  h2, h3 {
     font-size: 1.25rem;
     margin: 10px 0px;
   }
