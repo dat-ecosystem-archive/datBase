@@ -2,7 +2,7 @@ This week in Reykjavik, Iceland I attended PIDapalooza, the first community conf
 
 I also had the chance to give a presentation on possible uses of [public key cryptography in PID systems](https://github.com/maxogden/pidapalooza2016), an area that is very relevant to our work on the [Dat protocol](https://github.com/datproject/docs/blob/master/papers/dat-paper.pdf).
 
-## What is a persistent identifier?
+### What is a persistent identifier?
 
 A [PID](https://en.wikipedia.org/wiki/Persistent_identifier) is just an ID that is persisted somewhere. For example, say I decided that the ID `1337` should point to my domain name maxogden.com. If I store this reference in an online PID archive that promises to never delete it, and promises to never give out ID `1337` to anyone else, then I can cite ID `1337` in an academic paper and trust that the librarians of the world will forever be able to resolve ID `1337` to my website.
 
