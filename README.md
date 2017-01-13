@@ -1,6 +1,6 @@
-# dat.land
+# datfolder
 
-An online place for dats.
+A registry for dats.
 
 [![Build Status](https://travis-ci.org/datproject/datfolder.svg?branch=master)](https://travis-ci.org/datproject/datfolder)
 
@@ -8,54 +8,59 @@ An online place for dats.
 
 ## API
 
-#### Users
-
-Fields:
-- `id` (required)
-- `email` (required)
-- `username`
-- `description`
-
-NOTE: ```POST /api/v1/users``` Method not allowed. Use /api/v1/register instead.
-
-#### Dats
-
-Fields:
-- `id`
-- `user_id`
-- `name`
-- `title`
-- `hash`
-- `description`
-
 ##### ```GET /api/v1/:model```
 
-Responds with a list of results that match the query. Can pass query parameters
-like `?username='martha'` or `?name=cats` to filter results.
-
+Can pass query parameters like `?username='martha'` to filter results.
 
 Additional options:
 
   * `limit`: 100 (default)
   * `offset`: 0 (default)
 
-
-##### ```PUT /api/v1/:model```
-
-`id` required.
-
-Success returns number of updated rows (e.g., ```{updated: 1}```)
-
-##### ```DELETE /api/v1/:model```
-
-`id` required. 
-
-Success returns number of deleted rows (e.g., ```{deleted: 1}```)
-
 ##### ```POST /api/v1/:model```
 
-Success returns the model as it exists in the database.
+Success returns model with `id` field added.
 
+##### ```PUT /api/v1/:model?id=```
+
+`id` required
+
+Success returns number of rows modified.
+```
+{updated: 1}
+```
+
+##### ```DELETE /api/v1/:model?id=```
+
+`id` required
+
+Success returns number of rows deleted.
+```
+{deleted: 1}
+```
+
+##### users model: ```/api/v1/users```
+
+- `id` (required)
+- `email` (required)
+- `username`
+- `description`
+- `created_at`
+- `updated_at`
+
+##### dats model: ```/api/v1/dats```
+
+- `id`
+- `user_id`
+- `name`
+- `title`
+- `hash`
+- `description`
+- `created_at`
+- `updated_at`
+
+#####  ```/api/v1/register```
+#####  ```/api/v1/login```
 
 ### Develop
 
