@@ -11,7 +11,6 @@ const prettyBytes = require('pretty-bytes')
 
 const archivePage = (state, prev, send) => {
   // XXX: have an error enum?
-  console.log(state.archive.error)
   if (state.archive.error && state.archive.error.message === 'Invalid key') {
     var props = {
       header: 'No dat here.'

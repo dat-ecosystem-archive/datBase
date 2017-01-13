@@ -249,7 +249,6 @@ test('api', function (t) {
     test('api dats contain related user models', function (t) {
       client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
         t.ifError(err)
-        console.log(body)
         t.ok(body[0].username, 'has user model')
         t.end()
       })

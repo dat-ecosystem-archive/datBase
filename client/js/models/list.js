@@ -21,7 +21,6 @@ module.exports = {
       var params = qs.stringify({offset: newOffset, limit: state.limit})
       http.get('/dats?' + params, {json: true}, function (err, resp, json) {
         if (err) throw err
-        console.log(resp, json)
         send('list:update', {offset: newOffset, data: json})
         done()
       })
