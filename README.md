@@ -48,7 +48,7 @@ Success returns number of rows deleted.
 - `created_at`
 - `updated_at`
 
-##### users model: ```/api/v1/dats```
+##### dats model: ```/api/v1/dats```
 
 - `id`
 - `user_id`
