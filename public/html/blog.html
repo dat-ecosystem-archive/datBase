@@ -1,41 +1,21 @@
-<div class="container">
-  <div class="blog-layout">
-    <div class="post">
-      <div id="post">{{{content}}}</div>
-    </div>
-    <div class="sidebar-list">
+<div class="container blog-layout">
       {{#posts}}
       {{#if date}}
-        <a class="load-document" href="/blog/{{name}}">
+        <div class="post">
           <div class="document" id="{{name}}">
-            <h2 class="title f5 lh-title">{{title}}</h2>
-            <div class="f6">
-              <span class="published">{{date}}</span>
-              &bull;
+            <a class="load-document" href="/blog/{{name}}">
+              <h1 class="title lh-title">{{title}}</h1>
+          </a>
+            <div>
+              <span class="published">{{relativeDate}}</span>
               <span class="author">{{author}}</span>
             </div>
             <div class="f6">
-              {{teaser}}
+              {{{shortContent}}}...
             </div>
           </div>
-        </a>
+        </div>
       {{/if}}
-      {{/posts}}
+    {{/posts}}
 
-      {{#posts}}
-      {{#if date}}
-        <a class="load-document" href="/blog/{{name}}">
-          <div class="document" id="{{name}}">
-            <h2 class="title f5 lh-title">{{title}}</h2>
-            <div class="f6">
-              <span class="published">{{date}}</span>
-              &bull;
-              <span class="author">{{author}}</span>
-            </div>
-          </div>
-        </a>
-      {{/if}}
-      {{/posts}}
-    </div>
-  </div>
 </div>

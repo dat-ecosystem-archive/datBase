@@ -1,6 +1,3 @@
-# Reader Privacy On The P2P Web
-by [Max Ogden](http://maxogden.com)
-
 ### Vendor Lock-In
 
 The Peer-to-peer Web is a way of thinking about distributing web content over the internet that doesn't rely on a central point of failure. Failure sometimes means the service disappears (like the Dropbox Public folder this week). Another type of failure is failure to scale due to a bottleneck. A good example of this is data infrastructure like Amazon S3 and Google Drive. By storing all your data in one place they create a bandwidth bottleneck that they then make you pay for. For a primer on the P2P web principles I recommend the post [What is the P2P Web?](http://pfrazee.github.io/blog/what-is-the-p2p-web) To quote that article, "Once integrated into a browser, these principles enable users to publish independently of services, and move between applications freely".
@@ -16,7 +13,7 @@ Today's advertising based services have these incentives:
 - 1: Acquire more user data (for advertising)
 - 2: Keep users data and privacy protected, as long as it doesn't hinder #1
 
-Having all our data stored in one physical location is obviously bad if the service disappears or is hacked into and leaked online or secretly subpoenaed by the government. For this post let's set the issue of long term storage privacy aside and instead focus on on reader privacy. 
+Having all our data stored in one physical location is obviously bad if the service disappears or is hacked into and leaked online or secretly subpoenaed by the government. For this post let's set the issue of long term storage privacy aside and instead focus on on reader privacy.
 
 Reader privacy means protecting the privacy of what a user is looking at. For example, if you walk into a library and ask the librarian to help you find a certain book, most librarians are morally obligated to keep what book you asked for a secret. Similarly, therapists and lawyers also protect the privacy of conversations with their clients. If someone were to follow you, they could figure out that you're visiting a library or a lawyers office, but they wouldn't know what you are talking about.
 
