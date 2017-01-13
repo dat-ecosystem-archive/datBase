@@ -45,7 +45,7 @@ const archivePage = (state, prev, send) => {
            </div>
             <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
               <div class="btn__icon-wrapper ${downloadBtnDisabled}">
-                <img src="/public/img/download.svg" class="btn__icon-img">
+                <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
                 <span class="btn__icon-text">Download</span>
               </div>
             </button>
