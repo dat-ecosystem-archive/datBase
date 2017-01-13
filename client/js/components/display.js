@@ -16,15 +16,14 @@ module.exports = function (state, prev, send) {
       link: false
     })
   }
+  return send('preview:update', {error: {message: 'Can not download at this time.', body: 'To view and download files, use the desktop app or command line tool.'}})
 
-  // only render/re-render when the entry name changes!
-  if (!entryName) {
-    return
-  } else if (entryName === previousEntryName) {
-    return display
-  }
-
-  return send('preview:update', {error: {message: 'Download the Desktop App', body: 'To view and download files, use the desktop app.'}})
+  // // only render/re-render when the entry name changes!
+  // if (!entryName) {
+  //   return
+  // } else if (entryName === previousEntryName) {
+  //   return display
+  // }
 
   // TODO: make all the below code fetch a data preview via websockets instead
   //
