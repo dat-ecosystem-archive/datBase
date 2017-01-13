@@ -1,0 +1,25 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #293648;
+        stroke: #293648;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 16px;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #35b44f;
+      }
+    </style>
+  </defs>
+  <title>dat-terminal</title>
+  <rect class="cls-1" x="30" y="56.91" width="180" height="126.18"/>
+  <path class="cls-2" d="M42,98.65,60.11,86.88v-.26L42,74.85V68L66.32,84.13v5.25L42,105.5Z"/>
+  <path class="cls-3" d="M77.71,112h30.72v5.76H77.71Z"/>
+</svg>

@@ -12,7 +12,7 @@ $user-panel-side-padding: 1.75rem;
     background-color: $color-info;
     position: relative;
     padding: 0.8rem $user-panel-side-padding 1rem;
-    color: $color-neutral--20;
+    color: $color-neutral-20;
     text-align: center;
     font-size: 0.8rem;
     font-weight: 300;
@@ -39,7 +39,7 @@ $user-panel-side-padding: 1.75rem;
       left: 0;
       height: 2px;
       margin-top: -1px;
-      background: $color-neutral--20;
+      background: $color-neutral-20;
     }
     &::before {
       transform: rotate(45deg);
@@ -54,25 +54,25 @@ $user-panel-side-padding: 1.75rem;
     width: 65px;
     margin: 0.5rem auto 1rem;
     display: block;
-    border: 2px solid $color-neutral--04;
+    border: 2px solid $color-neutral-04;
   }
 
   .body-part {
     margin:0;
     padding: 1rem $user-panel-side-padding;
-    background-color: $color-neutral--04;
-    box-shadow: -4px 0px 10px -2px $color-neutral--04;
+    background-color: $color-neutral-04;
+    box-shadow: -4px 0px 10px -2px $color-neutral-04;
   }
 
   .content {
     height:100%;
-    color: $color-neutral--80;
+    color: $color-neutral-80;
     font-weight: bold;
     font-size: 1rem;
     a {
-      color: $color-neutral--80;
+      color: $color-neutral-80;
       &:hover {
-        color: $color-neutral--40;
+        color: $color-neutral-40;
       }
     }
     li {
@@ -85,8 +85,8 @@ $user-panel-side-padding: 1.75rem;
     position: absolute;
     bottom: 1rem;
     width:100%;
-    background-color: $color-neutral--04;
-    color: $color-neutral--50;
+    background-color: $color-neutral-04;
+    color: $color-neutral-50;
     font-size: 0.7rem;
 
     .btn {

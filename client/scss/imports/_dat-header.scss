@@ -3,8 +3,8 @@
 .dat-header {
   padding-top: 1.25rem;
   padding-bottom: .75rem;
-  border-bottom: 1px solid $color-neutral--10;
-  background-color: $color-neutral--04;
+  border-bottom: 1px solid $color-neutral-10;
+  background-color: $color-neutral-04;
   font-size: .8125rem;
 }
 
@@ -23,7 +23,7 @@
   font-size: .875rem;
   line-height: 1.25;
   background-color: transparent;
-  color: $color-neutral--80;
+  color: $color-neutral-80;
   &:not([disabled]):hover, &:not([disabled]):focus {
     color: $color-neutral;
   }
@@ -52,7 +52,7 @@
 .dat-detail {
   display: inline-block;
   margin-right: 1rem;
-  color: $color-neutral--60;
+  color: $color-neutral-60;
   @include breakpoint (md1) {
     margin-right: 1.5rem;
   }

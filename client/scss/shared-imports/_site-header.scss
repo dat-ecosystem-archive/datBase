@@ -7,60 +7,23 @@ $site-header-height: 4rem;
   background-color: $color-neutral;
   color: $color-white;
   .dat-button button:not(.dat-button--help) {
-  //  background-color: transparent;
+   background-color: transparent;
     &:hover, &:focus, &:active {
-      background-color: $color-green--darker;
+      background-color: $color-neutral;
     }
   }
 }
 
-.site-header__actions {
-  float: right;
+.site-header--external {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-neutral-04;
 }
 
-.container--site-header {
+.site-header__wrapper {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.dat-import {
-  display: inline-block;
-  max-width: 14rem;
-  vertical-align: middle;
-}
-
-.dat-logo {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: $color-white;
-  letter-spacing: .025em;
-  > div {
-    display: none;
-  }
-  @include breakpoint (md1) {
-    div {
-      display: block;
-    }
-  }
-  img {
-    display: block;
-    max-width: 2rem;
-    margin-right: .75rem;
-    transition: transform .5s ease-in-out;
-  }
-  span {
-    opacity: .5;
-  }
-  &:hover, &:focus {
-    color: $color-white;
-    img {
-      transform: rotate(360deg);
-    }
-  }
 }
 
 // dat-button
@@ -88,4 +51,39 @@ $site-header-height: 4rem;
     0px 0px 1px rgba(0,0,0,.1),
     inset 0px 1px 0px rgba(255,255,255,.25),
     inset 0px -1px 0px rgba(0,0,0,.15);
+}
+
+// website / external pages only
+
+.header-nav-link {
+  color: $color-neutral;
+  &.active {
+    color: $color-info;
+  }
+  &:hover, &:focus {
+    color: $color-neutral-80;
+  }
+}
+
+.main-nav {
+  line-height: $site-header-height;
+  list-style: none;
+  a:not(:last-child) {
+    margin-right: 1rem;
+    @media screen and (min-width: $small) {
+      margin-right: 2rem4;
+    }
+    @media screen and (min-width: $medium) {
+      margin-right: 2.75rem;
+    }
+  }
+  a {
+    font-size: .875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+  }
 }

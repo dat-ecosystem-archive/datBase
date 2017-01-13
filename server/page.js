@@ -23,10 +23,10 @@ function page (url, contents, appState) {
   return `<html>
       <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/png" href="/public/img/dat-data-blank.png" />
+        <title>Dat</title>
         <link rel="stylesheet" type="text/css" href="/public/css/app.css"/>
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500|Source+Sans+Pro:400,600,700" rel="stylesheet">
-
+        <link rel="icon" href="/public/img/favicon.ico">
         ${renderMetaTags()}
         <meta property="og:site_name" content="Dat Land" />
         <meta property="og:type" content="article" />

@@ -24,7 +24,7 @@ $step-count-width: 40px;
   vertical-align: middle;
   font-weight: bold;
   font-size: 1.25rem;
-  color: $color-neutral--60;
+  color: $color-neutral-60;
 }
 
 .step-details {
@@ -36,7 +36,7 @@ $step-count-width: 40px;
   code {
     font-size: 1.125rem;
   }
-  @media screen and (min-width: 480px) {
+  @media screen and (min-width: $xsmall) {
     font-size: 1.25rem;
     code {
       font-size: 1.25rem;

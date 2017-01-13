@@ -13,12 +13,12 @@
     color: $color-neutral;
     text-decoration: none;
     &:hover {
-      background-color: $color-neutral--04;
+      background-color: $color-neutral-04;
     }
   }
   td {
     padding: 10px;
-    border-bottom: 1px solid $color-neutral--20;
+    border-bottom: 1px solid $color-neutral-20;
   }
   .name {
     max-width: 300px;

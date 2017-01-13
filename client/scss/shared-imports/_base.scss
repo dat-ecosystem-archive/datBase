@@ -1,0 +1,102 @@
+$padding-site-main: 3rem;
+
+html {
+  font-size: 87.5%;
+  @media screen and (min-width: $small) {
+    font-size: 100%;
+  }
+}
+
+body, button, input, optgroup, select, textarea {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  background-color: $color-white;
+  color: $color-neutral;
+}
+
+body {
+  position: relative; // this is to position the bottom bar
+
+  &.panel-open {
+    overflow-y: hidden;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+a, button, input[type="submit"] {
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    cursor: default;
+  }
+}
+
+a {
+  &:hover, &:focus {
+    outline: none;
+  }
+}
+
+ul,
+li {
+  @include list-plain;
+}
+
+.site-main {
+  position: relative;
+  padding-top: $padding-site-main;
+  padding-bottom: $padding-site-main;
+}
+
+.breadcrumbs {
+  margin-bottom: 1rem;
+  min-height: 2em;
+}
+
+#add-files {
+  float: right;
+}
+
+#get_link {
+  z-index: 10;
+  position: absolute;
+}
+
+.danger-block {
+  background-color: $color-danger;
+  text-align: center;
+  color: $color-white;
+  h1, h2, h3, h4, h5 {
+    color: $color-white;
+  }
+  a {
+    text-decoration: underline;
+    color: $color-white;
+  }
+}
+
+.clipboard:hover {
+  cursor: pointer;
+}
+
+.bg-white {
+  background-color: $color-white;
+}
+
+.bg-neutral-04 {
+  background-color: $color-neutral-04;
+}
+
+.bg-neutral {
+  background-color: $color-neutral;
+}

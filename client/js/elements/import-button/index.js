@@ -12,10 +12,10 @@ module.exports = function (props) {
       props.handler(link)
     }
   }
-  return html`<div class="dat-import">
-    <div class="dat-import--icon">
+  return html`<label for="import-dat" class="dat-input">
+    <input name="import-dat" type="text" placeholder="Import Dat" onkeydown=${keydown} class="dat-input__input dat-input__input--icon dat-input__input--no-border">
+    <div class="dat-input__icon">
       <img src="/public/img/link.svg" />
     </div>
-    <input type="text" placeholder="Import Dat" onkeydown=${keydown} class="dat-import--input">
-  </div>`
+  </label>`
 }

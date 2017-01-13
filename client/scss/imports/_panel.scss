@@ -24,8 +24,8 @@
   top:0;
   width: 100%;
   height: $site-header-height;
-  border-bottom: 1px solid $color-neutral--10;
-  background-color: $color-neutral--04;
+  border-bottom: 1px solid $color-neutral-10;
+  background-color: $color-neutral-04;
   font-size: .8125rem;
   display: flex;
   flex-direction: row;
@@ -45,7 +45,7 @@
   background-color: $color-green;
   color: $color-white;
   &:hover, &:focus {
-    background-color: $color-green--hover;
+    background-color: $color-green-hover;
     color: $color-white;
   }
   &:before,

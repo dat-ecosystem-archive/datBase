@@ -1,0 +1,24 @@
+.container {
+  padding-right: .5rem;
+  padding-left: .5rem;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 64rem; // 1024px
+  @media screen and (min-width: $xsmall) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  @media screen and (min-width: $small) {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+.container--full {
+  width: auto;
+  max-width: 100%;
+}
+
+.container--narrow {
+  max-width: 48rem; // 768px
+}

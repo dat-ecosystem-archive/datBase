@@ -6,36 +6,42 @@ const createPage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="create-page">
-        <div class="container create-container">
-          <h2>Create a new dat</h2>
-          <p>A dat contains all of the files for your project, including the version history.</p>
-          <div class="row">
-              ${importButton({
-                handler: function (link) { window.location.href = '/view/' + link }
-              })}
+      <section class="section">
+        <div class="container">
+          <h2>Create A New Dat</h2>
+          <p>A Dat contains all of the files for your project, including the version history.</p>
+          <div>
+            ${importButton({
+              handler: function (link) { window.location.href = '/view/' + link }
+            })}
           </div>
         </div>
-        <div class="side-by-side">
+      </section>
+      <section class="section bg-neutral-04">
+        <div class="container">
           <div class="row">
-          <a href="https://github.com/datproject/dat-desktop" target="_blank">
-            <img src="/public/img/logo-dat-desktop-dark.svg" />
-            <h2>Download for Mac</h2>
-          </a>
-          </div>
-          <div class="row">
-          <a href="http://docs.datproject.org" target="_blank">
-            <img src="/public/img/terminal-icon.png" />
-            <h2>In the terminal</h2>
-          </a>
-          <code>
-          $ npm install -g dat<br>
-          $ dat create path/to/my/data<br>
-          $ dat sync path/to/my/data
-          </code>
+            <div class="col-xs-12 col-sm-6">
+              <h2>Dat Desktop</h2>
+              <a href="https://github.com/datproject/dat-desktop" target="_blank">
+                <img src="/public/img/logo-dat-desktop-dark.svg" />
+                <p>Download for Mac</p>
+              </a>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <h2>Dat CLI</h2>
+              <a href="http://docs.datproject.org" target="_blank">
+                <img src="/public/img/dat-terminal.svg" />
+                <p>Use Dat in the terminal</p>
+              </a>
+              <code>
+                $ npm install -g dat<br>
+                $ dat create path/to/my/data<br>
+                $ dat sync path/to/my/data
+              </code>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>`
 }
 

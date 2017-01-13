@@ -15,7 +15,7 @@ module.exports = function (state, prev, send) {
     ${button({
       text: text,
       click: click,
-      klass: 'btn btn--green outline'
+      klass: 'btn'
     })}
   `
 }
