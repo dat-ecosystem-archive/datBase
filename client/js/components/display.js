@@ -10,5 +10,5 @@ module.exports = function (state, prev, send) {
       link: false
     })
   }
-  return send('preview:update', {error: {message: 'Can not download at this time.', body: 'To view and download files, use the desktop app or command line tool.'}})
+  if (!module.parent) return send('preview:update', {error: {message: 'Can not download at this time.', body: 'To view and download files, use the desktop app or command line tool.'}})
 }
