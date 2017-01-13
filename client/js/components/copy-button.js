@@ -5,7 +5,7 @@ module.exports = function (text, send) {
   if (module.parent) return html``
   var el = html`
     <div class="clipboard btn__icon-wrapper" data-clipboard-text="${text}">
-      <img src="/public/img/link.svg" class="btn__icon-img"/>
+      <svg><use xlink:href="#daticon-link" /></svg>
       <span class="btn__icon-text">Copy Link</span>
     </div>
   `
