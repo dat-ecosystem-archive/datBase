@@ -1,9 +1,25 @@
-// global dat.land styles
-
 $padding-site-main: 3rem;
 
+html {
+  font-size: 87.5%;
+  @media screen and (min-width: $small) {
+    font-size: 100%;
+  }
+}
+
+body, button, input, optgroup, select, textarea {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
 body {
-  min-width: 480px;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  background-color: $color-white;
+  color: $color-neutral;
+}
+
+body {
   position: relative; // this is to position the bottom bar
 
   &.panel-open {

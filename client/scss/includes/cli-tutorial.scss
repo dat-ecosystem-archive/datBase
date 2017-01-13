@@ -36,7 +36,7 @@ $step-count-width: 40px;
   code {
     font-size: 1.125rem;
   }
-  @media screen and (min-width: 480px) {
+  @media screen and (min-width: $xsmall) {
     font-size: 1.25rem;
     code {
       font-size: 1.25rem;

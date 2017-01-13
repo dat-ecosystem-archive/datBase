@@ -70,10 +70,10 @@ $site-header-height: 4rem;
   list-style: none;
   a:not(:last-child) {
     margin-right: 1rem;
-    @media screen and (min-width: 650px) {
+    @media screen and (min-width: $small) {
       margin-right: 2rem4;
     }
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: $medium) {
       margin-right: 2.75rem;
     }
   }

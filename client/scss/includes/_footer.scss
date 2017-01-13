@@ -1,0 +1,68 @@
+// footer
+.footer {
+  background-color: $color-neutral;
+  overflow: auto;
+  color: $color-neutral-60;
+  a {
+    color: $color-neutral-20;
+    &:hover, &:focus {
+      color: $color-neutral-30;
+    }
+  }
+  li a {
+    &:before {
+      content: '';
+      display: inline-block;
+      position: relative;
+      top: -0.125rem;
+      width: .5rem;
+      height: .5rem;
+      margin-right: .75rem;
+      background-image: url('/public/img/dat-hexagon.svg');
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+.footer {
+  padding-top: 2rem;
+}
+.footer-credits {
+  font-size: .75rem;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid $color-neutral-80;
+  a {
+    color: $color-neutral-50;
+  }
+}
+.footer-heading {
+  font-size: 1.25rem;
+  color: $color-white;
+}
+.horizontal-rule-footer {
+  &:after {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 4px;
+    background-color: $color-neutral-70;
+    margin-top: .75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.footer-nav-list {
+  margin-bottom: 2rem;
+  list-style-type: none;
+  padding-left: 0;
+  font-weight: 600;
+  color: $color-white;
+  li {
+    a {
+      display: block;
+      line-height: 1.75;
+    }
+  }
+}
