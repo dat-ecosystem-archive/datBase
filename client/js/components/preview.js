@@ -31,7 +31,7 @@ const preview = (state, prev, send) => {
           klass: 'dat-header-action',
           icon: '/public/img/download.svg',
           text: 'Download',
-          disabled: state.preview.isLoading,
+          disabled: true,
           click: () => {
             send('archive:downloadAsZip', {entryName})
           }

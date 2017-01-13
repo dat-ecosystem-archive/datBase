@@ -26,7 +26,9 @@ module.exports = function (state, prev, send) {
     return display
   }
 
-  send('preview:update', {isLoading: true})
+  return send('preview:update', {error: {message: 'Download the Desktop App', body: 'To view and download files, use the desktop app.'}})
+
+  // TODO: make all the below code fetch a data preview via websockets instead
 
   if (entryName && archive) {
     send('preview:update', {error: {message: 'Looking for peers...', body: 'If it is taking a long time, use the desktop app.'}})
