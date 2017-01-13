@@ -44,16 +44,17 @@ posts.forEach(function (post) {
 })
 
 var rendered = Handlebars.compile(templates.blog)({posts: posts})
-renderStatic(rendered, 'blog/index.html')
+renderStatic(rendered, 'blog/index.html', 'blog')
 
 renderStatic(templates.splash, 'index')
 renderStatic(templates.about, 'about')
 renderStatic(templates.team, 'team')
 renderStatic(templates.docs, 'docs')
 
-function renderStatic (template, target) {
+function renderStatic (template, target, shortname) {
   var dom = cheerio.load(templates.index)
   dom('#content').html(template)
+  if (shortname) dom('a[href="/' + shortname + '"]').addClass('active')
   dom('a[href="/' + target + '"]').addClass('active')
   if (target === 'index') target = 'index.html'
   fs.writeFileSync(outDir + '/' + target, dom.html())
