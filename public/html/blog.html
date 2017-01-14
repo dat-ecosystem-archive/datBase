@@ -1,21 +1,30 @@
-<div class="container blog-layout">
-      {{#posts}}
+<header class="bg-white">
+  <div class="container">
+    <h1 class="content-title horizontal-rule">Dat Blog</h1>
+  </div>
+</header>
+
+<section class="section bg-neutral-04">
+  <div class="container">
+    {{#posts}}
       {{#if date}}
         <div class="post">
           <div class="document" id="{{name}}">
-            <a class="load-document" href="/blog/{{name}}">
-              <h1 class="title lh-title">{{title}}</h1>
-          </a>
-            <div>
+            <div class="f6 color-neutral-60">
               <span class="published">{{relativeDate}}</span>
+              by
               <span class="author">{{author}}</span>
             </div>
-            <div class="f6">
-              {{{shortContent}}}... <a href="/blog/{{name}}">[read more]</a>
+            <a class="load-document" href="/blog/{{name}}">
+              <h1 class="title lh-title">{{title}}</h1>
+            </a>
+            <div class="f6 measure">
+              {{{shortContent}}} …
             </div>
+            <a href="/blog/{{name}}" class="f6 fr">Read more</a>
           </div>
         </div>
       {{/if}}
     {{/posts}}
-
-</div>
+  </div>
+</section>
