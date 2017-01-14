@@ -28,7 +28,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important; 
 }
 
 a, button, input[type="submit"] {
