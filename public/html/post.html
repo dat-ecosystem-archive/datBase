@@ -1,14 +1,20 @@
-<div class="container">
-  <div class="blog-layout">
+<header class="bg-white">
+  <div class="container">
+    <a href="/blog" class="f6 fr mt3 pl2">« Back to all posts</a>
+    <h1 class="content-title mb1 pb1">{{post.title}}</h1>
+    <div class="content-subtitle horizontal-rule">
+      <span class="published">Published {{post.relativeDate}} by {{post.author}}</span>
+    </div>
+  </div>
+</header>
+
+<section class="section bg-neutral-04">
+  <div class="container">
     <div id="post">
-      <a href="/blog">Back to all posts</a>
       <div class="post">
-        <br>
-        <span class="published">Published {{post.relativeDate}} by {{post.author}}</span>
-        <h1>{{post.title}}</h1>
         <div class="teaser">{{post.teaser}}</div>
         <div class="content">{{{post.content}}}</div>
       </div>
     </div>
   </div>
-</div>
+</section>

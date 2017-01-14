@@ -1,10 +1,11 @@
+.post {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid $color-neutral-10;
+}
 
-.blog-layout {
-  margin: 30px;
-  .post {
-    padding: 20px 0px;
-    border-bottom: 2px solid $color-neutral-10;
-  }
+.post:not(:first-child) {
+  padding-top: 2rem;
 }
 
 a.load-document {
@@ -33,7 +34,7 @@ a.load-document {
       }
     }
     &:hover, &:focus {
-      color: $color-info;
+      color: $color-blue;
     }
   }
 }

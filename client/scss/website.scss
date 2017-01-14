@@ -10,6 +10,7 @@
 @import "~dat-design/scss/base.scss";
 
 @import "shared-imports/variables";
+@import "shared-imports/colors";
 @import "shared-imports/base";
 @import "shared-imports/layout";
 @import "shared-imports/grid";
@@ -50,11 +51,11 @@
 }
 
 a {
-  color: $color-info;
+  color: $color-blue;
   font-weight: 300;
   text-decoration: none;
   &:hover, &:focus {
-    color: $color-info-hover;
+    color: $color-blue-hover;
     text-decoration: none;
   }
 }
@@ -138,7 +139,7 @@ ul {
     color: $color-neutral-40;
   }
   a {
-    color: $color-info;
+    color: $color-blue;
   }
 }
 
