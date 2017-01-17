@@ -52,8 +52,9 @@
   padding-top: 2rem;
 }
 
-.post:not(:last-child) {
-  border-bottom: 2px solid $color-neutral-10;
+.post--preview {
+  background: $color-white;
+  padding: 1.5rem 2rem 2rem;
 }
 
 .teaser {

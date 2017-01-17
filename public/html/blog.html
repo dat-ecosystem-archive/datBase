@@ -8,7 +8,7 @@
   <div class="container">
     {{#posts}}
       {{#if date}}
-        <div class="post">
+        <div class="post post--preview">
           <div class="document" id="{{name}}">
             <div class="f6 color-neutral-60">
               <span class="published">{{relativeDate}}</span>
@@ -16,12 +16,14 @@
               <span class="author">{{author}}</span>
             </div>
             <a class="load-document" href="/blog/{{name}}">
-              <h2 class="title lh-title mt0">{{title}}</h2>
+              <h2 class="mt0">{{title}}</h2>
             </a>
-            <div class="f6 measure-wide">
-              {{{shortContent}}} …
+            <div class="clearfix">
+              <div class="f6 measure-wide">
+                {{{shortContent}}} …
+              </div>
+              <a href="/blog/{{name}}" class="f6 btn btn--green fr">Read more</a>
             </div>
-            <a href="/blog/{{name}}" class="f6 fr">Read more</a>
           </div>
         </div>
       {{/if}}

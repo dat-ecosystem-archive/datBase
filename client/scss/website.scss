@@ -27,7 +27,6 @@
 
 @import "shared-imports/tachyons";
 
-
 h2, h3 {
   font-weight: 300;
 }
@@ -121,9 +120,9 @@ ul {
     display: block;
     width: 4rem;
     height: 5px;
-    background-color: $color-neutral-30;
     margin-top: 1.25rem;
     margin-bottom: 2rem;
+    background-color: $color-pink;
   }
 }
 .content-code-intro {
