@@ -27,37 +27,9 @@
 
 @import "shared-imports/tachyons";
 
-.mono {
-  font-family: monospace;
-}
 
-.header-continue {
-  margin: 30px 0 50px;
-}
-
-.content-box {
-  padding: 40px 40px 20px 40px;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  .content-title {
-    line-height: 3.5rem;
-    margin-top: .5rem;
-    padding-top: 0;
-  }
-  iframe {
-    max-width: 480px;
-    width: 100%;
-  }
-}
-
-a {
-  color: $color-blue;
+h2, h3 {
   font-weight: 300;
-  text-decoration: none;
-  &:hover, &:focus {
-    color: $color-blue-hover;
-    text-decoration: none;
-  }
 }
 
 p {

@@ -21,14 +21,13 @@ body {
 
 body {
   position: relative; // this is to position the bottom bar
-
   &.panel-open {
     overflow-y: hidden;
   }
 }
 
 .hidden {
-  display: none !important; 
+  display: none !important;
 }
 
 a, button, input[type="submit"] {

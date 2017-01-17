@@ -1,5 +1,6 @@
 .copy-link,
 .open-desktop {
+  display: inline-block;
   white-space: nowrap;
   svg {
     max-width: 1em;
@@ -9,8 +10,70 @@
   }
 }
 
-.example-data-img {
+.example {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 3rem);
+  margin-bottom: 3rem;
+}
+
+.example-header {
+  height: 10rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: $color-blue;
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+
+.example-body {
+  background: $color-white;
+  padding: 1.5rem 2rem 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.example-footer {
+  background: $color-white;
+  padding: .5rem 2rem 2rem;
+  flex-grow: 0;
+  flex-shrink: 1;
+  .copy-link,
+  .open-desktop {
+    display: inline-block;
+    font-size: .75rem;
+  }
+}
+
+.example-header--california {
+  background: $color-red;
+}
+
+.example-header--osm {
+  background: $color-blue;
+  position: relative;
+  .example-img {
+    max-width: 500%;
+
+    position: absolute;
+    left: -40%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.example-header--densho {
+  background: $color-neutral;
+}
+
+.example-img {
   display: block;
   width: 100%;
-  max-width: 5rem;
+  max-width: 7rem;
+  margin: 0 auto;
+  flex-grow: 0;
 }

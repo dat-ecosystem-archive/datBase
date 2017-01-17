@@ -27,7 +27,7 @@ An example of the canonical use case we had in mind at the time was an Excel spr
 
 The Dat Alpha version was [released in August of 2014](https://usopendata.org/2014/08/19/dat-alpha/). The major feature we worked on was support for syncing large, non-tabular data files. This opened up a new use case: using Dat as a sort of “DropBox for data” to sync a folder on your filesystem.
 
-The Alpha release was the first release after starting on a new grant that shifted our focus from open civic datasets (which tend to be tabular -- e.g. lots of database tables) to the field of data intensive scientific research, which tends to use domain specific flat-file based data formats.
+The Alpha release was the first release after starting on a new grant that shifted our focus from open civic datasets (which tend to be tabular – e.g. lots of database tables) to the field of data intensive scientific research, which tends to use domain specific flat-file based data formats.
 
 We worked directly, starting during the time of the Alpha and continuing on through to today, with some amazing research labs in fields like Astrophysics, Bioinformatics and Neuroscience to try and understand their data management problems. The addition of large file support in the Alpha was a direct result of getting feedback from these scientific pilot users.
 
