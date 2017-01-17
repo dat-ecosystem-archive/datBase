@@ -1,5 +1,19 @@
 module.exports = [
   {
+    date: '2017-01-10',
+    title: 'Dat Desktop is here',
+    author: 'Yoshua Wuyts',
+    teaser: 'Lorem Ipsum',
+    name: '2017-01-10-dat-desktop-is-here'
+  },
+  {
+    date: '2017-01-09',
+    title: 'Preview the New Dat CLI',
+    author: 'Joe Hand',
+    teaser: 'Install the new release of the Dat command line tool today!',
+    name: '2017-01-05-dat-next'
+  },
+  {
     date: '2016-12-18',
     title: 'Reader Privacy On The P2P Web',
     author: 'Max Ogden',
