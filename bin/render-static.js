@@ -38,7 +38,6 @@ posts.forEach(function (post) {
   post.relativeDate = relativeDate(new Date(post.date))
   var rendered = Handlebars.compile(templates.post)({posts: posts, post: post})
   dom('#content').html(rendered)
-  dom('#' + post.name).addClass('active')
   dom('a[href="/blog"]').addClass('active')
   fs.writeFileSync(outDir + '/blog/' + post.name, dom.html())
 })
@@ -46,7 +45,7 @@ posts.forEach(function (post) {
 var rendered = Handlebars.compile(templates.blog)({posts: posts})
 renderStatic(rendered, 'blog/index.html', 'blog')
 
-renderStatic(templates.splash, 'index')
+renderStatic(templates.splash, 'index.html', 'index')
 renderStatic(templates.about, 'about')
 renderStatic(templates.team, 'team')
 renderStatic(templates.docs, 'docs')
@@ -56,6 +55,5 @@ function renderStatic (template, target, shortname) {
   dom('#content').html(template)
   if (shortname) dom('a[href="/' + shortname + '"]').addClass('active')
   dom('a[href="/' + target + '"]').addClass('active')
-  if (target === 'index') target = 'index.html'
   fs.writeFileSync(outDir + '/' + target, dom.html())
 }
