@@ -34,7 +34,7 @@ posts.forEach(function (post) {
   post.relativeDate = relativeDate(post.date)
   var dom = cheerio.load(templates.index)
   post.content = marked(fs.readFileSync(path.join(__dirname, '..', 'public', 'posts', post.name + '.md')).toString())
-  post.shortContent = post.content.substring(0, 300)
+  post.shortContent = post.content.substring(0, post.content.indexOf('</p>'))
   post.relativeDate = relativeDate(new Date(post.date))
   var rendered = Handlebars.compile(templates.post)({posts: posts, post: post})
   dom('#content').html(rendered)
