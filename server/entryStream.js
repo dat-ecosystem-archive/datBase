@@ -7,7 +7,7 @@ module.exports = function (dat, ontimeout) {
     objectMode: true,
     duration: 3000
   }, () => {
-    var msg = 'Looking for sources …
+    var msg = 'Looking for sources …'
     return ontimeout(new Error(msg))
   })
 
