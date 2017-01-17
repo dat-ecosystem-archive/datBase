@@ -4,7 +4,6 @@
   margin-right: auto;
   max-width: 720px;
   padding-bottom: 2rem;
-  border-bottom: 2px solid $color-neutral-10;
   ul, li {
     list-style: inherit;
     list-style-type: inherit;
@@ -28,14 +27,33 @@
   pre code {
     background-color: transparent;
   }
+  table {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+    font-size: .75rem
+  }
   td, th {
-    padding: 10px;
-    border: 1px solid black;
+    padding: .5rem;
+    border: 1px solid $color-neutral-20;
+  }
+  th {
+    line-height: 1.25;
+  }
+  hr {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 0;
+    border-bottom: 1px solid $color-green;
   }
 }
 
 .post:not(:first-child) {
   padding-top: 2rem;
+}
+
+.post:not(:last-child) {
+  border-bottom: 2px solid $color-neutral-10;
 }
 
 .teaser {

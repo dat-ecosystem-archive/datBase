@@ -1,23 +1,21 @@
 The data distribution toolkit has become a mixed bag of tools that require different skill sets and are applied for different purposes. Git, for example, is a tool that works effectively for governing data (if you learn how to use it), but it quickly becomes unwieldy for larger datasets. BitTorrent is a great solution for distributing large datasets across many machines, but torrent files are static, and can become a hassle to use with changing data. BitTorrent Sync, DropBox, and Google Drive attempt to solve this problem, but they are proprietary software that fall short when it comes to governing data amongst teams or for the public eye. Data portals like Socrata, CKAN, or are custom built employ HTTP/FTP plus a good metadata file (and a hearty group of helping hands) and continue to be the most used method for publishing open data.
 
-All of these tools mentioned above have some of the key elements for open data distribution, but none of them have them all -- and this is why, I argue, they all fall short. These key elements are: open, streaming, historical, content-addressable, signable, indexable, and decentralized. In this blog post I’m going to cover each of these key elements and talk about why they’re important as well as what they offer us when attempting to distribute data to the public. I will also introduce the newest version of our tool, Dat, which contains all of these elements.
+All of these tools mentioned above have some of the key elements for open data distribution, but none of them have them all – and this is why, I argue, they all fall short. These key elements are: open, streaming, historical, content-addressable, signable, indexable, and decentralized. In this blog post I’m going to cover each of these key elements and talk about why they’re important as well as what they offer us when attempting to distribute data to the public. I will also introduce the newest version of our tool, Dat, which contains all of these elements.
 
 
 | | signable | open | historical | content-addressable | decentralized | indexable | streaming |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Socrata | x |   |   |   |   |   |   |
-| CKAN | x | x | x |   |   |   |   |
-| FTP | x | x |   |   |   | x |  x |
-| HTTP | x | x |   |   |   | x | x |
-| DropBox/Drive | x |   | x |   |   | x | x |
-| BitTorrent Sync | x |   |   | x | x | x | x |
-| Git | x | x  | x | x | x |   |   |
-| Dat |  x | x | x | x | x | x | x |
+| Socrata | ✔ |   |   |   |   |   |   |
+| CKAN | ✔ | ✔ | ✔ |   |   |   |   |
+| FTP | ✔ | ✔ |   |   |   | ✔ |  ✔ |
+| HTTP | ✔ | ✔ |   |   |   | ✔ | ✔ |
+| DropBox/Drive | ✔ |   | ✔ |   |   | ✔ | ✔ |
+| BitTorrent Sync | ✔ |   |   | ✔ | ✔ | ✔ | ✔ |
+| Git | ✔ | ✔  | ✔ | ✔ | ✔ |   |   |
+| Dat |  ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ |
 
 
-
-
-**Open.** An open data tool should be open source. This isn’t simply out of principle -- it also enables developers to tweak the tool for use within a potentially complicated distribution system. This property is key for extensibility and stability of any distribution toolchain by not requiring dependence upon outside proprietary and corporate software. Most importantly, developers can peer review, or audit, the tool for reliability and safety. *Benefits: developer-friendliness, extensibilty, long-term stability.*
+**Open.** An open data tool should be open source. This isn’t simply out of principle – it also enables developers to tweak the tool for use within a potentially complicated distribution system. This property is key for extensibility and stability of any distribution toolchain by not requiring dependence upon outside proprietary and corporate software. Most importantly, developers can peer review, or audit, the tool for reliability and safety. *Benefits: developer-friendliness, extensibilty, long-term stability.*
 
 **Historical.** Data should be versioned with cryptographically secure hashes. We can then prove the data is exactly what we need when we reference a particular version in scripts or analysis results. We can also audit the history of the data, which could be key for understanding errors in the data transformation or distribution pipeline. *Benefits: auditing, governance, provenance.*
 
