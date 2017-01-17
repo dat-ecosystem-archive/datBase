@@ -37,7 +37,7 @@ const archivePage = (state, prev, send) => {
            </div>
             <a href="https://github.com/datproject/dat-desktop" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
-                <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
+                <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
                 <span class="btn__icon-text">Open in Desktop App</span>
               </div>
             </a>

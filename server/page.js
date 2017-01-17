@@ -1,4 +1,5 @@
 const xtend = require('extend')
+const svgSprite = require('dat-icons')
 const serializeJS = require('serialize-javascript')
 
 function page (url, contents, appState) {
@@ -40,6 +41,7 @@ function page (url, contents, appState) {
           </div>
         </div>
       </body>
+      ${svgSprite()}
       <script>
         window.dl = window.dl || {};
         window.dl.init__dehydratedAppState = ${dehydratedAppState};
