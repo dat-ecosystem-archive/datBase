@@ -6,7 +6,7 @@ I also had the chance to give a presentation on possible uses of [public key cry
 
 A [PID](https://en.wikipedia.org/wiki/Persistent_identifier) is just an ID that is persisted somewhere. For example, say I decided that the ID `1337` should point to my domain name maxogden.com. If I store this reference in an online PID archive that promises to never delete it, and promises to never give out ID `1337` to anyone else, then I can cite ID `1337` in an academic paper and trust that the librarians of the world will forever be able to resolve ID `1337` to my website.
 
-If my website goes offline (say I forget to renew my domain), a librarian could in theory replace the reference to 'maxogden.com' with a new URL that points at an archived version of my site, so that when someone clicks the `1337` reference in my paper the link will still work. Please note that this is a purely theoretical scenario, I don't know how many PIDs actually address the 'link rot' problem by fixing broken links in this way.
+If my website goes offline (say I forget to renew my domain), a librarian could in theory replace the reference to 'maxogden.com' with a new URL that points at an archived version of my site, so that when someone clicks the `1337` reference in my paper the link will still work. Please note that this is a purely theoretical scenario, I don’t know how many PIDs actually address the 'link rot' problem by fixing broken links in this way.
 
 ## What are the different types of PIDs?
 
@@ -26,19 +26,19 @@ Today the ~80 million DOIs and the resolution metadata that is stored in the Han
 
 The [Handle System](https://en.wikipedia.org/wiki/Handle_System) is a set of protocols designed in 1995 by [Bob Kahn of TCP/IP fame](https://gcn.com/Articles/2009/05/18/GCN-Interview-with-Robert-Kahn.aspx?Page=2) that are designed to manage a distributed set of persistent identifiers (handles) over IP. The DOI system is built on top of the Handle System. All DOIs are resolved through the Handle protocols, and DOI issuing organizations run Handle servers. The [Handle specification](https://tools.ietf.org/html/draft-sun-handle-system-04) defines the identifier format that DOI is based on: `Handle Naming Authority "/" Handle Local Name`.
 
-Handle defines a custom binary protocol, used over TCP/UDP port 2641, making it incompatible with the World Wide Web as it doesn't use HTTP or DNS for both legacy and security reasons. However, the DOI system almost exclusively uses the Handle System through an HTTP proxy server https://hdl.handle.net that exposes the Handle protocol over a REST API. There is one implementation of Handle written in Java that everyone uses, but it is not on GitHub.
+Handle defines a custom binary protocol, used over TCP/UDP port 2641, making it incompatible with the World Wide Web as it doesn’t use HTTP or DNS for both legacy and security reasons. However, the DOI system almost exclusively uses the Handle System through an HTTP proxy server https://hdl.handle.net that exposes the Handle protocol over a REST API. There is one implementation of Handle written in Java that everyone uses, but it is not on GitHub.
 
-Handle allows a distributed group of providers, each one in charge of a separate prefix (e.g. the first part of a DOI), to register a public key with the Global Handle Registry (GHR) which is an authoritative service that manages, assigns and resolves requests to all prefixes. It's pretty much DNS, except designed in a time that the Web was not as dominant or flexible. It's unclear to me why it is still necessary to use Handle today other than for legacy reasons.
+Handle allows a distributed group of providers, each one in charge of a separate prefix (e.g. the first part of a DOI), to register a public key with the Global Handle Registry (GHR) which is an authoritative service that manages, assigns and resolves requests to all prefixes. It’s pretty much DNS, except designed in a time that the Web was not as dominant or flexible. It’s unclear to me why it is still necessary to use Handle today other than for legacy reasons.
 
 ### ORCID
 
-[ORCID](http://orcid.org/), funded by the same EU grant as DataCite and a spin-off of CrossRef, is a ~20 person non-profit that assigns DOIs to individuals and provides a searchable directory where you can access the profile for a researcher. They don't use DOIs but have their own identifier scheme [based on ISNI](https://en.wikipedia.org/wiki/ORCID) that look like `http://orcid.org/0000-0002-1825-0097`.
+[ORCID](http://orcid.org/), funded by the same EU grant as DataCite and a spin-off of CrossRef, is a ~20 person non-profit that assigns DOIs to individuals and provides a searchable directory where you can access the profile for a researcher. They don’t use DOIs but have their own identifier scheme [based on ISNI](https://en.wikipedia.org/wiki/ORCID) that look like `http://orcid.org/0000-0002-1825-0097`.
 
 ### Archival Resource Key (ARK)
 
 John Kunze from California Digital Library designed [ARK](https://en.wikipedia.org/wiki/Archival_Resource_Key) as an alternative to DOIs that may be better suited for the needs of long term preservation and libraries, as opposed to DOI/Handle which arose out of the publishing/e-commerce industries.
 
-The ARK system is free to use, as compared to DOIs which cost money to issue. ARK has a central prefix registry, run by the California Digital Library, which issues namespace prefix numbers similar to DOI. Other than this registry of prefixes institutions can issue and persist ARK identifiers and metadata for free to their own liking. This [means](https://groups.google.com/forum/#!topic/digital-curation/JtzVwVVCPvA) "You don't have to pay anyone, you just have to read the spec, get the institutional buy in, and start doing it.".
+The ARK system is free to use, as compared to DOIs which cost money to issue. ARK has a central prefix registry, run by the California Digital Library, which issues namespace prefix numbers similar to DOI. Other than this registry of prefixes institutions can issue and persist ARK identifiers and metadata for free to their own liking. This [means](https://groups.google.com/forum/#!topic/digital-curation/JtzVwVVCPvA) "You don’t have to pay anyone, you just have to read the spec, get the institutional buy in, and start doing it.".
 
 ARK URLs look like `http://bnf.fr/ark:/13030/tf5p30086k`, and are pretty similar to DOIs but not exactly the same.
 

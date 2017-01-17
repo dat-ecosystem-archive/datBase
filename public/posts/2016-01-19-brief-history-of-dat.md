@@ -1,6 +1,6 @@
-We have some exciting news to share about Dat: We're working on a 1.0 release! It's not out just yet, but you can try what we have so far by checking out [the `master` branch on GitHub](https://github.com/maxogden/dat) or with npm install dat@next -g
+We have some exciting news to share about Dat: We’re working on a 1.0 release! It’s not out just yet, but you can try what we have so far by checking out [the `master` branch on GitHub](https://github.com/maxogden/dat) or with npm install dat@next -g
 
-I'd like to explain the history of the project and the design choices over the last 2 years since the project started, as the project has made some pretty substantial changes in direction during that time. We have been in a constant cycle of R&D during this period, and have rewritten the Dat CLI four times.
+I’d like to explain the history of the project and the design choices over the last 2 years since the project started, as the project has made some pretty substantial changes in direction during that time. We have been in a constant cycle of R&D during this period, and have rewritten the Dat CLI four times.
 
 Each rewrite incorporates the best modules and approaches from the last iteration and presents what we hope is a more straightforward workflow. We firmly believe this iterative process is the only way we could have arrived at the conclusions that led us to the features we are currently focusing on for our 1.0 release.
 
@@ -25,7 +25,7 @@ An example of the canonical use case we had in mind at the time was an Excel spr
 
 ### Dat Alpha
 
-The Dat Alpha version was [released in August of 2014](https://usopendata.org/2014/08/19/dat-alpha/). The major feature we worked on was support for syncing large, non-tabular data files. This opened up a new use case: using Dat as a sort of 'DropBox for data' to sync a folder on your filesystem.
+The Dat Alpha version was [released in August of 2014](https://usopendata.org/2014/08/19/dat-alpha/). The major feature we worked on was support for syncing large, non-tabular data files. This opened up a new use case: using Dat as a sort of “DropBox for data” to sync a folder on your filesystem.
 
 The Alpha release was the first release after starting on a new grant that shifted our focus from open civic datasets (which tend to be tabular -- e.g. lots of database tables) to the field of data intensive scientific research, which tends to use domain specific flat-file based data formats.
 
@@ -67,7 +67,7 @@ Up until this version Dat acted more like a traditional centralized version cont
 
 The new DAG abstraction we developed during this time is called [hyperlog](https://github.com/mafintosh/hyperlog). It provides a graph storage API that supports incremental, streaming replication. We used it in the `dat` CLI tool as the core database, and added tabular import and file import + synchronization features on top of it.
 
-In terms of command-line API, the beta didn't change too dramatically from the alpha. We still supported both tabular and file oriented workflows. We dropped the word 'blob' in exchange for 'files' and used terms like 'read' and 'write' instead of 'get' and 'put'.
+In terms of command-line API, the beta didn’t change too dramatically from the alpha. We still supported both tabular and file oriented workflows. We dropped the word “blob” in exchange for “files” and used terms like “read” and “write” instead of “get” and “put”.
 
 The most notable new concept in the Beta was support for multiple datasets in a single repository. This was added to support datasets with hybrid data types, such as a astronomy full sky scan which might include raw image files from a telescope as well as tabular data created during post-processing of the images. You could model each one as a dataset in dat (sort of like two different sub-folders).
 
@@ -98,7 +98,7 @@ data commands:
   dat merge       Merge two forks into one.
 ```
 
-At the time of the Beta release we were most excited about the new decentralized possibilities. We were still unsure about the intuitiveness of the API, but weren't sure how to simplify the API without dropping support for use cases we thought were important.
+At the time of the Beta release we were most excited about the new decentralized possibilities. We were still unsure about the intuitiveness of the API, but weren’t sure how to simplify the API without dropping support for use cases we thought were important.
 
 ## Dat 1.0
 
