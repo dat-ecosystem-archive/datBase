@@ -18,7 +18,7 @@ This is same concept used in Google Drive and DropBox share links. This unique s
 
 If you share the new [dat.land](http://dat.land) link with someone else, their browser will attempt to find the other sources on the network that are broadcasting this same public key. Once it finds another source, it will attempt to connect directly to that other peer, and start downloading the data.
 
-If you drag more data onto the screen, you'll notice that the data is automatically synced to the other browser. None of the source data is transferred through a central server. It is also encrypted end-to-end between browsers to prevent malicious third parties from reading the data without your permission. Only users you share the dat key with will be able to download your data.
+If you drag more data onto the screen, you’ll notice that the data is automatically synced to the other browser. None of the source data is transferred through a central server. It is also encrypted end-to-end between browsers to prevent malicious third parties from reading the data without your permission. Only users you share the dat key with will be able to download your data.
 
 ## Implications
 
