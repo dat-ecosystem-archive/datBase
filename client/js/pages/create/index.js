@@ -8,26 +8,44 @@ const createPage = (state, prev, send) => {
       ${header(state, prev, send)}
       <section class="section">
         <div class="container">
-          <h1 class="content-title horizontal-rule">Creating New Dats</h1>
-          <p class="measure-wide mx">A Dat contains all of the files for your project, including the version history. You can create your own fresh Dat using either our Desktop App or the CLI. You can also import an existing Dat by entering the dat link.</p>
-        </div>
-      </section>
-      <section class="section bg-neutral-04">
-        <div class="container">
           <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <div class="import-block">
-                <svg>
-                  <use xlink:href="#daticon-create-new-dat" />
-                </svg>
-                ${importButton({
-                  handler: function (link) { window.location.href = '/view/' + link }
-                })}
-              </div>
+            <div class="col-xs-12 col-sm-5">
+              <h1 class="content-title horizontal-rule">Creating New Dats</h1>
+              <p class="measure-wide">A Dat contains all of the files for your project, including the version history. You can import an existing Dat by entering the dat link, or create your own fresh Dat using either our Desktop App or the CLI</p>
             </div>
-            <div class="col-xs-12 col-sm-6">
-              <h2>Import an Existing Dat</h2>
-              <p>If you have the link to an existing Dat, import it right here.</p>
+            <div class="col-xs-12 col-sm-7">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="bg-green mb4 p3 block-create block-create--import">
+                    <svg>
+                      <use xlink:href="#daticon-import-dat" />
+                    </svg>
+                    ${importButton({
+                      handler: function (link) { window.location.href = '/view/' + link }
+                    })}
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="bg-blue mb4 p3 block-create">
+                    <svg>
+                      <use xlink:href="#daticon-open-in-desktop" />
+                    </svg>
+                    <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
+                      Download Dat Desktop
+                    </a>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="bg-neutral mb4 p3 block-create">
+                    <svg>
+                      <use xlink:href="#daticon-create-new-dat" />
+                    </svg>
+                    <a href="http://docs.datproject.org" target="_blank" class="btn btn--green">
+                      Use the Dat CLI
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -37,7 +55,7 @@ const createPage = (state, prev, send) => {
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <h2 class="color-white">Dat Desktop</h2>
-              <p class="color-neutral-10">Sync and stream data using our desktop app.</p>
+              <p class="color-white">Sync and stream data using our desktop app. Currently availabel for MacOS. We’re working on Windows and Linux versions!</p>
               <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
                 Download Dat Desktop
               </a>
@@ -55,18 +73,18 @@ const createPage = (state, prev, send) => {
               <img src="/public/img/dat-terminal.svg" />
             </div>
             <div class="col-xs-12 col-sm-6">
-            <h2>Dat CLI</h2>
-            <p>Use Dat in the terminal.</p>
-            <pre>
-              <code>
+              <h2>Dat CLI</h2>
+              <p>Use Dat in the terminal. [Some more explanatory copy]</p>
+              <pre>
+                <code>
 $ npm install -g dat
 $ dat create path/to/my/data
 $ dat sync path/to/my/data
-              </code>
-            </pre>
-            <a href="http://docs.datproject.org" target="_blank" class="btn btn--green">
-              Read full documentation
-            </a>
+                </code>
+              </pre>
+              <a href="http://docs.datproject.org" target="_blank" class="btn btn--green">
+                Read full documentation
+              </a>
             </div>
           </div>
         </div>
