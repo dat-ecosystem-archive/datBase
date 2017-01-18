@@ -1,0 +1,24 @@
+.block-create {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  svg {
+    display: block;
+    fill: $color-white;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 2rem;
+  }
+  .dat-input {
+    border: 4px solid $color-green-hover;
+  }
+}
+
+.block-create--import {
+  flex-direction: row;
+  svg {
+    margin-bottom: 0;
+  }
+}
