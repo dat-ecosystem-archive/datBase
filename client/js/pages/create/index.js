@@ -16,8 +16,8 @@ const createPage = (state, prev, send) => {
         <div class="container">
           <div class="row">
             <div class="col-xs-12 col-sm-6">
-              <div class="bg-green pa4 import-block">
-                <svg class="white">
+              <div class="import-block">
+                <svg>
                   <use xlink:href="#daticon-create-new-dat" />
                 </svg>
                 ${importButton({
