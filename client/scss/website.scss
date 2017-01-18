@@ -11,11 +11,14 @@
 
 @import "shared-imports/variables";
 @import "shared-imports/colors";
+@import "shared-imports/bg-colors";
 @import "shared-imports/base";
 @import "shared-imports/layout";
 @import "shared-imports/grid";
 @import "shared-imports/site-header";
 @import "shared-imports/header-logo";
+@import "shared-imports/sections";
+@import "shared-imports/horizontal-rule";
 
 @import "includes/footer";
 @import "includes/cli-tutorial";
@@ -56,42 +59,6 @@ ul {
   }
 }
 
-.section {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  @media screen and (min-width: $small) {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-  @media screen and (min-width: $medium) {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-}
-
-.section--hero {
-  padding-top: 0;
-  padding-bottom: 0;
-  .container {
-    padding-bottom: 2rem;
-  }
-  @media screen and (min-width: $medium) {
-    background-image: url('/public/img/screenshot-dat-desktop.png');
-    background-repeat: no-repeat;
-    background-color: $color-white;
-    background-position: 130% 100%;
-    background-size: 60%;
-  }
-  @media screen and (min-width: 1180px) {
-    background-position: 100% 100%;
-    background-size: 50%;
-    .container {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-    }
-  }
-}
-
 .content-title {
   font-size: 2rem;
   font-weight: 700;
@@ -111,18 +78,6 @@ ul {
   }
   a {
     color: $color-blue;
-  }
-}
-
-.horizontal-rule {
-  &:after {
-    content: '';
-    display: block;
-    width: 4rem;
-    height: 5px;
-    margin-top: 1.25rem;
-    margin-bottom: 2rem;
-    background-color: $color-pink;
   }
 }
 .content-code-intro {

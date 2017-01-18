@@ -19,7 +19,7 @@ module.exports = function (state, prev, send) {
     <div class="body-part">
       <div class="content">
         <ul>
-          <li>First Thing - Not a Dat</li>
+          <h4>My Dats</h4>
           ${state.user.dats.map(dat => {
             return html`<li><a href="/${state.user.username}/${dat.name}">${dat.name}</a></li>`
           })}

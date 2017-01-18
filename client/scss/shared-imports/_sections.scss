@@ -1,0 +1,36 @@
+
+.section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  @media screen and (min-width: $small) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  @media screen and (min-width: $medium) {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.section--hero {
+  padding-top: 0;
+  padding-bottom: 0;
+  .container {
+    padding-bottom: 2rem;
+  }
+  @media screen and (min-width: $medium) {
+    background-image: url('/public/img/screenshot-dat-desktop.png');
+    background-repeat: no-repeat;
+    background-color: $color-white;
+    background-position: 130% 100%;
+    background-size: 60%;
+  }
+  @media screen and (min-width: 1180px) {
+    background-position: 100% 100%;
+    background-size: 50%;
+    .container {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  }
+}

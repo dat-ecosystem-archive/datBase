@@ -1168,63 +1168,63 @@ code, .code { font-family: Consolas, monaco, monospace; }
 .washed-green { color: #e8fdf5; }
 .washed-yellow { color: #fffceb; }
 .washed-red { color: #ffdfdf; }
-.bg-black-90 { background-color: rgba( 0, 0, 0, .9 ); }
-.bg-black-80 { background-color: rgba( 0, 0, 0, .8 ); }
-.bg-black-70 { background-color: rgba( 0, 0, 0, .7 ); }
-.bg-black-60 { background-color: rgba( 0, 0, 0, .6 ); }
-.bg-black-50 { background-color: rgba( 0, 0, 0, .5 ); }
-.bg-black-40 { background-color: rgba( 0, 0, 0, .4 ); }
-.bg-black-30 { background-color: rgba( 0, 0, 0, .3 ); }
-.bg-black-20 { background-color: rgba( 0, 0, 0, .2 ); }
-.bg-black-10 { background-color: rgba( 0, 0, 0, .1 ); }
-.bg-black-05 { background-color: rgba( 0, 0, 0, .05 ); }
-.bg-white-90 { background-color: rgba( 255, 255, 255, .9 ); }
-.bg-white-80 { background-color: rgba( 255, 255, 255, .8 ); }
-.bg-white-70 { background-color: rgba( 255, 255, 255, .7 ); }
-.bg-white-60 { background-color: rgba( 255, 255, 255, .6 ); }
-.bg-white-50 { background-color: rgba( 255, 255, 255, .5 ); }
-.bg-white-40 { background-color: rgba( 255, 255, 255, .4 ); }
-.bg-white-30 { background-color: rgba( 255, 255, 255, .3 ); }
-.bg-white-20 { background-color: rgba( 255, 255, 255, .2 ); }
-.bg-white-10 { background-color: rgba( 255, 255, 255, .1 ); }
-/* Background colors */
-.bg-black { background-color: #000; }
-.bg-near-black { background-color: #111; }
-.bg-dark-gray { background-color: #333; }
-.bg-mid-gray { background-color: #555; }
-.bg-gray { background-color: #777; }
-.bg-silver { background-color: #999; }
-.bg-light-silver { background-color: #aaa; }
-.bg-moon-gray { background-color: #ccc; }
-.bg-light-gray { background-color: #eee; }
-.bg-near-white { background-color: #f4f4f4; }
-.bg-white { background-color: #fff; }
-.bg-transparent { background-color: transparent; }
-.bg-dark-red { background-color: #e7040f; }
-.bg-red { background-color: #ff4136; }
-.bg-light-red { background-color: #ff725c; }
-.bg-orange { background-color: #ff6300; }
-.bg-gold { background-color: #ffb700; }
-.bg-yellow { background-color: #ffd700; }
-.bg-light-yellow { background-color: #fbf1a9; }
-.bg-purple { background-color: #5e2ca5; }
-.bg-light-purple { background-color: #a463f2; }
-.bg-dark-pink { background-color: #d5008f; }
-.bg-hot-pink { background-color: #ff41b4; }
-.bg-pink { background-color: #ff80cc; }
-.bg-light-pink { background-color: #ffa3d7; }
-.bg-dark-green { background-color: #137752; }
-.bg-green { background-color: #19a974; }
-.bg-light-green { background-color: #9eebcf; }
-.bg-navy { background-color: #001b44; }
-.bg-dark-blue { background-color: #00449e; }
-.bg-blue { background-color: #357edd; }
-.bg-light-blue { background-color: #96ccff; }
-.bg-lightest-blue { background-color: #cdecff; }
-.bg-washed-blue { background-color: #f6fffe; }
-.bg-washed-green { background-color: #e8fdf5; }
-.bg-washed-yellow { background-color: #fffceb; }
-.bg-washed-red { background-color: #ffdfdf; }
+// .bg-black-90 { background-color: rgba( 0, 0, 0, .9 ); }
+// .bg-black-80 { background-color: rgba( 0, 0, 0, .8 ); }
+// .bg-black-70 { background-color: rgba( 0, 0, 0, .7 ); }
+// .bg-black-60 { background-color: rgba( 0, 0, 0, .6 ); }
+// .bg-black-50 { background-color: rgba( 0, 0, 0, .5 ); }
+// .bg-black-40 { background-color: rgba( 0, 0, 0, .4 ); }
+// .bg-black-30 { background-color: rgba( 0, 0, 0, .3 ); }
+// .bg-black-20 { background-color: rgba( 0, 0, 0, .2 ); }
+// .bg-black-10 { background-color: rgba( 0, 0, 0, .1 ); }
+// .bg-black-05 { background-color: rgba( 0, 0, 0, .05 ); }
+// .bg-white-90 { background-color: rgba( 255, 255, 255, .9 ); }
+// .bg-white-80 { background-color: rgba( 255, 255, 255, .8 ); }
+// .bg-white-70 { background-color: rgba( 255, 255, 255, .7 ); }
+// .bg-white-60 { background-color: rgba( 255, 255, 255, .6 ); }
+// .bg-white-50 { background-color: rgba( 255, 255, 255, .5 ); }
+// .bg-white-40 { background-color: rgba( 255, 255, 255, .4 ); }
+// .bg-white-30 { background-color: rgba( 255, 255, 255, .3 ); }
+// .bg-white-20 { background-color: rgba( 255, 255, 255, .2 ); }
+// .bg-white-10 { background-color: rgba( 255, 255, 255, .1 ); }
+// /* Background colors */
+// .bg-black { background-color: #000; }
+// .bg-near-black { background-color: #111; }
+// .bg-dark-gray { background-color: #333; }
+// .bg-mid-gray { background-color: #555; }
+// .bg-gray { background-color: #777; }
+// .bg-silver { background-color: #999; }
+// .bg-light-silver { background-color: #aaa; }
+// .bg-moon-gray { background-color: #ccc; }
+// .bg-light-gray { background-color: #eee; }
+// .bg-near-white { background-color: #f4f4f4; }
+// .bg-white { background-color: #fff; }
+// .bg-transparent { background-color: transparent; }
+// .bg-dark-red { background-color: #e7040f; }
+// .bg-red { background-color: #ff4136; }
+// .bg-light-red { background-color: #ff725c; }
+// .bg-orange { background-color: #ff6300; }
+// .bg-gold { background-color: #ffb700; }
+// .bg-yellow { background-color: #ffd700; }
+// .bg-light-yellow { background-color: #fbf1a9; }
+// .bg-purple { background-color: #5e2ca5; }
+// .bg-light-purple { background-color: #a463f2; }
+// .bg-dark-pink { background-color: #d5008f; }
+// .bg-hot-pink { background-color: #ff41b4; }
+// .bg-pink { background-color: #ff80cc; }
+// .bg-light-pink { background-color: #ffa3d7; }
+// .bg-dark-green { background-color: #137752; }
+// .bg-green { background-color: #19a974; }
+// .bg-light-green { background-color: #9eebcf; }
+// .bg-navy { background-color: #001b44; }
+// .bg-dark-blue { background-color: #00449e; }
+// .bg-blue { background-color: #357edd; }
+// .bg-light-blue { background-color: #96ccff; }
+// .bg-lightest-blue { background-color: #cdecff; }
+// .bg-washed-blue { background-color: #f6fffe; }
+// .bg-washed-green { background-color: #e8fdf5; }
+// .bg-washed-yellow { background-color: #fffceb; }
+// .bg-washed-red { background-color: #ffdfdf; }
 /*
 
    SKINS:PSEUDO

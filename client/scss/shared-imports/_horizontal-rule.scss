@@ -1,0 +1,11 @@
+.horizontal-rule {
+  &:after {
+    content: '';
+    display: block;
+    width: 4rem;
+    height: 5px;
+    margin-top: 1.25rem;
+    margin-bottom: 2rem;
+    background-color: $color-pink;
+  }
+}
