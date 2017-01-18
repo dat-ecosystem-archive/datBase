@@ -46,9 +46,7 @@
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/app.css > public/css/app.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
-    "version": "./bin/git-sha.js && ./bin/version-assets.js",
-    "deploy": "shipit prod deploy && shipit prod install && shipit prod restart",
-    "deploy-uat": "shipit uat deploy && shipit uat install && shipit uat restart"
+    "version": "./bin/git-sha.js && ./bin/version-assets.js"
   },
   "standard": {
     "ignore": [
@@ -66,7 +64,6 @@
     "request": "^2.79.0",
     "rimraf": "^2.5.4",
     "selenium-server-standalone-jar": "^2.53.1",
-    "shipit-deploy": "^2.2.0",
     "standard": "^7.1.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
