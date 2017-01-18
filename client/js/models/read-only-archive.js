@@ -1,3 +1,5 @@
+const xtend = require('xtend')
+
 var defaultState = {
   key: null,
   health: {
@@ -14,5 +16,10 @@ var defaultState = {
 
 module.exports = {
   namespace: 'archive',
-  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.archive
+  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.archive,
+  reducers: {
+    update: (data, state) => {
+      return xtend(state, data)
+    }
+  }
 }
