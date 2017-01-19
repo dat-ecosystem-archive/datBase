@@ -9,18 +9,25 @@ const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 
+var ARCHIVE_ERRORS = {
+  'Invalid Key': 'No dat here.',
+  'timed out': 'No sources found.'
+}
+
 const archivePage = (state, prev, send) => {
-  // XXX: have an error enum?
-  if (state.archive.error && state.archive.error.message === 'Invalid key') {
-    var props = {
-      header: 'No dat here.'
-    }
-    return html`
-    <div>
+  if (state.archive.error) {
+    var cleaned = ARCHIVE_ERRORS[state.archive.error.message]
+    if (cleaned) {
+      var props = {
+        header: cleaned
+      }
+      return html`
+      <div>
       ${header(state, prev, send)}
       ${fourohfour(props)}
-    </div>
-    `
+      </div>
+      `
+    }
   }
   var health = state.archive.health
   var sources = health ? health.connected : 0

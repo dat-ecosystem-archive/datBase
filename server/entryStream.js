@@ -12,7 +12,7 @@ module.exports = function (dat, cb) {
     duration: TIMEOUT
   }, () => {
     cancelled = true
-    var msg = 'No sources found.'
+    var msg = 'timed out'
     return cb(new Error(msg))
   })
 
