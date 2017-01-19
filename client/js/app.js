@@ -20,6 +20,7 @@ app.router((route) => [
   route('/list', require('./pages/list')),
   route('/register', require('./pages/auth/register')),
   route('/login', require('./pages/auth/login')),
+  route('/download/:archiveKey', require('./pages/download')),
   route('/view/:archiveKey', require('./pages/archive')),
   route('/:username/:dataset', require('./pages/archive')),
   route('/404', require('./pages/fourohfour'))
