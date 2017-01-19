@@ -4,13 +4,17 @@ const collect = require('collect-stream')
 // will update this when we start using accounts and repos
 
 module.exports = function (archive, cb) {
+  var cancelled = false
+  setTimeout(function () {
+    if (cancelled) return
+    cancelled = true
+    return cb(new Error('no metadata'))
+  }, 3000)
   collect(archive.createFileReadStream('dat.json'), (err, raw) => {
-    if (err) {
-      collect(archive.createFileReadStream('datapackage.json'), (err, raw) => {
-        if (err) return cb(new Error('no metadata'))
-        done(raw, cb)
-      })
-    } else done(raw, cb)
+    if (cancelled) return
+    cancelled = true
+    if (err) return cb(err)
+    done(raw, cb)
   })
 }
 
@@ -21,5 +25,5 @@ function done (raw, cb) {
   } catch (err) {
     return cb(err)
   }
-  cb(null, json)
+  return cb(null, json)
 }

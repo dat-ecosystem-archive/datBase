@@ -1,5 +1,4 @@
 const fs = require('fs')
-const collect = require('collect-stream')
 const path = require('path')
 const compression = require('compression')
 const getMetadata = require('../client/js/utils/metadata')
@@ -97,29 +96,21 @@ module.exports = function (opts, db) {
       state.archive.key = encoding.toStr(key)
       dat = Dat(key)
     } catch (err) {
-      return onerror('not valid', err)
+      return onerror(err)
     }
 
-    function onerror (message, err) {
-      log.warn(key + ' ' + message, err)
+    function onerror (err) {
+      log.warn(key, err)
       state.archive.error = {message: err.message}
       if (dat) return dat.close(function () { cb(state) })
       return cb(state)
     }
 
-    var cancelled = false
-    var stream = entryStream(dat, function ontimeout (err) {
-      if (err) {
-        cancelled = true
-        onerror('timed out', err)
-      }
-    })
-    collect(stream, function (err, entries) {
-      if (cancelled) return
-      if (err) return onerror('errored', err)
+    entryStream(dat, function (err, entries) {
+      if (err) return onerror(err)
       state.archive.entries = entries
       getMetadata(dat.archive, function (err, metadata) {
-        if (err) state.archive.error = {message: 'no metadata'}
+        if (err) state.archive.error = {message: err.message}
         if (metadata) state.archive.metadata = metadata
         state.archive.health = dat.health.get()
         dat.close(function () {

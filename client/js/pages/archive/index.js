@@ -1,38 +1,37 @@
 const html = require('choo/html')
-const importQueue = require('../../components/import-queue')
 const hyperdrive = require('../../components/hyperdrive')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
 const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
-const addFiles = require('../../elements/add-files')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 
+var ARCHIVE_ERRORS = {
+  'Invalid Key': 'No dat here.',
+  'timed out': 'No sources found.'
+}
+
 const archivePage = (state, prev, send) => {
-  // XXX: have an error enum?
-  if (state.archive.error && state.archive.error.message === 'Invalid key') {
-    var props = {
-      header: 'No dat here.'
+  if (state.archive.error) {
+    var cleaned = ARCHIVE_ERRORS[state.archive.error.message]
+    if (cleaned) {
+      var props = {
+        header: cleaned
+      }
+      return html`
+      <div>
+      ${header(state, prev, send)}
+      ${fourohfour(props)}
+      </div>
+      `
     }
-    return html`
-    <div>
-    ${header(state, prev, send)}
-    ${fourohfour(props)}
-    </div>
-    `
   }
-  var archive = state.archive.instance
   var health = state.archive.health
-  var swarm = state.archive.swarm // webrtc swarm
-  var webrtcPeers = swarm ? swarm.connections : 0
-  var sources = webrtcPeers + health.connected
-  var bytes = archive && archive.content ? archive.content.bytes
-    : health ? health.bytes : 0
-  var size = prettyBytes(bytes)
-  var downloadBtnDisabled = webrtcPeers > 0 ? '' : 'display:none;'
+  var sources = health ? health.connected : 0
+  var size = prettyBytes(state.archive.health.bytes)
 
   return html`
     <div>
@@ -43,15 +42,9 @@ const archivePage = (state, prev, send) => {
             <div class="dat-header-action">
               ${copyButton(state.archive.key, send)}
            </div>
-            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
-              <div class="btn__icon-wrapper ${downloadBtnDisabled}">
-                <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
-                <span class="btn__icon-text">Download</span>
-              </div>
-            </button>
             <a href="https://github.com/datproject/dat-desktop" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
-                <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
+                <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
                 <span class="btn__icon-text">Open in Desktop App</span>
               </div>
             </a>
@@ -61,21 +54,18 @@ const archivePage = (state, prev, send) => {
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">
-              ${permissions({owner: archive ? archive.owner : false})}
+              ${permissions({owner: state.archive.owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
             <div id="peers" class="dat-detail">${sources} Source(s)</div>
-            <div id="speed" class="dat-detail dat-detail--speed"><div>${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}</div></div>
           </div>
             <div class="dat-detail">
-            ${archive && archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}
+            ${state.archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}
             </div>
         </div>
       </div>
       <main class="site-main">
         <div class="container">
-          <div id="add-files">${archive && archive.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', {files}) }) : ''}</div>
-          ${importQueue(state, prev, send)}
           ${hyperdrive(state, prev, send)}
         </div>
       </main>
