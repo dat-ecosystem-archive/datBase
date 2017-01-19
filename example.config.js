@@ -29,7 +29,11 @@ var config = {
   production: {
     township: {
       secret: process.env.TOWNSHIP_SECRET,
-      db: path.join(datadir, 'datland-township.db')
+      db: path.join(datadir, 'datland-township.db'),
+      email: {
+        fromEmail: 'noreply@datproject.org',
+        postmarkAPIKey: process.env.POSTMARK_KEY
+      }
     },
     db: {
       dialect: 'sqlite3',
