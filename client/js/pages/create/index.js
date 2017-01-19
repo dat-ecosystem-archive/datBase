@@ -10,8 +10,8 @@ const createPage = (state, prev, send) => {
         <div class="container">
           <div class="row">
             <div class="col-xs-12 col-sm-5">
-              <h1 class="content-title horizontal-rule">Creating New Dats</h1>
-              <p class="measure-wide">A Dat contains all of the files for your project, including the version history. You can import an existing Dat by entering the dat link, or create your own fresh Dat using either our Desktop App or the CLI</p>
+              <h1 class="f1 content-title horizontal-rule">Creating New Dats</h1>
+              <p class="measure-wide">A Dat contains all of the files for your project, including the version history. You can import an existing Dat by entering the dat link. Or create your own fresh Dat using either our Desktop App or the CLI.</p>
             </div>
             <div class="col-xs-12 col-sm-7">
               <div class="row">
@@ -30,9 +30,10 @@ const createPage = (state, prev, send) => {
                     <svg>
                       <use xlink:href="#daticon-open-in-desktop" />
                     </svg>
-                    <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
+                    <p class="mb0 pv1 color-white">Coming soon for MacOS!</p>
+                    <!-- <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
                       Download Dat Desktop
-                    </a>
+                    </a> -->
                   </div>
                 </div>
                 <div class="col-xs-6">
@@ -50,30 +51,16 @@ const createPage = (state, prev, send) => {
           </div>
         </div>
       </section>
-      <section class="section bg-blue">
-        <div class="container">
-          <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <h2 class="color-white">Dat Desktop</h2>
-              <p class="color-white">Sync and stream data using our desktop app. Currently available for MacOS. We’re working on Windows and Linux versions!</p>
-              <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
-                Download Dat Desktop
-              </a>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <img src="/public/img/screenshot-dat-desktop.png" />
-            </div>
-          </div>
-        </div>
-      </section>
       <section class="section bg-neutral-04">
         <div class="container">
           <div class="row">
             <div class="col-xs-12 col-sm-6">
-              <img src="/public/img/dat-terminal.svg" />
+              <img src="/public/img/dat-terminal.svg" class="screenshot" />
             </div>
             <div class="col-xs-12 col-sm-6">
-              <h2>Dat CLI</h2>
+              <h2 class="content-title horizontal-rule">
+                Dat CLI
+              </h2>
               <p>Use Dat in the terminal. [Some more explanatory copy]</p>
               <pre>
                 <code>
@@ -85,6 +72,25 @@ $ dat sync path/to/my/data
               <a href="http://docs.datproject.org" target="_blank" class="btn btn--green">
                 Read full documentation
               </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section bg-blue">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h2 class="content-title color-white horizontal-rule">
+                Dat Desktop
+              </h2>
+              <p class="color-white">Sync and stream data using our desktop app.</p>
+              <p class="color-white">Coming soon for MacOS!</p>
+              <!-- <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
+                Download Dat Desktop
+              </a> -->
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <img src="/public/img/screenshot-dat-desktop.png" class="screenshot" />
             </div>
           </div>
         </div>
