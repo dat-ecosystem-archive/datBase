@@ -4,16 +4,18 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  svg {
-    display: block;
-    fill: $color-white;
-    width: 4rem;
-    height: 4rem;
-    margin-bottom: 2rem;
-  }
+  position: relative;
   .dat-input {
     border: 4px solid $color-green-hover;
   }
+}
+
+.block-create__icon {
+  display: block;
+  fill: $color-white;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 2rem;
 }
 
 .block-create--import {

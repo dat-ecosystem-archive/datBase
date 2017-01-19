@@ -17,7 +17,7 @@ const createPage = (state, prev, send) => {
               <div class="row">
                 <div class="col-xs-12">
                   <div class="bg-green mb4 p3 block-create block-create--import">
-                    <svg>
+                    <svg class="block-create__icon" >
                       <use xlink:href="#daticon-import-dat" />
                     </svg>
                     ${importButton({
@@ -27,10 +27,10 @@ const createPage = (state, prev, send) => {
                 </div>
                 <div class="col-xs-6">
                   <div class="bg-blue mb4 p3 block-create">
-                    <svg>
+                    <svg class="block-create__icon">
                       <use xlink:href="#daticon-open-in-desktop" />
                     </svg>
-                    <p class="mb0 pv1 color-white">Coming soon for MacOS!</p>
+                    <p class="mb0 f6 lh-title color-white">Desktop App<br>Coming soon for MacOS!</p>
                     <!-- <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
                       Download Dat Desktop
                     </a> -->
@@ -38,9 +38,7 @@ const createPage = (state, prev, send) => {
                 </div>
                 <div class="col-xs-6">
                   <div class="bg-neutral mb4 p3 block-create">
-                    <svg>
-                      <use xlink:href="#daticon-create-new-dat" />
-                    </svg>
+                    <img src="/public/img/terminal-icon.svg" class="block-create__icon" />
                     <a href="http://docs.datproject.org" target="_blank" class="btn btn--green">
                       Use the Dat CLI
                     </a>
