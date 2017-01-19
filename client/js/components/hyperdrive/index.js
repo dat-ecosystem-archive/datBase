@@ -1,5 +1,4 @@
 const hyperdriveRenderer = require('./client.js')
-const noop = function () {}
 
 module.exports = function (state, prev, send) {
   var onclick = (ev, entry) => {
@@ -7,7 +6,6 @@ module.exports = function (state, prev, send) {
       send('archive:update', {root: entry.name})
       return true
     } else {
-      send('preview:file', {archiveKey: state.archive.key, entry: entry}, noop)
       return false
     }
   }
