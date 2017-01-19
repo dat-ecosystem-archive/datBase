@@ -31,9 +31,6 @@ const createPage = (state, prev, send) => {
                       <use xlink:href="#daticon-open-in-desktop" />
                     </svg>
                     <p class="mb0 f6 lh-title color-white">Desktop App<br>Coming soon for MacOS!</p>
-                    <!-- <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
-                      Download Dat Desktop
-                    </a> -->
                   </div>
                 </div>
                 <div class="col-xs-6">
@@ -83,9 +80,6 @@ $ dat sync path/to/my/data
               </h2>
               <p class="color-white">Sync and stream data using our desktop app.</p>
               <p class="color-white">Coming soon for MacOS!</p>
-              <!-- <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
-                Download Dat Desktop
-              </a> -->
             </div>
             <div class="col-xs-12 col-sm-6">
               <img src="/public/img/screenshot-dat-desktop.png" class="screenshot" />
