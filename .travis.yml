@@ -14,10 +14,9 @@ before_install:
   - sudo dpkg -i google-chrome*.deb
 
 before_script:
-  - cp example.config.js config.js 
+  - cp example.config.js config.js
   - npm run build
-  - node_modules/.bin/signalhub listen -p 8089 -q &
-  - DATLAND_SIGNAL_HUBS=localhost:8089 npm run server &
 
 script:
   - npm run test
+  - TEST_SERVER=http://localhost:8080/ npm run test:e2e
