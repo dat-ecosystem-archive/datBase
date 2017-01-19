@@ -1,17 +1,35 @@
 const pump = require('pump')
+const collect = require('collect-stream')
 const TimeoutStream = require('through-timeout')
 
-module.exports = function (dat, ontimeout) {
+module.exports = function (dat, cb) {
+  var TIMEOUT = 5000
   var listStream = dat.archive.list({live: false})
   var timeout = TimeoutStream({
     objectMode: true,
-    duration: 5000
+    duration: TIMEOUT
   }, () => {
     var msg = 'Looking for sources …'
-    return ontimeout(new Error(msg))
+    return cb(new Error(msg))
   })
 
-  return pump(listStream, timeout, function (err) {
-    if (err) ontimeout(err)
+  var entryStream = pump(listStream, timeout, function (err) {
+    if (err) cb(err)
+  })
+
+  var cancelled = false
+
+  setTimeout(function () {
+    if (cancelled) return
+    cancelled = true
+    var msg = 'Metadata is too large'
+    return cb(new Error(msg))
+  }, TIMEOUT)
+
+  collect(entryStream, function (err, entries) {
+    if (cancelled) return
+    cancelled = true
+    if (err) return cb(err)
+    cb(null, entries)
   })
 }

@@ -1,5 +1,4 @@
 const fs = require('fs')
-const collect = require('collect-stream')
 const path = require('path')
 const compression = require('compression')
 const getMetadata = require('../client/js/utils/metadata')
@@ -100,18 +99,14 @@ module.exports = function (opts, db) {
       return onerror(err)
     }
 
-    var cancelled = false
     function onerror (err) {
-      cancelled = true
       log.warn(key, err)
       state.archive.error = {message: err.message}
       if (dat) return dat.close(function () { cb(state) })
       return cb(state)
     }
 
-    var stream = entryStream(dat, onerror)
-    collect(stream, function (err, entries) {
-      if (cancelled) return
+    entryStream(dat, function (err, entries) {
       if (err) return onerror(err)
       state.archive.entries = entries
       getMetadata(dat.archive, function (err, metadata) {
