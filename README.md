@@ -108,6 +108,13 @@ npm run minify
 npm run version
 ```
 
+### Getting invited-users list
+
+```
+git clone git@github.com:datproject/invited-users.git
+```
+
+
 ### Running end-to-end tests
 
 Chrome:
