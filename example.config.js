@@ -14,9 +14,9 @@ var config = {
       email: {
         fromEmail: 'hi@example.com',
         postmarkAPIKey: 'your api key'
-      },
-      whitelist: false // otherwise path to whitelist email txt file
+      }
     },
+    whitelist: path.join(datadir, 'invited-users', 'README'),
     db: {
       dialect: 'sqlite3',
       connection: {
@@ -29,8 +29,7 @@ var config = {
   production: {
     township: {
       secret: process.env.TOWNSHIP_SECRET,
-      db: path.join(datadir, 'datland-township.db'),
-      whitelist: false
+      db: path.join(datadir, 'datland-township.db')
     },
     db: {
       dialect: 'sqlite3',
