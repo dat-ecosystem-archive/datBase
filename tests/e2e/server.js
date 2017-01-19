@@ -26,7 +26,8 @@ module.exports = new function () {
       client
         .expect.element('#title').text.to.contain('ICESAT-2 SIMPL').before(5000)
       client
-        .expect.element('#peers').text.to.contain('2').before(5000).end()
+        .expect.element('#peers').text.to.contain('2').before(5000)
+      client.end()
     })
   }
 }
