@@ -1,12 +1,12 @@
 .container {
-  padding-right: .5rem;
-  padding-left: .5rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
   margin-right: auto;
   margin-left: auto;
   max-width: 64rem; // 1024px
   @media screen and (min-width: $xsmall) {
-    padding-right: 1rem;
-    padding-left: 1rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
   }
   @media screen and (min-width: $small) {
     padding-right: 2rem;

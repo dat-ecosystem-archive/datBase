@@ -1,5 +1,4 @@
-@media screen and (min-width: $small) {
-  .video {
-    width: 100% !important;
-  }
+.video {
+  width: 100% !important;
+  max-width: 480px;
 }
