@@ -55,7 +55,7 @@ const createPage = (state, prev, send) => {
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <h2 class="color-white">Dat Desktop</h2>
-              <p class="color-white">Sync and stream data using our desktop app. Currently availabel for MacOS. We’re working on Windows and Linux versions!</p>
+              <p class="color-white">Sync and stream data using our desktop app. Currently available for MacOS. We’re working on Windows and Linux versions!</p>
               <a href="https://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
                 Download Dat Desktop
               </a>
