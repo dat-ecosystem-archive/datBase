@@ -20,4 +20,4 @@ before_script:
 
 script:
   - npm run test
-  - TEST_SERVER=http://localhost:8080/ npm run test:e2e
+  - TEST_SERVER=http://localhost:8080 npm run test:e2e
