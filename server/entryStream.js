@@ -5,19 +5,21 @@ const TimeoutStream = require('through-timeout')
 module.exports = function (dat, cb) {
   var TIMEOUT = 5000
   var listStream = dat.archive.list({live: false})
+  var cancelled = false
+
   var timeout = TimeoutStream({
     objectMode: true,
     duration: TIMEOUT
   }, () => {
-    var msg = 'Looking for sources …'
+    cancelled = true
+    var msg = 'No sources found.'
     return cb(new Error(msg))
   })
 
   var entryStream = pump(listStream, timeout, function (err) {
+    if (cancelled) return
     if (err) cb(err)
   })
-
-  var cancelled = false
 
   setTimeout(function () {
     if (cancelled) return
