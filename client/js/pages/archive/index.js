@@ -10,7 +10,7 @@ const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 
 var ARCHIVE_ERRORS = {
-  'Invalid Key': 'No dat here.',
+  'Invalid key': 'No dat here.',
   'timed out': 'No sources found.'
 }
 
