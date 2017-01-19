@@ -16,6 +16,7 @@ before_install:
 before_script:
   - cp example.config.js config.js
   - npm run build
+  - npm run start &
 
 script:
   - npm run test
