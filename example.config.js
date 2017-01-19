@@ -31,7 +31,7 @@ var config = {
       secret: process.env.TOWNSHIP_SECRET,
       db: path.join(datadir, 'datland-township.db')
     },
-    whitelist: path.join(__dirname, 'invited-users', 'README'),
+    whitelist: path.join(datadir, 'invited-users', 'README'),
     db: {
       dialect: 'sqlite3',
       connection: {
