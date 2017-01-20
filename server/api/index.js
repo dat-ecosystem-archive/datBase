@@ -29,7 +29,7 @@ module.exports = function (router, db, ship) {
     if (!authHeader) return route(req, done)
     req.user = null
 
-    ship.verify(req, res, function (err, decoded, token) {
+    ship.verify(req, function (err, decoded, token) {
       if (err) return onerror(err, res)
       if (!decoded) return route(req, done)
       db.models.users.get({email: decoded.auth.basic.email}, function (err, results) {
