@@ -8,7 +8,7 @@ const errors = require('../errors')
 
 module.exports = function (router, db, opts) {
   const townshipDb = level(opts.township.db || path.join(__dirname, 'township.db'))
-  const ship = township(opts.township, townshipDb)
+  const ship = township(townshipDb, opts.township)
 
   function onerror (err, res) {
     return error(400, errors.humanize(err).message).pipe(res)
