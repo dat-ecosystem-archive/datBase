@@ -7,21 +7,22 @@ module.exports = function (state, prev, send) {
       ${header(state, prev, send)}
       <section class="section">
         <div class="container">
-          <h1>Download a dat</h1>
-          <div class="row">
-            <p>1. Install node for your platform using <a href="http://nodejs.org">this link.</a></p>
-          </div>
-          <div class="row">
-            <p>2. Download the dat command line tool to download:</p>
-            <pre><code>$ npm install -g dat
+          <h1 class="f1 content-title horizontal-rule">Download a Dat</h1>
+          <p>1. Install node for your platform using <a href="http://nodejs.org">this link.</a></p>
+
+          <p>2. Download the dat command line tool to download:</p>
+          <pre>
+            <code>
+$ npm install -g dat
 $ dat clone ${state.archive.key}
-            </code></pre>
+            </code>
+          </pre>
 
-          <p>Having trouble installing dat? Try our <a href="http://docs.datproject.org/#troubleshooting">troubleshooting checklist</a>.</p>
-
-          </div>
+          <p>
+            Having trouble installing dat? Try our <a href="http://docs.datproject.org/#troubleshooting">troubleshooting checklist</a>.
+          </p>
         </div>
-    </section>
-  </div>
+      </section>
+    </div>
   `
 }
