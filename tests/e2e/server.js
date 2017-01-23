@@ -1,6 +1,10 @@
+var fs = require('fs')
+var path = require('path')
 var testServer = process.env.TEST_SERVER || 'https://datproject.org'
 
 module.exports = new function () {
+  var key = fs.readFileSync(path.join(__dirname, '..', 'key.txt')).toString()
+
   var testCases = this
   testCases['opening the browser and navigating to the url'] = (client) => {
     client
@@ -17,14 +21,13 @@ module.exports = new function () {
     })
   }
   testCases['viewing a dat that exists with a dat.json'] = (client) => {
-    var key = 'bf37b184c981c3db293f20530cd6461e39f8147c221b1e3ee03e08ef2b747547'
     client
     .setValue("input[name='import-dat']", key)
     client.keys(client.Keys.ENTER, function (done) {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(5000)
       client
-        .expect.element('#title').text.to.contain('ICESAT-2 SIMPL').before(5000)
+        .expect.element('#title').text.to.contain('hello world').before(5000)
       client
         .expect.element('#peers').text.to.contain('2').before(5000)
       client.end()
