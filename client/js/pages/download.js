@@ -12,9 +12,8 @@ module.exports = function (state, prev, send) {
             <p>1. Install node for your platform using <a href="http://nodejs.org">this link.</a></p>
           </div>
           <div class="row">
-            <p>2. clone the dat</p>
-            <pre><code>
-$ npm install -g dat
+            <p>2. Download the dat command line tool to download:</p>
+            <pre><code>$ npm install -g dat
 $ dat clone ${state.archive.key}
             </code></pre>
 
