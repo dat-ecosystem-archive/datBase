@@ -29,7 +29,7 @@ module.exports = new function () {
       client
         .expect.element('#title').text.to.contain('hello world').before(5000)
       client
-        .expect.element('#peers').text.to.contain('2').before(5000)
+        .expect.element('#peers').text.to.contain('1').before(5000)
       client.end()
     })
   }
