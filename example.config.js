@@ -28,7 +28,8 @@ var config = {
   development: {},
   production: {
     township: {
-      secret: process.env.TOWNSHIP_SECRET,
+      publicKey: process.env.TOWNSHIP_PUBKEY,
+      privateKey: process.env.TOWNSHIP_PRIVKEY,
       db: path.join(datadir, 'datland-township.db'),
       email: {
         fromEmail: 'noreply@datproject.org',
