@@ -29,7 +29,7 @@ const createPage = (state, prev, send) => {
                 </div>
                 <div class="col-xs-6">
                 <a href="#desktop">
-                  <div class="bg-blue mb4 p3 block-create">
+                  <div class="bg-blue hover-bg-blue-hover mb4 p3 block-create">
                     <svg class="block-create__icon">
                       <use xlink:href="#daticon-open-in-desktop" />
                     </svg>
@@ -39,7 +39,7 @@ const createPage = (state, prev, send) => {
                 </div>
                 <div class="col-xs-6">
                 <a href="#terminal">
-                  <div class="bg-neutral mb4 p3 block-create">
+                  <div class="bg-neutral hover-bg-neutral-80 mb4 p3 block-create">
                     <img src="/public/img/terminal-icon.svg" class="block-create__icon" />
                     <p class="mb0 f6 lh-title color-white">On the terminal</p>
                   </div>
