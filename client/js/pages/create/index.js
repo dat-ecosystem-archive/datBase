@@ -45,7 +45,8 @@ $ dat share path/to/my/data</code></pre>
                     <svg class="block-create__icon" >
                       <use xlink:href="#daticon-import-dat" />
                     </svg>
-                  <p class="mb0 f6 lh-title color-white">  You can view an existing Dat <br>by entering the dat link.</p>
+                  <p class="mb0 f6 lh-title color-white">
+                    You can view an existing Dat <br>by entering the dat link.</p>
                     ${importButton({
                       handler: function (link) { window.location.href = '/view/' + link }
                     })}
