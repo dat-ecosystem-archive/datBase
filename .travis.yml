@@ -11,7 +11,7 @@ env:
     - TAG=travis-${TRAVIS_BUILD_NUMBER}
 
 install:
-  - docker-compose pull
+  - TAG=latest docker-compose pull
   - docker-compose build
   - sh -c 'cd tests && npm i'
 
