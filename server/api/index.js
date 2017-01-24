@@ -1,13 +1,13 @@
 const encoding = require('dat-encoding')
-const error = require('appa/error')
-const send = require('appa/send')
+const response = require('response')
 const Users = require('./users')
 const Dats = require('./dats')
 const Haus = require('../haus')
 
 module.exports = function (router, db, ship) {
   function onerror (err, res) {
-    return error(400, err.message).pipe(res)
+    var data = {statusCode: 400, message: err.message}
+    return response.json(data).status(400).pipe(res)
   }
 
   var routes = {
@@ -41,7 +41,7 @@ module.exports = function (router, db, ship) {
 
     function done (err, data) {
       if (err) return onerror(err, res)
-      send(data).pipe(res)
+      response.json(data).status(200).pipe(res)
     }
   }
 

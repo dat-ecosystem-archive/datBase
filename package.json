@@ -28,7 +28,7 @@
   "scripts": {
     "server": "node ./server/cli",
     "lint": "standard",
-    "test": "standard && rm -rf tests/unit/*.sqlite && tape tests/unit/*.js | tap-spec",
+    "test": "standard && rm -rf tests/test-township.db && rm -rf tests/unit/*.sqlite && tape tests/unit/*.js | tap-spec",
     "test:e2e": "node tests/new-dat & nightwatch --env chrome",
     "test:e2e:firefox": "node tests/new-dat & nightwatch --env firefox",
     "start": "npm run watch-js & npm run watch-css & npm run watch-render & npm run watch-server",
