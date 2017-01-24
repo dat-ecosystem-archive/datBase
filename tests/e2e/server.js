@@ -13,7 +13,7 @@ module.exports = new function () {
   }
   testCases['viewing a dat that doesnt exist gives 404'] = (client) => {
     client
-    .url(testServer + '/list')
+    .url(testServer + '/create')
     .setValue("input[name='import-dat']", 'hello')
     client.keys(client.Keys.ENTER, function (done) {
       client.pause(1000)
@@ -30,6 +30,8 @@ module.exports = new function () {
         .expect.element('#title').text.to.contain('hello world').before(5000)
       client
         .expect.element('#peers').text.to.contain('1').before(5000)
+      client.click('.directory')
+      client.expect.element('#fs').text.to.contain('hello.txt').before(1000)
       client.end()
     })
   }
