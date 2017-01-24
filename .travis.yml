@@ -12,7 +12,7 @@ env:
 
 install:
   - docker-compose build
-  - cd tests && npm i
+  - sh -c 'cd tests && npm i'
 
 before_script:
   - cp example.config.js config.js
