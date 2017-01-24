@@ -224,15 +224,7 @@ test('api', function (t) {
     test('api can get a dat by username/dataset combo without login', function (t) {
       request({url: rootUrl + '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, body) {
         t.ifError(err)
-        t.same(body.statusCode, 200)
-        t.end()
-      })
-    })
-
-    test('rootUrl json request can get a dat by username/dataset combo without login', function (t) {
-      request({url: rootUrl + '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, body) {
-        t.ifError(err)
-        t.same(body.statusCode, 200)
+        t.same(body.url, dats.cats.url, 'has url')
         t.end()
       })
     })
