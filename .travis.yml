@@ -10,10 +10,13 @@ env:
   global:
     - TAG=travis-${TRAVIS_BUILD_NUMBER}
 
-before_script:
+install:
   - docker-compose build
+  - cd tests && npm i
+
+before_script:
+  - cp example.config.js config.js
 
 script:
   - docker-compose run sh 'npm i --only=dev && npm run test'
-  - cd tests && npm i
   - docker-compose run --rm nightwatch
