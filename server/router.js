@@ -80,6 +80,11 @@ module.exports = function (opts, db) {
 
   router.get('/:username/:dataset', function (req, res) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
+      var contentType = req.accepts(['html', 'json'])
+      if (contentType === 'json') {
+        if (err) return res.status(400).json({statusCode: 400, message: err.message})
+        return res.status(200).json(dat)
+      }
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
