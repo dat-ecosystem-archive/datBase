@@ -8,19 +8,21 @@ module.exports = function (state, prev, send) {
       <section class="section">
         <div class="container">
           <h1 class="f1 content-title horizontal-rule">Download a Dat</h1>
-          <p>1. Install node for your platform using <a href="http://nodejs.org">this link.</a></p>
+          <h5>1. <a href="http://nodejs.org">Install node for your platform.</a></h5>
+          <h5>2. Use npm to install the dat command line tool.</h5>
+          <pre><code>$ npm install -g dat</code></pre>
 
-          <p>2. Download the dat command line tool to download:</p>
-          <pre>
-            <code>
-$ npm install -g dat
-$ dat clone ${state.archive.key}
-            </code>
-          </pre>
-
+          <h5>3. Then download the archive.</h5>
+          <pre><code>$ dat clone ${state.archive.key}</code></pre>
           <p>
-            Having trouble installing dat? Try our <a href="http://docs.datproject.org/#troubleshooting">troubleshooting checklist</a>.
+            Having trouble installing dat? Try our <a href="http://docs.datproject.org/#troubleshooting">troubleshooting checklist</a> or ask questions in our public chatroom.
           </p>
+          <a href="http://webchat.freenode.net/?channels=dat" target="_blank">
+          <img src="https://img.shields.io/badge/irc%20channel-%23dat%20on%20freenode-blue.svg">
+          </a>
+          <a href="https://gitter.im/datproject/discussions?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" target="_blank">
+          <img src="https://badges.gitter.im/Join%20Chat.svg">
+          </a>
         </div>
       </section>
     </div>
