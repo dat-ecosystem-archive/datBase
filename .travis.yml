@@ -1,23 +1,19 @@
 language: node_js
 sudo: required
+services:
+  - docker
 dist: trusty
 node_js:
   - 6
 
-before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sudo apt-get update
-  - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
+env:
+  global:
+    - TAG=travis-${TRAVIS_BUILD_NUMBER}
 
 before_script:
-  - cp example.config.js config.js
-  - npm run build
-  - npm run start &
+  - docker-compose build
 
 script:
-  - npm run test
-  - TEST_SERVER=http://localhost:8080 npm run test:e2e
+  - docker-compose run sh 'npm i --only=dev && npm run test'
+  - cd tests && npm i
+  - docker-compose run --rm nightwatch

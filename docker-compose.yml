@@ -1,0 +1,27 @@
+version: '2'
+services:
+  app:
+    build: .
+    image: datproject/datfolder:beta
+    expose:
+      - 80
+    volumes:
+      - ./data:/data
+      - ./config.js:/usr/src/app/config.js
+  chromedriver:
+    image: blueimp/chromedriver
+    environment:
+      - VNC_ENABLED=true
+      - EXPOSE_X11=true
+    ports:
+      - 5900:5900
+  nightwatch:
+    image: blueimp/nightwatch:0.9
+    depends_on:
+      - chromedriver
+      - app
+    environment:
+      - TEST_SERVER=http://app:80
+      - WAIT_FOR_HOSTS=app:80 chromedriver:4444 chromedriver:6060
+    volumes:
+      - ./tests:/home/node
