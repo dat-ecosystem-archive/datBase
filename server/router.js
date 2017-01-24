@@ -34,7 +34,7 @@ module.exports = function (opts, db) {
   }))
 
   // landing page
-  router.get('/create', function (req, res) {
+  router.get('/install', function (req, res) {
     var state = getDefaultAppState()
     sendSPA(req, res, state)
   })

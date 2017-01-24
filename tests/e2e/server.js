@@ -13,7 +13,7 @@ module.exports = new function () {
   }
   testCases['viewing a dat that doesnt exist gives 404'] = (client) => {
     client
-    .url(testServer + '/create')
+    .url(testServer + '/install')
     .setValue("input[name='import-dat']", 'hello')
     client.keys(client.Keys.ENTER, function (done) {
       client.pause(1000)
