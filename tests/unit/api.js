@@ -9,7 +9,8 @@ const Dat = require('dat-js')
 
 const dat = new Dat()
 
-var api = 'http://localhost:' + config.port + '/api/v1'
+var rootUrl = 'http://localhost:' + config.port
+var api = rootUrl + '/api/v1'
 test('api', function (t) {
   config.db.connection.filename = path.join(__dirname, 'test-api.sqlite')
   helpers.server(config, function (db, close) {
@@ -216,6 +217,14 @@ test('api', function (t) {
       client.secureRequest({url: '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, user) {
         t.ifError(err)
         t.same(user.name, dats.cats.name, 'is the right dat')
+        t.end()
+      })
+    })
+
+    test('api can get a dat by username/dataset combo without login', function (t) {
+      request({url: rootUrl + '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.url, dats.cats.url, 'has url')
         t.end()
       })
     })
