@@ -117,16 +117,13 @@ git clone git@github.com:datproject/invited-users.git
 
 ### Running end-to-end tests
 
-Chrome:
+Docker and `docker-compose` are required.
 
 ```
-npm run build
-npm run start &
-DATLAND_CHROME_PATH=/path/to/chrome_bin TEST_SERVER=http://localhost:8080 npm run test:e2e
+docker-compose build
+cp example.config.js config.js
+docker-compose up -d newdat && sleep 10
+docker-compose run --rm nightwatch
 ```
 
-Firefox: (currently not working)
-
-```
-TEST_SERVER=http://localhost:8080 npm run test:e2e:firefox
-```
+You may also see the test browser in action with [VNC](https://github.com/blueimp/nightwatch).
