@@ -10,10 +10,10 @@ const createPage = (state, prev, send) => {
     <section class="section bg-neutral-04" id="terminal">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12 col-sm-6">
-            <h2 class="content-title horizontal-rule">
+          <div class="col-xs-12 col-sm-7 flex flex-column justify-center">
+            <h1 class="f1 content-title horizontal-rule">
               Install Dat
-            </h2>
+            </h1>
             <p>
             A Dat Archive contains all of the files for your project, including the version history.
              Dat will watch files as you change them and send them to peers. Install Dat in the terminal using npm.</p>
@@ -23,8 +23,8 @@ $ dat share path/to/my/data</code></pre>
             See detailed instructions
             </a>
           </div>
-          <div class="col-xs-12 col-sm-6">
-            <img src="/public/img/dat-terminal.svg" class="screenshot" />
+          <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
+            <img src="/public/img/dat-terminal.svg" class="screenshot dn-m " />
           </div>
         </div>
       </div>
@@ -32,11 +32,11 @@ $ dat share path/to/my/data</code></pre>
       <section class="section">
         <div class="container">
           <div class="row">
-            <div class="col-xs-12 col-sm-5">
-              <h2 class="f1 content-title horizontal-rule">All the ways to use Dat</h2>
+            <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
+              <h2 class="content-title horizontal-rule">All the ways to use Dat</h2>
               <p class="measure-wide">
               Share your link through the web using the 'Open Dat Link' box.
-              Soon you'll be able to share files with the Desktop App, coming soon to all platforms.</p>
+              Soon you’ll be able to share files with the Desktop App, coming soon to all platforms.</p>
             </div>
             <div class="col-xs-12 col-sm-7">
               <div class="row">
@@ -78,16 +78,20 @@ $ dat share path/to/my/data</code></pre>
       <section class="section bg-blue" id="desktop">
         <div class="container">
           <div class="row">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-6 flex flex-column justify-center">
               <h2 class="content-title color-white horizontal-rule">
                 Dat Desktop
               </h2>
-              <p class="color-white">To manage multiple Dats on your desktop machine, use the app, coming soon for all platforms. </p>
-              <a href="http://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
-                View on GitHub
-              </a>
+              <p class="color-white mb4">
+                To manage multiple Dats on your desktop machine, use the app, coming soon for all platforms.
+              </p>
+              <p>
+                <a href="http://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
+                  View on GitHub
+                </a>
+              </p>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-6 flex flex-column justify-center">
               <img src="/public/img/screenshot-dat-desktop.png" class="screenshot" />
             </div>
           </div>
