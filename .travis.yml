@@ -20,5 +20,5 @@ before_script:
 
 script:
   - docker-compose up -d newdat && sleep 10
-  - docker-compose run --rm app sh 'npm i --only=dev && npm run test'
+  - docker-compose run --rm app sh -c 'npm i --only=dev && npm run test'
   - docker-compose run --rm nightwatch
