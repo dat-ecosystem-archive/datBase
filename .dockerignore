@@ -3,5 +3,5 @@ node_modules/
 npm-debug.log
 selenium-debug.log
 dat.land
-township.db
+*township.db
 sqlite.db

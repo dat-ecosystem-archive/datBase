@@ -11,6 +11,7 @@ env:
     - TAG=travis-${TRAVIS_BUILD_NUMBER}
 
 install:
+  - docker-compose pull
   - docker-compose build
   - sh -c 'cd tests && npm i'
 
@@ -18,5 +19,5 @@ before_script:
   - cp example.config.js config.js
 
 script:
-  - docker-compose run sh 'npm i --only=dev && npm run test'
+  - docker-compose run --rm app sh 'npm i --only=dev && npm run test'
   - docker-compose run --rm nightwatch
