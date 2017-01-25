@@ -40,6 +40,7 @@ module.exports = function (state, prev, send) {
         </div>
       </div>
     </section>
-  ${header(state, prev, send)}
+  ${footer(state, prev, send)}
+  </div>
   `
 }
