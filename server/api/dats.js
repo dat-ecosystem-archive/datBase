@@ -13,7 +13,7 @@ Dats.prototype.post = function (ctx, cb) {
   self.model.get({name: ctx.body.name, user_id: ctx.user.id}, function (err, data) {
     if (err) return cb(err)
     if (data.length > 0) {
-      self.model.update({id: ctx.body.id}, ctx.body, function (err, data) {
+      self.model.update({id: data[0].id}, ctx.body, function (err, data) {
         if (err) return cb(err)
         cb(null, {updated: data})
       })
