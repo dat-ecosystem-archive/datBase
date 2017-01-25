@@ -293,6 +293,19 @@ test('api', function (t) {
       })
     })
 
+    test('api bob cannot update joes dat using POST', function (t) {
+      client.secureRequest({method: 'POST', url: '/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
+        t.ok(err)
+        t.same(err.statusCode, 400, 'request denied')
+        client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.length, 1, 'got the dat')
+          t.same(body[0].name, dats.cats.name, 'name is the same')
+          t.end()
+        })
+      })
+    })
+
     test('api bob cannot update joes dat', function (t) {
       client.secureRequest({method: 'PUT', url: '/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
         t.ok(err)

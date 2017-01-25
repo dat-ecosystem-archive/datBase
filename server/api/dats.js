@@ -10,7 +10,7 @@ Dats.prototype.post = function (ctx, cb) {
   if (!ctx.user && !ctx.user.id) return cb(new Error('Must be logged in to do that.'))
   if (!ctx.body.name) return cb(new Error('Name required.'))
   ctx.body.user_id = ctx.user.id
-  self.model.get({name: ctx.body.name, user_id: ctx.body.user_id}, function (err, data) {
+  self.model.get({name: ctx.body.name, user_id: ctx.user.id}, function (err, data) {
     if (err) return cb(err)
     if (data.length > 0) {
       self.model.update({id: ctx.body.id}, ctx.body, function (err, data) {
