@@ -33,7 +33,7 @@ var prefix = css`
   }
 `
 
-const login = (state, prev, send) => {
+const register = (state, prev, send) => {
   function onSubmit (e) {
     const data = form(e.target)
     send('user:register', data)
@@ -41,7 +41,7 @@ const login = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="register ${prefix}">
+  return html`<div class="register ${state.user.register} ${prefix}">
     <div class="relative flex flex-column justify-center modal">
       <h3 class="f4">Register Your Dat Account</h3>
       <form onsubmit=${onSubmit}>
@@ -81,4 +81,4 @@ const login = (state, prev, send) => {
   </div>`
 }
 
-module.exports = login
+module.exports = register
