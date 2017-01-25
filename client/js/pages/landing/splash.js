@@ -69,7 +69,7 @@ module.exports = function (state, prev, send) {
                     Preview
                   </a>
                   <a href="/download/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="copy-link">
-                    <svg><use xlink:href="#daticon-link"></use></svg>
+                    <svg><use xlink:href="#daticon-link" /></svg>
                     Download
                   </a>
                 </div>
@@ -95,7 +95,7 @@ module.exports = function (state, prev, send) {
                     Preview
                   </a>
                   <a href="/download/bf37b184c981c3db293f20530cd6461e39f8147c221b1e3ee03e08ef2b747547" class="copy-link">
-                    <svg><use xlink:href="#daticon-link"></use></svg>
+                    <svg><use xlink:href="#daticon-link" /></svg>
                     Download
                   </a>
                 </div>
@@ -121,7 +121,7 @@ module.exports = function (state, prev, send) {
                     Preview
                   </a>
                   <a href="/download/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="copy-link">
-                    <svg><use xlink:href="#daticon-link"></use></svg>
+                    <svg><use xlink:href="#daticon-link" /></svg>
                     Download
                   </a>
                 </div>
@@ -178,17 +178,7 @@ module.exports = function (state, prev, send) {
               <p class="measure-narrow">
                 Share and manage your data with with ease. The desktop app comes with a clean and simple interface that helps you manage multiple projects on a single machine.
               </p>
-              <!-- <a href="https://github.com/datproject/dat-desktop" class="btn btn--green btn--cta open-desktop" target="_blank">
-                <svg><use xlink:href="#daticon-open-in-desktop"></use></svg>
-                View on GitHub
-              </a> -->
-              </p>
               <p class="f6">
-                <!-- <a href="http://docs.datproject.org">
-                  Use the Command Line
-                </a>
-                <span class="color-pink">&ensp; | &ensp;</span>
-              -->
                 <a href="http://github.com/datproject/dat-desktop">
                   View &amp; Contribute on Github
                 </a>
