@@ -173,6 +173,15 @@ test('api', function (t) {
         t.end()
       })
     })
+
+    test('api can update a dat thats mine using POST', function (t) {
+      dats.cats.description = 'this is a new description'
+      client.secureRequest({url: '/dats', body: dats.cats, method: 'POST', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.updated, 1)
+        t.end()
+      })
+    })
     //
     // test('api can get a dats health', function (t) {
     //   var stream = client.secureRequest({
