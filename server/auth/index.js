@@ -15,6 +15,7 @@ module.exports = function (router, db, opts) {
   }
 
   router.post('/api/v1/register', function (req, res) {
+    if (!req.body) return onerror(new Error('Requires email and username.'), res)
     if (!req.body.email) return onerror(new Error('Email required.'), res)
     if (!req.body.username) return onerror(new Error('Username required.'), res)
     verify(req.body, {whitelist: opts.whitelist}, function (err) {
@@ -33,11 +34,12 @@ module.exports = function (router, db, opts) {
 
   router.post('/api/v1/login', function (req, res) {
     var body = req.body
+    if (!body) return onerror(new Error('Requires email and password.'), res)
     ship.login(req, res, {body: body}, function (err, resp, obj) {
       if (err) return onerror(err, res)
       db.models.users.get({email: body.email}, function (err, results) {
         if (err) return onerror(err, res)
-        if (!results) return onerror(new Error('Failed to create user.'), res)
+        if (!results.length) return onerror(new Error('User does not exist.'), res)
         var user = results[0]
         obj.email = user.email
         obj.username = user.username
