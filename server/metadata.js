@@ -9,7 +9,7 @@ module.exports = function (archive, cb) {
     if (cancelled) return
     cancelled = true
     return cb(new Error('no metadata'))
-  }, 3000)
+  }, 7000)
   collect(archive.createFileReadStream('dat.json'), (err, raw) => {
     if (cancelled) return
     cancelled = true
