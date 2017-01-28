@@ -9,7 +9,8 @@ const Dat = require('dat-js')
 
 const dat = new Dat()
 
-var api = 'http://localhost:' + config.port + '/api/v1'
+var rootUrl = 'http://localhost:' + config.port
+var api = rootUrl + '/api/v1'
 test('api', function (t) {
   config.db.connection.filename = path.join(__dirname, 'test-api.sqlite')
   helpers.server(config, function (db, close) {
@@ -172,6 +173,15 @@ test('api', function (t) {
         t.end()
       })
     })
+
+    test('api can update a dat thats mine using POST', function (t) {
+      dats.cats.description = 'this is a new description'
+      client.secureRequest({url: '/dats', body: dats.cats, method: 'POST', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.updated, 1)
+        t.end()
+      })
+    })
     //
     // test('api can get a dats health', function (t) {
     //   var stream = client.secureRequest({
@@ -216,6 +226,14 @@ test('api', function (t) {
       client.secureRequest({url: '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, user) {
         t.ifError(err)
         t.same(user.name, dats.cats.name, 'is the right dat')
+        t.end()
+      })
+    })
+
+    test('api can get a dat by username/dataset combo without login', function (t) {
+      request({url: rootUrl + '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.url, dats.cats.url, 'has url')
         t.end()
       })
     })
@@ -271,6 +289,19 @@ test('api', function (t) {
             t.same(err.statusCode, 400, 'request denied')
             t.end()
           })
+        })
+      })
+    })
+
+    test('api bob cannot update joes dat using POST', function (t) {
+      client.secureRequest({method: 'POST', url: '/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
+        t.ok(err)
+        t.same(err.statusCode, 400, 'request denied')
+        client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.length, 1, 'got the dat')
+          t.same(body[0].name, dats.cats.name, 'name is the same')
+          t.end()
         })
       })
     })

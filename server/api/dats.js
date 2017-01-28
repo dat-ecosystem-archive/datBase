@@ -6,10 +6,19 @@ function Dats (model) {
 }
 
 Dats.prototype.post = function (ctx, cb) {
+  var self = this
   if (!ctx.user && !ctx.user.id) return cb(new Error('Must be logged in to do that.'))
   if (!ctx.body.name) return cb(new Error('Name required.'))
   ctx.body.user_id = ctx.user.id
-  this.model.create(ctx.body, cb)
+  self.model.get({name: ctx.body.name, user_id: ctx.user.id}, function (err, data) {
+    if (err) return cb(err)
+    if (data.length > 0) {
+      self.model.update({id: data[0].id}, ctx.body, function (err, data) {
+        if (err) return cb(err)
+        cb(null, {updated: data})
+      })
+    } else self.model.create(ctx.body, cb)
+  })
 }
 
 Dats.prototype.put = function (ctx, cb) {
@@ -20,7 +29,7 @@ Dats.prototype.put = function (ctx, cb) {
     if (err) return cb(err)
     if (!results) return cb(new Error('Dat does not exist.'))
     if (results[0].user_id !== ctx.user.id) return cb(new Error('Cannot update someone elses dat.'))
-    self.model.update({id: ctx.body.id}, function (err, data) {
+    self.model.update({id: ctx.body.id}, ctx.bod, function (err, data) {
       if (err) return cb(err)
       cb(null, {updated: data})
     })

@@ -3,8 +3,8 @@ const collect = require('collect-stream')
 const TimeoutStream = require('through-timeout')
 
 module.exports = function (dat, cb) {
-  var TIMEOUT = 5000
-  var listStream = dat.archive.list({live: false})
+  var TIMEOUT = 7000
+  var listStream = dat.archive.list({live: false, limit: 1000})
   var cancelled = false
 
   var timeout = TimeoutStream({

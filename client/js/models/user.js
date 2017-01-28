@@ -7,6 +7,7 @@ const defaultState = {
   email: null,
   token: null,
   login: 'hidden',
+  register: 'hidden',
   sidePanel: 'hidden',
   dats: []
 }
@@ -84,6 +85,7 @@ module.exports = {
       const client = getClient()
       client.register(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
+        data.register = 'hidden'
         send('user:update', data, function () {
           send('message:success', 'Registered successfully.', done)
         })

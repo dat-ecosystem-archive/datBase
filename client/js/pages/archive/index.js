@@ -42,10 +42,10 @@ const archivePage = (state, prev, send) => {
             <div class="dat-header-action">
               ${copyButton(state.archive.key, send)}
            </div>
-            <a href="https://github.com/datproject/dat-desktop" target="_blank" class="dat-header-action">
+            <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
-                <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
-                <span class="btn__icon-text">Open in Desktop App</span>
+                <svg><use xlink:href="#daticon-download" /></svg>
+                <span class="btn__icon-text">Download</span>
               </div>
             </a>
           </div>

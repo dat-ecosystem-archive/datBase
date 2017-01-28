@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const compression = require('compression')
-const getMetadata = require('../client/js/utils/metadata')
 const bodyParser = require('body-parser')
 const assert = require('assert')
 const encoding = require('dat-encoding')
@@ -13,6 +12,7 @@ const Dat = require('./haus')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
+const getMetadata = require('./metadata')
 const entryStream = require('./entryStream')
 const pkg = require('../package.json')
 
@@ -34,7 +34,7 @@ module.exports = function (opts, db) {
   }))
 
   // landing page
-  router.get('/create', function (req, res) {
+  router.get('/install', function (req, res) {
     var state = getDefaultAppState()
     sendSPA(req, res, state)
   })
@@ -80,6 +80,11 @@ module.exports = function (opts, db) {
 
   router.get('/:username/:dataset', function (req, res) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
+      var contentType = req.accepts(['html', 'json'])
+      if (contentType === 'json') {
+        if (err) return res.status(400).json({statusCode: 400, message: err.message})
+        return res.status(200).json(dat)
+      }
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}

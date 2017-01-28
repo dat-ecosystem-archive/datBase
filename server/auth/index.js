@@ -1,8 +1,7 @@
 const township = require('township')
 const path = require('path')
+const response = require('response')
 const level = require('level-party')
-const error = require('appa/error')
-const send = require('appa/send')
 const verify = require('./verify')
 const errors = require('../errors')
 
@@ -11,12 +10,14 @@ module.exports = function (router, db, opts) {
   const ship = township(townshipDb, opts.township)
 
   function onerror (err, res) {
-    return error(400, errors.humanize(err).message).pipe(res)
+    var data = {statusCode: 400, message: errors.humanize(err).message}
+    return response.json(data).status(400).pipe(res)
   }
 
   router.post('/api/v1/register', function (req, res) {
-    if (!req.body.email) return error(400, 'Email required.').pipe(res)
-    if (!req.body.username) return error(400, 'Username required.').pipe(res)
+    if (!req.body) return onerror(new Error('Requires email and username.'), res)
+    if (!req.body.email) return onerror(new Error('Email required.'), res)
+    if (!req.body.username) return onerror(new Error('Username required.'), res)
     verify(req.body, {whitelist: opts.whitelist}, function (err) {
       if (err) return onerror(err, res)
       ship.register(req, res, {body: req.body}, function (err, statusCode, obj) {
@@ -25,7 +26,7 @@ module.exports = function (router, db, opts) {
           if (err) return onerror(err, res)
           body.token = obj.token
           body.key = obj.key
-          return send(body).pipe(res)
+          return response.json(body).status(200).pipe(res)
         })
       })
     })
@@ -33,17 +34,18 @@ module.exports = function (router, db, opts) {
 
   router.post('/api/v1/login', function (req, res) {
     var body = req.body
+    if (!body) return onerror(new Error('Requires email and password.'), res)
     ship.login(req, res, {body: body}, function (err, resp, obj) {
       if (err) return onerror(err, res)
       db.models.users.get({email: body.email}, function (err, results) {
         if (err) return onerror(err, res)
-        if (!results) return error(400, 'Failed to create user.').pipe(res)
+        if (!results.length) return onerror(new Error('User does not exist.'), res)
         var user = results[0]
         obj.email = user.email
         obj.username = user.username
         obj.role = user.role
         obj.description = user.description
-        send(obj).pipe(res)
+        return response.json(obj).status(200).pipe(res)
       })
     })
   })
