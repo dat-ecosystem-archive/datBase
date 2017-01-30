@@ -15,13 +15,13 @@ install:
   - echo travis_fold:start:docker-compose-build
   - docker-compose build
   - echo travis_fold:end:docker-compose-build
-  - docker-compose run --rm app sh -c 'npm ls'
   - sh -c 'cd tests && npm i'
 
 before_script:
   - cp example.config.js config.js
 
 script:
+  - docker-compose run --rm app sh -c 'npm ls'
   - docker-compose up -d newdat && sleep 10
   - docker-compose run --rm app sh -c 'npm i --only=dev && npm run test'
   - docker-compose run --rm nightwatch
