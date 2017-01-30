@@ -12,7 +12,10 @@ env:
 
 install:
   - TAG=latest docker-compose pull
+  - echo travis_fold:start:docker-compose-build
   - docker-compose build
+  - echo travis_fold:end:docker-compose-build
+  - docker-compose run --rm app sh -c 'npm ls'
   - sh -c 'cd tests && npm i'
 
 before_script:
