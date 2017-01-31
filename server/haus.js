@@ -10,7 +10,7 @@ function Haus (key, opts) {
   if (typeof opts === 'function') return new Haus(key, {}, opts)
   if (!opts) opts = {}
   key = encoding.toBuf(key)
-  this.db = level()
+  this.db = level(__dirname, '.datcache')
   this.drive = hyperdrive(this.db)
   this.archive = this.drive.createArchive(key, {sparse: true, live: true})
   this.health = hyperhealth(this.archive, opts)

@@ -48,7 +48,7 @@ $ dat share path/to/my/data</code></pre>
                   <p class="mb0 f6 lh-title color-white">
                     You can view an existing Dat <br>by entering the dat link.</p>
                     ${importButton({
-                      handler: function (link) { window.location.href = '/view/' + link }
+                      handler: function (link) { window.location.href = '/dat/' + link }
                     })}
                   </div>
                 </div>
