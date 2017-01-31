@@ -1,5 +1,6 @@
 var os = require('os')
 var path = require('path')
+var level = require('level')
 var xtend = require('xtend')
 
 var datadir = process.env.DATADIR || (
@@ -16,14 +17,15 @@ var config = {
         postmarkAPIKey: 'your api key'
       }
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
     db: {
       dialect: 'sqlite3',
       connection: {
         filename: path.join(datadir, 'sqlite.db')
       },
       useNullAsDefault: true
-    }
+    },
+    whitelist: path.join(datadir, 'invited-users', 'README'),
+    cachedb: level(path.join(__dirname, '.datcache'))
   },
   development: {},
   production: {

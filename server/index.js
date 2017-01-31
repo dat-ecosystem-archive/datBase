@@ -1,9 +1,13 @@
 const http = require('http')
+const Dat = require('./haus')
 const createRouter = require('./router')
 
 module.exports = function (config, db, opts) {
   if (!opts) opts = {}
-  const router = createRouter(config, db)
+  if (!config.cachedb) throw new Error('config.cachedb required')
+  const dat = Dat(config)
+  const router = createRouter(config, db, dat)
+
   return http.createServer(function (req, res) {
     var time = Date.now()
     if (opts.log) opts.log.info({message: 'request', method: req.method, url: req.url})
