@@ -21,6 +21,7 @@ app.router((route) => [
   route('/register', require('./pages/auth/register')),
   route('/login', require('./pages/auth/login')),
   route('/download/:archiveKey', require('./pages/download')),
+  route('/dat/:archiveKey', require('./pages/archive')),
   route('/view/:archiveKey', require('./pages/archive')),
   route('/:username/:dataset', require('./pages/archive')),
   route('/404', require('./pages/fourohfour'))
