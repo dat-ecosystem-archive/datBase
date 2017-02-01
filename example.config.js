@@ -16,14 +16,16 @@ var config = {
         postmarkAPIKey: 'your api key'
       }
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
     db: {
       dialect: 'sqlite3',
       connection: {
         filename: path.join(datadir, 'sqlite.db')
       },
       useNullAsDefault: true
-    }
+    },
+    whitelist: path.join(datadir, 'invited-users', 'README'),
+    cachedb: path.join(__dirname, '.datcache'),
+    port: process.env.PORT || 8888
   },
   development: {},
   production: {

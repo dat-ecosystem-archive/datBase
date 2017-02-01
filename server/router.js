@@ -7,8 +7,8 @@ const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
+const hyperhealth = require('hyperhealth')
 const app = require('../client/js/app')
-const Dat = require('./haus')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
@@ -16,7 +16,7 @@ const getMetadata = require('./metadata')
 const entryStream = require('./entryStream')
 const pkg = require('../package.json')
 
-module.exports = function (opts, db) {
+module.exports = function (opts, db, dat) {
   opts = opts || {}
 
   var router = express()
@@ -102,30 +102,31 @@ module.exports = function (opts, db) {
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
     state.archive.key = key
-    var dat
     try {
       state.archive.key = encoding.toStr(key)
-      dat = Dat(key)
     } catch (err) {
       return onerror(err)
     }
+    var archive = dat.drive.createArchive(state.archive.key, {sparse: true, live: true})
+    var health = hyperhealth(archive)
 
     function onerror (err) {
       log.warn(key, err)
       state.archive.error = {message: err.message}
-      if (dat) return dat.close(function () { cb(state) })
       return cb(state)
     }
 
-    entryStream(dat, function (err, entries) {
+    entryStream(archive, function (err, entries) {
       if (err) return onerror(err)
       state.archive.entries = entries
-      getMetadata(dat.archive, function (err, metadata) {
+      getMetadata(archive, function (err, metadata) {
         if (err) state.archive.error = {message: err.message}
         if (metadata) state.archive.metadata = metadata
-        state.archive.health = dat.health.get()
-        dat.close(function () {
-          return cb(state)
+        state.archive.health = health.get()
+        health.swarm.close(function () {
+          archive.close(function () {
+            return cb(state)
+          })
         })
       })
     })

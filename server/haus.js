@@ -1,27 +1,15 @@
-const encoding = require('dat-encoding')
-var memdb = require('memdb')
-var hyperdrive = require('hyperdrive')
-var hyperhealth = require('hyperhealth')
+const level = require('level')
+const hyperdrive = require('hyperdrive')
 
 module.exports = Haus
 
-function Haus (key, opts) {
-  if (!(this instanceof Haus)) return new Haus(key, opts)
-  if (typeof opts === 'function') return new Haus(key, {}, opts)
+function Haus (opts) {
+  if (!(this instanceof Haus)) return new Haus(opts)
   if (!opts) opts = {}
-  key = encoding.toBuf(key)
-  this.db = memdb()
-  this.drive = hyperdrive(this.db)
-  this.archive = this.drive.createArchive(key, {sparse: true, live: true})
-  this.health = hyperhealth(this.archive, opts)
-  this.swarm = this.health.swarm
+  this.drive = hyperdrive(level(opts.cachedb))
 }
 
 Haus.prototype.close = function (cb) {
   var self = this
-  this.swarm.close(function () {
-    self.archive.close(function () {
-      self.db.close(cb)
-    })
-  })
+  self.drive.close(cb)
 }
