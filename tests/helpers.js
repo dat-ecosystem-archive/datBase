@@ -20,10 +20,8 @@ module.exports = {
   },
   tearDown: function (config, close) {
     rimraf(config.township.db, function () {
-      fs.unlink(config.townshipClient.filepath, function () {
-        fs.unlink(config.db.connection.filename, function () {
-          close()
-        })
+      fs.unlink(config.db.connection.filename, function () {
+        close()
       })
     })
   },

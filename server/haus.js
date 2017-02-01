@@ -1,11 +1,12 @@
-var hyperdrive = require('hyperdrive')
+const level = require('level')
+const hyperdrive = require('hyperdrive')
 
 module.exports = Haus
 
 function Haus (opts) {
   if (!(this instanceof Haus)) return new Haus(opts)
   if (!opts) opts = {}
-  this.drive = hyperdrive(opts.cachedb)
+  this.drive = hyperdrive(level(opts.cachedb))
 }
 
 Haus.prototype.close = function (cb) {
