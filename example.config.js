@@ -1,6 +1,5 @@
 var os = require('os')
 var path = require('path')
-var level = require('level')
 var xtend = require('xtend')
 
 var datadir = process.env.DATADIR || (
@@ -25,7 +24,8 @@ var config = {
       useNullAsDefault: true
     },
     whitelist: path.join(datadir, 'invited-users', 'README'),
-    cachedb: level(path.join(__dirname, '.datcache'))
+    cachedb: path.join(__dirname, '.datcache'),
+    port: process.env.PORT || 8888
   },
   development: {},
   production: {
