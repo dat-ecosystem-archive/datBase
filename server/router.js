@@ -89,7 +89,7 @@ module.exports = function (opts, db) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
       var contentType = req.accepts(['html', 'json'])
       if (contentType === 'json') {
-        if (err) return res.status(400).json({statusCode: 400, message: err.message})
+        if (err) return onerror(err, res)
         return res.status(200).json(dat)
       }
       if (err) {
@@ -105,6 +105,31 @@ module.exports = function (opts, db) {
       })
     })
   })
+  function onerror (err, res) {
+    return res.status(400).json({statusCode: 400, message: err.message})
+  }
+
+  router.get('/dat/:key/health', function (req, res) {
+    var key = req.params.key
+    try {
+      encoding.toBuf(key)
+    } catch (err) {
+      return onerror(err, res)
+    }
+    var cancelled = false
+    setTimeout(function () {
+      if (cancelled) return
+      cancelled = true
+      return onerror(new Error('Could not find any peers.'), res)
+    }, 5000)
+    dats.add(key, function (err, archive) {
+      if (err) return onerror(err, res)
+      if (cancelled) return
+      cancelled = true
+      var health = dats.health[key]
+      res.end(JSON.stringify(health.get()))
+    })
+  })
 
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
@@ -113,7 +138,6 @@ module.exports = function (opts, db) {
     } catch (err) {
       return onerror(err)
     }
-    console.log('getting archive', state.archive.key)
     dats.add(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       entryStream(archive, function (err, entries) {
