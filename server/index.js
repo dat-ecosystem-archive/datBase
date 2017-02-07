@@ -1,12 +1,10 @@
 const http = require('http')
-const Dat = require('./haus')
 const createRouter = require('./router')
 
 module.exports = function (config, db, opts) {
   if (!opts) opts = {}
-  if (!config.cachedb) throw new Error('config.cachedb required')
-  const dat = Dat(config)
-  const router = createRouter(config, db, dat)
+  if (!config.archiver) throw new Error('config.archiver directory required')
+  const router = createRouter(config, db)
 
   return http.createServer(function (req, res) {
     var time = Date.now()

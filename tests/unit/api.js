@@ -184,32 +184,25 @@ test('api', function (t) {
     })
     //
     // test('api can get a dats health', function (t) {
-    //   var stream = client.secureRequest({
-    //     stream: true,
-    //     url: '/dats/health?key=' + dats.cats.url,
-    //     forever: true
-    //   })
-    //   stream.on('error', function (err) {
-    //     t.ifError(err)
-    //   })
+    //   function getHealth () {
+    //     client.secureRequest({
+    //       stream: true,
+    //       url: '/dats/' + dats.cats.url + '/health'
+    //     }, function (err, resp, body) {
+    //       t.ifError(err)
+    //       if (!body) return
+    //       var data = JSON.parse(body.toString())
+    //       t.same(data.connected, 1, 'has one connected')
+    //       t.same(data.bytes, 5, 'has five bytes')
+    //       if (data.peers && data.peers.length > 0) {
+    //         t.ok(data.peers[0].blocks, 'found the peers')
+    //       }
+    //     }
+    //   }
     //   var repo = dat.get(dats.cats.url)
     //   var writer = repo.archive.createFileWriteStream('hello.txt')
     //   writer.write('world')
     //   writer.end()
-    //   stream.on('data', function (body) {
-    //     if (!body) return
-    //     var data = JSON.parse(body.toString())
-    //     t.same(data.connected, 1, 'has one connected')
-    //     t.same(data.bytes, 5, 'has five bytes')
-    //     if (data.peers && data.peers.length > 0) {
-    //       t.ok(data.peers[0].blocks, 'found the peers')
-    //       stream.abort()
-    //       stream.agent.destroy()
-    //     }
-    //     stream.on('end', function () {
-    //       t.end()
-    //     })
-    //   })
     // })
 
     test('api dats need to have correct names', function (t) {

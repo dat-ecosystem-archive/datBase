@@ -7,23 +7,24 @@ const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
-const hyperhealth = require('hyperhealth')
+const entryStream = require('./entryStream')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
-const getMetadata = require('./metadata')
-const entryStream = require('./entryStream')
 const pkg = require('../package.json')
+const Dats = require('./dats')
 
-module.exports = function (opts, db, dat) {
+module.exports = function (opts, db) {
   opts = opts || {}
+
+  const log = bole(__filename)
+  const dats = Dats(opts.archiver)
 
   var router = express()
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
-  const log = bole(__filename)
 
   const ship = auth(router, db, opts)
   api(router, db, ship)
@@ -107,35 +108,26 @@ module.exports = function (opts, db, dat) {
 
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
-    state.archive.key = key
     try {
       state.archive.key = encoding.toStr(key)
     } catch (err) {
       return onerror(err)
     }
-    var archive = dat.drive.createArchive(state.archive.key, {sparse: true, live: true})
-    var health = hyperhealth(archive)
+    console.log('getting archive', state.archive.key)
+    dats.add(state.archive.key, function (err, archive) {
+      if (err) return onerror(err)
+      entryStream(archive, function (err, entries) {
+        if (err) return onerror(err)
+        state.archive.entries = entries
+        cb(state)
+      })
+    })
 
     function onerror (err) {
       log.warn(key, err)
       state.archive.error = {message: err.message}
       return cb(state)
     }
-
-    entryStream(archive, function (err, entries) {
-      if (err) return onerror(err)
-      state.archive.entries = entries
-      getMetadata(archive, function (err, metadata) {
-        if (err) state.archive.error = {message: err.message}
-        if (metadata) state.archive.metadata = metadata
-        state.archive.health = health.get()
-        health.swarm.close(function () {
-          archive.close(function () {
-            return cb(state)
-          })
-        })
-      })
-    })
   }
 
   return router
