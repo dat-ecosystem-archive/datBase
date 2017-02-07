@@ -1,8 +1,6 @@
-const encoding = require('dat-encoding')
 const response = require('response')
 const Users = require('./users')
 const Dats = require('./dats')
-const Haus = require('../haus')
 
 module.exports = function (router, db, ship) {
   function onerror (err, res) {
@@ -44,36 +42,6 @@ module.exports = function (router, db, ship) {
       response.json(data).status(200).pipe(res)
     }
   }
-
-  router.get('/api/v1/dats/health', function (req, res) {
-    var key = req.query.key
-    try {
-      encoding.toBuf(key)
-    } catch (e) {
-      return onerror(e, res)
-    }
-    var cancelled = false
-    setTimeout(function () {
-      if (cancelled) return
-      cancelled = true
-      return onerror(new Error('Could not find any peers.'), res)
-    }, 5000)
-    var dat = Haus(key)
-    dat.archive.open(function (err) {
-      if (err) return onerror(err, res)
-      if (cancelled) return
-      cancelled = true
-      var interval = setInterval(function () {
-        res.write(JSON.stringify(dat.health.get()) + '\n')
-      }, req.query.interval || 2000)
-      res.on('finish', function () {
-        dat.close(function () {
-          clearInterval(interval)
-          res.end()
-        })
-      })
-    })
-  })
 
   router.get('/api/v1/:username/:dataset', function (req, res) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
