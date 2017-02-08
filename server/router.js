@@ -109,7 +109,7 @@ module.exports = function (opts, db) {
     return res.status(400).json({statusCode: 400, message: err.message})
   }
 
-  router.get('/dat/:key/health', function (req, res) {
+  router.get('/dat/:key/info', function (req, res) {
     var key = req.params.key
     try {
       encoding.toBuf(key)
@@ -124,10 +124,15 @@ module.exports = function (opts, db) {
     }, 5000)
     dats.add(key, function (err, archive) {
       if (err) return onerror(err, res)
-      if (cancelled) return
-      cancelled = true
-      var health = dats.health[key]
-      res.end(JSON.stringify(health.get()))
+      archive.open(function () {
+        if (cancelled) return
+        cancelled = true
+        var peers = archive.metadata.peers.length - 1
+        var data = {
+          peers: peers < 0 ? 0 : peers
+        }
+        res.json(data)
+      })
     })
   })
 
