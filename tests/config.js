@@ -52,5 +52,4 @@ var config = {
 }
 
 var env = process.env.NODE_ENV || 'development'
-var myconfig = xtend(config.shared, config[env])
-module.exports = myconfig
+module.exports = xtend(config.shared, config[env])
