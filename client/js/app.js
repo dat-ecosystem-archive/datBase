@@ -5,7 +5,6 @@ const app = choo()
 
 // define models:
 app.model(require('./models/read-only-archive'))
-app.model(require('./models/import-queue'))
 app.model(require('./models/user'))
 app.model(require('./models/list'))
 app.model(require('./models/error'))
