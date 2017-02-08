@@ -148,6 +148,8 @@ module.exports = function (opts, db) {
       entryStream(archive, function (err, entries) {
         if (err) return onerror(err)
         state.archive.entries = entries
+        var peers = archive.metadata.peers.length - 1
+        state.archive.peers = peers < 0 ? 0 : peers
         cb(state)
       })
     })
