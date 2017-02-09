@@ -8,12 +8,14 @@ module.exports = {
     initDb(config.db, function (err, db) {
       if (err) throw err
       const server = Server(config, db)
-      server.listen(config.port, function () {
+      server.http.listen(config.port, function () {
         cb(db, close)
       })
       function close (cb) {
-        server.close(function () {
-          db.knex.destroy(cb)
+        server.http.close(function () {
+          server.router.dats.close(function () {
+            db.knex.destroy(cb)
+          })
         })
       }
     })

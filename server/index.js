@@ -28,11 +28,8 @@ module.exports = function (config, db, opts) {
       }
     }
   })
-  var close = server.close
-  server.close = function (cb) {
-    close(function () {
-      router.dats.close(cb)
-    })
+  return {
+    http: server,
+    router: router
   }
-  return server
 }
