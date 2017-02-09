@@ -6,7 +6,7 @@ module.exports = function (config, db, opts) {
   if (!config.archiver) throw new Error('config.archiver directory required')
   const router = createRouter(config, db)
 
-  return http.createServer(function (req, res) {
+  var server = http.createServer(function (req, res) {
     var time = Date.now()
     if (opts.log) opts.log.info({message: 'request', method: req.method, url: req.url})
     res.on('finish', end)
@@ -28,4 +28,11 @@ module.exports = function (config, db, opts) {
       }
     }
   })
+  var close = server.close
+  server.close = function (cb) {
+    close(function () {
+      router.dats.close(cb)
+    })
+  }
+  return server
 }

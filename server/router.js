@@ -161,6 +161,7 @@ module.exports = function (opts, db) {
     }
   }
 
+  router.dats = dats
   return router
 
   /* helpers */
