@@ -34,5 +34,5 @@ Dats.prototype.add = function (key, cb) {
 }
 
 Dats.prototype.close = function (cb) {
-  this.archiver.close(cb)
+  this.server.swarm.close(cb)
 }
