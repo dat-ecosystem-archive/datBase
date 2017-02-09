@@ -1,5 +1,6 @@
 const fs = require('fs')
 const rimraf = require('rimraf')
+const Dats = require('../server/dats')
 const initDb = require('../server/database/init')
 const Server = require('../server')
 
@@ -7,13 +8,14 @@ module.exports = {
   server: function (config, cb) {
     initDb(config.db, function (err, db) {
       if (err) throw err
+      config.dats = Dats(config.archiver)
       const server = Server(config, db)
-      server.http.listen(config.port, function () {
+      server.listen(config.port, function () {
         cb(db, close)
       })
       function close (cb) {
-        server.http.close(function () {
-          server.router.dats.close(function () {
+        server.close(function () {
+          config.dats.close(function () {
             db.knex.destroy(cb)
           })
         })

@@ -19,7 +19,7 @@ module.exports = function (opts, db) {
   opts = opts || {}
 
   const log = bole(__filename)
-  const dats = Dats(opts.archiver)
+  const dats = opts.dats || Dats(opts.archiver)
 
   var router = express()
   router.use(compression())
