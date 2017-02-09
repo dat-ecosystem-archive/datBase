@@ -28,7 +28,7 @@ services:
       - app
       - newdat
     environment:
-      - TEST_SERVER=http://app:80
-      - WAIT_FOR_HOSTS=app:80 chromedriver:4444 chromedriver:6060
+      - TEST_SERVER=http://app:8888
+      - WAIT_FOR_HOSTS=app:8888 chromedriver:4444 chromedriver:6060
     volumes:
       - ./tests:/home/node

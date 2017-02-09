@@ -23,12 +23,9 @@ var config = {
       },
       useNullAsDefault: true
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
+    whitelist: path.join(__dirname, 'fixtures', 'whitelist.txt'),
     archiver: path.join(datadir, 'archiver'),
     port: process.env.PORT || 8888
-  },
-  test: {
-    whitelist: path.join(__dirname, 'fixtures', 'whitelist.txt'),
   },
   development: {},
   production: {
