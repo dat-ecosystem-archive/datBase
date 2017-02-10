@@ -56,7 +56,7 @@ const archivePage = (state, prev, send) => {
               ${permissions({owner: state.archive.owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
-            <div id="peers" class="dat-detail">${peers} Source${peers > 1 ? 's' : ''}</div>
+            <div id="peers" class="dat-detail">${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
           </div>
             <div class="dat-detail">
             ${state.archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}
