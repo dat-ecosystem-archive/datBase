@@ -1,13 +1,9 @@
+const EventSource = require('eventsource')
 const xtend = require('xtend')
 
 var defaultState = {
   key: null,
-  health: {
-    connected: 0,
-    blocks: 0,
-    peers: [],
-    bytes: 0
-  },
+  peers: 0,
   error: null,
   root: '',
   metadata: {},
