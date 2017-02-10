@@ -1,4 +1,7 @@
 const fs = require('fs')
+const rangeParser = require('range-parser')
+const mime = require('mime')
+const pump = require('pump')
 const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
@@ -85,7 +88,41 @@ module.exports = function (opts, db) {
     })
   })
 
+  router.get('/dat/:archiveKey/*', function (req, res) {
+    log.debug('getting file contents', req.params)
+    var filename = req.params[0]
+    dats.get(req.params.archiveKey, function (err, archive) {
+      if (err) return onerror(err, res)
+      archive.get(filename, function (err, entry) {
+        if (err && err.code === 'ETIMEDOUT') return onerror(new Error('Timed Out'), res)
+        if (err || !entry || entry.type !== 'file') return onerror(new Error('404'), res)
+
+        log.debug('getting entry', entry)
+        var range = req.headers.range && rangeParser(entry.length, req.headers.range)[0]
+
+        res.setHeader('Access-Ranges', 'bytes')
+        res.setHeader('Content-Type', mime.lookup(filename))
+        archive.open(function () {
+          if (!range || range < 0) {
+            res.setHeader('Content-Length', entry.length)
+            if (req.method === 'HEAD') return res.end()
+            var stream = archive.createFileReadStream(entry)
+            stream.pipe(res)
+          } else {
+            log.debug('range request', range)
+            res.statusCode = 206
+            res.setHeader('Content-Length', range.end - range.start + 1)
+            res.setHeader('Content-Range', 'bytes ' + range.start + '-' + range.end + '/' + entry.length)
+            if (req.method === 'HEAD') return res.end()
+            pump(archive.createFileReadStream(entry, {start: range.start, end: range.end + 1}), res)
+          }
+        })
+      })
+    })
+  })
+
   router.get('/:username/:dataset', function (req, res) {
+    log.debug('requesting username/dataset', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       var contentType = req.accepts(['html', 'json'])
       if (contentType === 'json') {
@@ -109,33 +146,6 @@ module.exports = function (opts, db) {
     return res.status(400).json({statusCode: 400, message: err.message})
   }
 
-  router.get('/dat/:key/info', function (req, res) {
-    var key = req.params.key
-    try {
-      encoding.toBuf(key)
-    } catch (err) {
-      return onerror(err, res)
-    }
-    var cancelled = false
-    setTimeout(function () {
-      if (cancelled) return
-      cancelled = true
-      return onerror(new Error('Could not find any peers.'), res)
-    }, 5000)
-    dats.add(key, function (err, archive) {
-      if (err) return onerror(err, res)
-      archive.open(function () {
-        if (cancelled) return
-        cancelled = true
-        var peers = archive.metadata.peers.length - 1
-        var data = {
-          peers: peers < 0 ? 0 : peers
-        }
-        res.json(data)
-      })
-    })
-  })
-
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
     try {
@@ -143,7 +153,7 @@ module.exports = function (opts, db) {
     } catch (err) {
       return onerror(err)
     }
-    dats.add(state.archive.key, function (err, archive) {
+    dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       entryStream(archive, function (err, entries) {
         if (err) return onerror(err)
