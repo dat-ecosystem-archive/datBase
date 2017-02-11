@@ -20,14 +20,12 @@ module.exports = new function () {
       .assert.containsText('body', 'No dat here.')
     })
   }
-  testCases['viewing a dat that exists with a dat.json'] = (client) => {
+  testCases['viewing a dat that exists with file list works'] = (client) => {
     client
     .setValue("input[name='import-dat']", key)
     client.keys(client.Keys.ENTER, function (done) {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(5000)
-      client
-        .expect.element('#title').text.to.contain('hello world').before(5000)
       client
         .expect.element('#peers').text.to.contain('1').before(5000)
       client.click('.directory')
