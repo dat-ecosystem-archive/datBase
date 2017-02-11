@@ -167,10 +167,7 @@ module.exports = function (opts, db) {
         state.archive.entries = entries
         var peers = archive.metadata.peers.length
         state.archive.peers = peers < 0 ? 0 : peers
-        archive.open(function () {
-          state.archive.size = archive.content.bytes
-          cb(state)
-        })
+        cb(state)
       })
     })
 
