@@ -91,6 +91,7 @@ module.exports = function (opts, db) {
   router.get('/dat/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
     var filename = req.params[0]
+    if (filename !== 'dat.json') return onerror(new Error('only gets dat.json files for now, sorry!'), res)
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
       archive.get(filename, function (err, entry) {
@@ -107,7 +108,9 @@ module.exports = function (opts, db) {
             res.setHeader('Content-Length', entry.length)
             if (req.method === 'HEAD') return res.end()
             var stream = archive.createFileReadStream(entry)
-            stream.pipe(res)
+            pump(stream, res, function (err) {
+              if (err) return onerror(new Error('No sources found'), res)
+            })
           } else {
             log.debug('range request', range)
             res.statusCode = 206
@@ -142,6 +145,7 @@ module.exports = function (opts, db) {
       })
     })
   })
+
   function onerror (err, res) {
     return res.status(400).json({statusCode: 400, message: err.message})
   }
@@ -158,9 +162,12 @@ module.exports = function (opts, db) {
       entryStream(archive, function (err, entries) {
         if (err) return onerror(err)
         state.archive.entries = entries
-        var peers = archive.metadata.peers.length - 1
+        var peers = archive.content.peers.length - 1
         state.archive.peers = peers < 0 ? 0 : peers
-        cb(state)
+        archive.open(function () {
+          state.archive.size = archive.content.bytes
+          cb(state)
+        })
       })
     })
 

@@ -20,7 +20,7 @@ Dats.prototype.get = function (key, cb) {
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
   if (self.archives[key]) return cb(null, self.archives[key])
-  self.archiver.add(buf, function (err) {
+  self.archiver.add(buf, {sparse: true}, function (err) {
     if (err) return cb(err)
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
