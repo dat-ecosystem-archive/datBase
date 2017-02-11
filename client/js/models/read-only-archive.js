@@ -34,7 +34,8 @@ module.exports = {
   },
   subscriptions: [
     function (send, done) {
-      send('archive:getMetadata', {}, done)
+      // TODO: make sure we aren't clogging the archiver with unused disk space
+      // send('archive:getMetadata', {}, done)
     }
   ]
 }

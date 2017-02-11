@@ -157,12 +157,15 @@ module.exports = function (opts, db) {
     } catch (err) {
       return onerror(err)
     }
+    var cancelled = false
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       entryStream(archive, function (err, entries) {
+        if (cancelled) return
+        cancelled = true
         if (err) return onerror(err)
         state.archive.entries = entries
-        var peers = archive.content.peers.length - 1
+        var peers = archive.metadata.peers.length
         state.archive.peers = peers < 0 ? 0 : peers
         archive.open(function () {
           state.archive.size = archive.content.bytes
@@ -172,6 +175,8 @@ module.exports = function (opts, db) {
     })
 
     function onerror (err) {
+      if (cancelled) return
+      cancelled = true
       log.warn(key, err)
       state.archive.error = {message: err.message}
       return cb(state)
