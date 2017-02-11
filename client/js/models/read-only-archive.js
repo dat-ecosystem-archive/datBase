@@ -1,5 +1,5 @@
-const EventSource = require('eventsource')
 const xtend = require('xtend')
+const xhr = require('xhr')
 
 var defaultState = {
   key: null,
@@ -17,5 +17,24 @@ module.exports = {
     update: (data, state) => {
       return xtend(state, data)
     }
-  }
+  },
+  effects: {
+    getMetadata: function (data, state, send, done) {
+      xhr(`/dat/${state.key}/dat.json`, function (err, resp, raw) {
+        if (err) return send('archive:update', {error: {message: err.message}}, done)
+        var json
+        try {
+          json = JSON.parse(raw)
+        } catch (e) {
+          return send('archive:update', {error: {message: 'Malformed dat.json file'}}, done)
+        }
+        send('archive:update', {metadata: json}, done)
+      })
+    }
+  },
+  subscriptions: [
+    function (send, done) {
+      send('archive:getMetadata', {}, done)
+    }
+  ]
 }
