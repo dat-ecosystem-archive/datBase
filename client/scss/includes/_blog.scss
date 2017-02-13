@@ -45,6 +45,9 @@
     border: 0;
     border-bottom: 1px solid $color-green;
   }
+  iframe {
+    max-width: 100%;
+  }
 }
 
 .post:not(:first-child) {
@@ -53,7 +56,10 @@
 
 .post--preview {
   background: $color-white;
-  padding: 1.5rem 2rem 2rem;
+  padding: 1rem;
+  @media only screen and (min-width: $small) {
+    padding: 1.5rem 2rem 2rem;
+  }
 }
 
 .teaser {
