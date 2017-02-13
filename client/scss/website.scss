@@ -59,7 +59,7 @@ ul {
 
 .content-title {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 0;
 }
 .content-subtitle {
@@ -96,4 +96,10 @@ ul {
 .content-card-subtitle {
   color: $color-neutral-70;
   line-height: 1.75;
+}
+
+
+.bg-blue-neutral {
+  background-color: $color-blue;
+  background-image: linear-gradient(to bottom, $color-blue 50%, $color-neutral 50%);
 }
