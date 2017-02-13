@@ -48,7 +48,7 @@ function createSwarm (archiver, opts) {
     dht: false,
     hash: false,
     stream: function () {
-      return archiver.replicate({passive: true})
+      return archiver.replicate()
     }
   })
   var swarm = Swarm(swarmOpts)
