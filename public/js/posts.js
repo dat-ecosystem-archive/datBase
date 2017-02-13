@@ -1,5 +1,6 @@
 module.exports = [
   {
+    date: '2017-02-24',
     title: 'Dat Desktop is here',
     author: 'Yoshua Wuyts',
     teaser: 'Lorem Ipsum',
