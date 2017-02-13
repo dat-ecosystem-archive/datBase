@@ -1,41 +1,29 @@
-Today we’re announcing the release of Dat Desktop, a peer to peer data sharing
-app built for humans.
+Today we’re announcing the release of Dat Desktop, a peer to peer data sharing app built for humans.
 
 ![Screenshot of Dat Desktop](/public/img/screenshot-dat-desktop.png)
 
-Dat Desktop is a new way to share data with friends & colleagues. Using the
-peer to peer (p2p) Hyperdrive protocol, it makes sharing folders on your
-computer secure and convenient. No centralized servers needed.
-
+Dat is a new way to share data over the distributed web.
+It makes sharing folders on your computer secure and convenient. It's open source and non-profit, unlike BitTorrent Sync and doesn't send your raw unencrypted data to any servers to be sold or surveilled, unlike DropBox.
 
 ## Try It Out
 
-You can [download Dat Desktop here][download] and read [the source code
-here][source].
+You can [download the latest Dat Desktop release here.][https://github.com/datproject/dat-desktop/releases]. It's
 
-To get started, try to import one of the public datasets that are already available as Dat: For example the [Nasa? California Campaign Data?]
-
-![Screenshot of Dat Desktop](/public/img/screenshot-dat-desktop.png)
-
-Or share your own datasets: Click "Create a New Dat" and select a folder you’d like to share.
+To get started, hit 'Create new Dat' and choose a folder that you want to share.
 
 ![Screenshot of Dat Desktop](/public/img/screenshot-dat-desktop.png)
 
-## Hyperdrive Protocol
+A Dat link will be created that you can share with someone else using the desktop app, the [commandline tool](http://docs.datproject.org), or [Node.js library](http://github.com/datproject/dat-node). The two computers will look for eachother and the data will be sent directly between the two computers securely with end-to-end encryption.
 
-The Hyperdrive protocol is a protocol for p2p directories. It was designed to
-efficiently share terabytes of of scientific data in real time between research
-institutions on multiple continents, but it works fine to share text files on
-the local network too.
+Dat and Dat Desktop use the Node.js library Hyperdrive, developed by [Mathias Buus (mafinotsh)](http://github.com/mafintosh/hyperdrive) with support from the [Sloan Foundation](http://codeforscience.org). It has been designed to efficiently share terabytes of of scientific data in real time between research institutions on multiple continents, but it works fine to share text files on the local network too. Learn more about [how dat works here](https://docs.datproject.org/how-dat-works).
 
 ## Updating Dat Desktop
 
-You only have to install Dat Desktop once - we’ll make sure you’ll always be
-running the latest and greatest. Some of the features to come include:
+You only have to install Dat Desktop once - we’ll make sure you’ll always be running the latest and greatest. Some of the features to come include:
 
 - preview modes for a wide range of data formats
 - tagging, versioning and snapshotting of Dats
-- publishing Dats to Dat Registry and Dat Cloud (coming soon™)
+- publishing Dats with shortnames to a GitHub-style Dat Registry and Dat Cloud
 - forever improving stability and performance
 
 ## Give Feedback and Contribute
