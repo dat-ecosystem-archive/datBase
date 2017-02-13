@@ -79,7 +79,7 @@
     "clipboard": "^1.5.16",
     "collect-stream": "^1.1.1",
     "compression": "^1.6.2",
-    "dat-design": "^4.1.0",
+    "dat-design": "^4.2.0",
     "dat-encoding": "^4.0.1",
     "dat-icons": "^1.8.0",
     "datland-swarm-defaults": "^1.0.2",

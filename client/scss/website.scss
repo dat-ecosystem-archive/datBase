@@ -99,7 +99,73 @@ ul {
 }
 
 
-.bg-blue-neutral {
-  background-color: $color-blue;
-  background-image: linear-gradient(to bottom, $color-blue 50%, $color-neutral 50%);
+.bg-splash {
+  background-image: url('/public/img/bg-landing-page.svg');
+  background-repeat: no-repeat;
+  background-position: 50% 46%;
+  background-size: 240%, 100%;
+  @media screen and (min-width: $small) {
+    background-position: 50% 64%;
+    background-size: 160%, 100%;
+  }
+  @media screen and (min-width: $medium) {
+    background-position: 50% 64%;
+    background-size: 95%, 100%;
+  }
+  @media screen and (min-width: $large) {
+    background-position: 50% 64%;
+    background-size: 90%, 100%;
+  }
+  @media screen and (min-width: $huge) {
+    background-position: 50% 64%;
+    background-size: 90%, 100%;
+  }
+}
+
+.splash-visual {
+  width: 100%;
+  @media screen and (min-width: $small) {
+    width: 80%;
+  }
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  background: $color-white;
+  display: block;
+  margin-top: 1.25rem;
+  margin-bottom: 3.5rem;
+  border-radius: .25rem;
+  overflow: hidden;
+  transition: all 1s;
+  transform: scale(0);
+  img {
+    display: block;
+  }
+  @media screen and (min-width: $small) {
+    min-height: 30vh;
+  }
+  animation: popup 2s;
+  animation-iteration-count: 1;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+  box-shadow: 0 0 120px rgba(0,0,0,.25);
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  19% {
+    transform: scale(1.1);
+  }
+  25% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  80% {
+  }
+  100% {
+    transform: scale(1);
+  }
 }
