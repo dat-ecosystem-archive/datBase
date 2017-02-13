@@ -21,8 +21,11 @@ Dats.prototype.get = function (key, cb) {
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
   if (self.archives[key]) return cb(null, self.archives[key])
+  var done = false
   self.archiver.add(buf, {content: false}, function (err) {
     if (err) return cb(err)
+    if (done) return
+    done = true
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
       var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})

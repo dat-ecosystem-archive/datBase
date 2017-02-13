@@ -160,7 +160,7 @@ module.exports = function (opts, db) {
     }
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
-      log.info('got archive', key)
+      log.info('got archive', archive.key.toString('hex'))
       entryStream(archive, function (err, entries) {
         if (err) return onerror(err)
         log.info('got %s entries without error', entries.length)
