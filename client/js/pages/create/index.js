@@ -7,7 +7,7 @@ const createPage = (state, prev, send) => {
     <div>
     ${header(state, prev, send)}
 
-    <section class="section bg-nuetral-04" id="desktop">
+    <section class="section bg-splash-02" id="desktop">
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-sm-6 flex flex-column justify-center">
