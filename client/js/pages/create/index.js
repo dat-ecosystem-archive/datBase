@@ -40,7 +40,7 @@ const createPage = (state, prev, send) => {
           </div>
           <div class="col-xs-12 col-sm-6 col-sm-offset-1 flex flex-column justify-center">
             <h2 class="color-white content-title horizontal-rule">
-              Install Dat CLI
+              From the Terminal
             </h2>
             <p class="color-white">
             A Dat Archive contains all of the files for your project, including the version history.
@@ -60,9 +60,9 @@ $ dat share path/to/my/data</code></pre>
             <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
               <h2 class="content-title horizontal-rule">All the ways to use Dat</h2>
               <p class="measure-wide">
-                Share your link through the web using the “Open Dat Link” box.
-                On MacOS you can also share files using Dat Desktop, coming soon to more platforms.
-                Or install our Command Line Tool, Dat CLI.
+                Create a persistent, future-proof dDt link for your project
+                using Dat Desktop or our Command Line Tool and share your data
+                through the web using the “Open Dat Link” box.
               </p>
             </div>
             <div class="col-xs-12 col-sm-7">
