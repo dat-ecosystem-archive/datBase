@@ -155,15 +155,15 @@ module.exports = function (opts, db) {
     try {
       state.archive.key = encoding.toStr(key)
     } catch (err) {
+      log.warn('key malformed', key)
       return onerror(err)
     }
-    var cancelled = false
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
+      log.info('got archive', key)
       entryStream(archive, function (err, entries) {
-        if (cancelled) return
-        cancelled = true
         if (err) return onerror(err)
+        log.info('got %s entries without error', entries.length)
         state.archive.entries = entries
         var peers = archive.metadata.peers.length
         state.archive.peers = peers < 0 ? 0 : peers
@@ -172,8 +172,6 @@ module.exports = function (opts, db) {
     })
 
     function onerror (err) {
-      if (cancelled) return
-      cancelled = true
       log.warn(key, err)
       state.archive.error = {message: err.message}
       return cb(state)
