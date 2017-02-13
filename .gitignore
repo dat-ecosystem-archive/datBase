@@ -19,3 +19,4 @@ sqlite.db
 config.js
 public/rendered
 invited-users
+archiver

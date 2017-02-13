@@ -1,4 +1,7 @@
 const fs = require('fs')
+const rangeParser = require('range-parser')
+const mime = require('mime')
+const pump = require('pump')
 const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
@@ -7,23 +10,24 @@ const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
-const hyperhealth = require('hyperhealth')
+const entryStream = require('./entryStream')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
-const getMetadata = require('./metadata')
-const entryStream = require('./entryStream')
 const pkg = require('../package.json')
+const Dats = require('./dats')
 
-module.exports = function (opts, db, dat) {
+module.exports = function (opts, db) {
   opts = opts || {}
+
+  const log = bole(__filename)
+  const dats = opts.dats || Dats(opts.archiver)
 
   var router = express()
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
-  const log = bole(__filename)
 
   const ship = auth(router, db, opts)
   api(router, db, ship)
@@ -84,11 +88,48 @@ module.exports = function (opts, db, dat) {
     })
   })
 
+  router.get('/dat/:archiveKey/*', function (req, res) {
+    log.debug('getting file contents', req.params)
+    var filename = req.params[0]
+    if (filename !== 'dat.json') return onerror(new Error('only gets dat.json files for now, sorry!'), res)
+    dats.get(req.params.archiveKey, function (err, archive) {
+      if (err) return onerror(err, res)
+      archive.get(filename, function (err, entry) {
+        if (err && err.code === 'ETIMEDOUT') return onerror(new Error('Timed Out'), res)
+        if (err || !entry || entry.type !== 'file') return onerror(new Error('404'), res)
+
+        log.debug('getting entry', entry)
+        var range = req.headers.range && rangeParser(entry.length, req.headers.range)[0]
+
+        res.setHeader('Access-Ranges', 'bytes')
+        res.setHeader('Content-Type', mime.lookup(filename))
+        archive.open(function () {
+          if (!range || range < 0) {
+            res.setHeader('Content-Length', entry.length)
+            if (req.method === 'HEAD') return res.end()
+            var stream = archive.createFileReadStream(entry)
+            pump(stream, res, function (err) {
+              if (err) return onerror(new Error('No sources found'), res)
+            })
+          } else {
+            log.debug('range request', range)
+            res.statusCode = 206
+            res.setHeader('Content-Length', range.end - range.start + 1)
+            res.setHeader('Content-Range', 'bytes ' + range.start + '-' + range.end + '/' + entry.length)
+            if (req.method === 'HEAD') return res.end()
+            pump(archive.createFileReadStream(entry, {start: range.start, end: range.end + 1}), res)
+          }
+        })
+      })
+    })
+  })
+
   router.get('/:username/:dataset', function (req, res) {
+    log.debug('requesting username/dataset', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       var contentType = req.accepts(['html', 'json'])
       if (contentType === 'json') {
-        if (err) return res.status(400).json({statusCode: 400, message: err.message})
+        if (err) return onerror(err, res)
         return res.status(200).json(dat)
       }
       if (err) {
@@ -105,39 +146,41 @@ module.exports = function (opts, db, dat) {
     })
   })
 
+  function onerror (err, res) {
+    return res.status(400).json({statusCode: 400, message: err.message})
+  }
+
   function archiveRoute (key, cb) {
     var state = getDefaultAppState()
-    state.archive.key = key
     try {
       state.archive.key = encoding.toStr(key)
     } catch (err) {
       return onerror(err)
     }
-    var archive = dat.drive.createArchive(state.archive.key, {sparse: true, live: true})
-    var health = hyperhealth(archive)
+    var cancelled = false
+    dats.get(state.archive.key, function (err, archive) {
+      if (err) return onerror(err)
+      entryStream(archive, function (err, entries) {
+        if (cancelled) return
+        cancelled = true
+        if (err) return onerror(err)
+        state.archive.entries = entries
+        var peers = archive.metadata.peers.length
+        state.archive.peers = peers < 0 ? 0 : peers
+        cb(state)
+      })
+    })
 
     function onerror (err) {
+      if (cancelled) return
+      cancelled = true
       log.warn(key, err)
       state.archive.error = {message: err.message}
       return cb(state)
     }
-
-    entryStream(archive, function (err, entries) {
-      if (err) return onerror(err)
-      state.archive.entries = entries
-      getMetadata(archive, function (err, metadata) {
-        if (err) state.archive.error = {message: err.message}
-        if (metadata) state.archive.metadata = metadata
-        state.archive.health = health.get()
-        health.swarm.close(function () {
-          archive.close(function () {
-            return cb(state)
-          })
-        })
-      })
-    })
   }
 
+  router.dats = dats
   return router
 
   /* helpers */

@@ -182,35 +182,6 @@ test('api', function (t) {
         t.end()
       })
     })
-    //
-    // test('api can get a dats health', function (t) {
-    //   var stream = client.secureRequest({
-    //     stream: true,
-    //     url: '/dats/health?key=' + dats.cats.url,
-    //     forever: true
-    //   })
-    //   stream.on('error', function (err) {
-    //     t.ifError(err)
-    //   })
-    //   var repo = dat.get(dats.cats.url)
-    //   var writer = repo.archive.createFileWriteStream('hello.txt')
-    //   writer.write('world')
-    //   writer.end()
-    //   stream.on('data', function (body) {
-    //     if (!body) return
-    //     var data = JSON.parse(body.toString())
-    //     t.same(data.connected, 1, 'has one connected')
-    //     t.same(data.bytes, 5, 'has five bytes')
-    //     if (data.peers && data.peers.length > 0) {
-    //       t.ok(data.peers[0].blocks, 'found the peers')
-    //       stream.abort()
-    //       stream.agent.destroy()
-    //     }
-    //     stream.on('end', function () {
-    //       t.end()
-    //     })
-    //   })
-    // })
 
     test('api dats need to have correct names', function (t) {
       var bad = Object.assign({}, dats.penguins)

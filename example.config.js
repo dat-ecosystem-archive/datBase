@@ -24,7 +24,7 @@ var config = {
       useNullAsDefault: true
     },
     whitelist: path.join(datadir, 'invited-users', 'README'),
-    cachedb: path.join(__dirname, '.datcache'),
+    archiver: path.join(datadir, 'archiver'),
     port: process.env.PORT || 8888
   },
   development: {},

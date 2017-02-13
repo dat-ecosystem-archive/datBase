@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const prettyBytes = require('pretty-bytes')
 const hyperdrive = require('../../components/hyperdrive')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
@@ -7,7 +8,6 @@ const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
-const prettyBytes = require('pretty-bytes')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': 'No dat here.',
@@ -29,9 +29,8 @@ const archivePage = (state, prev, send) => {
       `
     }
   }
-  var health = state.archive.health
-  var sources = health ? health.connected : 0
-  var size = prettyBytes(state.archive.health.bytes)
+  var peers = state.archive.peers
+  var size = state.archive.size
 
   return html`
     <div>
@@ -56,8 +55,8 @@ const archivePage = (state, prev, send) => {
             <div id="permissions" class="dat-detail">
               ${permissions({owner: state.archive.owner})}
             </div>
-            <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
-            <div id="peers" class="dat-detail">${sources} Source(s)</div>
+            <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
+            <div id="peers" class="dat-detail">${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
           </div>
             <div class="dat-detail">
             ${state.archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}

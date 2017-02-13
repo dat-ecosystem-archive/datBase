@@ -28,6 +28,7 @@ services:
       - app
       - newdat
     environment:
+      - PORT=80
       - TEST_SERVER=http://app:80
       - WAIT_FOR_HOSTS=app:80 chromedriver:4444 chromedriver:6060
     volumes:

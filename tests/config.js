@@ -23,12 +23,9 @@ var config = {
       },
       useNullAsDefault: true
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
-    cachedb: path.join(__dirname, '.datcache'),
-    port: process.env.PORT || 8888
-  },
-  test: {
     whitelist: path.join(__dirname, 'fixtures', 'whitelist.txt'),
+    archiver: path.join(datadir, 'archiver'),
+    port: process.env.PORT || 8888
   },
   development: {},
   production: {
@@ -52,5 +49,4 @@ var config = {
 }
 
 var env = process.env.NODE_ENV || 'development'
-var myconfig = xtend(config.shared, config[env])
-module.exports = myconfig
+module.exports = xtend(config.shared, config[env])
