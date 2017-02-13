@@ -19,7 +19,7 @@ const createPage = (state, prev, send) => {
               Coming soon for all platforms.
             </p>
             <p>
-              <a href="http://github.com/datproject/dat-desktop" target="_blank" class="btn btn--green">
+              <a href="https://github.com/datproject/dat-desktop/releases" target="_blank" class="btn btn--green">
                 View on GitHub
               </a>
             </p>
