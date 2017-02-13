@@ -12,15 +12,14 @@ const createPage = (state, prev, send) => {
         <div class="row">
           <div class="col-xs-12 col-sm-6 flex flex-column justify-center">
             <h2 class="content-title horizontal-rule">
-              Download Dat Desktop
+            Powerful dataset sharing from your desktop.
             </h2>
             <p class="mb4">
-              To manage multiple Dats on your desktop machine, use our app.
-              Coming soon for all platforms.
+              Share and version control data with ease using our desktop app. Available for Mac and coming soon for Windows and Linux.
             </p>
             <p>
               <a href="https://github.com/datproject/dat-desktop/releases" target="_blank" class="btn btn--green">
-                View on GitHub
+                Download for Mac
               </a>
             </p>
           </div>
