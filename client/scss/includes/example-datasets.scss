@@ -52,12 +52,18 @@
   background: $color-red;
 }
 
+.example-header--nasa {
+  background: $color-blue;
+  .example-img {
+    max-width: 10rem;
+  }
+}
+
 .example-header--osm {
   background: $color-blue;
   position: relative;
   .example-img {
     max-width: 500%;
-
     position: absolute;
     left: -40%;
     top: 0;
