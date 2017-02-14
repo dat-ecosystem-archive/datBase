@@ -26,8 +26,8 @@ module.exports = new function () {
     client.keys(client.Keys.ENTER, function (done) {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(5000)
-      client
-        .expect.element('#peers').text.to.contain('1').before(5000)
+      // client
+      //   .expect.element('#peers').text.to.contain('1').before(5000)
       client.click('.directory')
       client.expect.element('#fs').text.to.contain('hello.txt').before(1000)
       client.end()

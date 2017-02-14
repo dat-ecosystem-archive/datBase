@@ -165,7 +165,7 @@ module.exports = function (opts, db) {
         if (err) return onerror(err)
         log.info('got %s entries without error', entries.length)
         state.archive.entries = entries
-        var peers = archive.metadata.peers.length
+        var peers = archive.metadata.peers.length - 1
         state.archive.peers = peers < 0 ? 0 : peers
         cb(state)
       })
