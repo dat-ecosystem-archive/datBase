@@ -165,8 +165,7 @@ module.exports = function (opts, db) {
         if (err) return onerror(err)
         log.info('got %s entries without error', entries.length)
         state.archive.entries = entries
-        var peers = archive.metadata.peers.length - 1
-        state.archive.peers = peers < 0 ? 0 : peers
+        state.archive.peers = getPeers(archive.metadata.peers)
         cb(state)
       })
     })
@@ -176,6 +175,17 @@ module.exports = function (opts, db) {
       state.archive.error = {message: err.message}
       return cb(state)
     }
+  }
+
+  function getPeers (peers) {
+    var ar = {}
+    console.log('got', peers.length, 'peers')
+    for (var i = 0; i < peers.length; i++) {
+      var peer = peers[i]
+      if (!peer.stream || !peer.stream.remoteId) continue
+      ar[peer.stream.remoteId.toString('hex')] = 1
+    }
+    return Object.keys(ar).length
   }
 
   router.dats = dats
