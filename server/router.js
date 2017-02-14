@@ -179,13 +179,14 @@ module.exports = function (opts, db) {
 
   function getPeers (peers) {
     var ar = {}
-    console.log('got', peers.length, 'peers')
     for (var i = 0; i < peers.length; i++) {
       var peer = peers[i]
       if (!peer.stream || !peer.stream.remoteId) continue
       ar[peer.stream.remoteId.toString('hex')] = 1
     }
-    return Object.keys(ar).length
+    var count = Object.keys(ar).length
+    log.info('got', count, 'peers')
+    return count
   }
 
   router.dats = dats
