@@ -87,7 +87,7 @@ module.exports = {
         if (err) return send('error:new', err, done)
         data.register = 'hidden'
         send('user:update', data, function () {
-          send('message:success', 'Registered successfully.', done)
+          window.location.href = '/install?registered'
         })
       })
     }
