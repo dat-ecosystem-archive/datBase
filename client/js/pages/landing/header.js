@@ -10,6 +10,7 @@ module.exports = function (state, prev, send) {
               <span class="dat-logo__word">Dat</span>
             </a>
             <nav class="main-nav">
+              <a href="/install" class="header-nav-link">Install</a>
               <a href="/about" class="header-nav-link">About</a>
               <a href="/blog" class="header-nav-link">Blog</a>
               <a href="/team" class="header-nav-link">Team</a>
