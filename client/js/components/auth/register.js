@@ -74,7 +74,7 @@ const register = (state, prev, send) => {
           <input type="submit" value="Register" class="w100 btn btn--green" />
         </p>
         <p class="f7">
-          <a href="">Already Have an Account? Log In</a>
+          <a href="/login">Already Have an Account? Log In</a>
         </p>
       </form>
     </div>
