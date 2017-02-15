@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const css = require('sheetify')
 const form = require('get-form-data')
+const invite = require('./invite.js')
 
 var prefix = css`
   :host {
@@ -40,6 +41,9 @@ const register = (state, prev, send) => {
     e.preventDefault()
     return false
   }
+
+  if (window.location.search.indexOf('invite') > -1 ||
+      (state.error && state.error.message.indexOf('invite') > -1)) return invite(state, prev, send)
 
   return html`<div class="register ${state.user.register} ${prefix}">
     <div class="relative flex flex-column justify-center modal">
