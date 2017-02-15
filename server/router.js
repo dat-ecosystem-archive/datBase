@@ -83,35 +83,11 @@ module.exports = function (opts, db) {
   router.get('/dat/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
     var filename = req.params[0]
-    if (filename !== 'dat.json') return onerror(new Error('only gets dat.json files for now, sorry!'), res)
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
-      archive.get(filename, function (err, entry) {
-        if (err && err.code === 'ETIMEDOUT') return onerror(new Error('Timed Out'), res)
-        if (err || !entry || entry.type !== 'file') return onerror(new Error('404'), res)
-
-        log.debug('getting entry', entry)
-        var range = req.headers.range && rangeParser(entry.length, req.headers.range)[0]
-
-        res.setHeader('Access-Ranges', 'bytes')
-        res.setHeader('Content-Type', mime.lookup(filename))
-        archive.open(function () {
-          if (!range || range < 0) {
-            res.setHeader('Content-Length', entry.length)
-            if (req.method === 'HEAD') return res.end()
-            var stream = archive.createFileReadStream(entry)
-            pump(stream, res, function (err) {
-              if (err) return onerror(new Error('No sources found'), res)
-            })
-          } else {
-            log.debug('range request', range)
-            res.statusCode = 206
-            res.setHeader('Content-Length', range.end - range.start + 1)
-            res.setHeader('Content-Range', 'bytes ' + range.start + '-' + range.end + '/' + entry.length)
-            if (req.method === 'HEAD') return res.end()
-            pump(archive.createFileReadStream(entry, {start: range.start, end: range.end + 1}), res)
-          }
-        })
+      dats.file(req.params.archiveKey, filename, function (err) {
+        if (err) return onerror(err, res)
+        return dats.http.file(req, res, archive, filename)
       })
     })
   })
