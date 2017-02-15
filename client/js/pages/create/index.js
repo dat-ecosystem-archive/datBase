@@ -1,16 +1,8 @@
 const html = require('choo/html')
 const header = require('./../../components/header')
 const importButton = require('./../../elements/import-button')
-const noop = function () {}
-
-var registered = false
 
 const createPage = (state, prev, send) => {
-  if (window.location.search.indexOf('?registered') > -1 && !registered) {
-    registered = true
-    send('message:success', 'Registered successfully.', noop)
-  }
-
   return html`
     <div>
     ${header(state, prev, send)}

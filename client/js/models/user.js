@@ -78,6 +78,7 @@ module.exports = {
         data.login = 'hidden'
         send('user:update', data, function () {
           send('message:success', 'Logged in successfully.', done)
+          window.location.href = '/install'
         })
       })
     },
@@ -87,7 +88,8 @@ module.exports = {
         if (err) return send('error:new', err, done)
         data.register = 'hidden'
         send('user:update', data, function () {
-          window.location.href = '/install?registered'
+          send('message:success', 'Registered successfully.', done)
+          window.location.href = '/install'
         })
       })
     }
