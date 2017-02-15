@@ -74,7 +74,7 @@ const login = (state, prev, send) => {
         </p>
         <p class="f7">
           <a href="" class="mr3">Forgot Password?</a>
-          <a href="">No Account yet?</a>
+          <a href="/register">No Account yet? Register.</a>
         </p>
       </form>
     </div>
