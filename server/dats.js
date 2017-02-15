@@ -4,16 +4,20 @@ const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
 const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
+const storage = require('random-access-page-files')
+const path = require('path')
+const hyperhttp = require('hyperdrive-http')
 
 module.exports = Dats
 
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archiver = Archiver(dir)
+  this.archiver = Archiver({dir: dir, storage: storage})
   this.swarm = createSwarm(this.archiver)
   this.drive = hyperdrive(this.archiver.db)
   this.archives = {}
+  this.http = hyperhttp(this.get)
 }
 
 Dats.prototype.get = function (key, cb) {
@@ -22,7 +26,7 @@ Dats.prototype.get = function (key, cb) {
   var buf = encoding.toBuf(key)
   if (self.archives[key]) return cb(null, self.archives[key])
   var done = false
-  self.archiver.add(buf, {content: false}, function (err) {
+  self.archiver.add(buf, {sparse: true, content: true}, function (err) {
     if (err) return cb(err)
     if (done) return
     done = true
@@ -31,6 +35,17 @@ Dats.prototype.get = function (key, cb) {
       var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
       self.archives[key] = archive
       return cb(null, archive)
+    })
+  })
+}
+
+Dats.prototype.file = function (key, filename, cb) {
+  var self = this
+  self.get(key, function (err, archive) {
+    if (err) return cb(err)
+    archive.get(filename, function (err, entry) {
+      if (err) return cb(err)
+      archive.download(entry, true, cb) // second arg = force download
     })
   })
 }
