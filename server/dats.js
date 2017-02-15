@@ -60,7 +60,7 @@ function createSwarm (archiver, opts) {
 
   archiver.changes(function (err, feed) {
     if (err) throw err
-    swarm.join(feed.discoveryKey, {dontShare: true})
+    swarm.join(feed.discoveryKey, {announce: false})
   })
 
   archiver.list().on('data', function (key) {
@@ -74,6 +74,6 @@ function createSwarm (archiver, opts) {
   return swarm
 
   function serveArchive (key) {
-    swarm.join(archiver.discoveryKey(key), {dontShare: true})
+    swarm.join(archiver.discoveryKey(key), {announce: false})
   }
 }
