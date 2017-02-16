@@ -36,7 +36,8 @@ var config = {
       email: {
         fromEmail: 'noreply@datproject.org',
         postmarkAPIKey: process.env.POSTMARK_KEY
-      }
+      },
+      algorithm: 'ES512
     },
     db: {
       dialect: 'sqlite3',
