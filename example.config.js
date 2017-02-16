@@ -1,4 +1,5 @@
 var os = require('os')
+var fs = require('fs')
 var path = require('path')
 var xtend = require('xtend')
 
@@ -30,8 +31,8 @@ var config = {
   development: {},
   production: {
     township: {
-      publicKey: process.env.TOWNSHIP_PUBKEY,
-      privateKey: process.env.TOWNSHIP_PRIVKEY,
+      publicKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString(),
+      privateKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-private.pem')).toString(),
       db: path.join(datadir, 'datland-township.db'),
       email: {
         fromEmail: 'noreply@datproject.org',
