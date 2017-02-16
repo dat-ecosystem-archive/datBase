@@ -31,8 +31,6 @@ var config = {
   development: {},
   production: {
     township: {
-      publicKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString(),
-      privateKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-private.pem')).toString(),
       db: path.join(datadir, 'datland-township.db'),
       email: {
         fromEmail: 'noreply@datproject.org',
@@ -48,6 +46,10 @@ var config = {
       useNullAsDefault: true
     }
   }
+}
+if (process.env.NODE_ENV === 'production') {
+  config.production.township.publicKey = fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString()
+  config.production.township.privateKey = fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-private.pem')).toString()
 }
 
 var env = process.env.NODE_ENV || 'development'
