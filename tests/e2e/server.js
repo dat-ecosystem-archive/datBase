@@ -33,4 +33,42 @@ module.exports = new function () {
       client.end()
     })
   }
+  testCases['registering an account'] = (client) => {
+    client
+    .url(testServer + '/register')
+    .setValue("input[name='username']", 'joehi')
+    .setValue("input[name='email']", 'joe@hi.com')
+    .setValue("input[name='password']", 'apassword')
+    .click("input[type='submit']")
+    client.pause(2000)
+    .assert.containsText('body', 'From the terminal')
+  }
+  testCases['logging into an account with a bad email'] = (client) => {
+    client
+    .url(testServer + '/login')
+    .setValue("input[name='email']", 'joedoesnotexist@hi.com')
+    .setValue("input[name='password']", 'apassword')
+    .click("input[type='submit']")
+    client.pause(2000)
+    .assert.containsText('body', 'User does not exists.')
+  }
+  testCases['logging into an account with a bad password'] = (client) => {
+    client
+    .url(testServer + '/login')
+    .setValue("input[name='email']", 'joe@hi.com')
+    .setValue("input[name='password']", 'abadpassword')
+    .click("input[type='submit']")
+    client.pause(2000)
+    .assert.containsText('body', 'Incorrect email and password.')
+  }
+  testCases['logging into an account with a good password'] = (client) => {
+    client
+    .url(testServer + '/login')
+    .setValue("input[name='email']", 'joe@hi.com')
+    .setValue("input[name='password']", 'apassword')
+    .click("input[type='submit']")
+    client.pause(2000)
+    .assert.containsText('body', 'From the terminal')
+    client.end()
+  }
 }
