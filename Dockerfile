@@ -2,7 +2,7 @@ FROM node:6.9
 EXPOSE 80
 
 ENV PORT 80
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 ENV TOWNSHIP_SECRET "some secret string here"
 ENV DATADIR /data
