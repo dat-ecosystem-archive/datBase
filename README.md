@@ -1,10 +1,8 @@
-# datfolder
+# datproject.org
 
-A registry for dats.
+A registry for dats. [datproject.org](http://datproject.org)
 
-[![Build Status](https://travis-ci.org/datproject/datfolder.svg?branch=master)](https://travis-ci.org/datproject/datfolder)
-
-[Try dat.land now](http://dat.land)
+[![Build Status](https://travis-ci.org/datproject/datproject.org.svg?branch=master)](https://travis-ci.org/datproject/datproject.org)
 
 ## API
 
