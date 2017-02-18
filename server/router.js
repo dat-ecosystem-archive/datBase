@@ -139,8 +139,9 @@ module.exports = function (opts, db) {
         return sendSPA(req, res, state)
       }
       archiveRoute(dat.url, function (state) {
-        state.archive.username = req.params.username
-        state.archive.dataset = req.params.dataset
+        dat.username = req.params.username
+        dat.shortname = req.params.dataset
+        state.archive.metadata = dat
         return sendSPA(req, res, state)
       })
     })
