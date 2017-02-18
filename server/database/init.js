@@ -39,8 +39,21 @@ function init (dbConfig, cb) {
 }
 
 if (!module.parent) {
-  const defaultConfig = require('../../config')
-  init(defaultConfig.db, function (err) {
+  var dbPath = process.argv.slice(2)[0]
+  var dbConfig = {}
+  if (dbPath) {
+    dbConfig = {
+      dialect: 'sqlite3',
+      connection: {
+        filename: dbPath
+      },
+      useNullAsDefault: true
+    }
+  } else {
+    const defaultConfig = require('../../config')
+    dbConfig = defaultConfig.db
+  }
+  init(dbConfig, function (err) {
     if (err) throw err
     console.log('Successfully created tables.')
     process.exit(0)
