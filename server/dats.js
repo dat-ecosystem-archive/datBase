@@ -45,7 +45,6 @@ function createSwarm (archiver, opts) {
 
   var timeouts = []
   var swarmOpts = swarmDefaults({
-    dht: false,
     hash: false,
     stream: function () {
       return archiver.replicate()
@@ -60,7 +59,7 @@ function createSwarm (archiver, opts) {
 
   archiver.changes(function (err, feed) {
     if (err) throw err
-    swarm.join(feed.discoveryKey, {announce: false})
+    swarm.join(feed.discoveryKey)
   })
 
   archiver.list().on('data', function (key) {
@@ -74,6 +73,6 @@ function createSwarm (archiver, opts) {
   return swarm
 
   function serveArchive (key) {
-    swarm.join(archiver.discoveryKey(key), {announce: false})
+    swarm.join(archiver.discoveryKey(key))
   }
 }
