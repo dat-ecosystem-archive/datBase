@@ -4,10 +4,22 @@ const response = require('response')
 const level = require('level-party')
 const verify = require('./verify')
 const errors = require('../errors')
+const createEmail = require('township-email')
+const createReset = require('township-reset-password-token')
+const postmarkTransport = require('nodemailer-postmark-transport')
 
 module.exports = function (router, db, opts) {
   const townshipDb = level(opts.township.db || path.join(__dirname, 'township.db'))
   const ship = township(townshipDb, opts.township)
+  const reset = createReset(townshipDb, {
+    secret: 'not a secret' // passed to jsonwebtoken
+  })
+  /* XXX: transport should be preconfigured in config.js so we can do tests */
+  const email = createEmail({
+    transport: postmarkTransport({
+      auth: {apiKey: opts.township.email.postmarkAPIKey}
+    })
+  })
 
   function onerror (err, res) {
     var data = {statusCode: 400, message: errors.humanize(err).message}
@@ -46,6 +58,57 @@ module.exports = function (router, db, opts) {
         obj.role = user.role
         obj.description = user.description
         return response.json(obj).status(200).pipe(res)
+      })
+    })
+  })
+
+  router.post('/api/v1/password-reset', function (req, res, ctx) {
+    const userEmail = req.body.email
+    ship.accounts.findByEmail(userEmail, function (err, account) {
+      if (err) return onerror(new Error('account not found'), res)
+      var accountKey = account.auth.key
+      reset.create({ accountKey: accountKey }, function (err, token) {
+        if (err) return onerror(new Error('problem creating reset token'), res)
+        const clientHost = 'http://localhost.8080'
+        var reseturl = `${clientHost}/reset-password?accountKey=${accountKey}&resetToken=${token}&email=${userEmail}`
+
+        var emailOptions = {
+          to: userEmail,
+          from: opts.township.email.fromEmail,
+          subject: 'Reset your password at datproject.org',
+          html: `<div>
+            <p>Hello!</p>
+            <p>You recently requested to reset your password. If that wasn't you, you can delete this email.</p>
+            <p>Reset your password by clicking this link:</p>
+            <p><b><a href="${reseturl}">Reset password</a></b></p>
+            <p>Or by following this url:</p>
+            <p><a href="${reseturl}">${reseturl}</a></p>
+          </div>`
+        }
+
+        email.send(emailOptions, function (err, info) {
+          if (err) return onerror(err, res)
+          return response.json({ message: 'Check your email to finish resetting your password' }).pipe(res)
+        })
+      })
+    })
+  })
+
+  router.post('/api/v1/password-reset', function (req, res, ctx) {
+    const body = req.body
+    var options = {
+      key: body.accountKey,
+      basic: {
+        email: body.email,
+        password: body.newPassword
+      }
+    }
+
+    ship.accounts.auth.update(options, function (err, account) {
+      if (err) return onerror('problem confirming password reset', res)
+      reset.confirm({ token: body.resetToken, accountKey: body.accountKey }, function (err) {
+        if (err) return onerror('reset token not valid', res)
+        response.json({ message: 'password successfully reset' }).pipe(res)
       })
     })
   })

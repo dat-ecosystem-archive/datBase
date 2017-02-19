@@ -70,6 +70,19 @@ test('api', function (t) {
         })
       })
     })
+    test('api should allow password reset', function (t) {
+      client.secureRequest({
+        url: '/password-reset',
+        body: {email: users.joe.email},
+        method: 'POST',
+        json: true
+      }, function (err, resp, body) {
+        t.ifError(err)
+        /* XXX: use mock nodemailer transport and process email content
+           to click the confirmation link */
+        t.end()
+      })
+    })
 
     test('api usernames should be unique', function (t) {
       client.register(users.joe, function (err, resp, body) {
