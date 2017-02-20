@@ -1,6 +1,8 @@
 var os = require('os')
 var path = require('path')
 var xtend = require('xtend')
+const mockTransport = require('nodemailer-mock-transport')
+const postmarkTransport = require('nodemailer-postmark-transport')
 
 var datadir = process.env.DATADIR || (
   (process.env.NODE_ENV || 'development') === 'development'
@@ -12,8 +14,8 @@ var config = {
       secret: 'very very not secret',
       db: path.join(datadir, 'township.db'),
       email: {
-        fromEmail: 'hi@example.com',
-        postmarkAPIKey: 'your api key'
+        fromEmail: 'noreply@example.org',
+        transport: mockTransport()
       }
     },
     db: {
@@ -28,14 +30,16 @@ var config = {
     port: process.env.PORT || 8888
   },
   development: {},
-  production: {
+  production: () => { return {
     township: {
       publicKey: process.env.TOWNSHIP_PUBKEY,
       privateKey: process.env.TOWNSHIP_PRIVKEY,
       db: path.join(datadir, 'datland-township.db'),
       email: {
         fromEmail: 'noreply@datproject.org',
-        postmarkAPIKey: process.env.POSTMARK_KEY
+        transport: postmarkTransport({
+          auth: {apiKey: process.env.POSTMARK_KEY}
+        })
       }
     },
     db: {
@@ -46,7 +50,7 @@ var config = {
       useNullAsDefault: true
     }
   }
-}
+} }
 
 var env = process.env.NODE_ENV || 'development'
-module.exports = xtend(config.shared, config[env])
+module.exports = xtend(config.shared, typeof config[env] === 'function' ? config[env]() : config[env])

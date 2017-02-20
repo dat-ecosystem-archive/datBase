@@ -4,8 +4,9 @@ const path = require('path')
 const TownshipClient = require('township-client')
 const request = require('request')
 const helpers = require('../helpers')
-const config = JSON.parse(JSON.stringify(require('../config')))
+const config = require('../config')
 const Dat = require('dat-js')
+const xtend = require('xtend')
 
 const dat = new Dat()
 
@@ -70,20 +71,6 @@ test('api', function (t) {
         })
       })
     })
-    test('api should allow password reset', function (t) {
-      client.secureRequest({
-        url: '/password-reset',
-        body: {email: users.joe.email},
-        method: 'POST',
-        json: true
-      }, function (err, resp, body) {
-        t.ifError(err)
-        /* XXX: use mock nodemailer transport and process email content
-           to click the confirmation link */
-        t.end()
-      })
-    })
-
     test('api usernames should be unique', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ok(err)
@@ -135,7 +122,6 @@ test('api', function (t) {
         })
       })
     })
-
     test('api joe cannot update bob', function (t) {
       client.secureRequest({url: '/users', method: 'put', body: {id: users.bob.id, email: 'joebob@email.com'}, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -341,6 +327,42 @@ test('api', function (t) {
           t.ifError(err)
           t.same(body.length, 2, 'has two users')
           t.end()
+        })
+      })
+    })
+    test('api should allow password reset', function (t) {
+      client.secureRequest({
+        url: '/password-reset',
+        body: {email: users.joe.email},
+        method: 'POST',
+        json: true
+      }, function (err, resp, body) {
+        t.ifError(err)
+        const sent = config.township.email.transport.sentMail
+        t.same(sent.length, 1)
+        t.same(sent[0].data.to, users.joe.email)
+        const [_, urlstring] = sent[0].message.content.match(/href="(.*?)"/)
+        const {query} = require('url').parse(urlstring, 1)
+        const goodQuery = xtend(query, {newPassword: 'foobar'})
+        const brokenQuery = xtend(goodQuery, {resetToken: 'zzz'})
+        client.secureRequest({
+          url: '/password-reset-confirm',
+          body: brokenQuery,
+          method: 'POST',
+          json: true
+        }, function (err, resp, body) {
+          t.same(err.statusCode, 400)
+          t.same(err.message, 'reset token not valid')
+          client.secureRequest({
+            url: '/password-reset-confirm',
+            body: goodQuery,
+            method: 'POST',
+            json: true
+          }, function (err, resp, body) {
+            t.ifError(err)
+            /* XXX: verify joe's password is updated */
+            t.end()
+          })
         })
       })
     })

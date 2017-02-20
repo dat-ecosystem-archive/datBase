@@ -6,7 +6,6 @@ const verify = require('./verify')
 const errors = require('../errors')
 const createEmail = require('township-email')
 const createReset = require('township-reset-password-token')
-const postmarkTransport = require('nodemailer-postmark-transport')
 
 module.exports = function (router, db, opts) {
   const townshipDb = level(opts.township.db || path.join(__dirname, 'township.db'))
@@ -14,11 +13,9 @@ module.exports = function (router, db, opts) {
   const reset = createReset(townshipDb, {
     secret: 'not a secret' // passed to jsonwebtoken
   })
-  /* XXX: transport should be preconfigured in config.js so we can do tests */
+
   const email = createEmail({
-    transport: postmarkTransport({
-      auth: {apiKey: opts.township.email.postmarkAPIKey}
-    })
+    transport: opts.township.email.transport
   })
 
   function onerror (err, res) {
@@ -69,7 +66,8 @@ module.exports = function (router, db, opts) {
       var accountKey = account.auth.key
       reset.create({ accountKey: accountKey }, function (err, token) {
         if (err) return onerror(new Error('problem creating reset token'), res)
-        const clientHost = 'http://localhost.8080'
+        /* XXX: derived frmo config */
+        const clientHost = 'http://localhost:8080'
         var reseturl = `${clientHost}/reset-password?accountKey=${accountKey}&resetToken=${token}&email=${userEmail}`
 
         var emailOptions = {
@@ -94,7 +92,7 @@ module.exports = function (router, db, opts) {
     })
   })
 
-  router.post('/api/v1/password-reset', function (req, res, ctx) {
+  router.post('/api/v1/password-reset-confirm', function (req, res, ctx) {
     const body = req.body
     var options = {
       key: body.accountKey,
@@ -105,9 +103,9 @@ module.exports = function (router, db, opts) {
     }
 
     ship.accounts.auth.update(options, function (err, account) {
-      if (err) return onerror('problem confirming password reset', res)
+      if (err) return onerror(new Error('problem confirming password reset'), res)
       reset.confirm({ token: body.resetToken, accountKey: body.accountKey }, function (err) {
-        if (err) return onerror('reset token not valid', res)
+        if (err) return onerror(new Error('reset token not valid'), res)
         response.json({ message: 'password successfully reset' }).pipe(res)
       })
     })
