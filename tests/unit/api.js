@@ -341,7 +341,7 @@ test('api', function (t) {
         const sent = config.township.email.transport.sentMail
         t.same(sent.length, 1)
         t.same(sent[0].data.to, users.joe.email)
-        const [_, urlstring] = sent[0].message.content.match(/href="(.*?)"/)
+        const [, urlstring] = sent[0].message.content.match(/href="(.*?)"/)
         const {query} = require('url').parse(urlstring, 1)
         const goodQuery = xtend(query, {newPassword: 'foobar'})
         const brokenQuery = xtend(goodQuery, {resetToken: 'zzz'})
