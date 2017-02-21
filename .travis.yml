@@ -17,9 +17,6 @@ install:
   - echo travis_fold:end:docker-compose-build
   - sh -c 'cd tests && npm i'
 
-before_script:
-  - cp example.config.js config.js
-
 script:
   - docker-compose up -d newdat && sleep 10
   - docker-compose run --rm app sh -c 'npm i --only=dev --loglevel warn && npm run test'
