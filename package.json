@@ -83,6 +83,7 @@
     "dat-design": "^4.2.0",
     "dat-encoding": "^4.0.1",
     "dat-icons": "^1.8.0",
+    "dat-registry": "^2.0.0",
     "datland-swarm-defaults": "^1.0.2",
     "discovery-swarm": "^4.2.0",
     "drag-drop": "^2.11.0",
