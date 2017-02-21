@@ -14,7 +14,7 @@ module.exports = {
   namespace: 'importQueue',
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.importQueue,
   reducers: {
-    update: (data, state) => {
+    update: (state, data) => {
       // shallow copy the last `state` frame so we can preserve
       // file.progressListener refs:
       var stateCopy = {}
@@ -41,7 +41,7 @@ module.exports = {
       }
       return stateCopy
     },
-    reset: (data, state) => {
+    reset: (state, data) => {
       var writing = state.writing
       if (writing && writing.progressListener && writing.progressHandler) {
         writing.progressListener.removeListener('progress', writing.progressHandler)
@@ -54,11 +54,11 @@ module.exports = {
     }
   },
   effects: {
-    add: function (data, state, send, done) {
+    add: function (state, data, send, done) {
       hyperdriveImportQueue.add(data.files, data.root)
       return done()
     },
-    init: function (data, state, send, done) {
+    init: function (state, data, send, done) {
       send('importQueue:reset', {}, noop)
       hyperdriveImportQueue = HyperdriveImportQueue(null, data.archive, {
         progressInterval: 500,

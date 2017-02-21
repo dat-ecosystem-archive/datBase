@@ -22,13 +22,14 @@ module.exports = {
   namespace: 'user',
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
-    update: (data, state) => {
+    update: (state, data) => {
       return data
     },
-    sidePanel: (data, state) => {
+    sidePanel: (state, data) => {
       return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
     },
-    loginPanel: (showPanel, state) => {
+    loginPanel: (state, showPanel) => {
+      console.log('yikes', state, showPanel)
       return {login: showPanel ? '' : 'hidden'}
     }
   },
@@ -41,7 +42,7 @@ module.exports = {
     }
   },
   effects: {
-    dats: (data, state, send, done) => {
+    dats: (state, data, send, done) => {
       const params = qs.stringify({username: data.username})
       http.get('/api/v1/dats?' + params, {
         json: true
@@ -50,7 +51,7 @@ module.exports = {
         send('user:update', {dats: json}, done)
       })
     },
-    whoami: (data, state, send, done) => {
+    whoami: (state, data, send, done) => {
       const client = getClient()
       const user = client.getLogin()
       if (user) {
@@ -58,7 +59,7 @@ module.exports = {
         send('user:dats', user, done)
       } else done()
     },
-    logout: (data, state, send, done) => {
+    logout: (state, data, send, done) => {
       const client = getClient()
       client.logout(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
@@ -71,7 +72,7 @@ module.exports = {
         })
       })
     },
-    login: (data, state, send, done) => {
+    login: (state, data, send, done) => {
       const client = getClient()
       client.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
@@ -82,7 +83,7 @@ module.exports = {
         })
       })
     },
-    register: (data, state, send, done) => {
+    register: (state, data, send, done) => {
       const client = getClient()
       client.register(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
