@@ -13,8 +13,9 @@ const dat = new Dat()
 var rootUrl = 'http://localhost:' + config.port
 var api = rootUrl + '/api/v1'
 test('api', function (t) {
-  config.db.connection.filename = path.join(__dirname, 'test-api.sqlite')
-  helpers.server(config, function (db, close) {
+  const dbConfig = Object.assign({}, config.db)
+  dbConfig.connection.filename = path.join(__dirname, 'test-api.sqlite')
+  helpers.server(xtend(config, {db: dbConfig}), function (db, close) {
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))
 
@@ -338,7 +339,7 @@ test('api', function (t) {
         json: true
       }, function (err, resp, body) {
         t.ifError(err)
-        const sent = config.township.email.transport.sentMail
+        const sent = config.email.transport.sentMail
         t.same(sent.length, 1)
         t.same(sent[0].data.to, users.joe.email)
         const [, urlstring] = sent[0].message.content.match(/href="(.*?)"/)

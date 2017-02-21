@@ -1,12 +1,14 @@
 const test = require('tape')
 const path = require('path')
+// XXX: somehow cloning the config is necessary for tape to work
 const config = JSON.parse(JSON.stringify(require('../config')))
 const helpers = require('../helpers')
 const initDb = require('../../server/database/init')
 
 test('db', function (t) {
-  config.db.connection.filename = path.join(__dirname, 'test-db.sqlite')
-  initDb(config.db, function (err, db) {
+  const dbConfig = Object.assign({}, config.db)
+  dbConfig.connection.filename = path.join(__dirname, 'test-db.sqlite')
+  initDb(dbConfig, function (err, db) {
     if (err) throw err
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))

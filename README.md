@@ -70,11 +70,7 @@ npm install
 
 Create config file.
 
-You can use defaults by copying the example config to `config.js`. If you want to some other database, you can change these defaults in `config.js`.
-
-```
-cp example.config.js config.js
-```
+You can use override the defaults by copying the example config to `config.local.js` and make changes.
 
 Initialize the database. You only have to do this once:
 
@@ -119,7 +115,6 @@ Docker and `docker-compose` are required.
 
 ```
 docker-compose build
-cp example.config.js config.js
 docker-compose up -d newdat && sleep 10
 docker-compose run --rm nightwatch
 ```

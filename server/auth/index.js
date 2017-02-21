@@ -15,7 +15,7 @@ module.exports = function (router, db, opts) {
   })
 
   const email = createEmail({
-    transport: opts.township.email.transport
+    transport: opts.email.transport
   })
 
   function onerror (err, res) {
@@ -72,7 +72,7 @@ module.exports = function (router, db, opts) {
 
         var emailOptions = {
           to: userEmail,
-          from: opts.township.email.fromEmail,
+          from: opts.email.fromEmail,
           subject: 'Reset your password at datproject.org',
           html: `<div>
             <p>Hello!</p>
