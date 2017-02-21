@@ -1,5 +1,5 @@
 const qs = require('querystring')
-const http = require('choo/http')
+const http = require('xhr')
 
 var defaultState = {
   data: null,

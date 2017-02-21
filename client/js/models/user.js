@@ -1,6 +1,6 @@
 const township = require('township-client')
 const qs = require('querystring')
-const http = require('choo/http')
+const http = require('xhr')
 
 const defaultState = {
   username: null,

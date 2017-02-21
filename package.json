@@ -76,7 +76,7 @@
     "bole": "^3.0.1",
     "browserify": "^13.0.0",
     "cheerio": "^0.22.0",
-    "choo": "^3.2.0",
+    "choo": "^4.0.3",
     "clipboard": "^1.5.16",
     "collect-stream": "^1.1.1",
     "compression": "^1.6.2",
