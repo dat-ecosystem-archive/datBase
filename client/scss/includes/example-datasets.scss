@@ -59,6 +59,15 @@
   }
 }
 
+.example-header--eop {
+  background: $color-blue;
+  .example-img {
+    max-width: 9rem;
+    width: 9rem;
+    height: 9rem;
+  }
+}
+
 .example-header--osm {
   background: $color-blue;
   position: relative;
