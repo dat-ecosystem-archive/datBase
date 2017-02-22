@@ -14,7 +14,7 @@ const header = (state, prev, send) => {
       ${message(state.message)}
       <div class="container container--full">
         <div class="site-header__wrapper">
-          <a href="/" class="dat-logo dat-logo--on-dark">
+          <a href="/" data-no-routing class="dat-logo dat-logo--on-dark">
             <img src="/public/img/dat-hexagon.svg" />
             <span class="dat-logo__word">Dat</span>
           </a>
