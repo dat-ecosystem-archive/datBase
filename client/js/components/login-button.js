@@ -4,7 +4,6 @@ const gravatar = require('../elements/gravatar')
 
 module.exports = function (state, prev, send) {
   var text, click
-  console.log('login button', state.user)
   if (state.user.email) {
     text = gravatar(state.user)
     click = () => send('user:sidePanel')

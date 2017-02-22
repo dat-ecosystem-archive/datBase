@@ -15,14 +15,12 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
     update: (state, data) => {
-      console.log('user:update reducer')
       return data
     },
     sidePanel: (state, data) => {
       return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
     },
     loginPanel: (state, showPanel) => {
-      console.log('yikes', state, showPanel)
       return {login: showPanel ? '' : 'hidden'}
     }
   },
@@ -46,11 +44,8 @@ module.exports = {
       const client = api()
       const user = client.whoami()
       if (user) {
-        console.log('haz user', user)
         send('user:update', user, done)
-        console.log('trying to update')
         send('user:dats', user, done)
-        console.log('grab dats')
       } else done()
     },
     logout: (state, data, send, done) => {
