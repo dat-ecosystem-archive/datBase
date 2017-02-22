@@ -1,3 +1,4 @@
+const mount = require('choo/mount')
 const choo = require('choo')
 const app = choo()
 // Enable webrtc debugging:
@@ -29,5 +30,5 @@ app.router({default: '/404'}, [
 if (module.parent) {
   module.exports = app
 } else {
-  app.start('#app-root', {href: false})
+  mount('#app-root', app.start())
 }
