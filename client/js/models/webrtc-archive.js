@@ -47,10 +47,10 @@ module.exports = {
   namespace: 'archive',
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.archive,
   reducers: {
-    update: (data, state) => {
+    update: (state, data) => {
       return xtend(state, data)
     },
-    updateDownloaded: (downloaded, state) => {
+    updateDownloaded: (state, downloaded) => {
       const meter = state.downloadMeter || speedometer(3)
       return {
         downloadMeter: meter,
@@ -58,7 +58,7 @@ module.exports = {
         downloadSpeed: meter(downloaded)
       }
     },
-    updateUploaded: (uploaded, state) => {
+    updateUploaded: (state, uploaded) => {
       const meter = state.uploadMeter || speedometer(3)
       return {
         uploadMeter: meter,
@@ -66,7 +66,7 @@ module.exports = {
         uploadSpeed: meter(uploaded)
       }
     },
-    reset: (data, state) => {
+    reset: (state, data) => {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
       return Object.assign({}, defaultState)
     }
@@ -77,7 +77,7 @@ module.exports = {
     }
   ],
   effects: {
-    new: function (data, state, send, done) {
+    new: function (state, data, send, done) {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
       send('archive:reset', noop)
       send('archive:create', null, function (_, key) {
@@ -86,13 +86,13 @@ module.exports = {
         window.history.pushState({}, null, location)
       })
     },
-    updateMetadata: function (data, state, send, done) {
+    updateMetadata: function (state, data, send, done) {
       getMetadata(state.instance, function (err, metadata) {
         if (err) return done(err)
         send('archive:update', {metadata}, done)
       })
     },
-    importFiles: function (data, state, send, done) {
+    importFiles: function (state, data, send, done) {
       var files = data.files
       const archive = state.instance
       if (data.createArchive || !archive) {
@@ -114,7 +114,7 @@ module.exports = {
       send('importQueue:add', {files: files, root: state.root}, noop)
       return done()
     },
-    create: function (key, state, send, done) {
+    create: function (state, key, send, done) {
       if (state.instance && state.instance.key.toString('hex') === key) return done()
       var dat = Dat(drive, key, state.signalhubs, send)
       key = dat.archive.key.toString('hex')
@@ -135,14 +135,14 @@ module.exports = {
         done(null, key)
       })
     },
-    load: function (key, state, send, done) {
+    load: function (state, key, send, done) {
     },
-    readFile: function (data, state, send, done) {
+    readFile: function (state, data, send, done) {
       var archive = state.instance
       var readStream = archive.createFileReadStream(data.entryName)
       done(readStream)
     },
-    downloadAsZip: function (data, state, send, done) {
+    downloadAsZip: function (state, data, send, done) {
       const archive = state.instance
       const zip = new Jszip()
       var zipName

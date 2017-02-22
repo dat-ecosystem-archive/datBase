@@ -1,3 +1,4 @@
+const mount = require('choo/mount')
 const choo = require('choo')
 const app = choo()
 // Enable webrtc debugging:
@@ -13,21 +14,21 @@ app.model(require('./models/help'))
 app.model(require('./models/preview'))
 
 // define routes:
-app.router((route) => [
-  route('/install', require('./pages/create')),
-  route('/browser', require('./pages/create/browser')),
-  route('/list', require('./pages/list')),
-  route('/register', require('./pages/auth/register')),
-  route('/login', require('./pages/auth/login')),
-  route('/download/:archiveKey', require('./pages/download')),
-  route('/dat/:archiveKey', require('./pages/archive')),
-  route('/view/:archiveKey', require('./pages/archive')),
-  route('/:username/:dataset', require('./pages/archive')),
-  route('/404', require('./pages/fourohfour'))
+app.router({default: '/404'}, [
+  ['/install', require('./pages/create')],
+  ['/browser', require('./pages/create/browser')],
+  ['/list', require('./pages/list')],
+  ['/register', require('./pages/auth/register')],
+  ['/login', require('./pages/auth/login')],
+  ['/download/:archiveKey', require('./pages/download')],
+  ['/dat/:archiveKey', require('./pages/archive')],
+  ['/view/:archiveKey', require('./pages/archive')],
+  ['/:username/:dataset', require('./pages/archive')],
+  ['/404', require('./pages/fourohfour')]
 ])
 
 if (module.parent) {
   module.exports = app
 } else {
-  app.start('#app-root', {href: false})
+  mount('#app-root', app.start())
 }

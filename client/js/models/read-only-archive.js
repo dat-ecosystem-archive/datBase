@@ -14,12 +14,12 @@ module.exports = {
   namespace: 'archive',
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.archive,
   reducers: {
-    update: (data, state) => {
+    update: (state, data) => {
       return xtend(state, data)
     }
   },
   effects: {
-    getMetadata: function (data, state, send, done) {
+    getMetadata: function (state, data, send, done) {
       xhr(`/dat/${state.key}/dat.json`, function (err, resp, raw) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
         var json

@@ -14,7 +14,7 @@ const header = (state, prev, send) => {
       ${message(state.message)}
       <div class="container container--full">
         <div class="site-header__wrapper">
-          <a href="/" class="dat-logo dat-logo--on-dark">
+          <a href="/" data-no-routing class="dat-logo dat-logo--on-dark">
             <img src="/public/img/dat-hexagon.svg" />
             <span class="dat-logo__word">Dat</span>
           </a>
@@ -26,7 +26,7 @@ const header = (state, prev, send) => {
               icon: '/public/img/create-new-dat.svg',
               text: 'Create new Dat',
               klass: 'btn btn--green new-dat',
-              click: function () { window.location.href = '/install' }
+              click: function () { console.log('wtf'); window.location.href = '/install' }
             })}
             ${loginButton(state, prev, send)}
           </div>

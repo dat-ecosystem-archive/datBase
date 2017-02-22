@@ -14,13 +14,15 @@ module.exports = {
   namespace: 'user',
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
-    update: (data, state) => {
+    update: (state, data) => {
+      console.log('user:update reducer')
       return data
     },
-    sidePanel: (data, state) => {
+    sidePanel: (state, data) => {
       return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
     },
-    loginPanel: (showPanel, state) => {
+    loginPanel: (state, showPanel) => {
+      console.log('yikes', state, showPanel)
       return {login: showPanel ? '' : 'hidden'}
     }
   },
@@ -33,22 +35,25 @@ module.exports = {
     }
   },
   effects: {
-    dats: (data, state, send, done) => {
+    dats: (state, data, send, done) => {
       var client = api()
       client.dats.get({username: data.username}, function (err, resp, json) {
         if (err || resp.statusCode !== 200) return done()
         send('user:update', {dats: json}, done)
       })
     },
-    whoami: (data, state, send, done) => {
+    whoami: (state, data, send, done) => {
       const client = api()
       const user = client.whoami()
       if (user) {
+        console.log('haz user', user)
         send('user:update', user, done)
+        console.log('trying to update')
         send('user:dats', user, done)
+        console.log('grab dats')
       } else done()
     },
-    logout: (data, state, send, done) => {
+    logout: (state, data, send, done) => {
       const client = api()
       client.logout(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
@@ -61,7 +66,7 @@ module.exports = {
         })
       })
     },
-    login: (data, state, send, done) => {
+    login: (state, data, send, done) => {
       const client = api()
       client.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
@@ -72,7 +77,7 @@ module.exports = {
         })
       })
     },
-    register: (data, state, send, done) => {
+    register: (state, data, send, done) => {
       const client = api()
       client.register(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)

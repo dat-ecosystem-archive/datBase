@@ -3,7 +3,7 @@ const gravatar = require('../../elements/gravatar')
 const html = require('choo/html')
 
 module.exports = function (state, prev, send) {
-  if (state.user.username === prev && prev.user.username) return
+  if (!state.user.username) return
   const prefix = css`
     :host {
 

@@ -26,12 +26,12 @@ module.exports = {
   namespace: 'help',
   state: {},
   reducers: {
-    update: function (data, state) {
+    update: function (state, data) {
       return data
     }
   },
   effects: {
-    show: function (data, state, send, done) {
+    show: function (state, data, send, done) {
       getIntro().start()
     }
   }
