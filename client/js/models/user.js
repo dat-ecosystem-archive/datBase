@@ -23,6 +23,7 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
     update: (state, data) => {
+      console.log('user:update reducer')
       return data
     },
     sidePanel: (state, data) => {
@@ -55,8 +56,11 @@ module.exports = {
       const client = getClient()
       const user = client.getLogin()
       if (user) {
+        console.log('haz user', user)
         send('user:update', user, done)
+        console.log('trying to update')
         send('user:dats', user, done)
+        console.log('grab dats')
       } else done()
     },
     logout: (state, data, send, done) => {
