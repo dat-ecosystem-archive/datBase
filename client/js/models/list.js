@@ -1,5 +1,4 @@
-const qs = require('querystring')
-const http = require('choo/http')
+var api = require('dat-registry')
 
 var defaultState = {
   data: null,
@@ -18,8 +17,8 @@ module.exports = {
   effects: {
     nextPage: function (data, state, send, done) {
       var newOffset = state.offset + state.limit
-      var params = qs.stringify({offset: newOffset, limit: state.limit})
-      http.get('/dats?' + params, {json: true}, function (err, resp, json) {
+      var client = api()
+      client.dats.get({offset: newOffset, limit: state.limit}, function (err, resp, json) {
         if (err) throw err
         send('list:update', {offset: newOffset, data: json})
         done()
