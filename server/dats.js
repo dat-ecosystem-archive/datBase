@@ -5,7 +5,6 @@ const hyperdrive = require('hyperdrive')
 const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
 const storage = require('random-access-page-files')
-const path = require('path')
 const hyperhttp = require('hyperdrive-http')
 
 module.exports = Dats
@@ -13,7 +12,7 @@ module.exports = Dats
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archiver = Archiver({dir: dir, storage: storage})
+  this.archiver = Archiver({dir: dir, storage: storage, sparse: true})
   this.swarm = createSwarm(this.archiver)
   this.drive = hyperdrive(this.archiver.db)
   this.archives = {}
