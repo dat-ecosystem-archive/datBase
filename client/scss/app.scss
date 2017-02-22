@@ -38,3 +38,69 @@
 @import "imports/list";
 
 @import "shared-imports/tachyons";
+
+h2, h3 {
+  font-weight: 300;
+}
+
+pre {
+  padding: .5em;
+  font-size: .875rem;
+  background-color: $color-neutral;
+  color: $color-neutral-10;
+  border: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+}
+
+ul {
+  list-style: initial;
+  padding-left: 1rem;
+}
+
+.mobile-only {
+  display: block;
+  @media screen and (min-width: $small) {
+    display: none;
+  }
+}
+
+.content-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.content-subtitle {
+  font-size: 1.25rem;
+  color: $color-neutral-70;
+  padding-bottom: 15px;
+}
+
+.bg-neutral {
+  .content-subtitle,
+  .content-card-subtitle {
+    color: $color-neutral-40;
+  }
+}
+.content-code-intro {
+  text-align: left;
+  margin-bottom: 60px;
+}
+.content-card {
+  position: relative;
+  background-color: $color-white;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 30px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+.content-card-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+.content-card-subtitle {
+  color: $color-neutral-70;
+  line-height: 1.75;
+}
