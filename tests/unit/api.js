@@ -4,16 +4,18 @@ const path = require('path')
 const TownshipClient = require('township-client')
 const request = require('request')
 const helpers = require('../helpers')
-const config = JSON.parse(JSON.stringify(require('../config')))
+const config = require('../config')
 const Dat = require('dat-js')
+const xtend = require('xtend')
 
 const dat = new Dat()
 
 var rootUrl = 'http://localhost:' + config.port
 var api = rootUrl + '/api/v1'
 test('api', function (t) {
-  config.db.connection.filename = path.join(__dirname, 'test-api.sqlite')
-  helpers.server(config, function (db, close) {
+  const dbConfig = Object.assign({}, config.db)
+  dbConfig.connection.filename = path.join(__dirname, 'test-api.sqlite')
+  helpers.server(xtend(config, {db: dbConfig}), function (db, close) {
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))
 
@@ -70,7 +72,6 @@ test('api', function (t) {
         })
       })
     })
-
     test('api usernames should be unique', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ok(err)
@@ -122,7 +123,6 @@ test('api', function (t) {
         })
       })
     })
-
     test('api joe cannot update bob', function (t) {
       client.secureRequest({url: '/users', method: 'put', body: {id: users.bob.id, email: 'joebob@email.com'}, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -328,6 +328,42 @@ test('api', function (t) {
           t.ifError(err)
           t.same(body.length, 2, 'has two users')
           t.end()
+        })
+      })
+    })
+    test('api should allow password reset', function (t) {
+      client.secureRequest({
+        url: '/password-reset',
+        body: {email: users.joe.email},
+        method: 'POST',
+        json: true
+      }, function (err, resp, body) {
+        t.ifError(err)
+        const sent = config.email.transport.sentMail
+        t.same(sent.length, 1)
+        t.same(sent[0].data.to, users.joe.email)
+        const [, urlstring] = sent[0].message.content.match(/href="(.*?)"/)
+        const {query} = require('url').parse(urlstring, 1)
+        const goodQuery = xtend(query, {newPassword: 'foobar'})
+        const brokenQuery = xtend(goodQuery, {resetToken: 'zzz'})
+        client.secureRequest({
+          url: '/password-reset-confirm',
+          body: brokenQuery,
+          method: 'POST',
+          json: true
+        }, function (err, resp, body) {
+          t.same(err.statusCode, 400)
+          t.same(err.message, 'reset token not valid')
+          client.secureRequest({
+            url: '/password-reset-confirm',
+            body: goodQuery,
+            method: 'POST',
+            json: true
+          }, function (err, resp, body) {
+            t.ifError(err)
+            /* XXX: verify joe's password is updated */
+            t.end()
+          })
         })
       })
     })
