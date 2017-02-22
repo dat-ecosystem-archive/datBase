@@ -55,7 +55,7 @@ module.exports = function (state, prev, send) {
           <a href="http://docs.datproject.org">
             Read the Docs
           </a>
-          <span class="color-pink">&ensp; | &ensp;</span>
+          <span class="color-pink">   |   </span>
           <a href="http://github.com/datproject/">
             View on Github
           </a>
