@@ -90,6 +90,9 @@ module.exports = function (router, db, opts) {
 
         email.send(emailOptions, function (err, info) {
           if (err) return onerror(err, res)
+          if (process.env.NODE_DEV === 'development') {
+            console.log('mail sent', info.envelope, info.message)
+          }
           return response.json({ message: 'Check your email to finish resetting your password' }).pipe(res)
         })
       })

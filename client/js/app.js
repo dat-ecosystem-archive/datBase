@@ -23,6 +23,7 @@ app.router({default: '/404'}, [
   ['/list', require('./pages/list')],
   ['/register', require('./pages/auth/register')],
   ['/login', require('./pages/auth/login')],
+  ['/reset-password', require('./pages/auth/reset-password')],
   ['/download/:archiveKey', require('./pages/download')],
   ['/dat/:archiveKey', require('./pages/archive')],
   ['/view/:archiveKey', require('./pages/archive')],
