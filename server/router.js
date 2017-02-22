@@ -10,6 +10,7 @@ const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
+const redirect = require('express-simple-redirect')
 const entryStream = require('./entryStream')
 const app = require('../client/js/app')
 const page = require('./page')
@@ -28,6 +29,9 @@ module.exports = function (opts, db) {
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
+  router.use(redirect({
+    '/blog/2017-01-10-dat-desktop-is-here': '/blog/2017-02-21-dat-desktop-is-here'
+  }, 301))
 
   const ship = auth(router, db, opts)
   api(router, db, ship)

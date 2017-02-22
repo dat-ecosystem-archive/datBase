@@ -59,7 +59,7 @@ $ dat share path/to/my/data</code></pre>
             <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
               <h2 class="content-title horizontal-rule">All the ways to use Dat</h2>
               <p class="measure-wide">
-                Create a persistent, future-proof dDt link for your project
+                Create a persistent, future-proof Dat link for your project
                 using Dat Desktop or our Command Line Tool and share your data
                 through the web using the “Open Dat Link” box.
               </p>
@@ -84,7 +84,7 @@ $ dat share path/to/my/data</code></pre>
                     <svg class="block-create__icon">
                       <use xlink:href="#daticon-open-in-desktop" />
                     </svg>
-                    <p class="mb0 f6 lh-title color-white">Desktop App coming soon</p>
+                    <p class="mb0 f6 lh-title color-white">Dat Desktop</p>
                   </div>
                 </a>
                 </div>

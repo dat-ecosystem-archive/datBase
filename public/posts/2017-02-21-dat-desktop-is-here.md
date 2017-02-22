@@ -21,7 +21,7 @@ To get started, hit <span class="ttu">Create New Dat</span> and choose a local f
 
 A Dat link will be created that you can share with someone else using the desktop app, the [command line tool](http://docs.datproject.org), or [Node.js library](http://github.com/datproject/dat-node). The two computers will look for each other and the data will be sent directly between the two computers securely with end-to-end encryption.
 
-Alternatively, you can import existing datasets, like the public example datasets featured on our homepage. Copy the key to one of the example datasets, for example: <code>bf37b184c981c3db293f20530cd6461e39f8147c221b1e3ee03e08ef2b747547</code>. This is the dat link of the NASA Ice, Cloud, and Land Elevation Satellite data. Paste this dat link into the <span class="ttu">Import Dat</span> box, and downloading will start.
+Alternatively, you can import existing datasets, like the public example datasets featured on our homepage. Copy the key to one of the example datasets, for example: <code>6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2</code>. This is a dat archive of data released at open.whitehouse.gov by President Barack Obama. Paste this dat link into the <span class="ttu">Import Dat</span> box, and downloading will start.
 
 <div class="screenshot-blog screenshot-blog--small">
   ![Screenshot of Dat Desktop](/public/img/screenshot-dat-desktop-import-dat.png)

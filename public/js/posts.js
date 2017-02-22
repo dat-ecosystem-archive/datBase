@@ -1,10 +1,10 @@
 module.exports = [
   {
-    date: '2017-02-24',
+    date: '2017-02-21',
     title: 'Dat Desktop is here',
     author: 'Yoshua Wuyts',
     teaser: 'Powerful data sharing from your desktop.',
-    name: '2017-01-10-dat-desktop-is-here'
+    name: '2017-02-21-dat-desktop-is-here'
   },
   {
     date: '2017-01-09',

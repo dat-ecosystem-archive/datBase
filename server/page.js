@@ -7,9 +7,10 @@ function page (url, contents, appState) {
 
   function renderMetaTags () {
     var defaultMetadata = {
-      title: 'Public Dataset',
-      author: 'Dat Project',
-      description: 'A public dataset shared with dat.'
+      title: 'Dat',
+      author: 'Dat',
+      description: 'Dat is the non-profit, secure, and distributed package manager for data.',
+      image: 'https://datproject.org/public/img/dat-hexagon.svg'
     }
     var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : {}
     md = xtend(defaultMetadata, md)
@@ -18,7 +19,8 @@ function page (url, contents, appState) {
       <meta name="author" content="${md.author}" />
       <meta name="description" content="${md.description}" />
       <meta property="og:description" content="${md.description}" />
-      <meta property="og:url" content="${url}" />`
+      <meta property="og:url" content="${url}" />
+      <meta property="og:image" content="${md.image}" />`
   }
 
   return `<html>
