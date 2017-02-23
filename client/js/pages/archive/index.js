@@ -4,7 +4,6 @@ const hyperdrive = require('../../components/hyperdrive')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
-const button = require('../../elements/button')
 const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
@@ -37,14 +36,6 @@ const archivePage = (state, prev, send) => {
   var meta = state.archive.metadata
   var owner = meta.username === state.user.username
 
-  function deleteButton () {
-    return html`${button({
-      text: 'Delete',
-      klass: 'btn',
-      click: () => send('archive:delete', {id: state.archive.id})
-    })}`
-  }
-
   return html`
     <div>
       ${header(state, prev, send)}
@@ -61,7 +52,6 @@ const archivePage = (state, prev, send) => {
               </div>
             </a>
           </div>
-          ${meta.username ? deleteButton() : ''}
           <div id="title" class="share-link">${meta.title || state.archive.key}</div>
           <div id="author" class="author-name">${meta.description}</div>
           ${error(state.archive.error)}
