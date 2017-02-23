@@ -9,16 +9,7 @@ module.exports = function (knex, model, opts) {
   var validate = validators[model]
 
   return {
-    get: function (where, join, cb) {
-      if (typeof where === 'function') {
-        cb = where
-        where = {}
-        join = null
-      }
-      if (typeof join === 'function') {
-        cb = join
-        join = null
-      }
+    get: function (where, cb) {
       var limit = Number(where.limit) || 100
       var offset = Number(where.offset) || 0
       delete where.limit
@@ -29,8 +20,6 @@ module.exports = function (knex, model, opts) {
         .where(where)
         .limit(limit)
         .offset(offset)
-
-      if (join) query.join(join[0], join[1], join[2])
 
       query.then(function (data) { cb(null, data) })
         .catch(function (err) { return cb(errors.humanize(err)) })
@@ -65,7 +54,7 @@ module.exports = function (knex, model, opts) {
         function (done) {
           knex(model)
           .insert(values)
-          .returning('id')
+          .returning(primaryKey)
           .then(function () { done(null) })
           .catch(done)
         }, function (done) {
