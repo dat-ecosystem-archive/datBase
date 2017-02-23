@@ -1,7 +1,9 @@
 const xtend = require('xtend')
+const api = require('../api')()
 const xhr = require('xhr')
 
 var defaultState = {
+  id: null,
   key: null,
   peers: 0,
   error: null,
@@ -29,6 +31,12 @@ module.exports = {
           return send('archive:update', {error: {message: 'Malformed dat.json file'}}, done)
         }
         send('archive:update', {metadata: json}, done)
+      })
+    },
+    delete: function (state, data, send, done) {
+      api.dats.delete({id: data.id}, function (err, resp, json) {
+        if (err) return send('archive:update', {error: {message: err.message}}, done)
+        window.location.href = '/list'
       })
     }
   },
