@@ -17,19 +17,11 @@ module.exports = function (state, prev, send) {
   } else {
     text = 'Login'
     return html`
-    <span>
-      ${button({
-        text: 'Sign in',
-        click: () => send('user:loginPanel', true),
-        klass: 'btn'
-      })}
-      or
       ${button({
         text: 'Sign up',
         click: () => send('user:registerPanel', true),
         klass: 'btn'
       })}
-    </span>
     `
   }
 }
