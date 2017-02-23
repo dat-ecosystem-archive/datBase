@@ -21,9 +21,6 @@ module.exports = {
     sidePanel: (state, data) => {
       return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
     },
-    registerPanel: (state, showPanel) => {
-      return {register: showPanel ? '' : 'hidden'}
-    },
     loginPanel: (state, showPanel) => {
       return {login: showPanel ? '' : 'hidden'}
     }
@@ -38,6 +35,7 @@ module.exports = {
   },
   effects: {
     dats: (state, data, send, done) => {
+      console.log(state, data)
       api.dats.get({username: data.username}, function (err, resp, json) {
         if (err || resp.statusCode !== 200) return done()
         send('user:update', {dats: json}, done)
