@@ -43,11 +43,11 @@ Dats.prototype.get = function (ctx, cb) {
 Dats.prototype.delete = function (ctx, cb) {
   var self = this
   if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
-  self.model.get({id: ctx.body.id}, function (err, results) {
+  self.model.get({name: ctx.body.name, user_id: ctx.user.id}, function (err, results) {
     if (err) return cb(err)
     if (!results.length) return cb(new Error('Dat does not exist.'))
     if (results[0].user_id !== ctx.user.id) return cb(new Error('Cannot delete someone elses dat.'))
-    self.model.delete({id: ctx.body.id}, function (err, data) {
+    self.model.delete({id: results[0].id}, function (err, data) {
       if (err) return cb(err)
       cb(null, {deleted: data})
     })
