@@ -289,7 +289,7 @@ test('api', function (t) {
         dats.dogs.id = body.id
         dats.dogs.user_id = body.user_id
         t.same(body.name, dats.dogs.name, 'is the right dat')
-        client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.dogs.id}, json: true}, function (err, resp, body) {
+        client.secureRequest({method: 'DELETE', url: '/dats', body: {name: dats.dogs.name}, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.deleted, 1, 'deletes one row')
           client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {

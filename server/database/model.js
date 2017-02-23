@@ -10,6 +10,10 @@ module.exports = function (knex, model, opts) {
 
   return {
     get: function (where, cb) {
+      if (typeof where === 'function') {
+        cb = where
+        where = {}
+      }
       var limit = Number(where.limit) || 100
       var offset = Number(where.offset) || 0
       delete where.limit
@@ -22,7 +26,7 @@ module.exports = function (knex, model, opts) {
         .offset(offset)
 
       query.then(function (data) { cb(null, data) })
-        .catch(function (err) { return cb(errors.humanize(err)) })
+      .catch(function (err) { return cb(errors.humanize(err)) })
     },
     update: function (where, values, cb) {
       if (!where) return cb(new Error('Query required as an argument to model.update'))
