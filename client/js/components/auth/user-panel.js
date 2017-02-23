@@ -6,7 +6,6 @@ module.exports = function (state, prev, send) {
   if (!state.user.username) return
   const prefix = css`
     :host {
-      --user-panel-side-padding: 1.75rem;
       position: fixed;
       right: 0;
       top: 0;
@@ -15,10 +14,10 @@ module.exports = function (state, prev, send) {
       min-width: 250px;
 
       .top-part {
-        background-color: $color-blue;
+        background-color: var(--color-blue);
         position: relative;
-        padding: 0.8rem var(--user-panel-side-padding) 1rem;
-        color: $color-neutral-20;
+        padding: 0.8rem 1.75rem 1rem;
+        color: var(--color-neutral-20);
         text-align: center;
         font-size: 0.8rem;
         font-weight: 300;
@@ -33,7 +32,7 @@ module.exports = function (state, prev, send) {
         overflow: hidden;
         &:hover {
           &::before, &::after {
-            background: $color-green;
+            background: var(--color-green);
           }
         }
 
@@ -45,7 +44,7 @@ module.exports = function (state, prev, send) {
           left: 0;
           height: 2px;
           margin-top: -1px;
-          background: $color-neutral-20;
+          background: var(--color-neutral-20);
         }
         &::before {
           transform: rotate(45deg);
@@ -60,19 +59,19 @@ module.exports = function (state, prev, send) {
         width: 65px;
         margin: 0.5rem auto 1rem;
         display: block;
-        border: 2px solid $color-neutral-04;
+        border: 2px solid var(--color-neutral-04);
       }
 
       .body-part {
         margin:0;
-        padding: 1rem $user-panel-side-padding;
-        background-color: $color-neutral-04;
-        box-shadow: -4px 0 10px -2px $color-neutral-04;
+        padding: 1rem 1.75rem;
+        background-color: var(--color-neutral-04);
+        box-shadow: -4px 0 10px -2px var(--color-neutral-04);
       }
 
       .content {
         height:100%;
-        color: $color-neutral-80;
+        color: var(--color-neutral-80);
         font-weight: bold;
         font-size: 1rem;
 
@@ -82,9 +81,9 @@ module.exports = function (state, prev, send) {
           display: none;
         }
         a {
-          color: $color-neutral-80;
+          color: var(--color-neutral-80);
           &:hover {
-            color: $color-neutral-40;
+            color: var(--color-neutral-40);
           }
         }
         li {
@@ -99,8 +98,8 @@ module.exports = function (state, prev, send) {
         position: absolute;
         bottom: 1rem;
         width:100%;
-        background-color: $color-neutral-04;
-        color: $color-neutral-50;
+        background-color: --color-neutral-04;
+        color: var(--color-neutral-50);
         font-size: 0.7rem;
 
         .btn {

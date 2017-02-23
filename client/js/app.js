@@ -1,6 +1,7 @@
 const mount = require('choo/mount')
 const choo = require('choo')
 const app = choo()
+const css = require('sheetify')
 // Enable webrtc debugging:
 // try { localStorage.debug = 'webrtc-swarm' } catch (e) {}
 
@@ -12,6 +13,8 @@ app.model(require('./models/error'))
 app.model(require('./models/message'))
 app.model(require('./models/help'))
 app.model(require('./models/preview'))
+
+css('dat-colors')
 
 // define routes:
 app.router({default: '/404'}, [
