@@ -5,17 +5,14 @@ const gravatar = require('../elements/gravatar')
 module.exports = function (state, prev, send) {
   var text, click
   if (state.user.email) {
-    text = gravatar(state.user)
-    click = () => send('user:sidePanel')
     return html`
       ${button({
-        text: text,
-        click: click,
+        text: gravatar(state.user),
+        click: () => send('user:sidePanel'),
         klass: 'btn'
       })}
     `
   } else {
-    text = 'Login'
     return html`
       ${button({
         text: 'Sign up',
