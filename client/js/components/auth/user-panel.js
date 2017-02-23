@@ -13,6 +13,9 @@ module.exports = function (state, prev, send) {
   function open (dat) {
     window.location.href = `/${state.user.username}/${dat.name}`
   }
+  function remove (dat) {
+    send('archive:delete', {id: dat.id})
+  }
   return html`<div class="user-panel ${prefix} ${state.user.sidePanel}">
     <div class="top-part">
       <a class="close" href="#" onclick=${() => send('user:sidePanel')}></a>
@@ -24,7 +27,12 @@ module.exports = function (state, prev, send) {
         <ul>
           <h4>My Dats</h4>
           ${state.user.dats.map(dat => {
-            return html`<li><a href="#" onclick=${() => open(dat)}>${dat.name}</a></li>`
+            console.log(dat)
+            return html`
+              <li><a href="#" onclick=${() => open(dat)}>${dat.name}</a>
+              <span>   </span>
+              <a href="#" onclick=${() => remove(dat)}>X</a></li>
+            `
           })}
         </ul>
       </div>

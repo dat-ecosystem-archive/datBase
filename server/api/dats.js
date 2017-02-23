@@ -27,9 +27,9 @@ Dats.prototype.put = function (ctx, cb) {
   if (!ctx.body.id) return cb(new Error('id required'))
   self.model.get({id: ctx.body.id}, function (err, results) {
     if (err) return cb(err)
-    if (!results) return cb(new Error('Dat does not exist.'))
+    if (!results.length) return cb(new Error('Dat does not exist.'))
     if (results[0].user_id !== ctx.user.id) return cb(new Error('Cannot update someone elses dat.'))
-    self.model.update({id: ctx.body.id}, ctx.bod, function (err, data) {
+    self.model.update({id: ctx.body.id}, ctx.body, function (err, data) {
       if (err) return cb(err)
       cb(null, {updated: data})
     })
@@ -50,7 +50,7 @@ Dats.prototype.delete = function (ctx, cb) {
   if (!ctx.user) return cb(new Error('Must be logged in to do that.'))
   self.model.get({id: ctx.body.id}, function (err, results) {
     if (err) return cb(err)
-    if (!results) return cb(new Error('Dat does not exist.'))
+    if (!results.length) return cb(new Error('Dat does not exist.'))
     if (results[0].user_id !== ctx.user.id) return cb(new Error('Cannot delete someone elses dat.'))
     self.model.delete({id: ctx.body.id}, function (err, data) {
       if (err) return cb(err)
