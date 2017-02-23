@@ -30,6 +30,12 @@ var prefix = css`
       width: 100%;
       text-transform: none;
     }
+    .x {
+      top: 0;
+      right: 0;
+      position: absolute;
+      margin: 5px;
+    }
   }
 `
 
@@ -44,6 +50,7 @@ const register = (state, prev, send) => {
   return html`<div class="register ${state.user.register} ${prefix}">
     <div class="relative flex flex-column justify-center modal">
       <h3 class="f4">Register Your Dat Account</h3>
+      <a class="x" onclick=${() => send('user:registerPanel', false)}>X</a>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>
