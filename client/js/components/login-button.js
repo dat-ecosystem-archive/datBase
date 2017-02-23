@@ -3,7 +3,6 @@ const button = require('../elements/button')
 const gravatar = require('../elements/gravatar')
 
 module.exports = function (state, prev, send) {
-  var text, click
   if (state.user.email) {
     return html`
       ${button({
