@@ -10,6 +10,9 @@ module.exports = function (state, prev, send) {
 
     }
   `
+  function open (dat) {
+    window.location.href = `/${state.user.username}/${dat.name}`
+  }
   return html`<div class="user-panel ${prefix} ${state.user.sidePanel}">
     <div class="top-part">
       <a class="close" href="#" onclick=${() => send('user:sidePanel')}></a>
@@ -21,7 +24,7 @@ module.exports = function (state, prev, send) {
         <ul>
           <h4>My Dats</h4>
           ${state.user.dats.map(dat => {
-            return html`<li><a href="/${state.user.username}/${dat.name}">${dat.name}</a></li>`
+            return html`<li><a href="#" onclick=${() => open(dat)}>${dat.name}</a></li>`
           })}
         </ul>
       </div>
