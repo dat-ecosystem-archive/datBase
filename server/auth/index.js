@@ -14,9 +14,12 @@ module.exports = function (router, db, opts) {
     secret: 'not a secret' // passed to jsonwebtoken
   })
 
-  const email = createEmail({
-    transport: opts.email.transport
-  })
+  var email
+  if (opts.email) {
+    email = createEmail({
+      transport: opts.email.transport
+    })
+  }
 
   function onerror (err, res) {
     var data = {statusCode: 400, message: errors.humanize(err).message}
@@ -60,6 +63,7 @@ module.exports = function (router, db, opts) {
   })
 
   router.post('/api/v1/password-reset', function (req, res, ctx) {
+    if (!email) return onerror(new Error('config.email not set.'))
     const userEmail = req.body.email
     ship.accounts.findByEmail(userEmail, function (err, account) {
       if (err) return onerror(new Error('account not found'), res)
