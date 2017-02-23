@@ -47,17 +47,14 @@ module.exports = function (opts, db) {
     sendSPA(req, res, state)
   })
 
-  router.get('/list', list)
-
-  function list (req, res) {
+  router.get('/list', function list (req, res) {
     var state = getDefaultAppState()
-    var join = ['users', 'users.id', 'dats.user_id']
-    db.models.dats.get({limit: 10}, join, function (err, body) {
-      if (err) state.error.message = err.message
-      state.list.data = body
+    db.queries.datList(req.params, function (err, resp) {
+      if (err) return onerror(err, res)
+      state.list.data = resp
       sendSPA(req, res, state)
     })
-  }
+  })
 
   router.get('/register', function (req, res) {
     var state = getDefaultAppState()

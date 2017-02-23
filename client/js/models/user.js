@@ -3,6 +3,7 @@ const xtend = require('xtend')
 
 const defaultState = {
   username: null,
+  id: null,
   email: null,
   token: null,
   login: 'hidden',
@@ -34,11 +35,14 @@ module.exports = {
     }
   },
   effects: {
-    dats: (state, data, send, done) => {
-      console.log(state, data)
-      api.dats.get({username: data.username}, function (err, resp, json) {
+    dats: (state, user, send, done) => {
+      api.users.get({username: user.username}, function (err, resp, json) {
         if (err || resp.statusCode !== 200) return done()
-        send('user:update', {dats: json}, done)
+        if (!json.length) return done
+        api.dats.get({user_id: json[0].id}, function (err, resp, json) {
+          if (err || resp.statusCode !== 200) return done()
+          send('user:update', {dats: json}, done)
+        })
       })
     },
     whoami: (state, data, send, done) => {
@@ -53,6 +57,7 @@ module.exports = {
       api.logout(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
         var newState = {
+          key: null,
           username: null,
           email: null,
           sidePanel: 'hidden',

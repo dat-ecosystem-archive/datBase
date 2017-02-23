@@ -37,12 +37,7 @@ Dats.prototype.put = function (ctx, cb) {
 }
 
 Dats.prototype.get = function (ctx, cb) {
-  var join = ['users', 'users.id', 'dats.user_id']
-  if (ctx.query.id) {
-    ctx.query['dats.id'] = ctx.query.id
-    delete ctx.query.id
-  }
-  return this.model.get(ctx.query, join, cb)
+  return this.model.get(ctx.query, cb)
 }
 
 Dats.prototype.delete = function (ctx, cb) {

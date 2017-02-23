@@ -27,7 +27,6 @@ module.exports = function (state, prev, send) {
         <ul>
           <h4>My Dats</h4>
           ${state.user.dats.map(dat => {
-            console.log(dat)
             return html`
               <li><a href="#" onclick=${() => open(dat)}>${dat.name}</a>
               <span>   </span>

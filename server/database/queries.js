@@ -12,6 +12,13 @@ module.exports = function Queries (knex, models) {
           return cb(null, dat)
         })
       })
+    },
+    datList: function (params, cb) {
+      knex.raw('SELECT users.username, dats.id, dats.name, dats.created_at from dats inner join users on dats.user_id=users.id')
+      .then(function (resp) {
+        cb(null, resp)
+      })
+      .catch(cb)
     }
   }
 }

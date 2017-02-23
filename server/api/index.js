@@ -50,6 +50,13 @@ module.exports = function (router, db, ship) {
     })
   })
 
+  router.get('/api/v1/browse', function (req, res) {
+    db.queries.datList(req.params, function (err, resp) {
+      if (err) return onerror(err, res)
+      res.json(resp)
+    })
+  })
+
   router.get('/api/v1/:model', apiRouter)
   router.post('/api/v1/:model', apiRouter)
   router.put('/api/v1/:model', apiRouter)
