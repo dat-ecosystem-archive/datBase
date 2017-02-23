@@ -1,4 +1,4 @@
-var api = require('dat-registry')
+var api = require('../api')()
 
 var defaultState = {
   data: null,
@@ -17,8 +17,7 @@ module.exports = {
   effects: {
     nextPage: function (state, data, send, done) {
       var newOffset = state.offset + state.limit
-      var client = api()
-      client.dats.get({offset: newOffset, limit: state.limit}, function (err, resp, json) {
+      api.dats.get({offset: newOffset, limit: state.limit}, function (err, resp, json) {
         if (err) throw err
         send('list:update', {offset: newOffset, data: json})
         done()

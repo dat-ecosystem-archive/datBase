@@ -1,4 +1,5 @@
-const api = require('dat-registry')
+const api = require('../api')()
+const xtend = require('xtend')
 
 const defaultState = {
   username: null,
@@ -15,7 +16,7 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.user,
   reducers: {
     update: (state, data) => {
-      return data
+      return xtend(state, data)
     },
     sidePanel: (state, data) => {
       return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
@@ -34,36 +35,36 @@ module.exports = {
   },
   effects: {
     dats: (state, data, send, done) => {
-      var client = api()
-      client.dats.get({username: data.username}, function (err, resp, json) {
+      console.log(state, data)
+      api.dats.get({username: data.username}, function (err, resp, json) {
         if (err || resp.statusCode !== 200) return done()
         send('user:update', {dats: json}, done)
       })
     },
     whoami: (state, data, send, done) => {
-      const client = api()
-      const user = client.whoami()
+      const user = api.whoami()
       if (user) {
-        send('user:update', user, done)
-        send('user:dats', user, done)
+        send('user:update', user, function () {
+          send('user:dats', user, done)
+        })
       } else done()
     },
     logout: (state, data, send, done) => {
-      const client = api()
-      client.logout(data, function (err, resp, data) {
+      api.logout(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
-        state.username = null
-        state.email = null
-        state.sidePanel = 'hidden'
-        state.token = null
-        send('user:update', data, function () {
+        var newState = {
+          username: null,
+          email: null,
+          sidePanel: 'hidden',
+          token: null
+        }
+        send('user:update', newState, function () {
           send('message:success', 'Logged out.', done)
         })
       })
     },
     login: (state, data, send, done) => {
-      const client = api()
-      client.login(data, function (err, resp, data) {
+      api.login(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
         data.login = 'hidden'
         send('user:update', data, function () {
@@ -73,8 +74,7 @@ module.exports = {
       })
     },
     register: (state, data, send, done) => {
-      const client = api()
-      client.register(data, function (err, resp, data) {
+      api.register(data, function (err, resp, data) {
         if (err) return send('error:new', err, done)
         data.register = 'hidden'
         send('user:update', data, function () {
