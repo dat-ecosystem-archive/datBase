@@ -7,15 +7,27 @@ module.exports = function (state, prev, send) {
   if (state.user.email) {
     text = gravatar(state.user)
     click = () => send('user:sidePanel')
+    return html`
+      ${button({
+        text: text,
+        click: click,
+        klass: 'btn'
+      })}
+    `
   } else {
-    return ''
+    text = 'Login'
+    return html`
+    <span>
+      ${button({
+        text: 'Sign in',
+        click: () => send('user:loginPanel', true)
+      })}
+      or
+      ${button({
+        text: 'Sign up',
+        click: () => send('user:registerPanel', true)
+      })}
+    </span>
+    `
   }
-
-  return html`
-    ${button({
-      text: text,
-      click: click,
-      klass: 'btn'
-    })}
-  `
 }
