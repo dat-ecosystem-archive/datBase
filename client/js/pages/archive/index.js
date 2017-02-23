@@ -11,7 +11,9 @@ const hyperdriveStats = require('../../elements/hyperdrive-stats')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': 'No dat here.',
-  'timed out': 'No sources found.'
+  'timed out': 'No sources found.',
+  'Username not found.': 'That user does not exist.',
+  'Dat with that name not found.': 'That user does not have a dat with that name.'
 }
 
 const archivePage = (state, prev, send) => {
