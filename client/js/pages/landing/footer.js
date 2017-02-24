@@ -32,7 +32,7 @@ module.exports = function (state, prev, send) {
         </div>
       </div>
       <p class="footer-credits">
-        <strong>Dat</strong> 2017 &bull; Page source on <a href="https://github.com/datproject/datproject.org">github</a>
+        <strong>Dat</strong> 2017 • Page source on <a href="https://github.com/datproject/datproject.org">github</a>
       </p>
     </div>
   </footer>

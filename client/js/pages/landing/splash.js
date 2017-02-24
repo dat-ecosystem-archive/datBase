@@ -193,7 +193,7 @@ module.exports = function (state, prev, send) {
 <section class="section">
   <div class="container">
     <h2 class="content-title">Sponsors and Supporters</h2>
-    <p class="content-subtitle horizontal-rule">Dat is developed by the non-for-profit group Code for Science &amp; Society and supported by generous sponsors.</p>
+    <p class="content-subtitle horizontal-rule">Dat is developed by the non-for-profit group Code for Science & Society and supported by generous sponsors.</p>
 
     <div class="sponsor-logos">
       <a href="https://codeforscience.org/">

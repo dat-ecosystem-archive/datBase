@@ -3,6 +3,7 @@
   background-color: $color-neutral;
   overflow: auto;
   color: $color-neutral-60;
+  padding-top: 2rem;
   a {
     color: $color-neutral-20;
     &:hover, &:focus {
@@ -25,9 +26,6 @@
   }
 }
 
-.footer {
-  padding-top: 2rem;
-}
 .footer-credits {
   font-size: .75rem;
   padding: 1rem;
