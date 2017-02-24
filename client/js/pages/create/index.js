@@ -46,8 +46,8 @@ const createPage = (state, prev, send) => {
              Dat will watch files as you change them and send them to peers. Install Dat in the terminal using npm.</p>
             <pre class="color-white"><code>$ npm install -g dat
 $ dat share path/to/my/data</code></pre>
-            <a href="http://docs.datproject.org" target="_blank" class="">
-            See detailed instructions
+            <a href="http://docs.datproject.org" target="_blank" class="color-pink hover-color-white">
+              See detailed instructions »
             </a>
           </div>
         </div>
