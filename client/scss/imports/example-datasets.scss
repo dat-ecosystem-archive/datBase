@@ -13,9 +13,11 @@
 .example {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 3rem);
   margin-bottom: 3rem;
   box-shadow: 0 0 30px rgba(0,0,0,.15);
+  @media screen and (min-width: $small) {
+    min-height: 28rem;
+  }
 }
 
 .example-header {
