@@ -34,6 +34,7 @@ const archivePage = (state, prev, send) => {
   var peers = state.archive.peers
   var size = state.archive.size
   var meta = state.archive.metadata
+  var owner = meta.username === state.user.username
 
   return html`
     <div>
@@ -56,14 +57,11 @@ const archivePage = (state, prev, send) => {
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">
-              ${permissions({owner: state.archive.owner})}
+              ${permissions({owner: owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
             <div id="peers" class="dat-detail">${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
           </div>
-            <div class="dat-detail">
-            ${state.archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}
-            </div>
         </div>
       </div>
       <main class="site-main">

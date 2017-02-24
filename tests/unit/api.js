@@ -235,14 +235,6 @@ test('api', function (t) {
       })
     })
 
-    test('api dats contain related user models', function (t) {
-      client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
-        t.ifError(err)
-        t.ok(body[0].username, 'has user model')
-        t.end()
-      })
-    })
-
     test('api cannot delete a dat that doesnt exist', function (t) {
       client.secureRequest({method: 'DELETE', url: '/dats', body: {id: 'notanid'}, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -297,7 +289,7 @@ test('api', function (t) {
         dats.dogs.id = body.id
         dats.dogs.user_id = body.user_id
         t.same(body.name, dats.dogs.name, 'is the right dat')
-        client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.dogs.id}, json: true}, function (err, resp, body) {
+        client.secureRequest({method: 'DELETE', url: '/dats', body: {name: dats.dogs.name}, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.deleted, 1, 'deletes one row')
           client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
