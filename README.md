@@ -70,7 +70,8 @@ npm install
 
 Create config file.
 
-You can use override the defaults by copying the example config to `config.local.js` and make changes.
+You can use override the defaults by copying `./config/index.js` to
+`./config.js` and make changes.
 
 Initialize the database. You only have to do this once:
 
