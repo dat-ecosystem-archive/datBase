@@ -35,19 +35,24 @@ module.exports = function (opts, db) {
 
   const ship = auth(router, db, opts)
   api(router, db, ship)
-  router.use('/', express.static(path.join(__dirname, '..', 'public', 'rendered'), {
-    setHeaders: function (res, path) {
-      res.setHeader('Content-Type', 'text/html')
-    }
-  }))
 
-  // landing page
-  router.get('/install', function (req, res) {
+  function send (req, res) {
     var state = getDefaultAppState()
     sendSPA(req, res, state)
-  })
+  }
 
-  router.get('/list', function list (req, res) {
+  // landing page
+  router.get('/install', send)
+  router.get('/register', send)
+  router.get('/', send)
+  router.get('/blog', send)
+  router.get('/blog/:name', send)
+  router.get('/about', send)
+  router.get('/team', send)
+  router.get('/login', send)
+  router.get('/browser', send)
+
+  router.get('/list', function (req, res) {
     var state = getDefaultAppState()
     db.queries.datList(req.params, function (err, resp) {
       if (err) return onerror(err, res)
@@ -56,24 +61,9 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/register', function (req, res) {
-    var state = getDefaultAppState()
-    sendSPA(req, res, state)
-  })
-
   router.get('/download/:archiveKey', function (req, res) {
     var state = getDefaultAppState()
     state.archive.key = req.params.archiveKey
-    sendSPA(req, res, state)
-  })
-
-  router.get('/login', function (req, res) {
-    var state = getDefaultAppState()
-    sendSPA(req, res, state)
-  })
-
-  router.get('/browser', function (req, res) {
-    var state = getDefaultAppState()
     sendSPA(req, res, state)
   })
 

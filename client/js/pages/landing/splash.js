@@ -1,4 +1,12 @@
-<section class="section bg-splash">
+var html = require('choo/html')
+var header = require('./header')
+var footer = require('./footer')
+
+module.exports = function (state, prev, send) {
+  return html`
+    <div>
+      ${header(state, prev, send)}
+      <section class="section bg-splash">
   <div class="container">
     <h1 class="mt0 tc normal f2 f1-ns ">
       Powerful data sharing
@@ -13,12 +21,12 @@
     </div>
     <p class="tc pv3 color-white">
       <a href="https://github.com/datproject/dat-desktop/releases" class="btn btn--green btn--cta open-desktop" target="_blank">
-        <svg><use xlink:href="#daticon-open-in-desktop"></use></svg>
+        <svg><use xlink:href="#daticon-open-in-desktop"/></svg>
         Download for Mac
       </a>
     </p>
     <p class="f7 tc color-neutral-50">
-      Coming to Windows soon. <a href="https://github.com/datproject/dat-desktop/releases">Linux Support Experimental</a>.
+      Coming to Windows soon. <a href="https://github.com/datproject/dat-desktop/releases">Download for Linux</a>.
     </p>
   </div>
 </section>
@@ -47,7 +55,7 @@
           <a href="http://docs.datproject.org">
             Read the Docs
           </a>
-          <span class="color-pink">&ensp; | &ensp;</span>
+          <span class="color-pink ph1">|</span>
           <a href="http://github.com/datproject/">
             View on Github
           </a>
@@ -85,7 +93,7 @@
               Preview
             </a>
             <a href="/download/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="copy-link">
-              <svg><use xlink:href="#daticon-link"></use></svg>
+              <svg><use xlink:href="#daticon-link" /></svg>
               Download
             </a>
           </div>
@@ -113,7 +121,7 @@
               Preview
             </a>
             <a href="/download/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="copy-link">
-              <svg><use xlink:href="#daticon-link"></use></svg>
+              <svg><use xlink:href="#daticon-link"/></svg>
               Download
             </a>
           </div>
@@ -139,7 +147,7 @@
               Preview
             </a>
             <a href="/download/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="copy-link">
-              <svg><use xlink:href="#daticon-link"></use></svg>
+              <svg><use xlink:href="#daticon-link"/></svg>
               Download
             </a>
           </div>
@@ -185,7 +193,7 @@
 <section class="section">
   <div class="container">
     <h2 class="content-title">Sponsors and Supporters</h2>
-    <p class="content-subtitle horizontal-rule">Dat is developed by the non-for-profit group Code for Science &amp; Society and supported by generous sponsors.</p>
+    <p class="content-subtitle horizontal-rule">Dat is developed by the non-for-profit group Code for Science & Society and supported by generous sponsors.</p>
 
     <div class="sponsor-logos">
       <a href="https://codeforscience.org/">
@@ -200,3 +208,7 @@
     </div>
   </div>
 </section>
+      ${footer(state, prev, send)}
+    </div>
+  `
+}
