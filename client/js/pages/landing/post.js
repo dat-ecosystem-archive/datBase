@@ -1,17 +1,16 @@
 var html = require('choo/html')
-var fs = require('fs')
-var path = require('path')
 var marked = require('marked')
 var header = require('./header')
 var footer = require('./footer')
-var posts = require('./posts')
+var posts = require('../posts')
 
 module.exports = function (state, prev, send) {
   var post = null
   posts.filter(function (apost) {
-    if (apost.name === state.params.name) post = apost
+    if (apost.name === state.location.params.name) post = apost
   })
-  post.content = marked(fs.readFileSync(path.join(__dirname, 'posts', post.name + '.md')).toString())
+  post.content = html`<div></div>`
+  post.content.innerHTML = marked(post.raw)
   return html`
   <div>
   ${header(state, prev, send)}
@@ -30,11 +29,9 @@ module.exports = function (state, prev, send) {
       <div id="post">
         <div class="post">
           <p class="teaser">
-            ${post.tease}r
+            ${post.teaser}
           </p>
-          <div class="content">
-            ${marked(post.content)}
-          </div>
+          ${post.content}
         </div>
       </div>
     </div>

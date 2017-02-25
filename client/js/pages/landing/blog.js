@@ -1,10 +1,8 @@
 var html = require('choo/html')
-var fs = require('fs')
-var path = require('path')
 var marked = require('marked')
 var header = require('./header')
 var footer = require('./footer')
-var posts = require('./posts')
+var posts = require('../posts')
 
 module.exports = function (state, prev, send) {
   return html`
@@ -20,13 +18,14 @@ module.exports = function (state, prev, send) {
     <div class="container">
       ${posts.map(function (post) {
         if (!post.date) return ''
-        post.content = marked(fs.readFileSync(path.join(__dirname, 'posts', post.name + '.md')).toString())
-        post.shortContent = post.content.substring(0, post.content.indexOf('</p>'))
+        var content = marked(post.raw)
+        post.shortContent = html`<div></div>`
+        post.shortContent.innerHTML = content.substring(0, content.indexOf('</p>'))
         return html`
           <div class="post post--preview">
             <div class="document" id="${post.name}">
               <div class="f6 color-neutral-60">
-                <span class="published">${post.relativeDate}</span>
+                <span class="published">${post.date}</span>
                 by
                 <span class="author">${post.author}</span>
               </div>
