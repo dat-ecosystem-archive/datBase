@@ -70,8 +70,9 @@ module.exports = function (router, db, opts) {
       var accountKey = account.auth.key
       reset.create({ accountKey: accountKey }, function (err, token) {
         if (err) return onerror(new Error('problem creating reset token'), res)
-        /* XXX: derived frmo config */
-        const clientHost = 'http://localhost:8080'
+        const clientHost = process.env.VIRTUAL_HOST
+          ? `https://${process.env.VIRTUAL_HOST}`
+          : 'http://localhost:8080'
         var reseturl = `${clientHost}/reset-password?accountKey=${accountKey}&resetToken=${token}&email=${userEmail}`
 
         var emailOptions = {
