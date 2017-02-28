@@ -97,18 +97,16 @@ module.exports = {
       })
     },
     resetPassword: function (state, data, send, done) {
-      const client = api()
       var email = data || state.account.auth.basic.email
-      client.users.resetPassword({email}, function (err, res, body) {
+      api.users.resetPassword({email}, function (err, res, body) {
         if (err) return send('error:new', err.message, done)
-        send('account:passwordResetResponse', body.message, done)
+        send('user:passwordResetResponse', body.message, done)
       })
     },
     resetPasswordConfirmation: function (state, data, send, done) {
-      const client = api()
-      client.users.resetPasswordConfirmation(data, function (err, res, body) {
+      api.users.resetPasswordConfirmation(data, function (err, res, body) {
         if (err) return send('error:new', err.message, done)
-        send('account:passwordResetConfirmResponse', body.message, done)
+        send('user:passwordResetConfirmResponse', body.message, done)
       })
     }
   }
