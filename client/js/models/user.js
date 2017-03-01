@@ -9,6 +9,8 @@ const defaultState = {
   login: 'hidden',
   register: 'hidden',
   sidePanel: 'hidden',
+  passwordResetResponse: null,
+  passwordResetConfirmResponse: null,
   dats: []
 }
 
@@ -24,6 +26,12 @@ module.exports = {
     },
     loginPanel: (state, showPanel) => {
       return {login: showPanel ? '' : 'hidden'}
+    },
+    passwordResetResponse: function (state, data) {
+      return { passwordResetResponse: data }
+    },
+    passwordResetConfirmResponse: function (state, data) {
+      return { passwordResetConfirmResponse: data, passwordResetResponse: null }
     }
   },
   subscriptions: {
@@ -86,6 +94,19 @@ module.exports = {
           send('message:success', 'Registered successfully.', done)
           window.location.href = '/install'
         })
+      })
+    },
+    resetPassword: function (state, data, send, done) {
+      var email = data || state.account.auth.basic.email
+      api.users.resetPassword({email}, function (err, res, body) {
+        if (err) return send('error:new', err.message, done)
+        send('user:passwordResetResponse', body.message, done)
+      })
+    },
+    resetPasswordConfirmation: function (state, data, send, done) {
+      api.users.resetPasswordConfirmation(data, function (err, res, body) {
+        if (err) return send('error:new', err.message, done)
+        send('user:passwordResetConfirmResponse', body.message, done)
       })
     }
   }

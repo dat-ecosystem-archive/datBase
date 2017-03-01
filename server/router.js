@@ -50,6 +50,7 @@ module.exports = function (opts, db) {
   router.get('/about', send)
   router.get('/team', send)
   router.get('/login', send)
+  router.get('/reset-password', send)
   router.get('/browser', send)
 
   router.get('/list', function (req, res) {
