@@ -1,5 +1,4 @@
 const database = require('./')
-
 module.exports = init
 
 /**
@@ -9,29 +8,38 @@ module.exports = init
  */
 function init (dbConfig, cb) {
   var db = database(dbConfig)
-  db.knex.schema.createTableIfNotExists('users', function (table) {
-    table.uuid('id').primary()
-    table.string('username').unique()
-    table.string('email').unique()
-    table.string('role')
-    table.text('token')
-    table.text('description')
-    table.timestamp('created_at').defaultTo(db.knex.fn.now())
-    table.timestamp('updated_at')
+  var creator = db.knex.schema
+  var check = db.knex.schema
+  db.knex.schema.hasTable('users').then(function (exists) {
+    if (!exists) {
+      return db.knex.schema.createTable('users', function (table) {
+        table.uuid('id').primary()
+        table.string('username').unique()
+        table.string('email').unique()
+        table.string('role')
+        table.text('token')
+        table.text('description')
+        table.timestamp('created_at').defaultTo(db.knex.fn.now())
+        table.timestamp('updated_at')
+      })
+    }
   })
-  .createTableIfNotExists('dats', function (table) {
-    table.uuid('id').primary()
-    table.uuid('user_id').references('users.id')
-    table.string('name')
-    table.string('url')
-    table.string('title')
-    table.text('description')
-    table.text('keywords')
-    table.timestamp('created_at').defaultTo(db.knex.fn.now())
-    table.timestamp('updated_at')
-    table.unique(['name', 'user_id'])
-  })
-  .then(function () {
+  db.knex.schema.hasTable('dats').then(function (exists) {
+    if (!exists) {
+      return db.knex.schema.createTable('dats', function (table) {
+        table.uuid('id').primary()
+        table.uuid('user_id').references('users.id')
+        table.string('name')
+        table.string('url')
+        table.string('title')
+        table.text('description')
+        table.text('keywords')
+        table.timestamp('created_at').defaultTo(db.knex.fn.now())
+        table.timestamp('updated_at')
+        table.unique(['name', 'user_id'])
+      })
+    }
+  }).then(function () {
     cb(null, db)
   }).catch(function (err) {
     cb(err)
