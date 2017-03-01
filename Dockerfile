@@ -17,4 +17,4 @@ RUN npm run build-css && npm run build-js-prod && npm run minify && npm run vers
 
 # do docker exec: node /usr/src/app/server/database/init.js
 
-CMD npm run server
+CMD node server/database/init.js && npm run server
