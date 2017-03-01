@@ -8,8 +8,6 @@ module.exports = init
  */
 function init (dbConfig, cb) {
   var db = database(dbConfig)
-  var creator = db.knex.schema
-  var check = db.knex.schema
   db.knex.schema.hasTable('users').then(function (exists) {
     if (!exists) {
       return db.knex.schema.createTable('users', function (table) {
