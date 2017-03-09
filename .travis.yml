@@ -9,6 +9,7 @@ node_js:
 env:
   global:
     - TAG=travis-${TRAVIS_BUILD_NUMBER}
+    - NODE_ENV=test
 
 install:
   - TAG=latest docker-compose pull

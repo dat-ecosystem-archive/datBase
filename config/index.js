@@ -32,7 +32,9 @@ var config = {
     port: process.env.PORT || 8888
   },
   development: {},
-  test: {},
+  test: {
+    whitelist: path.join(__dirname, '../tests/fixtures/whitelist.txt')
+  },
   production: () => {
     return {
       township: {

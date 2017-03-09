@@ -5,9 +5,10 @@ services:
     image: datproject/datfolder:${TAG}
     expose:
       - 80
+    environment:
+      - NODE_ENV=${NODE_ENV}
     volumes:
       - ./data:/data
-      - ./config.js:/usr/src/app/config.js
   newdat:
     build: .
     image: datproject/datfolder:${TAG}
@@ -29,7 +30,7 @@ services:
       - newdat
     environment:
       - PORT=80
-      - TEST_SERVER=http://app:80
+      - TEST_SERVER=http://app
       - WAIT_FOR_HOSTS=app:80 chromedriver:4444 chromedriver:6060
     volumes:
       - ./tests:/home/node
