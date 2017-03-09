@@ -6,7 +6,7 @@ week.
 
 ## Dat Desktop team hangouts
 Two weeks ago [Julian][julian], [Kriesse][kriesse] and [Yosh][yosh] released
-the first version of [Dat Desktop][dekstop]. While in Berlin, the Desktop team
+the first version of [Dat Desktop][desktop]. While in Berlin, the Desktop team
 met up and discussed some of the core roadmap for the Desktop app – ranging
 from component systems to architecture and reliability. We’re excited to keep
 lowering the barrier to entry for `dat`’s technology and are excited for what
