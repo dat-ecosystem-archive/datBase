@@ -1,4 +1,3 @@
-# Berlin Hack week
 Last week half the Dat team met up in Berlin. As a remote team (8 people, 4
 countries) we mostly communicate through IRC and work asynchronously. This
 means that whenever we meet up, we live, eat and hack together most of our
