@@ -35,7 +35,7 @@ module.exports = function (state, prev, send) {
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-5 col-md-6 flex flex-column justify-center">
-        <div class="p2 bg-neutral screenshot">
+        <div class="pa2 bg-neutral screenshot">
           <img src="/public/img/dat-gif.gif" />
         </div>
       </div>
@@ -47,7 +47,7 @@ module.exports = function (state, prev, send) {
           Dat is the package manager for data. Share files with version control, back up data to servers, browse remote files on demand, and automate long-term data preservation. Secure, distributed, fast.
         </p>
         <p>
-          <a href="/install" class="btn btn--green" target="_blank">
+          <a href="/install" class="btn btn--green btn--full" target="_blank">
             Install Dat CLI
           </a>
         </p>
@@ -185,7 +185,7 @@ module.exports = function (state, prev, send) {
       </div>
     </div>
     <p class="pt4">
-      <a href="http://docs.datproject.org" class="btn btn--green">Read the Full Documentation</a>
+      <a href="http://docs.datproject.org" class="btn btn--green btn--full">Read the Full Documentation</a>
     </p>
   </div>
 </section>

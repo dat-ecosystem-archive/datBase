@@ -16,7 +16,7 @@ module.exports = function (state, prev, send) {
       ${button({
         text: 'Sign up',
         click: () => send('user:registerPanel', true),
-        klass: 'btn'
+        klass: 'btn btn--full btn--green'
       })}
     `
   }
