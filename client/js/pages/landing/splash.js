@@ -185,7 +185,7 @@ module.exports = function (state, prev, send) {
       </div>
     </div>
     <p class="pt4">
-      <a href="http://docs.datproject.org" class="btn btn--green">Read the Full Documentation</a>
+      <a href="http://docs.datproject.org" class="btn btn--green btn--full">Read the Full Documentation</a>
     </p>
   </div>
 </section>

@@ -10,7 +10,7 @@ const header = (state, prev, send) => {
     ${panel(state, prev, send)}
     <header class="site-header">
       ${message(state.message)}
-      <div class="container container--full">
+      <div class="container container--top-bar">
         <div class="site-header__wrapper">
           <a href="/" data-no-routing class="dat-logo dat-logo--on-dark">
             <img src="/public/img/dat-hexagon.svg" />
@@ -25,6 +25,9 @@ const header = (state, prev, send) => {
               text: 'Create new Dat',
               klass: 'btn btn--white new-dat',
               click: function () { window.location.href = '/install' }
+            })}
+            ${importButton({
+              handler: function (link) { window.location.href = '/dat/' + link }
             })}
             ${loginButton(state, prev, send)}
           </div>

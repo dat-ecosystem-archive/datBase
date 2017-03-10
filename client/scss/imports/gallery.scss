@@ -9,10 +9,10 @@
 
 .gallery-item {
   flex: 0 1 100%;
-  @media screen and (min-width: $xsmall) {
+  @media screen and (min-width: $sm) {
     flex-basis: 48%;
   }
-  @media screen and (min-width: $medium) {
+  @media screen and (min-width: $lg) {
     flex-basis: 30%;
   }
   text-align: left;

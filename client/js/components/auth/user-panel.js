@@ -97,7 +97,7 @@ module.exports = function (state, prev, send) {
       .footer-part {
         position: absolute;
         bottom: 1rem;
-        width:100%;
+        width: 100%;
         background-color: --color-neutral-04;
         color: var(--color-neutral-50);
         font-size: 0.7rem;
@@ -147,7 +147,7 @@ module.exports = function (state, prev, send) {
         </ul>
       </div>
       <div class="footer-part">
-        <button class="btn btn--large btn--green" onclick=${() => send('user:logout', {})}>LOGOUT</button>
+        <button class="btn btn--large btn--green btn--full" onclick=${() => send('user:logout', {})}>LOGOUT</button>
         <p>Dat Project v${state.user.version}</p>
         <p><span><a href="http://github.com/datproject/datfolder/issues" target="_blank">Report Bug</a> |
         <a href="http://github.com/datproject/datfolder" target="_blank">Contribute</a></span></p>

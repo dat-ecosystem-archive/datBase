@@ -31,7 +31,7 @@ const login = (state, prev, send) => {
           </label>
         </p>
         <p>
-          <input type="submit" value="Login" class="btn btn--green btn--full w-100" />
+          <input type="submit" value="Login" class="btn btn--green btn--full" />
         </p>
         <p class="f7">
           <a href="/reset-password" class="mr3">Forgot Password?</a>
