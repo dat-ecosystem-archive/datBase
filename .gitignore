@@ -20,3 +20,5 @@ public/rendered
 invited-users
 secrets
 archiver
+.datcache/
+
