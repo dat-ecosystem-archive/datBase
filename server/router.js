@@ -1,7 +1,4 @@
 const fs = require('fs')
-const rangeParser = require('range-parser')
-const mime = require('mime')
-const pump = require('pump')
 const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
