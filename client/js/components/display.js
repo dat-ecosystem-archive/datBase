@@ -1,7 +1,6 @@
 const fourohfour = require('../elements/404')
-const http = require('nets')
+const http = require('stream-http')
 const html = require('choo/html')
-const from = require('from2')
 
 const renderData = module.parent ? function () { } : require('render-data')
 const display = html`<div id="item"></div>`
@@ -22,12 +21,12 @@ module.exports = function (state, prev, send) {
   if (entryName === previousEntryName) return display
 
   send('preview:update', {error: {message: 'Loading', body: 'Please wait...'}})
-  http({url: `/dat/${state.archive.key}/${entryName}`, method: 'GET'}, function (err, resp, file) {
-    if (err) throw err
+  http.get(`/dat/${state.archive.key}/${entryName}`, function (res) {
+    res.on('error', function (err) { throw err })
     renderData.render({
       name: entryName,
       createReadStream: function () {
-        return from([file])
+        return res
       }
     }, display, function (err) {
       if (err) {
