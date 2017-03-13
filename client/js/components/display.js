@@ -21,7 +21,7 @@ module.exports = function (state, prev, send) {
   if (!entryName) return
   if (entryName === previousEntryName) return display
 
-  send('preview:update', {error: {message: 'Loading...', body: ''}})
+  send('preview:update', {error: {message: 'Loading', body: 'Please wait...'}})
   http({url: `/dat/${state.archive.key}/${entryName}`, method: 'GET'}, function (err, resp, file) {
     if (err) throw err
     renderData.render({
