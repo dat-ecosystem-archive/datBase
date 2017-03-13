@@ -1,9 +1,10 @@
 var xtend = require('xtend')
+
 var noop = function () {}
 var defaultState = {
   isPanelOpen: false,
   isLoading: false,
-  entryName: null,
+  entry: null,
   error: false
 }
 
