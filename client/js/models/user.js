@@ -39,7 +39,7 @@ module.exports = {
       send('user:whoami', {}, done)
       setInterval(function () {
         send('user:whoami', {}, done)
-      }, 5000)
+      }, 15000)
     }
   },
   effects: {
