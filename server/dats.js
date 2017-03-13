@@ -27,10 +27,10 @@ Dats.prototype.get = function (key, cb) {
   var done = false
   self.archiver.add(buf, {sparse: true, content: true}, function (err) {
     if (err) return cb(err)
-    if (done) return
-    done = true
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
+      if (done) return
+      done = true
       var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
       self.archives[key] = archive
       return cb(null, archive)

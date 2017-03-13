@@ -37,9 +37,6 @@ module.exports = {
   subscriptions: {
     checkUser: function (send, done) {
       send('user:whoami', {}, done)
-      setInterval(function () {
-        send('user:whoami', {}, done)
-      }, 5000)
     }
   },
   effects: {
