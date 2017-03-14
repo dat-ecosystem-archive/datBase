@@ -12,9 +12,10 @@ module.exports = new function () {
     client.keys(client.Keys.ENTER, function (done) {
       client
         .expect.element('#fs').text.to.contain('dat.json').before(5000)
-      client.click('.entry.file').pause(2000)
+      client.click('.entry.file')
+      client.pause(2000)
       client.expect.element('.panel-title.truncate').text.to.contain('dat.json')
-      client.expect.element('.dat-detail.size').text.to.contain('8kb')
+      client.expect.element('.dat-detail.size').text.to.contain('48 B')
     })
   }
 }
