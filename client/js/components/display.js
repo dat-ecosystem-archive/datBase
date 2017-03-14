@@ -1,5 +1,6 @@
 const fourohfour = require('../elements/404')
-const http = require('stream-http')
+const http = require('nets')
+const from = require('from2')
 const html = require('choo/html')
 
 const renderData = module.parent ? function () { } : require('render-data')
@@ -19,14 +20,17 @@ module.exports = function (state, prev, send) {
 
   if (!entryName) return
   if (entryName === previousEntryName) return display
+  if (state.preview.entry.length > (1048576 * 10)) {
+    return send('preview:update', {error: {message: 'Cannot preview', body: 'This file is too big, use the desktop app or cli.'}})
+  }
 
   send('preview:update', {error: {message: 'Loading', body: 'Please wait...'}})
-  http.get(`/dat/${state.archive.key}/${entryName}`, function (res) {
-    res.on('error', function (err) { throw err })
+  http({url: `/dat/${state.archive.key}/${entryName}`, method: 'GET'}, function (err, resp, file) {
+    if (err) return send('preview:update', {error: err})
     renderData.render({
       name: entryName,
       createReadStream: function () {
-        return res
+        return from([file])
       }
     }, display, function (err) {
       if (err) {
