@@ -5,6 +5,8 @@ const hyperdrive = require('hyperdrive')
 const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
 const hyperhttp = require('hyperdrive-http')
+const collect = require('collect-stream')
+const entryStream = require('./entryStream')
 
 module.exports = Dats
 
@@ -23,16 +25,15 @@ Dats.prototype.get = function (key, cb) {
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
   if (self.archives[key]) return cb(null, self.archives[key])
-  var done = false
   self.archiver.add(buf, {content: true}, function (err) {
     if (err) return cb(err)
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
-      if (done) return
-      done = true
-      var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
-      self.archives[key] = archive
-      return cb(null, archive)
+      if (content) {
+        var archive = self.drive.createArchive(buf, {metadata: metadata, content: content, sparse: true})
+        self.archives[key] = archive
+        return cb(null, archive)
+      }
     })
   })
 }
@@ -43,7 +44,60 @@ Dats.prototype.file = function (key, filename, cb) {
     if (err) return cb(err)
     archive.get(filename, function (err, entry) {
       if (err) return cb(err)
-      archive.download(entry, true, cb) // second arg = force download
+      archive.download(entry, cb)
+    })
+  })
+}
+
+function getPeers (peers) {
+  var ar = {}
+  for (var i = 0; i < peers.length; i++) {
+    var peer = peers[i]
+    if (!peer.stream || !peer.stream.remoteId) continue
+    ar[peer.stream.remoteId.toString('hex')] = 1
+  }
+  var count = Object.keys(ar).length
+  return count
+}
+
+Dats.prototype.metadata = function (archive, cb) {
+  var self = this
+  var dat
+  if (!archive.content) dat = {}
+  else {
+    dat = {
+      peers: getPeers(archive.content.peers),
+      size: archive.content.bytes
+    }
+  }
+  entryStream(archive, function (err, entries) {
+    if (err) return cb(err)
+    dat.entries = entries
+    archive.get('dat.json', function (err, entry) {
+      if (err) return cb(null, dat)
+      self.file(archive.key, 'dat.json', function (err) {
+        if (err) console.log('error', err)
+        self.fileContents(archive.key, 'dat.json', function (err, metadata) {
+          if (err) return cb(null, dat)
+          try {
+            dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
+          } catch (e) {
+          }
+          return cb(null, dat)
+        })
+      })
+    })
+  })
+}
+
+Dats.prototype.fileContents = function (key, filename, cb) {
+  var self = this
+  self.get(key, function (err, archive) {
+    if (err) return cb(err)
+    self.file(key, filename, function (err) {
+      if (err) return cb(err)
+      var readStream = archive.createFileReadStream(filename)
+      collect(readStream, cb)
     })
   })
 }
@@ -56,7 +110,6 @@ function createSwarm (archiver, opts) {
   if (!archiver) throw new Error('hypercore archiver required')
   if (!opts) opts = {}
 
-  var timeouts = []
   var swarmOpts = swarmDefaults({
     hash: false,
     stream: function () {
@@ -64,11 +117,6 @@ function createSwarm (archiver, opts) {
     }
   })
   var swarm = Swarm(swarmOpts)
-  swarm.once('close', function () {
-    timeouts.forEach(function (timeout) {
-      clearTimeout(timeout)
-    })
-  })
 
   archiver.changes(function (err, feed) {
     if (err) throw err
