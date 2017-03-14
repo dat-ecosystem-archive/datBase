@@ -45,7 +45,7 @@ module.exports = new function () {
       .setValue(".register form input[name='email']", 'hi@pam.com')
       .setValue(".register form input[name='password']", 'fnordfoobar')
       .submitForm('.register form')
-      .expect.element('.register form .error').text.matches(/Cannot create account with that email address/).before(5000)
+      .expect.element('.register form .error').text.matches(/Account with that email already exists./).before(5000)
 
     client.end()
   }

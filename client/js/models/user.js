@@ -45,9 +45,11 @@ module.exports = {
   effects: {
     dats: (state, user, send, done) => {
       api.users.get({username: user.username}, function (err, resp, json) {
+        if (err && err.message === 'jwt expired') return send('user:logout', user, done)
         if (err || resp.statusCode !== 200) return done()
         if (!json.length) return done
         api.dats.get({user_id: json[0].id}, function (err, resp, json) {
+          if (err && err.message === 'jwt expired') return send('user:logout', user, done)
           if (err || resp.statusCode !== 200) return done()
           send('user:update', {dats: json}, done)
         })
