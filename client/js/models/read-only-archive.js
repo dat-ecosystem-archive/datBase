@@ -1,6 +1,6 @@
 const xtend = require('xtend')
 const api = require('../api')()
-const xhr = require('xhr')
+const http = require('nets')
 
 var defaultState = {
   id: null,
@@ -22,7 +22,7 @@ module.exports = {
   },
   effects: {
     getMetadata: function (state, data, send, done) {
-      xhr(`/dat/${state.key}/dat.json`, function (err, resp, raw) {
+      http(`/dat/${state.key}/dat.json`, function (err, resp, raw) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
         var json
         try {

@@ -1,6 +1,5 @@
 const html = require('choo/html')
 const prettyBytes = require('pretty-bytes')
-const button = require('../elements/button')
 const display = require('./display')
 
 const preview = (state, prev, send) => {
@@ -12,6 +11,7 @@ const preview = (state, prev, send) => {
   const entry = state.preview.entry
   const entryName = entry && entry.name
   const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
+  const downloadDisabled = entry && (entry.length > (1048576 * 10))
 
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
@@ -27,15 +27,14 @@ const preview = (state, prev, send) => {
         </div>
       </div>
       <div class="panel-header__action-group">
-        ${button({
-          klass: 'dat-header-action',
-          icon: '/public/img/download.svg',
-          text: 'Download',
-          disabled: true,
-          click: () => {
-            send('archive:downloadAsZip', {entryName})
-          }
-        })}
+        <a href="/dat/${state.archive.key}/${entryName}"
+          data-no-routing download="${entryName}" class="dat-header-action"
+          ${downloadDisabled ? 'disabled' : ''}>
+          <div class="btn__icon-wrapper">
+            <img src="/public/img/download.svg" class="btn__icon-img">
+            <span class="btn__icon-text">Download</span>
+          </div>
+        </a>
         <a href="dat://${state.archive.key}" class="dat-header-action">
           <div class="btn__icon-wrapper">
             <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
