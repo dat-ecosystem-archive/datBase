@@ -133,6 +133,7 @@ module.exports = function (opts, db) {
         log.info('got %s entries without error', entries.length)
         state.archive.entries = entries
         state.archive.peers = getPeers(archive.metadata.peers)
+        state.archive.size = archive.content.bytes
         cb(state)
       })
     })
