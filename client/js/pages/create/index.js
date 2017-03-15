@@ -18,9 +18,12 @@ const createPage = (state, prev, send) => {
               Share and version control data with ease using our desktop app. Available for Mac and coming soon for Windows and Linux.
             </p>
             <p>
-              <a href="https://github.com/datproject/dat-desktop/releases" target="_blank" class="btn btn--green">
+              <a href="https://github.com/datproject/dat-desktop/releases/download/1.0.3/dat-desktop-1.0.3.dmg" target="_blank" class="btn btn--green">
                 Download for Mac
               </a>
+            </p>
+            <p class="color-neutral-50">
+              Coming to Windows soon. <a href="https://github.com/datproject/dat-desktop/releases/tag/1.0.3-pre">Download for Linux</a>.
             </p>
           </div>
           <div class="col-xs-12 col-sm-6 flex flex-column justify-center">

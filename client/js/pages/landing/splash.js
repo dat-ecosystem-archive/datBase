@@ -26,7 +26,7 @@ module.exports = function (state, prev, send) {
       </a>
     </p>
     <p class="f7 tc color-neutral-50">
-      Coming to Windows soon. <a href="https://github.com/datproject/dat-desktop/releases">Download for Linux</a>.
+      Coming to Windows soon. <a href="https://github.com/datproject/dat-desktop/releases/tag/1.0.3-pre">Download for Linux</a>.
     </p>
   </div>
 </section>
