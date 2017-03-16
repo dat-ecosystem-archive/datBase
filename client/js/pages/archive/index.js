@@ -42,9 +42,7 @@ const archivePage = (state, prev, send) => {
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header__actions">
-            <div class="dat-header-action">
-              ${copyButton(state.archive.key, send)}
-           </div>
+            ${copyButton(state.archive.key, send)}
             <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
                 <svg><use xlink:href="#daticon-download" /></svg>
