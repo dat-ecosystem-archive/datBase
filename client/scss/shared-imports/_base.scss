@@ -52,6 +52,10 @@ li {
   @include list-plain;
 }
 
+svg {
+  fill: currentColor;
+}
+
 .site-main {
   position: relative;
   padding-top: $padding-site-main;

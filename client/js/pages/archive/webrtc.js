@@ -40,9 +40,7 @@ const archivePage = (state, prev, send) => {
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header__actions">
-            <div class="dat-header-action">
-              ${copyButton(state.archive.key, send)}
-           </div>
+            ${copyButton(state.archive.key, send)}
             <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
               <div class="btn__icon-wrapper ${downloadBtnDisabled}">
                 <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
