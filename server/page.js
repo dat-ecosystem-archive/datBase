@@ -37,7 +37,6 @@ function page (url, contents, appState) {
       </head>
       <body>
         <div id="app">
-          <div id="browser-warning"></div>
           <div id="app-root">
             ${contents}
           </div>
@@ -57,7 +56,6 @@ function page (url, contents, appState) {
         ga('create', 'UA-49664853-1', 'datproject.org');
         ga('send', 'pageview');
       </script>
-      <script type="text/javascript" src="/public/js/browser-warning.js"></script>
       <script type="text/javascript" src="/public/js/app.js"></script>
     </html>`
 }
