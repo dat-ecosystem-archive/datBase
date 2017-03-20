@@ -12,6 +12,7 @@ module.exports = function (state, prev, send) {
 
   if (state.preview.error) {
     return fourohfour({
+      icon: state.preview.error.icon,
       header: state.preview.error.message,
       body: state.preview.error.body || `${entryName} cannot be rendered.`,
       link: false
@@ -21,10 +22,17 @@ module.exports = function (state, prev, send) {
   if (!entryName) return
   if (entryName === previousEntryName) return display
   if (state.preview.entry.length > (1048576 * 10)) {
-    return send('preview:update', {error: {message: 'Cannot preview', body: 'This file is too big, use the desktop app or cli.'}})
+    return send('preview:update', {error: {
+      message: 'Cannot preview',
+      body: 'This file is too big, use the desktop app or CLI.'
+    }})
   }
 
-  send('preview:update', {error: {message: 'Loading', body: 'Please wait...'}})
+  send('preview:update', {error: {
+    message: 'Loading',
+    body: 'Please wait…',
+    icon: 'loader'
+  }})
   http({url: `/dat/${state.archive.key}/${entryName}`, method: 'GET'}, function (err, resp, file) {
     if (err) return send('preview:update', {error: err})
     renderData.render({

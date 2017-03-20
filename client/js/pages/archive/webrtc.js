@@ -19,8 +19,8 @@ const archivePage = (state, prev, send) => {
     }
     return html`
     <div>
-    ${header(state, prev, send)}
-    ${fourohfour(props)}
+      ${header(state, prev, send)}
+      ${fourohfour(props)}
     </div>
     `
   }

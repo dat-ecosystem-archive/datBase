@@ -62,18 +62,8 @@ svg {
   padding-bottom: $padding-site-main;
 }
 
-.breadcrumbs {
-  margin-bottom: 1rem;
-  min-height: 2em;
-}
-
 #add-files {
   float: right;
-}
-
-#get_link {
-  z-index: 10;
-  position: absolute;
 }
 
 .danger-block {
@@ -91,16 +81,4 @@ svg {
 
 .clipboard:hover {
   cursor: pointer;
-}
-
-.bg-white {
-  background-color: $color-white;
-}
-
-.bg-neutral-04 {
-  background-color: $color-neutral-04;
-}
-
-.bg-neutral {
-  background-color: $color-neutral;
 }
