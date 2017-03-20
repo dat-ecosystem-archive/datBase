@@ -14,7 +14,7 @@ module.exports = function (state, prev, send) {
       from your desktop.
     </h1>
     <p class="tc mb4 color-neutral-50">
-      Dat is the secure and distributed package manager for data. Use the desktop app, command line tool, and javascript library.
+      Dat is the distributed data sharing tool. Use the desktop app, command line tool, and javascript library.
     </p>
     <div class="splash-visual">
       <img src="/public/img/screenshot-dat-desktop.png" />
