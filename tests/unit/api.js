@@ -323,6 +323,7 @@ test('api', function (t) {
         })
       })
     })
+
     test('api should allow password reset', function (t) {
       client.secureRequest({
         url: '/password-reset',
