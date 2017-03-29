@@ -5,7 +5,6 @@ public/css/*
 public/js/app.js
 public/js/app.min.js
 public/js/app.min.*.js
-public/js/browser-warning.*.js
 server/page-debug.js
 .tmp-deploy
 npm-debug.log

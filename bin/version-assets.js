@@ -20,7 +20,6 @@ fs.writeFileSync(page, prod, 'utf8')
 var versionInstance = new Version({
   assets: [
     'public/js/app.min.js',
-    'public/js/browser-warning.js',
     'public/css/main.min.css'
   ],
   grepFiles: [
