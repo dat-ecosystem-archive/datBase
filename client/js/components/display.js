@@ -33,7 +33,8 @@ module.exports = function (state, prev, send) {
     body: 'Please wait…',
     icon: 'loader'
   }})
-  http({url: `/dat/${state.archive.key}/${entryName}`, method: 'GET'}, function (err, resp, file) {
+  // proper escape is done, but # is special
+  http({url: `/dat/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
     if (err) return send('preview:update', {error: err})
     renderData.render({
       name: entryName,
