@@ -81,7 +81,7 @@ module.exports = {
       if (state.swarm && state.swarm.close) state.swarm.close(function () {})
       send('archive:reset', noop)
       send('archive:create', null, function (_, key) {
-        const location = '/dat/' + key
+        const location = '/' + key
         send('location:setLocation', { location }, noop)
         window.history.pushState({}, null, location)
       })
