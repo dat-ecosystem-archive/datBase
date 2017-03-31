@@ -30,7 +30,7 @@ Dats.prototype.get = function (key, cb) {
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
       if (content) {
-        var archive = self.drive.createArchive(buf, {metadata: metadata, content: content, sparse: true})
+        var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
         self.archives[key] = archive
         return cb(null, archive)
       }
@@ -44,7 +44,7 @@ Dats.prototype.file = function (key, filename, cb) {
     if (err) return cb(err)
     archive.get(filename, function (err, entry) {
       if (err) return cb(err)
-      archive.download(entry, cb)
+      archive.download(entry, true, cb)
     })
   })
 }
