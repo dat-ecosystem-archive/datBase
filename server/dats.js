@@ -67,35 +67,26 @@ Dats.prototype.file = function (key, filename, cb) {
   })
 }
 
-function getPeers (peers) {
-  var ar = {}
-  for (var i = 0; i < peers.length; i++) {
-    var peer = peers[i]
-    if (!peer.stream || !peer.stream.remoteId) continue
-    ar[peer.stream.remoteId.toString('hex')] = 1
-  }
-  var count = Object.keys(ar).length
-  return count
-}
-
 Dats.prototype.metadata = function (archive, cb) {
   var self = this
   var dat
   if (!archive.content) dat = {}
   else {
     dat = {
-      peers: getPeers(archive.content.peers),
+      peers: archive.content.peers.length,
       size: archive.content.bytes
     }
   }
   self.entries(archive, function (err, entries) {
     if (err) return cb(err)
     dat.entries = entries
-    archive.get('dat.json', function (err, entry) {
+    var filename = 'dat.json'
+    archive.get(filename, function (err, entry) {
       if (err) return cb(null, dat)
-      self.file(archive.key, 'dat.json', function (err) {
-        if (err) console.log('error', err)
-        self.fileContents(archive.key, 'dat.json', function (err, metadata) {
+      archive.download(filename, true, function (err) {
+        if (err) return cb(err, dat)
+        var readStream = archive.createFileReadStream(filename)
+        collect(readStream, function (err, metadata) {
           if (err) return cb(null, dat)
           try {
             dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
