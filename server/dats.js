@@ -2,6 +2,7 @@ const Archiver = require('hypercore-archiver')
 const mkdirp = require('mkdirp')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
+const pages = require('random-access-page-files')
 const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
 const hyperhttp = require('hyperdrive-http')
@@ -12,7 +13,7 @@ module.exports = Dats
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archiver = Archiver({dir: dir, sparse: true})
+  this.archiver = Archiver({dir: dir, sparse: true, storage: pages})
   this.swarm = createSwarm(this.archiver)
   this.drive = hyperdrive(this.archiver.db)
   this.archives = {}
