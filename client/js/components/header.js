@@ -20,7 +20,7 @@ const header = (state, prev, send) => {
           </a>
           <div class="site-header__actions">
             ${importButton({
-              handler: function (link) { window.location.href = '/dat/' + link }
+              handler: function (link) { window.location.href = '/' + link }
             })}
             ${button({
               icon: '/public/img/create-new-dat.svg',
