@@ -6,7 +6,6 @@ const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
 const hyperhttp = require('hyperdrive-http')
 const collect = require('collect-stream')
-const entryStream = require('./entryStream')
 
 module.exports = Dats
 
@@ -35,6 +34,25 @@ Dats.prototype.get = function (key, cb) {
         return cb(null, archive)
       }
     })
+  })
+}
+
+Dats.prototype.entries = function (archive, cb) {
+  var TIMEOUT = 5000
+  var stream = archive.list({live: false, limit: 1000})
+  var cancelled = false
+
+  var timeout = setTimeout(function () {
+    var msg = 'timed out'
+    cancelled = true
+    return cb(new Error(msg))
+  }, TIMEOUT)
+
+  collect(stream, function (err, entries) {
+    clearTimeout(timeout)
+    if (cancelled) return
+    if (err) return cb(err)
+    cb(null, entries)
   })
 }
 
@@ -70,7 +88,7 @@ Dats.prototype.metadata = function (archive, cb) {
       size: archive.content.bytes
     }
   }
-  entryStream(archive, function (err, entries) {
+  self.entries(archive, function (err, entries) {
     if (err) return cb(err)
     dat.entries = entries
     archive.get('dat.json', function (err, entry) {
