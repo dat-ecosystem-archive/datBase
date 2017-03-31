@@ -8,7 +8,6 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
-const xtend = require('xtend')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
@@ -149,9 +148,11 @@ module.exports = function (opts, db) {
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       log.info('got archive', archive.key.toString('hex'))
-      dats.metadata(archive, function (err, data) {
+      dats.entries(archive, function (err, entries) {
         if (err) state.archive.error = {message: err.message}
-        state.archive = xtend(state.archive, data)
+        state.archive.size = archive.content.bytes
+        state.archive.peers = archive.content.peers.length
+        state.archive.entries = entries
         cb(state)
       })
     })
