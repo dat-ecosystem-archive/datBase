@@ -22,15 +22,9 @@ module.exports = {
   },
   effects: {
     getMetadata: function (state, data, send, done) {
-      http(`/dat/${state.key}/dat.json`, function (err, resp, raw) {
+      http({url: `/metadata/${state.key}`, method: 'GET', json: true}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
-        var json
-        try {
-          json = JSON.parse(raw)
-        } catch (e) {
-          return send('archive:update', {error: {message: 'Malformed dat.json file'}}, done)
-        }
-        send('archive:update', {metadata: json}, done)
+        send('archive:update', json, done)
       })
     },
     delete: function (state, data, send, done) {
@@ -39,11 +33,5 @@ module.exports = {
         window.location.href = '/list'
       })
     }
-  },
-  subscriptions: [
-    function (send, done) {
-      // TODO: make sure we aren't clogging the archiver with unused disk space
-      // send('archive:getMetadata', {}, done)
-    }
-  ]
+  }
 }

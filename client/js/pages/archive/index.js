@@ -34,7 +34,9 @@ const archivePage = (state, prev, send) => {
   var peers = state.archive.peers
   var size = state.archive.size
   var meta = state.archive.metadata
-  var owner = meta.username === state.user.username
+  var owner = meta && meta.username === state.user.username
+  var title = meta && meta.title || state.archive.key
+  var description = meta && meta.description
 
   return html`
     <div>
@@ -50,8 +52,8 @@ const archivePage = (state, prev, send) => {
               </div>
             </a>
           </div>
-          <div id="title" class="share-link">${meta.title || state.archive.key}</div>
-          <div id="author" class="author-name">${meta.description}</div>
+          <div id="title" class="share-link">${title}</div>
+          <div id="author" class="author-name">${description}</div>
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">

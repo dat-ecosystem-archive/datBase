@@ -8,7 +8,6 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
-const entryStream = require('./entryStream')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
@@ -65,6 +64,12 @@ module.exports = function (opts, db) {
     sendSPA(req, res, state)
   })
 
+  router.get('/:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
   router.get('/dat/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)
@@ -85,6 +90,16 @@ module.exports = function (opts, db) {
       dats.file(req.params.archiveKey, filename, function (err) {
         if (err) return onerror(err, res)
         return dats.http.file(req, res, archive, filename)
+      })
+    })
+  })
+
+  router.get('/metadata/:archiveKey', function (req, res) {
+    dats.get(req.params.archiveKey, function (err, archive) {
+      if (err) return onerror(err, res)
+      dats.metadata(archive, function (err, info) {
+        if (err) return onerror(err, res)
+        return res.status(200).json(info)
       })
     })
   })
@@ -118,6 +133,11 @@ module.exports = function (opts, db) {
   }
 
   function archiveRoute (key, cb) {
+    function onerror (err) {
+      log.warn(key, err)
+      state.archive.error = {message: err.message}
+      return cb(state)
+    }
     var state = getDefaultAppState()
     try {
       state.archive.key = encoding.toStr(key)
@@ -128,33 +148,14 @@ module.exports = function (opts, db) {
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       log.info('got archive', archive.key.toString('hex'))
-      entryStream(archive, function (err, entries) {
-        if (err) return onerror(err)
-        log.info('got %s entries without error', entries.length)
-        state.archive.entries = entries
-        state.archive.peers = getPeers(archive.metadata.peers)
+      dats.entries(archive, function (err, entries) {
+        if (err) state.archive.error = {message: err.message}
         state.archive.size = archive.content.bytes
+        state.archive.peers = archive.content.peers.length
+        state.archive.entries = entries
         cb(state)
       })
     })
-
-    function onerror (err) {
-      log.warn(key, err)
-      state.archive.error = {message: err.message}
-      return cb(state)
-    }
-  }
-
-  function getPeers (peers) {
-    var ar = {}
-    for (var i = 0; i < peers.length; i++) {
-      var peer = peers[i]
-      if (!peer.stream || !peer.stream.remoteId) continue
-      ar[peer.stream.remoteId.toString('hex')] = 1
-    }
-    var count = Object.keys(ar).length
-    log.info('got', count, 'peers')
-    return count
   }
 
   router.dats = dats

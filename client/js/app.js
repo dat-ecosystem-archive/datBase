@@ -33,6 +33,7 @@ app.router({default: '/404'}, [
   ['/blog/:name', require('./pages/landing/post')],
   ['/team', require('./pages/landing/team')],
   ['/about', require('./pages/landing/about')],
+  ['/:archiveKey', require('./pages/archive')],
   ['/', require('./pages/landing/splash')]
 ])
 

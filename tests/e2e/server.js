@@ -16,7 +16,7 @@ module.exports = new function () {
     .url(testServer + '/install')
     .setValue("input[name='import-dat']", 'hello')
     client.keys(client.Keys.ENTER, function (done) {
-      client.pause(1000)
+      client.pause(2000)
       .assert.containsText('body', 'No dat here.')
     })
   }
@@ -24,6 +24,7 @@ module.exports = new function () {
     client
     .setValue("input[name='import-dat']", key)
     client.keys(client.Keys.ENTER, function (done) {
+      client.pause(2000)
       client
         .expect.element('#fs').text.to.contain('dat.json').before(5000)
       // client
