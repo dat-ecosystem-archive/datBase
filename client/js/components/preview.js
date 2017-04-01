@@ -13,6 +13,17 @@ const preview = (state, prev, send) => {
   const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
   const downloadDisabled = entry && (entry.length > (1048576 * 10))
 
+  function makeABaby () {
+    if (downloadDisabled) return html``
+    return html`<a href="/dat/${state.archive.key}/${entryName}"
+      data-no-routing download="${entryName}" class="dat-header-action">
+      <div class="btn__icon-wrapper">
+      <img src="/public/img/download.svg" class="btn__icon-img">
+      <span class="btn__icon-text">Download</span>
+    </div>
+    </a>`
+  }
+
   return html`<section id="preview" class="panel ${isOpen}">
     <div class="panel-header">
       <button onclick=${() => send('preview:closePanel')} class="panel-header__close-button">
@@ -27,14 +38,7 @@ const preview = (state, prev, send) => {
         </div>
       </div>
       <div class="panel-header__action-group">
-        <a href="/dat/${state.archive.key}/${entryName}"
-          data-no-routing download="${entryName}" class="dat-header-action"
-          ${downloadDisabled ? 'disabled' : ''}>
-          <div class="btn__icon-wrapper">
-            <img src="/public/img/download.svg" class="btn__icon-img">
-            <span class="btn__icon-text">Download</span>
-          </div>
-        </a>
+        ${makeABaby()}
         <a href="dat://${state.archive.key}" class="dat-header-action">
           <div class="btn__icon-wrapper">
             <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
