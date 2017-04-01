@@ -39,8 +39,8 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.entries = function (archive, cb) {
-  var TIMEOUT = 5000
-  var stream = archive.list({live: false, limit: 1000})
+  var TIMEOUT = 7000
+  var stream = archive.list({live: false, limit: 100})
   var cancelled = false
 
   var timeout = setTimeout(function () {
