@@ -4,7 +4,7 @@ var path = require('path')
 module.exports = [
   {
     date: '2017-04-03',
-    title: 'Previewing and downloading in the browser',
+    title: 'A Public Dat Peer',
     author: 'Karissa McKelvey',
     teaser: 'Now you can send browser links to dats for previewing and downloading items',
     name: '2017-04-03',
