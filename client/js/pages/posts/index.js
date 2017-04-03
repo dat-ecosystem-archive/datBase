@@ -3,6 +3,14 @@ var path = require('path')
 
 module.exports = [
   {
+    date: '2017-04-03',
+    title: 'A Public Dat Peer',
+    author: 'Karissa McKelvey',
+    teaser: 'Now you can send browser links to dats for previewing and downloading items',
+    name: '2017-04-03',
+    raw: fs.readFileSync(path.join(__dirname, '2017-04-03.md')).toString()
+  },
+  {
     date: '2017-03-08',
     title: 'Berlin Hack week',
     author: 'Yoshua Wuyts',
