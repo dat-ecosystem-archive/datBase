@@ -82,18 +82,6 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/dat/:archiveKey/*', function (req, res) {
-    log.debug('getting file contents', req.params)
-    var filename = req.params[0]
-    dats.get(req.params.archiveKey, function (err, archive) {
-      if (err) return onerror(err, res)
-      dats.file(req.params.archiveKey, filename, function (err) {
-        if (err) return onerror(err, res)
-        return dats.http.file(req, res, archive, filename)
-      })
-    })
-  })
-
   router.get('/metadata/:archiveKey', function (req, res) {
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
