@@ -33,6 +33,6 @@ module.exports = function (state, prev, send) {
     }
   }
   var vals = Object.keys(lookup).map(key => lookup[key])
-  var tree = yofs(root, vals, onclick)
+  var tree = yofs('/', vals, onclick)
   return tree.widget
 }
