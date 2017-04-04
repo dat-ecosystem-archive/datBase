@@ -1,7 +1,9 @@
-const hyperdriveRenderer = require('./client.js')
+const path = require('path')
+const yofs = require('yo-fs')
 const noop = function () {}
 
 module.exports = function (state, prev, send) {
+  var entries = state.archive.entries
   var filename = state.location.params.filename
 
   var onclick = (ev, entry) => {
@@ -14,9 +16,21 @@ module.exports = function (state, prev, send) {
     }
   }
 
-  if (filename) {
-    send('preview:file', {archiveKey: state.archive.key, entry: {name: filename}})
+  var lookup = {}
+  for (var i in entries) {
+    var entry = entries[i]
+    if (entry.name === filename && !module.parent) return send('preview:file', {archiveKey: state.archive.key, entry: entry})
+    lookup[entry.name] = entry
+    var dir = path.dirname(entry.name)
+    if (!lookup[dir]) {
+      lookup[dir] = {
+        type: 'directory',
+        name: dir,
+        length: 0
+      }
+    }
   }
-
-  return hyperdriveRenderer(state.archive.root, state.archive.entries, onclick)
+  var vals = Object.keys(lookup).map(key => lookup[key])
+  var tree = yofs(root, vals, onclick)
+  return tree.widget
 }

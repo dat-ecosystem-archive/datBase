@@ -58,31 +58,37 @@ module.exports = function (opts, db) {
     })
   })
 
+  router.get('/~:username/:dataset', function (req, res) {
+    log.debug('requesting username/dataset', req.params)
+    db.queries.getDatByShortname(req.params, function (err, dat) {
+      var contentType = req.accepts(['html', 'json'])
+      if (contentType === 'json') {
+        if (err) return onerror(err, res)
+        return res.status(200).json(dat)
+      }
+      if (err) {
+        var state = getDefaultAppState()
+        state.archive.error = {message: err.message}
+        log.warn('could not get dat with ' + req.params, err)
+        return sendSPA(req, res, state)
+      }
+      archiveRoute(dat.url, function (state) {
+        state.archive.id = dat.id
+        dat.username = req.params.username
+        dat.shortname = req.params.dataset
+        state.archive.metadata = dat
+        return sendSPA(req, res, state)
+      })
+    })
+  })
+
   router.get('/download/:archiveKey', function (req, res) {
     var state = getDefaultAppState()
     state.archive.key = req.params.archiveKey
     sendSPA(req, res, state)
   })
 
-  router.get('/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
-  router.get('/dat/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
-  router.get('/view/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
-  router.get('/dat/:archiveKey/*', function (req, res) {
+  router.get('/download/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
     var filename = req.params[0]
     dats.get(req.params.archiveKey, function (err, archive) {
@@ -104,27 +110,9 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/:username/:dataset', function (req, res) {
-    log.debug('requesting username/dataset', req.params)
-    db.queries.getDatByShortname(req.params, function (err, dat) {
-      var contentType = req.accepts(['html', 'json'])
-      if (contentType === 'json') {
-        if (err) return onerror(err, res)
-        return res.status(200).json(dat)
-      }
-      if (err) {
-        var state = getDefaultAppState()
-        state.archive.error = {message: err.message}
-        log.warn('could not get dat with ' + req.params, err)
-        return sendSPA(req, res, state)
-      }
-      archiveRoute(dat.url, function (state) {
-        state.archive.id = dat.id
-        dat.username = req.params.username
-        dat.shortname = req.params.dataset
-        state.archive.metadata = dat
-        return sendSPA(req, res, state)
-      })
+  router.get('/:archiveKey/*', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
     })
   })
 
