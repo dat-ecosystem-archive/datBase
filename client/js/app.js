@@ -25,15 +25,14 @@ app.router({default: '/404'}, [
   ['/login', require('./pages/auth/login')],
   ['/reset-password', require('./pages/auth/reset-password')],
   ['/download/:archiveKey', require('./pages/download')],
-  ['/dat/:archiveKey', require('./pages/archive')],
-  ['/view/:archiveKey', require('./pages/archive')],
-  ['/:username/:dataset', require('./pages/archive')],
+  ['/~:username/:dataset', require('./pages/archive')],
   ['/404', require('./pages/fourohfour')],
   ['/blog', require('./pages/landing/blog')],
   ['/blog/:name', require('./pages/landing/post')],
   ['/team', require('./pages/landing/team')],
   ['/about', require('./pages/landing/about')],
   ['/:archiveKey', require('./pages/archive')],
+  ['/:archiveKey/:filename', require('./pages/archive')],
   ['/', require('./pages/landing/splash')]
 ])
 
