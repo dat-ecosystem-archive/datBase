@@ -19,7 +19,9 @@ module.exports = function (state, prev, send) {
   var lookup = {}
   for (var i in entries) {
     var entry = entries[i]
-    if (entry.name === filename && !module.parent) return send('preview:file', {archiveKey: state.archive.key, entry: entry})
+    if (entry.name === filename && !module.parent) {
+      send('preview:file', {archiveKey: state.archive.key, entry: entry})
+    }
     lookup[entry.name] = entry
     var dir = path.dirname(entry.name)
     if (!lookup[dir]) {
