@@ -19,10 +19,6 @@ module.exports = function (state, prev, send) {
   var lookup = {}
   for (var i in entries) {
     var entry = entries[i]
-    if (entry.name === filename && !module.parent) {
-      console.log('displaying', filename)
-      send('preview:file', {archiveKey: state.archive.key, entry: entry}, noop)
-    }
     lookup[entry.name] = entry
     var dir = path.dirname(entry.name)
     if (!lookup[dir]) {
@@ -32,6 +28,10 @@ module.exports = function (state, prev, send) {
         length: 0
       }
     }
+  }
+  if (lookup[filename] && !module.parent) {
+    console.log('rendering')
+    send('preview:file', {archiveKey: state.archive.key, entry: lookup[filename]}, noop)
   }
   var vals = Object.keys(lookup).map(key => lookup[key])
   var tree = yofs(state.archive.root, vals, onclick)
