@@ -32,7 +32,7 @@ app.router({default: '/404'}, [
   ['/team', require('./pages/landing/team')],
   ['/about', require('./pages/landing/about')],
   ['/:archiveKey', require('./pages/archive')],
-  ['/:archiveKey/:filename', require('./pages/archive')],
+  ['/:archiveKey/*', require('./pages/archive')],
   ['/', require('./pages/landing/splash')]
 ])
 

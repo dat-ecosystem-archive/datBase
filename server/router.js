@@ -110,6 +110,12 @@ module.exports = function (opts, db) {
     })
   })
 
+  router.get('/:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
   router.get('/:archiveKey/*', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)

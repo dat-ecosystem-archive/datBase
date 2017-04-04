@@ -4,7 +4,7 @@ const noop = function () {}
 
 module.exports = function (state, prev, send) {
   var entries = state.archive.entries
-  var filename = state.location.params.filename
+  var filename = state.location.params.wildcard
 
   var onclick = (ev, entry) => {
     if (entry.type === 'directory') {
@@ -20,7 +20,8 @@ module.exports = function (state, prev, send) {
   for (var i in entries) {
     var entry = entries[i]
     if (entry.name === filename && !module.parent) {
-      send('preview:file', {archiveKey: state.archive.key, entry: entry})
+      console.log('displaying', filename)
+      send('preview:file', {archiveKey: state.archive.key, entry: entry}, noop)
     }
     lookup[entry.name] = entry
     var dir = path.dirname(entry.name)
@@ -33,6 +34,6 @@ module.exports = function (state, prev, send) {
     }
   }
   var vals = Object.keys(lookup).map(key => lookup[key])
-  var tree = yofs('/', vals, onclick)
+  var tree = yofs(state.archive.root, vals, onclick)
   return tree.widget
 }
