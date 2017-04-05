@@ -31,6 +31,7 @@ Dats.prototype.get = function (key, cb) {
     if (err) return cb(err)
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
+      console.log('got archive')
       if (content) {
         var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
         self.archives[key] = archive
@@ -41,19 +42,8 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.entries = function (archive, cb) {
-  var TIMEOUT = 7000
   var stream = archive.list({live: false, limit: 100})
-  var cancelled = false
-
-  var timeout = setTimeout(function () {
-    var msg = 'timed out'
-    cancelled = true
-    return cb(new Error(msg))
-  }, TIMEOUT)
-
   collect(stream, function (err, entries) {
-    clearTimeout(timeout)
-    if (cancelled) return
     if (err) return cb(err)
     cb(null, entries)
   })

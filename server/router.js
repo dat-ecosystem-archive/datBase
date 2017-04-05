@@ -20,6 +20,7 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
+  const TIMEOUT = 5000
 
   var router = express()
   router.use(compression())
@@ -133,11 +134,21 @@ module.exports = function (opts, db) {
   }
 
   function archiveRoute (key, cb) {
+    var cancelled = false
     function onerror (err) {
       log.warn(key, err)
       state.archive.error = {message: err.message}
       return cb(state)
     }
+
+    var timeout = setTimeout(function () {
+      var msg = 'timed out'
+      log.info('timed out', key)
+      if (cancelled) return
+      cancelled = true
+      return onerror(new Error(msg))
+    }, TIMEOUT)
+
     var state = getDefaultAppState()
     try {
       state.archive.key = encoding.toStr(key)
@@ -149,6 +160,9 @@ module.exports = function (opts, db) {
       if (err) return onerror(err)
       log.info('got archive', archive.key.toString('hex'))
       dats.entries(archive, function (err, entries) {
+        clearTimeout(timeout)
+        if (cancelled) return
+        cancelled = true
         if (err) state.archive.error = {message: err.message}
         state.archive.size = archive.content.bytes
         state.archive.peers = archive.content.peers.length
