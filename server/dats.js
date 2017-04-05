@@ -31,7 +31,6 @@ Dats.prototype.get = function (key, cb) {
     if (err) return cb(err)
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
-      console.log('got archive')
       if (content) {
         var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
         self.archives[key] = archive
