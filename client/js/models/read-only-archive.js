@@ -20,6 +20,11 @@ module.exports = {
       return xtend(state, data)
     }
   },
+  subscriptions: {
+    metadata: function (send, done) {
+      send('archive:getMetadata', {}, done)
+    }
+  },
   effects: {
     getMetadata: function (state, data, send, done) {
       http({url: `/metadata/${state.key}`, method: 'GET', json: true}, function (err, resp, json) {
