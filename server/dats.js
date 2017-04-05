@@ -84,6 +84,7 @@ Dats.prototype.metadata = function (archive, cb) {
             dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
           } catch (e) {
           }
+          dat.size = archive.content.bytes
           return cb(null, dat)
         })
       })
