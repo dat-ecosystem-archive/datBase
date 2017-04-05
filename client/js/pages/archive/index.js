@@ -21,7 +21,7 @@ const archivePage = (state, prev, send) => {
     var cleaned = ARCHIVE_ERRORS[state.archive.error.message]
     if (cleaned) {
       var props = {
-        header: cleaned,
+        header: cleaned
       }
       if (cleaned === 'Looking for sources...') {
         props.icon = 'loader'
