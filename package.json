@@ -110,7 +110,7 @@
     "nodemailer-postmark-transport": "^1.1.0",
     "pretty-bytes": "^3.0.1",
     "pump": "^1.0.2",
-    "random-access-page-files": "^1.0.1",
+    "random-access-file": "^1.5.0",
     "range-parser": "^1.2.0",
     "relative-date": "^1.1.3",
     "render-data": "^2.2.0",
