@@ -27,6 +27,7 @@ module.exports = {
   },
   effects: {
     getMetadata: function (state, data, send, done) {
+      if (!state.key) return done()
       http({url: `/metadata/${state.key}`, method: 'GET', json: true}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
         send('archive:update', json, done)
