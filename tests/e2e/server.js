@@ -34,4 +34,16 @@ module.exports = new function () {
       client.end()
     })
   }
+  testCases['metadata is fetched within a couple seconds'] = (client) => {
+    client
+    .setValue("input[name='import-dat']", key)
+    client.keys(client.Keys.ENTER, function (done) {
+      client.pause(3000)
+      client
+        .expect.element('#fs').text.to.contain('dat.json').before(5000)
+      client.expect.element('#fs').text.to.contain('hello.txt').before(1000)
+      client.expect.element('#title').text.to.contain('hello world').before(5000)
+      client.end()
+    })
+  }
 }
