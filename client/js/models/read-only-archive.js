@@ -22,7 +22,9 @@ module.exports = {
   },
   subscriptions: {
     metadata: function (send, done) {
-      send('archive:getMetadata', {}, done)
+      setInterval(function () {
+        send('archive:getMetadata', {}, done)
+      }, 3000)
     }
   },
   effects: {
