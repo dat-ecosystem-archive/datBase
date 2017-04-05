@@ -97,9 +97,20 @@ module.exports = function (opts, db) {
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
+    var cancelled = false
+    var timeout = setTimeout(function () {
+      if (cancelled) return
+      cancelled = true
+      return res.status(200).json({error: {message: 'timed out'}})
+    }, 3000)
+
+    console.log('getting key')
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
       dats.metadata(archive, function (err, info) {
+        clearTimeout(timeout)
+        if (cancelled) return
+        cancelled = true
         if (err) return onerror(err, res)
         return res.status(200).json(info)
       })

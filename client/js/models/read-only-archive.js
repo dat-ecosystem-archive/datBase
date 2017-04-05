@@ -32,7 +32,8 @@ module.exports = {
       if (!state.key) return done()
       http({url: `/metadata/${state.key}`, method: 'GET', json: true}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
-        if (!err) json.error = null
+        if (json.error) return send('archive:update', json, done)
+        if (json.entries) json.error = null
         send('archive:update', json, done)
       })
     },
