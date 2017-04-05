@@ -154,6 +154,7 @@ module.exports = function (opts, db) {
       state.archive.key = encoding.toStr(key)
     } catch (err) {
       log.warn('key malformed', key)
+      cancelled = true
       return onerror(err)
     }
     dats.get(state.archive.key, function (err, archive) {

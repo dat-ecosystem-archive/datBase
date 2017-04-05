@@ -20,7 +20,6 @@ module.exports = new function () {
       .assert.containsText('body', 'No dat here.')
     })
   }
-
   testCases['viewing a dat that exists with file list works'] = (client) => {
     client
     .setValue("input[name='import-dat']", key)
