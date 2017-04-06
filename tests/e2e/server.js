@@ -1,7 +1,7 @@
 var fs = require('fs')
 var path = require('path')
 var testServer = process.env.TEST_SERVER || 'https://datproject.org'
-const os = require('os');
+const os = require('os')
 const modificatorKey = (os.type().toLowerCase() === 'darwin')
  ? 'COMMAND'
  : 'CONTROL'
@@ -50,5 +50,5 @@ module.exports = new function () {
       .click("input[name='import-dat']")
       .keys([client.Keys[modificatorKey], 'v'])
       .expect.element("input[name='import-dat']").value.to.equal(key).before(3000)
-    }
+  }
 }
