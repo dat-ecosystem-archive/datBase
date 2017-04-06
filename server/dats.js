@@ -1,8 +1,10 @@
 const Archiver = require('hypercore-archiver')
+const level = require('level-party')
+const path = require('path')
 const mkdirp = require('mkdirp')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
-const pages = require('random-access-page-files')
+const raf = require('random-access-file')
 const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
 const hyperhttp = require('hyperdrive-http')
@@ -13,7 +15,7 @@ module.exports = Dats
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archiver = Archiver({dir: dir, sparse: true, storage: pages})
+  this.archiver = Archiver({db: level(path.join(dir, 'db')), dir: dir, sparse: true, storage: raf})
   this.swarm = createSwarm(this.archiver)
   this.drive = hyperdrive(this.archiver.db)
   this.archives = {}
@@ -24,14 +26,12 @@ Dats.prototype.get = function (key, cb) {
   var self = this
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
-  if (self.archives[key]) return cb(null, self.archives[key])
   self.archiver.add(buf, {content: true}, function (err) {
     if (err) return cb(err)
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
       if (content) {
         var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
-        self.archives[key] = archive
         return cb(null, archive)
       }
     })
@@ -39,19 +39,8 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.entries = function (archive, cb) {
-  var TIMEOUT = 7000
   var stream = archive.list({live: false, limit: 100})
-  var cancelled = false
-
-  var timeout = setTimeout(function () {
-    var msg = 'timed out'
-    cancelled = true
-    return cb(new Error(msg))
-  }, TIMEOUT)
-
   collect(stream, function (err, entries) {
-    clearTimeout(timeout)
-    if (cancelled) return
     if (err) return cb(err)
     cb(null, entries)
   })
@@ -93,6 +82,7 @@ Dats.prototype.metadata = function (archive, cb) {
             dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
           } catch (e) {
           }
+          dat.size = archive.content.bytes
           return cb(null, dat)
         })
       })

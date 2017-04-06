@@ -11,7 +11,7 @@ module.exports = function (text, send) {
       </div>
     </a>
   `
-  var clipboard = new Clipboard(el)
+  var clipboard = new Clipboard('a.clipboard')
   clipboard.on('success', function () {
     send('message:success', 'Copied to clipboard!')
   })
