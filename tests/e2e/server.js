@@ -13,23 +13,23 @@ module.exports = new function () {
   }
   testCases['viewing a dat that doesnt exist gives 404'] = (client) => {
     client
-    .url(testServer + '/install')
-    .setValue("input[name='import-dat']", 'hello')
-    client.keys(client.Keys.ENTER, function (done) {
-      client.pause(2000)
-      .assert.containsText('body', 'No dat here.')
-    })
+      .url(testServer + '/install')
+      .expect.element("input[name='import-dat']").value.to.equal('').before(2000)
+    client
+      .setValue("input[name='import-dat']", 'hello')
+      .keys(client.Keys.ENTER)
+      .expect.element('body').text.to.contain('No dat here.').before(2000)
   }
   testCases['viewing a dat with a key that doesnt exist gives 404'] = (client) => {
     // this is just a valid hash but doesn't resolve to a dat
-    var not_a_dat = 'e333a491c886867f9550afb6addf3bdad4204928af650412b988988d4c3b5fbc'
+    var notDat = 'e333a491c886867f9550afb6addf3bdad4204928af650412b988988d4c3b5fbc'
     client
-    .url(testServer + '/install')
-    .setValue("input[name='import-dat']", not_a_dat)
-    client.keys(client.Keys.ENTER, function (done) {
-      client.pause(7000)
-      .assert.containsText('body', 'No sources found.')
-    })
+      .url(testServer + '/install')
+      .expect.element("input[name='import-dat']").value.to.equal('').before(2000)
+    client
+      .setValue("input[name='import-dat']", notDat)
+      .keys(client.Keys.ENTER)
+      .expect.element('body').text.to.contain('No sources found.').before(7000)
   }
   testCases['viewing a dat that exists with file list works'] = (client) => {
     client
