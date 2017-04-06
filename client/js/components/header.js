@@ -30,9 +30,6 @@ const header = (state, prev, send) => {
               klass: 'btn btn--green new-dat',
               click: function () { window.location.href = '/install' }
             })}
-            ${importButton({
-              handler: function (link) { window.location.href = '/dat/' + link }
-            })}
             ${loginButton(state, prev, send)}
           </div>
         </div>
