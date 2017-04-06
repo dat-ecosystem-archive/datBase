@@ -20,6 +20,17 @@ module.exports = new function () {
       .assert.containsText('body', 'No dat here.')
     })
   }
+  testCases['viewing a dat with a key that doesnt exist gives 404'] = (client) => {
+    // this is just a valid hash but doesn't resolve to a dat
+    var not_a_dat = 'e333a491c886867f9550afb6addf3bdad4204928af650412b988988d4c3b5fbc'
+    client
+    .url(testServer + '/install')
+    .setValue("input[name='import-dat']", not_a_dat)
+    client.keys(client.Keys.ENTER, function (done) {
+      client.pause(7000)
+      .assert.containsText('body', 'No sources found.')
+    })
+  }
   testCases['viewing a dat that exists with file list works'] = (client) => {
     client
     .setValue("input[name='import-dat']", key)
