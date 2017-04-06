@@ -70,7 +70,7 @@
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
     "choo": "^4.1.0",
-    "clipboard": "^1.5.16",
+    "clipboard": "^1.6.1",
     "collect-stream": "^1.1.1",
     "compression": "^1.6.2",
     "dat-colors": "^3.4.0",
