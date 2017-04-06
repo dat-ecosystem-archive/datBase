@@ -26,14 +26,12 @@ Dats.prototype.get = function (key, cb) {
   var self = this
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
-  if (self.archives[key]) return cb(null, self.archives[key])
   self.archiver.add(buf, {content: true}, function (err) {
     if (err) return cb(err)
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
       if (content) {
         var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
-        self.archives[key] = archive
         return cb(null, archive)
       }
     })
@@ -84,6 +82,7 @@ Dats.prototype.metadata = function (archive, cb) {
             dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
           } catch (e) {
           }
+          dat.size = archive.content.bytes
           return cb(null, dat)
         })
       })

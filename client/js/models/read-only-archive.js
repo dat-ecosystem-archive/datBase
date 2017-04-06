@@ -22,7 +22,9 @@ module.exports = {
   },
   subscriptions: {
     metadata: function (send, done) {
-      send('archive:getMetadata', {}, done)
+      setInterval(function () {
+        send('archive:getMetadata', {}, done)
+      }, 3000)
     }
   },
   effects: {
@@ -30,6 +32,8 @@ module.exports = {
       if (!state.key) return done()
       http({url: `/metadata/${state.key}`, method: 'GET', json: true}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
+        if (json.error) return send('archive:update', json, done)
+        if (json.entries) json.error = null
         send('archive:update', json, done)
       })
     },

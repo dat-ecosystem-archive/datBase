@@ -1,4 +1,5 @@
 const fs = require('fs')
+const xtend = require('xtend')
 const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
@@ -20,7 +21,7 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
-  const TIMEOUT = 5000
+  const TIMEOUT = 1000
 
   var router = express()
   router.use(compression())
@@ -96,9 +97,20 @@ module.exports = function (opts, db) {
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
+    var cancelled = false
+    var timeout = setTimeout(function () {
+      if (cancelled) return
+      cancelled = true
+      return res.status(200).json({error: {message: 'timed out'}})
+    }, 3000)
+
+    console.log('getting key')
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
       dats.metadata(archive, function (err, info) {
+        clearTimeout(timeout)
+        if (cancelled) return
+        cancelled = true
         if (err) return onerror(err, res)
         return res.status(200).json(info)
       })
@@ -160,14 +172,12 @@ module.exports = function (opts, db) {
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       log.info('got archive', archive.key.toString('hex'))
-      dats.entries(archive, function (err, entries) {
+      dats.metadata(archive, function (err, info) {
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true
         if (err) state.archive.error = {message: err.message}
-        state.archive.size = archive.content.bytes
-        state.archive.peers = archive.content.peers.length
-        state.archive.entries = entries
+        state.archive = xtend(state.archive, info)
         cb(state)
       })
     })
