@@ -20,13 +20,17 @@ module.exports = function (state, prev, send) {
       <img src="/public/img/screenshot-dat-desktop.png" />
     </div>
     <p class="tc pv3 color-white">
-      <a href="http://datproject.github.io/dat-desktop/mac" class="btn btn--green btn--cta open-desktop" target="_blank">
+      <a href="http://datproject.github.io/dat-desktop/mac" class="btn btn--green btn--full btn--cta open-desktop mt2" target="_blank">
         <svg><use xlink:href="#daticon-open-in-desktop"/></svg>
         Download for Mac
       </a>
+      <a href="http://datproject.github.io/dat-desktop/linux" class="btn btn--green btn--cta open-desktop mt2" target="_blank">
+        <svg><use xlink:href="#daticon-open-in-desktop"/></svg>
+        Download for Linux
+      </a>
     </p>
     <p class="f7 tc color-neutral-50">
-      <a href=" http://datproject.github.io/dat-desktop/linux">Download for Linux</a>. Windows coming soon.
+      Windows coming soon.
     </p>
   </div>
 </section>
