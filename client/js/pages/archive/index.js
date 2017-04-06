@@ -11,7 +11,7 @@ const hyperdriveStats = require('../../elements/hyperdrive-stats')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': 'No dat here.',
-  'timed out': 'Looking for sources...',
+  'timed out': 'Looking for sources…',
   'Username not found.': 'That user does not exist.',
   'Dat with that name not found.': 'That user does not have a dat with that name.'
 }
@@ -23,7 +23,7 @@ const archivePage = (state, prev, send) => {
       var props = {
         header: cleaned
       }
-      if (cleaned === 'Looking for sources...') {
+      if (cleaned === 'Looking for sources…') {
         props.icon = 'loader'
         props.body = 'Is the address correct? This could take a while.'
       }

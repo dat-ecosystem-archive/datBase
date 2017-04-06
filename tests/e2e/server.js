@@ -33,7 +33,7 @@ module.exports = new function () {
     client
       .setValue("input[name='import-dat']", notDat)
       .keys(client.Keys.ENTER)
-      .expect.element('body').text.to.contain('No sources found.').before(7000)
+      .expect.element('body').text.to.contain('Looking for sources…').before(7000)
   }
   testCases['viewing a dat that exists with file list works'] = (client) => {
     client
