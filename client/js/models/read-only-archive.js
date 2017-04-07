@@ -40,7 +40,7 @@ module.exports = {
     delete: function (state, data, send, done) {
       api.dats.delete({id: data.id}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
-        window.location.href = '/list'
+        window.location.href = '/explore'
       })
     }
   }

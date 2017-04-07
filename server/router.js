@@ -51,7 +51,7 @@ module.exports = function (opts, db) {
   router.get('/reset-password', send)
   router.get('/browser', send)
 
-  router.get('/list', function (req, res) {
+  router.get('/explore', function (req, res) {
     var state = getDefaultAppState()
     db.queries.datList(req.params, function (err, resp) {
       if (err) return onerror(err, res)
