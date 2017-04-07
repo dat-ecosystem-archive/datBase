@@ -20,17 +20,10 @@ module.exports = {
       return xtend(state, data)
     }
   },
-  subscriptions: {
-    metadata: function (send, done) {
-      setInterval(function () {
-        send('archive:getMetadata', {}, done)
-      }, 3000)
-    }
-  },
   effects: {
     getMetadata: function (state, data, send, done) {
       if (!state.key) return done()
-      http({url: `/metadata/${state.key}`, method: 'GET', json: true}, function (err, resp, json) {
+      http({url: `/metadata/${state.key}?timeout=${data.timeout}`, method: 'GET', json: true}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
         if (json.error) return send('archive:update', json, done)
         if (json.entries) json.error = null

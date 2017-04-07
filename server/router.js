@@ -21,7 +21,6 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
-  const TIMEOUT = 1000
 
   var router = express()
   router.use(compression())
@@ -97,20 +96,10 @@ module.exports = function (opts, db) {
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
-    var cancelled = false
-    var timeout = setTimeout(function () {
-      if (cancelled) return
-      cancelled = true
-      return res.status(200).json({error: {message: 'timed out'}})
-    }, 3000)
-
-    console.log('getting key')
+    log.debug('requesting metadata for key', req.params.archiveKey)
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.metadata(archive, function (err, info) {
-        clearTimeout(timeout)
-        if (cancelled) return
-        cancelled = true
+      dats.metadata(archive, {timeout: parseInt(req.query.timeout)}, function (err, info) {
         if (err) return onerror(err, res)
         return res.status(200).json(info)
       })
@@ -146,36 +135,23 @@ module.exports = function (opts, db) {
   }
 
   function archiveRoute (key, cb) {
-    var cancelled = false
     function onerror (err) {
       log.warn(key, err)
       state.archive.error = {message: err.message}
       return cb(state)
     }
 
-    var timeout = setTimeout(function () {
-      var msg = 'timed out'
-      log.info('timed out', key)
-      if (cancelled) return
-      cancelled = true
-      return onerror(new Error(msg))
-    }, TIMEOUT)
-
     var state = getDefaultAppState()
     try {
       state.archive.key = encoding.toStr(key)
     } catch (err) {
       log.warn('key malformed', key)
-      cancelled = true
       return onerror(err)
     }
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       log.info('got archive', archive.key.toString('hex'))
-      dats.metadata(archive, function (err, info) {
-        clearTimeout(timeout)
-        if (cancelled) return
-        cancelled = true
+      dats.metadata(archive, {timeout: 1000}, function (err, info) {
         if (err) state.archive.error = {message: err.message}
         state.archive = xtend(state.archive, info)
         cb(state)

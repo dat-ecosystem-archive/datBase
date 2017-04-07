@@ -17,7 +17,13 @@ var ARCHIVE_ERRORS = {
 }
 
 const archivePage = (state, prev, send) => {
+  console.log(state.archive.error)
   if (state.archive.error) {
+    if (state.archive.error.message === 'timed out' && state.archive.entries) {
+      // we have the entries, but timed out trying to get the dat.json metadata.
+      state.archive.error = {message: 'Loading dat.json contents…'}
+      send('archive:getMetadata', {timeout: 60000})
+    }
     var cleaned = ARCHIVE_ERRORS[state.archive.error.message]
     if (cleaned) {
       var props = {
@@ -27,6 +33,7 @@ const archivePage = (state, prev, send) => {
         props.icon = 'loader'
         props.body = 'Is the address correct? This could take a while.'
       }
+
       return html`
       <div>
       ${header(state, prev, send)}
