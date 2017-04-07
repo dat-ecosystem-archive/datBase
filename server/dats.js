@@ -57,7 +57,8 @@ Dats.prototype.file = function (key, filename, cb) {
   })
 }
 
-Dats.prototype.metadata = function (archive, cb) {
+Dats.prototype.metadata = function (archive, opts, cb) {
+  if (typeof opts === 'function') return this.metadata(archive, {}, opts)
   var self = this
   var dat
   if (!archive.content) dat = {}
@@ -67,23 +68,39 @@ Dats.prototype.metadata = function (archive, cb) {
       size: archive.content.bytes
     }
   }
+  var cancelled = false
+
+  var timeout = setTimeout(function () {
+    var msg = 'timed out'
+    if (cancelled) return
+    cancelled = true
+    return cb(new Error(msg), dat)
+  }, opts.timeout)
+
+  function done (err, dat) {
+    clearTimeout(timeout)
+    if (cancelled) return
+    cancelled = true
+    return cb(err, dat)
+  }
+
   self.entries(archive, function (err, entries) {
-    if (err) return cb(err)
     dat.entries = entries
+    if (err || cancelled) return done(err, dat)
     var filename = 'dat.json'
     archive.get(filename, function (err, entry) {
-      if (err) return cb(null, dat)
+      if (err || cancelled) return done(err, dat)
       archive.download(filename, true, function (err) {
-        if (err) return cb(err, dat)
+        if (err || cancelled) return done(err, dat)
         var readStream = archive.createFileReadStream(filename)
         collect(readStream, function (err, metadata) {
-          if (err) return cb(null, dat)
+          if (err) return done(err, dat)
           try {
             dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
           } catch (e) {
           }
           dat.size = archive.content.bytes
-          return cb(null, dat)
+          return done(null, dat)
         })
       })
     })
@@ -134,6 +151,7 @@ function createSwarm (archiver, opts) {
   return swarm
 
   function serveArchive (key) {
-    swarm.join(archiver.discoveryKey(key))
+    var hex = archiver.discoveryKey(key)
+    swarm.join(hex)
   }
 }
