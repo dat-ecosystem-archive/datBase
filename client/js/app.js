@@ -8,7 +8,7 @@ const css = require('sheetify')
 // define models:
 app.model(require('./models/read-only-archive'))
 app.model(require('./models/user'))
-app.model(require('./models/list'))
+app.model(require('./models/explore'))
 app.model(require('./models/error'))
 app.model(require('./models/message'))
 app.model(require('./models/help'))
@@ -20,7 +20,7 @@ css('dat-colors')
 app.router({default: '/404'}, [
   ['/install', require('./pages/create')],
   ['/browser', require('./pages/create/browser')],
-  ['/list', require('./pages/list')],
+  ['/explore', require('./pages/explore')],
   ['/register', require('./pages/auth/register')],
   ['/login', require('./pages/auth/login')],
   ['/reset-password', require('./pages/auth/reset-password')],

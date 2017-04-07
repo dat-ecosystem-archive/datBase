@@ -4,6 +4,73 @@ A registry for dats. [datproject.org](http://datproject.org)
 
 [![Build Status](https://travis-ci.org/datproject/datproject.org.svg?branch=master)](https://travis-ci.org/datproject/datproject.org)
 
+### Develop
+
+Install dependencies.
+
+```
+npm install
+```
+
+Create config file.
+
+You can use override the defaults by copying the example config to `config.local.js` and make changes.
+
+Initialize the database. You only have to do this once:
+
+```
+node server/database/init.js
+```
+
+
+Watch assets and start server in one command:
+
+```
+npm start
+```
+
+### Creating examples
+
+Run the following command to create a user with the given email address. The
+user will have the password `dogsandcats.`
+
+```
+node scripts/user-and-dat.js <email-address>
+```
+
+To create just dats for a given user that already exists, use
+```
+node scripts/add-dats-for-user.js <email-address> <password>
+```
+
+
+
+### Build for production
+```
+npm run build
+npm run minify
+npm run version
+```
+
+### Getting invited-users list
+
+```
+git clone git@github.com:datproject/invited-users.git
+```
+
+
+### Running end-to-end tests
+
+Docker and `docker-compose` are required.
+
+```
+docker-compose build
+docker-compose up -d newdat && sleep 10
+docker-compose run --rm nightwatch
+```
+
+You may also see the test browser in action with [VNC](https://github.com/blueimp/nightwatch).
+
 ## API
 
 ##### ```GET /api/v1/:model```
@@ -59,64 +126,3 @@ Success returns number of rows deleted.
 
 #####  ```/api/v1/register```
 #####  ```/api/v1/login```
-
-### Develop
-
-Install dependencies.
-
-```
-npm install
-```
-
-Create config file.
-
-You can use override the defaults by copying the example config to `config.local.js` and make changes.
-
-Initialize the database. You only have to do this once:
-
-```
-node server/database/init.js
-```
-
-
-Watch assets and start server in one command:
-
-```
-npm start
-```
-
-### Getting test user and dat
-
-Run the following command to create a user with the given email address. The
-user will have the password `dogsandcats.`
-
-```
-node server/database/populate.js <email-address>
-```
-
-
-### Build for production
-```
-npm run build
-npm run minify
-npm run version
-```
-
-### Getting invited-users list
-
-```
-git clone git@github.com:datproject/invited-users.git
-```
-
-
-### Running end-to-end tests
-
-Docker and `docker-compose` are required.
-
-```
-docker-compose build
-docker-compose up -d newdat && sleep 10
-docker-compose run --rm nightwatch
-```
-
-You may also see the test browser in action with [VNC](https://github.com/blueimp/nightwatch).
