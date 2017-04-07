@@ -29,7 +29,7 @@
 
 .dat-logo__word {
   display: none;
-  @include breakpoint (md1) {
+  @media (min-width: $md1) {
     display: block;
   }
 }
