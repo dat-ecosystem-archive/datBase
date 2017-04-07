@@ -141,6 +141,15 @@ module.exports = function (opts, db) {
       return cb(state)
     }
 
+    // TODO: handle this at the response level?
+    var cancelled = false
+    var timeout = setTimeout(function () {
+      var msg = 'timed out'
+      if (cancelled) return
+      cancelled = true
+      return onerror(new Error(msg))
+    }, 1000)
+
     var state = getDefaultAppState()
     try {
       state.archive.key = encoding.toStr(key)
@@ -148,9 +157,14 @@ module.exports = function (opts, db) {
       log.warn('key malformed', key)
       return onerror(err)
     }
+
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
       log.info('got archive', archive.key.toString('hex'))
+      clearTimeout(timeout)
+      if (cancelled) return
+      cancelled = true
+
       dats.metadata(archive, {timeout: 1000}, function (err, info) {
         if (err) state.archive.error = {message: err.message}
         state.archive = xtend(state.archive, info)
