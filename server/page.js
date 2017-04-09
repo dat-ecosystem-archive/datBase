@@ -10,7 +10,9 @@ function page (url, contents, appState) {
       title: 'Dat',
       author: 'Dat',
       description: 'Dat is the non-profit, secure, and distributed package manager for data.',
-      image: 'https://datproject.org/public/img/dat-hexagon.svg'
+      image: 'https://datproject.org/public/img/dat-hexagon.png',
+      twitterImage: 'https://datproject.org/public/img/dat-hexagon.png',
+      twitterSite: '@dat_project'
     }
     var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : {}
     md = xtend(defaultMetadata, md)
@@ -20,7 +22,9 @@ function page (url, contents, appState) {
       <meta name="description" content="${md.description}" />
       <meta property="og:description" content="${md.description}" />
       <meta property="og:url" content="${url}" />
-      <meta property="og:image" content="${md.image}" />`
+      <meta property="og:image" content="${md.image}" />
+      <meta property="twitter:site" content="${md.twitterAccount}" />
+      <meta property="twitter:image" content="${md.twitterSite}" />`
   }
 
   return `<html>
@@ -31,9 +35,8 @@ function page (url, contents, appState) {
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500|Source+Sans+Pro:400,700" rel="stylesheet">
         <link rel="icon" href="/public/img/favicon.ico">
         ${renderMetaTags()}
-        <meta property="og:site_name" content="Dat Land" />
+        <meta property="og:site_name" content="Dat" />
         <meta property="og:type" content="article" />
-        <meta property="og:image" content="http://dat.land/public/img/dat-data-logo.svg" />
       </head>
       <body>
         <div id="app">
