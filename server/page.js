@@ -11,7 +11,7 @@ function page (url, contents, appState) {
       author: 'Dat',
       description: 'Dat is the non-profit, secure, and distributed package manager for data.',
       image: 'https://datproject.org/public/img/dat-hexagon.png',
-      twitterImage: 'https://datproject.org/public/img/dat-hexagon.png',
+      twitterImage: 'https://datproject.org/public/img/dat-data-logo.png',
       twitterSite: '@dat_project'
     }
     var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : {}
@@ -23,8 +23,8 @@ function page (url, contents, appState) {
       <meta property="og:description" content="${md.description}" />
       <meta property="og:url" content="${url}" />
       <meta property="og:image" content="${md.image}" />
-      <meta property="twitter:site" content="${md.twitterAccount}" />
-      <meta property="twitter:image" content="${md.twitterSite}" />`
+      <meta property="twitter:site" content="${md.twitterSite}" />
+      <meta property="twitter:image" content="${md.twitterImage}" />`
   }
 
   return `<html>
