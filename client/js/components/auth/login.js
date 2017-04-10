@@ -4,23 +4,11 @@ const form = require('get-form-data')
 
 var prefix = css`
   :host {
-    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
     width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    background-color: rgba(41,54,72,.8);
-    .modal {
-      min-width: 20rem;
-      min-width: 25rem;
-      padding: 2rem 2.5rem 2rem;
-      background-color: white;
-      box-shadow: 0 1.2rem 2.4rem rgba(0,0,0,.5);
-    }
     form {
       width: 16rem;
       margin-left: auto;
@@ -29,12 +17,6 @@ var prefix = css`
     label, input {
       width: 100%;
       text-transform: none;
-    }
-    .x {
-      top: 0;
-      right: 0;
-      position: absolute;
-      margin: 5px;
     }
   }
 `
@@ -47,10 +29,9 @@ const login = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="login ${state.user.login} ${prefix}">
-    <div class="relative flex flex-column justify-center modal">
+  return html`<div class="login ${prefix}">
+    <div class="relative flex flex-column justify-center">
       <h3 class="f4">Log In</h3>
-      <a class="x" onclick=${() => send('user:loginPanel', false)}>X</a>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>

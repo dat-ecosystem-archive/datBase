@@ -6,7 +6,6 @@ const defaultState = {
   id: null,
   email: null,
   token: null,
-  login: 'hidden',
   register: 'hidden',
   sidePanel: 'hidden',
   passwordResetResponse: null,
@@ -23,9 +22,6 @@ module.exports = {
     },
     sidePanel: (state, data) => {
       return {sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden'}
-    },
-    loginPanel: (state, showPanel) => {
-      return {login: showPanel ? '' : 'hidden'}
     },
     passwordResetResponse: function (state, data) {
       return { passwordResetResponse: data }
