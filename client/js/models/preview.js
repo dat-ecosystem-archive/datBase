@@ -1,6 +1,5 @@
 var xtend = require('xtend')
 
-var noop = function () {}
 var defaultState = {
   isPanelOpen: false,
   isLoading: false,
@@ -17,17 +16,23 @@ module.exports = {
     },
     openPanel: (state, data) => {
       return {isPanelOpen: true}
-    },
-    closePanel: (state, data) => {
-      return defaultState
     }
   },
   effects: {
     file: (state, data, send, done) => {
       data.error = false
-      send('preview:update', data, noop)
-      send('preview:openPanel', {}, done)
+      send('preview:update', data, function () {
+        send('location:set', `/${data.entry.archiveKey}/${data.entry.name}`, function () {
+          send('preview:openPanel', {}, done)
+        })
+      })
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
+    },
+    closePanel: (state, data, send, done) => {
+      console.log(state)
+      send('location:set', `/${state.entry.archiveKey}`, function () {
+        send('preview:update', defaultState, done)
+      })
     }
   }
 }

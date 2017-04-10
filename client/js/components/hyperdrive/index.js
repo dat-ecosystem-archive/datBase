@@ -7,7 +7,8 @@ module.exports = function (state, prev, send) {
       send('archive:update', {root: entry.name})
       return true
     } else {
-      send('preview:file', {archiveKey: state.archive.key, entry: entry}, noop)
+      entry.archiveKey = state.archive.key
+      send('preview:file', {entry: entry}, noop)
       return false
     }
   }

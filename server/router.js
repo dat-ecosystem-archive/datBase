@@ -103,6 +103,7 @@ module.exports = function (opts, db) {
         if (err) return onerror(err, res)
         archive.get(filename, function (err, entry) {
           if (err) return onerror(err, res)
+          entry.archiveKey = req.params.archiveKey
           state.preview.entry = entry
           return sendSPA(req, res, state)
         })
