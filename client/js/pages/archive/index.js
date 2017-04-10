@@ -17,7 +17,6 @@ var ARCHIVE_ERRORS = {
 }
 
 const archivePage = (state, prev, send) => {
-  console.log(state.archive.error)
   if (state.archive.error) {
     if (state.archive.error.message === 'timed out' && state.archive.entries.length) {
       // we have the entries, but timed out trying to get the dat.json metadata.
