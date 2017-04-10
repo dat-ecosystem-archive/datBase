@@ -18,9 +18,10 @@ module.exports = function (state, prev, send) {
       link: false
     })
   }
-
+  if (module.parent) return
   if (!entryName) return
   if (entryName === previousEntryName) return display
+  if (!state.preview.panelOpen) send('preview:openPanel', {})
   if (state.preview.entry.length > (1048576 * 10)) {
     return send('preview:update', {error: {
       message: 'Cannot preview',

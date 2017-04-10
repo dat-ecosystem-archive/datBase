@@ -83,7 +83,7 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/dat/:archiveKey/*', function (req, res) {
+  router.get('/download/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
     var filename = req.params[0]
     dats.get(req.params.archiveKey, function (err, archive) {
@@ -91,6 +91,21 @@ module.exports = function (opts, db) {
       dats.file(req.params.archiveKey, filename, function (err) {
         if (err) return onerror(err, res)
         return dats.http.file(req, res, archive, filename)
+      })
+    })
+  })
+
+  router.get('/:archiveKey/*', function (req, res) {
+    log.debug('getting file contents', req.params)
+    var filename = req.params[0]
+    archiveRoute(req.params.archiveKey, function (state) {
+      dats.get(req.params.archiveKey, function (err, archive) {
+        if (err) return onerror(err, res)
+        archive.get(filename, function (err, entry) {
+          if (err) return onerror(err, res)
+          state.preview.entry = entry
+          return sendSPA(req, res, state)
+        })
       })
     })
   })
@@ -106,7 +121,7 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/:username/:dataset', function (req, res) {
+  router.get('/~:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       var contentType = req.accepts(['html', 'json'])
