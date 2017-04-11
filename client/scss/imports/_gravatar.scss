@@ -1,9 +1,10 @@
 // TODO: HACK. use sheetify
 .gravatar {
   width: 2rem;
-  height: auto;
+  height: 2rem;
   border-radius: 1rem;
   border: 2px solid $color-neutral-40;
+  background-color: $color-pink;
   margin: auto;
   display: block;
   vertical-align: middle;

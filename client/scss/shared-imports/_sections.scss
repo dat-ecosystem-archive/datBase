@@ -1,11 +1,11 @@
 .section {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
-  @media screen and (min-width: $medium) {
+  @media screen and (min-width: $lg) {
     padding-top: 4rem;
     padding-bottom: 4rem;
   }
@@ -16,19 +16,19 @@
   background-repeat: no-repeat;
   background-position: 50% 46%;
   background-size: 240%, 100%;
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     background-position: 50% 64%;
     background-size: 160%, 100%;
   }
-  @media screen and (min-width: $medium) {
+  @media screen and (min-width: $lg) {
     background-position: 50% 64%;
     background-size: 95%, 100%;
   }
-  @media screen and (min-width: $large) {
+  @media screen and (min-width: $xxl) {
     background-position: 50% 64%;
     background-size: 90%, 100%;
   }
-  @media screen and (min-width: $huge) {
+  @media screen and (min-width: $xxxl) {
     background-position: 50% 64%;
     background-size: 90%, 100%;
   }
@@ -39,14 +39,14 @@
   background-repeat: no-repeat;
   background-position: 50vw 46%;
   background-size: 200%;
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     background-size: 100%;
   }
 }
 
 .splash-visual {
   width: 100%;
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     width: 80%;
   }
   max-width: 900px;
@@ -63,7 +63,7 @@
   img {
     display: block;
   }
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     min-height: 30vh;
   }
   animation: popup 1.5s;
