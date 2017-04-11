@@ -106,8 +106,6 @@ module.exports = function (state, prev, send) {
             `
           })}
         </ul>
-        <div>My Profile</div>
-        <div>Account</div>
       </div>
       <div class="mb2">
         <button class="btn btn--large btn--green btn--full" onclick=${() => send('user:logout', {})}>LOGOUT</button>
