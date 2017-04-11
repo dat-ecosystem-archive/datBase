@@ -4,19 +4,33 @@
   margin-right: auto;
   margin-left: auto;
   max-width: 64rem; // 1024px
-  @media screen and (min-width: $xsmall) {
+  @media screen and (min-width: $sm) {
     padding-right: 1.5rem;
     padding-left: 1.5rem;
   }
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     padding-right: 2rem;
     padding-left: 2rem;
   }
 }
 
-.container--full {
+.container--top-bar {
   width: auto;
   max-width: 100%;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  @media screen and (min-width: $sm) {
+    padding-right: .5rem;
+    padding-left: .5rem;
+  }
+  @media screen and (min-width: $md1) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  @media screen and (min-width: $lg) {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
 }
 
 .container--narrow {

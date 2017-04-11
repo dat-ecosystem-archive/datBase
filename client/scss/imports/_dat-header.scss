@@ -9,7 +9,7 @@
 }
 
 .dat-header__actions {
-  @media (min-width: $md1) {
+  @media only screen and (min-width: $md1) {
     float: right;
     margin-left: 2rem;
   }
@@ -53,7 +53,7 @@
   display: inline-block;
   margin-right: 1rem;
   color: $color-neutral-60;
-  @media (min-width: $md1) {
+  @media only screen and (min-width: $md1) {
     margin-right: 1.5rem;
   }
   p {

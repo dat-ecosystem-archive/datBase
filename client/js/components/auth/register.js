@@ -30,6 +30,22 @@ var prefix = css`
       width: 100%;
       text-transform: none;
     }
+    .close-button {
+      position: absolute;
+      right: .5rem;
+      top: .5rem;
+      display: block;
+      overflow: hidden;
+      color: var(--color-neutral-20);
+      &:hover, &:focus {
+        color: var(--color-neutral-40);
+      }
+      svg {
+        fill: currentColor;
+        max-width: 1.5rem;
+        max-height: 1.5rem;
+      }
+    }
   }
 `
 
@@ -44,6 +60,11 @@ const register = (state, prev, send) => {
   return html`<div class="register ${state.user.register} ${prefix}">
     <div class="relative flex flex-column justify-center modal">
       <h3 class="f4">Register Your Dat Account</h3>
+      <a class="close-button" title="Close" onclick=${() => send('user:registerPanel', false)}>
+        <svg>
+          <use xlink:href="#daticon-cross" />
+        </svg>
+      </a>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>
@@ -71,7 +92,7 @@ const register = (state, prev, send) => {
           </label>
         </p>
         <p>
-          <input type="submit" value="Register" class="w100 btn btn--green" />
+          <input type="submit" value="Register" class="w100 btn btn--green btn--full" />
         </p>
         <p class="f7">
           <a href="/login">Already Have an Account? Log In</a>

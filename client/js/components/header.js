@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const panel = require('./auth/user-panel')
 const login = require('./auth/login')
+const register = require('./auth/register')
 const loginButton = require('./login-button')
 const button = require('../elements/button')
 const importButton = require('../elements/import-button')
@@ -9,10 +10,11 @@ const message = require('../elements/message')
 const header = (state, prev, send) => {
   return html`<div>
     ${panel(state, prev, send)}
+    ${register(state, prev, send)}
     ${login(state, prev, send)}
     <header class="site-header">
       ${message(state.message)}
-      <div class="container container--full">
+      <div class="container container--top-bar">
         <div class="site-header__wrapper">
           <a href="/" data-no-routing class="dat-logo dat-logo--on-dark">
             <img src="/public/img/dat-hexagon.svg" />

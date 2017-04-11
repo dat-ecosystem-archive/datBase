@@ -2,7 +2,7 @@ $padding-site-main: 3rem;
 
 html {
   font-size: 87.5%;
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     font-size: 100%;
   }
 }
