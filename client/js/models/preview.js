@@ -29,8 +29,9 @@ module.exports = {
       // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
     },
     closePanel: (state, data, send, done) => {
-      console.log(state)
-      send('location:set', `/${state.entry.archiveKey}`, function () {
+      var arr = state.entry.name.split('/')
+      var path = arr.splice(0, arr.length - 1)
+      send('location:set', `/${state.entry.archiveKey}/${path}`, function () {
         send('preview:update', defaultState, done)
       })
     }

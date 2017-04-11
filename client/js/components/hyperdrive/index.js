@@ -4,7 +4,7 @@ const noop = function () {}
 module.exports = function (state, prev, send) {
   var onclick = (ev, entry) => {
     if (entry.type === 'directory') {
-      send('archive:update', {root: entry.name})
+      send('archive:directory', entry.name)
       return true
     } else {
       entry.archiveKey = state.archive.key

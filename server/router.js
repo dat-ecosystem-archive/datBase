@@ -102,9 +102,21 @@ module.exports = function (opts, db) {
       dats.get(req.params.archiveKey, function (err, archive) {
         if (err) return onerror(err, res)
         archive.get(filename, function (err, entry) {
-          if (err) return onerror(err, res)
-          entry.archiveKey = req.params.archiveKey
-          state.preview.entry = entry
+          if (err) {
+            state.archive.error = {message: err.message}
+            return sendSPA(req, res, state)
+          }
+
+          if (entry.type === 'directory') {
+            state.archive.root = entry.name
+          } else {
+            var arr = entry.name.split('/')
+            if (arr.length > 1) {
+              state.archive.root = arr.splice(0, arr.length - 1).join('/')
+            }
+            entry.archiveKey = req.params.archiveKey
+            state.preview.entry = entry
+          }
           return sendSPA(req, res, state)
         })
       })
