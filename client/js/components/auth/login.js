@@ -1,25 +1,5 @@
 const html = require('choo/html')
-const css = require('sheetify')
 const form = require('get-form-data')
-
-var prefix = css`
-  :host {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    form {
-      width: 16rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    label, input {
-      width: 100%;
-      text-transform: none;
-    }
-  }
-`
 
 const login = (state, prev, send) => {
   function onSubmit (e) {
@@ -29,29 +9,29 @@ const login = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="login ${prefix}">
-    <div class="relative flex flex-column justify-center">
-      <h3 class="f4">Log In</h3>
+  return html`<div class="login">
+    <div class="mw5 pv5 center">
+      <h1 class="f4">Log In</h1>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>
-          <label for="email" class="dat-input dat-input--icon">
-            <input name="email" type="email" placeholder="E-mail" class="dat-input__input dat-input__input--icon" />
+          <label for="email" class="dat-input dat-input--icon w-100">
+            <input name="email" type="email" placeholder="E-mail" class="dat-input__input dat-input__input--icon w-100" />
             <svg class="dat-input__icon">
               <use xlink:href="#daticon-letter" />
             </svg>
           </label>
         </p>
         <p>
-          <label for="password" class="dat-input dat-input--icon">
-            <input name="password" type="password" placeholder="Password" class="dat-input__input dat-input__input--icon" />
+          <label for="password" class="dat-input dat-input--icon w-100">
+            <input name="password" type="password" placeholder="Password" class="dat-input__input dat-input__input--icon w-100" />
             <svg class="dat-input__icon">
               <use xlink:href="#daticon-lock" />
             </svg>
           </label>
         </p>
         <p>
-          <input type="submit" value="Login" class="btn btn--green" />
+          <input type="submit" value="Login" class="btn btn--green btn--full w-100" />
         </p>
         <p class="f7">
           <a href="/reset-password" class="mr3">Forgot Password?</a>
