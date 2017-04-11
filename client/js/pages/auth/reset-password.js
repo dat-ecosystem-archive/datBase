@@ -23,42 +23,62 @@ function body (state, prev, send) {
 
   if (accountKey && resetToken) {
     if (state.user.passwordResetConfirmResponse) {
-      return html`<div>
-        <h2 class="f2 ttu dark-gray">Reset your password</h2>
-        <p class="f3 pa3 bg-washed-yellow dib">${state.user.passwordResetConfirmResponse}</p>
+      return html`
+      <div>
+        <div class="mw5 pv5 center">
+          <h1 class="f4">Reset Your Password</h1>
+          <p class="pa3 bg-yellow-disabled">
+            ${state.user.passwordResetConfirmResponse}
+          </p>
+        </div>
       </div>`
     } else {
-      return html`<div>
-        <h2 class="f2 ttu dark-gray">Reset your password</h2>
-        <form action="" method="POST" id="password-reset-confirm-form" onsubmit=${onsubmitConfirm}>
-          <div class="mb3">
-            <label class="tracked ttu f6 gray">
-              <span>New password</span><br>
-              <input type="password" class="pa2 w5 ba b--silver mt2" name="newPassword">
-            </label>
-          </div>
-          <input type="submit" class="pa3 bg-light-gray hover-bg-gray hover-white pointer bn ba0"  value="Reset your password">
-        </form>
+      return html`
+      <div>
+        <div class="mw5 pv5 center">
+          <h1 class="f4">Reset Your Password</h1>
+          <form action="" method="POST" id="password-reset-confirm-form" onsubmit=${onsubmitConfirm}>
+            <p>
+              <label for="newPassword" class="dat-input dat-input--icon">
+                <input name="newPassword" type="password" placeholder="New password" class="dat-input__input dat-input__input--icon" />
+                <svg class="dat-input__icon">
+                  <use xlink:href="#daticon-lock" />
+                </svg>
+              </label>
+            </p>
+            <input type="submit" class="btn btn--green btn--full w-100" value="Reset your password">
+          </form>
+        </div>
       </div>`
     }
   } else {
     if (state.user.passwordResetResponse) {
-      return html`<div>
-        <h2 class="f2 ttu dark-gray">Reset your password</h2>
-        <p class="f3 pa3 bg-washed-yellow dib">${state.user.passwordResetResponse}</p>
+      return html`
+      <div>
+        <div class="mw5 pv5 center">
+          <h1 class="f4">Reset Your Password</h1>
+          <p class="pa3 bg-yellow-disabled">
+            ${state.user.passwordResetResponse}
+          </p>
+        </div>
       </div>`
     } else {
-      return html`<div>
-        <h2 class="f2 ttu dark-gray">Reset your password</h2>
-        <form action="" method="POST" id="password-reset-form" onsubmit=${onsubmitEmail}>
-          <div class="mb3">
-            <label class="tracked ttu f6 gray">
-              <span>Your email</span><br>
-              <input type="email" class="pa2 w5 ba b--silver mt2" name="email">
-            </label>
-          </div>
-          <input type="submit" class="pa3 bg-light-gray hover-bg-gray hover-white pointer bn ba0" value="Reset your password">
-        </form>
+      return html`
+      <div>
+        <div class="mw5 pv5 center">
+          <h1 class="f4">Reset Your Password</h1>
+          <form action="" method="POST" id="password-reset-form" onsubmit=${onsubmitEmail}>
+            <p>
+              <label for="email" class="dat-input dat-input--icon w-100">
+                <input name="email" type="email" placeholder="Your E-mail" class="dat-input__input dat-input__input--icon w-100" />
+                <svg class="dat-input__icon">
+                  <use xlink:href="#daticon-letter" />
+                </svg>
+              </label>
+            </p>
+            <input type="submit" class="btn btn--green btn--full w-100" value="Reset your password">
+          </form>
+        </div>
       </div>`
     }
   }

@@ -25,7 +25,7 @@ const header = (state, prev, send) => {
             ${button({
               icon: '/public/img/create-new-dat.svg',
               text: 'Create new Dat',
-              klass: 'btn btn--green new-dat',
+              klass: 'btn btn--white new-dat',
               click: function () { window.location.href = '/install' }
             })}
             ${loginButton(state, prev, send)}

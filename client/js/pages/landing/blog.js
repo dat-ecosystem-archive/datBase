@@ -32,7 +32,7 @@ module.exports = function (state, prev, send) {
               <a class="load-document" href="/blog/${post.name}">
                 <h2 class="mt0">${post.title}</h2>
               </a>
-              <div class="clearfix">
+              <div class="cf">
                 <div class="f6 measure-wide">
                   ${post.shortContent} …
                 </div>
