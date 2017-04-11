@@ -65,12 +65,6 @@ module.exports = function (opts, db) {
     sendSPA(req, res, state)
   })
 
-  router.get('/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
   router.get('/dat/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)
@@ -95,34 +89,6 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/:archiveKey/*', function (req, res) {
-    log.debug('getting file contents', req.params)
-    var filename = req.params[0]
-    archiveRoute(req.params.archiveKey, function (state) {
-      dats.get(req.params.archiveKey, function (err, archive) {
-        if (err) return onerror(err, res)
-        archive.get(filename, function (err, entry) {
-          if (err) {
-            state.archive.error = {message: err.message}
-            return sendSPA(req, res, state)
-          }
-
-          if (entry.type === 'directory') {
-            state.archive.root = entry.name
-          } else {
-            var arr = entry.name.split('/')
-            if (arr.length > 1) {
-              state.archive.root = arr.splice(0, arr.length - 1).join('/')
-            }
-            entry.archiveKey = req.params.archiveKey
-            state.preview.entry = entry
-          }
-          return sendSPA(req, res, state)
-        })
-      })
-    })
-  })
-
   router.get('/metadata/:archiveKey', function (req, res) {
     log.debug('requesting metadata for key', req.params.archiveKey)
     dats.get(req.params.archiveKey, function (err, archive) {
@@ -130,6 +96,18 @@ module.exports = function (opts, db) {
       dats.metadata(archive, {timeout: parseInt(req.query.timeout)}, function (err, info) {
         if (err) return onerror(err, res)
         return res.status(200).json(info)
+      })
+    })
+  })
+
+  router.get('/~:username', function (req, res) {
+    db.models.users.get({username: req.params.username}, function (err, results) {
+      if (err) return onerror(err, res)
+      if (!results.length) return onerror(new Error('Username not found.'), res)
+      var user = results[0]
+      db.models.dats.get({user_id: user.id}, function (err, results) {
+        if (err) return onerror(err, res)
+        return res.status(200).json(results)
       })
     })
   })
@@ -154,6 +132,36 @@ module.exports = function (opts, db) {
         dat.shortname = req.params.dataset
         state.archive.metadata = dat
         return sendSPA(req, res, state)
+      })
+    })
+  })
+
+  router.get('/:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
+  router.get('/:archiveKey/*', function (req, res) {
+    log.debug('getting file contents', req.params)
+    var filename = req.params[0]
+    archiveRoute(req.params.archiveKey, function (state) {
+      dats.get(req.params.archiveKey, function (err, archive) {
+        if (err) return onerror(err, res)
+        archive.get(filename, function (err, entry) {
+          if (err) {
+            state.preview.error = {message: err.message}
+            entry = {name: filename}
+          }
+          if (entry.type === 'directory') state.archive.root = entry.name
+          else {
+            var arr = entry.name.split('/')
+            if (arr.length > 1) state.archive.root = arr.splice(0, arr.length - 1).join('/')
+          }
+          entry.archiveKey = req.params.archiveKey
+          state.preview.entry = entry
+          return sendSPA(req, res, state)
+        })
       })
     })
   })

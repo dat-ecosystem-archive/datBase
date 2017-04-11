@@ -194,7 +194,7 @@ test('api', function (t) {
     })
 
     test('api can get a dat by username/dataset combo', function (t) {
-      client.secureRequest({url: '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, user) {
+      client.secureRequest({url: `${rootUrl}/~${users.joe.username}/${dats.cats.name}`, json: true}, function (err, resp, user) {
         t.ifError(err)
         t.same(user.name, dats.cats.name, 'is the right dat')
         t.end()
@@ -202,7 +202,7 @@ test('api', function (t) {
     })
 
     test('api can get a dat by username/dataset combo without login', function (t) {
-      request({url: rootUrl + '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, body) {
+      request({url: `${rootUrl}/~${users.joe.username}/${dats.cats.name}`, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.same(body.url, dats.cats.url, 'has url')
         t.end()

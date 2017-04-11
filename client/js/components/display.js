@@ -7,10 +7,12 @@ const renderData = module.parent ? function () { } : require('render-data')
 const display = html`<div id="item"></div>`
 
 module.exports = function (state, prev, send) {
+  if (module.parent) return
   const entryName = state.preview.entry && state.preview.entry.name
   const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
   if (state.preview.error) {
+    if (!state.preview.panelOpen) send('preview:openPanel', {})
     return fourohfour({
       icon: state.preview.error.icon,
       header: state.preview.error.message,
@@ -18,7 +20,6 @@ module.exports = function (state, prev, send) {
       link: false
     })
   }
-  if (module.parent) return
   if (!entryName) return
   if (entryName === previousEntryName) return display
   if (!state.preview.panelOpen) send('preview:openPanel', {})
