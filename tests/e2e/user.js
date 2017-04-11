@@ -5,7 +5,7 @@ module.exports = new function () {
   testCases['Registration require email in whitelist'] = (client) => {
     client
       .url(testServer + '/register')
-      .assert.containsText('body', 'Register Your Dat Account')
+      .assert.containsText('body', 'Create a New Account')
 
     client
       .setValue(".register form input[name='username']", 'testuser')
