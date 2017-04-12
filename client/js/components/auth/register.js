@@ -9,7 +9,7 @@ const register = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="register}">
+  return html`<div class="register">
     <div class="mw5 pv5 center">
       <h3 class="f4">Create a New Account</h3>
       <form onsubmit=${onSubmit}>
