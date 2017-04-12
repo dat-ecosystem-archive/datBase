@@ -179,7 +179,6 @@ module.exports = function (opts, db) {
 
     function onerror (err) {
       log.warn(key, err)
-      if (cancelled) return
       cancelled = true
       state.archive.error = {message: err.message}
       return cb(state)
