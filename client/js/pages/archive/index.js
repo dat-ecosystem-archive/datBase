@@ -17,9 +17,12 @@ var ARCHIVE_ERRORS = {
 }
 
 const archivePage = (state, prev, send) => {
-  if (!module.parent) send('archive:getMetadata', {timeout: 60000})
   if (state.archive.error) {
-    if (state.archive.error.message === 'timed out' && state.archive.entries.length) {
+    if (state.archive.error.message === 'timed out') {
+      if (!module.parent) send('archive:getMetadata', {timeout: 60000})
+    }
+
+    if (state.archive.error.message === 'timed out' && state.archive.entries.indexOf('dat.json') > -1) {
       // we have the entries, but timed out trying to get the dat.json metadata.
       state.archive.error = {message: 'Loading dat.json contents…'}
     }

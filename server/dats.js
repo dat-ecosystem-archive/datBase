@@ -39,7 +39,7 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.entries = function (archive, cb) {
-  var stream = archive.list({live: false, limit: 100})
+  var stream = archive.list({live: false, limit: 500})
   collect(stream, function (err, entries) {
     if (err) return cb(err)
     cb(null, entries)
@@ -89,7 +89,11 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     if (err || cancelled) return done(err, dat)
     var filename = 'dat.json'
     archive.get(filename, function (err, entry) {
-      if (err || cancelled) return done(err, dat)
+      if (err || cancelled) {
+        archive.content.get(0, function () {
+          return done(err, dat)
+        })
+      }
       archive.download(filename, true, function (err) {
         if (err || cancelled) return done(err, dat)
         var readStream = archive.createFileReadStream(filename)
