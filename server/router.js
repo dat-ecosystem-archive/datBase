@@ -153,12 +153,15 @@ module.exports = function (opts, db) {
             state.preview.error = {message: err.message}
             entry = {name: filename}
           }
-          if (entry.type === 'directory') state.archive.root = entry.name
-          else {
+          entry.archiveKey = req.params.archiveKey
+          if (entry.type === 'directory') {
+            state.archive.root = entry.name
+            return sendSPA(req, res, state)
+          }
+          if (entry.type === 'file') {
             var arr = entry.name.split('/')
             if (arr.length > 1) state.archive.root = arr.splice(0, arr.length - 1).join('/')
           }
-          entry.archiveKey = req.params.archiveKey
           state.preview.entry = entry
           return sendSPA(req, res, state)
         })
