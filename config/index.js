@@ -11,6 +11,7 @@ var datadir = process.env.DATADIR || (
     ? path.join(__dirname, '..') : os.homedir())
 
 var config = {
+  archiver: '/tmp',
   shared: {
     township: {
       secret: 'very very not secret',
