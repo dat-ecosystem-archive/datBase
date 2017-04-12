@@ -65,12 +65,6 @@ module.exports = function (opts, db) {
     sendSPA(req, res, state)
   })
 
-  router.get('/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
   router.get('/dat/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)
@@ -83,7 +77,7 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/dat/:archiveKey/*', function (req, res) {
+  router.get('/download/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
     var filename = req.params[0]
     dats.get(req.params.archiveKey, function (err, archive) {
@@ -106,7 +100,19 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/:username/:dataset', function (req, res) {
+  router.get('/~:username', function (req, res) {
+    db.models.users.get({username: req.params.username}, function (err, results) {
+      if (err) return onerror(err, res)
+      if (!results.length) return onerror(new Error('Username not found.'), res)
+      var user = results[0]
+      db.models.dats.get({user_id: user.id}, function (err, results) {
+        if (err) return onerror(err, res)
+        return res.status(200).json(results)
+      })
+    })
+  })
+
+  router.get('/~:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       var contentType = req.accepts(['html', 'json'])
@@ -130,19 +136,54 @@ module.exports = function (opts, db) {
     })
   })
 
+  router.get('/:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
+  router.get('/:archiveKey/*', function (req, res) {
+    log.debug('getting file contents', req.params)
+    var filename = req.params[0]
+    archiveRoute(req.params.archiveKey, function (state) {
+      dats.get(req.params.archiveKey, function (err, archive) {
+        if (err) return onerror(err, res)
+        archive.get(filename, function (err, entry) {
+          if (err) {
+            state.preview.error = {message: err.message}
+            entry = {name: filename}
+          }
+          entry.archiveKey = req.params.archiveKey
+          if (entry.type === 'directory') {
+            state.archive.root = entry.name
+            return sendSPA(req, res, state)
+          }
+          if (entry.type === 'file') {
+            var arr = entry.name.split('/')
+            if (arr.length > 1) state.archive.root = arr.splice(0, arr.length - 1).join('/')
+          }
+          state.preview.entry = entry
+          return sendSPA(req, res, state)
+        })
+      })
+    })
+  })
+
   function onerror (err, res) {
     return res.status(400).json({statusCode: 400, message: err.message})
   }
 
   function archiveRoute (key, cb) {
+    // TODO: handle this at the response level?
+    var cancelled = false
+
     function onerror (err) {
       log.warn(key, err)
+      cancelled = true
       state.archive.error = {message: err.message}
       return cb(state)
     }
 
-    // TODO: handle this at the response level?
-    var cancelled = false
     var timeout = setTimeout(function () {
       var msg = 'timed out'
       if (cancelled) return

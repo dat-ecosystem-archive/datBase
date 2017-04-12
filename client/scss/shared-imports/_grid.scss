@@ -268,7 +268,7 @@
   order: 1;
 }
 
-@media only screen and (min-width: $small) {
+@media only screen and (min-width: $md1) {
   // .container {
   //   width: 49rem;
   // }
@@ -499,7 +499,7 @@
   }
 }
 
-@media only screen and (min-width: $medium) {
+@media only screen and (min-width: $lg) {
   // .container {
   //   width: 65rem;
   // }
@@ -730,7 +730,7 @@
   }
 }
 
-@media only screen and (min-width: $large) {
+@media only screen and (min-width: $xxl) {
   // .container {
   //   width: 76rem;
   // }

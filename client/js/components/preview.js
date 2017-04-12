@@ -13,7 +13,7 @@ const preview = (state, prev, send) => {
   const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
   const downloadDisabled = entry && (entry.length > (1048576 * 10))
 
-  function makeABaby () {
+  function downloadButton () {
     if (downloadDisabled) return html``
     return html`<a href="/dat/${state.archive.key}/${entryName}"
       data-no-routing download="${entryName}" class="dat-header-action">
@@ -38,7 +38,7 @@ const preview = (state, prev, send) => {
         </div>
       </div>
       <div class="panel-header__action-group">
-        ${makeABaby()}
+        ${downloadButton()}
         <a href="dat://${state.archive.key}" class="dat-header-action">
           <div class="btn__icon-wrapper">
             <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">

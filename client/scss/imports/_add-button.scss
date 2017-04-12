@@ -41,7 +41,7 @@
   flex-direction: row;
   &:not(.disabled):hover, &:not(.disabled):focus {
     svg, .btn__icon-img {
-      opacity: 1;
+      //opacity: 1;
     }
   }
 }
