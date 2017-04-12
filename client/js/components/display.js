@@ -7,10 +7,12 @@ const renderData = module.parent ? function () { } : require('render-data')
 const display = html`<div id="item"></div>`
 
 module.exports = function (state, prev, send) {
+  if (module.parent) return
   const entryName = state.preview.entry && state.preview.entry.name
   const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
   if (state.preview.error) {
+    if (!state.preview.panelOpen) send('preview:openPanel', {})
     return fourohfour({
       icon: state.preview.error.icon,
       header: state.preview.error.message,
@@ -18,9 +20,9 @@ module.exports = function (state, prev, send) {
       link: false
     })
   }
-
   if (!entryName) return
   if (entryName === previousEntryName) return display
+  if (!state.preview.panelOpen) send('preview:openPanel', {})
   if (state.preview.entry.length > (1048576 * 10)) {
     return send('preview:update', {error: {
       message: 'Cannot preview',
@@ -34,7 +36,7 @@ module.exports = function (state, prev, send) {
     icon: 'loader'
   }})
   // proper escape is done, but # is special
-  http({url: `/dat/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
+  http({url: `/download/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
     if (err) return send('preview:update', {error: err})
     renderData.render({
       name: entryName,

@@ -18,12 +18,15 @@ const createPage = (state, prev, send) => {
               Share and version control data with ease using our desktop app. Available for Mac and Linux, with Windows coming soon.
             </p>
             <p>
-              <a href="http://datproject.github.io/dat-desktop/mac" target="_blank" class="btn btn--green">
+              <a href="http://datproject.github.io/dat-desktop/mac" target="_blank" class="btn btn--green btn--full mb1">
                 Download for Mac
+              </a>
+              <a href="http://datproject.github.io/dat-desktop/linux" target="_blank" class="btn btn--green mb1">
+                Download for Linux
               </a>
             </p>
             <p class="color-neutral-50">
-              <a href="http://datproject.github.io/dat-desktop/linux">Download for Linux</a>. Windows coming soon.
+               Windows coming soon.
             </p>
           </div>
           <div class="col-xs-12 col-sm-6 flex flex-column justify-center">
@@ -36,7 +39,7 @@ const createPage = (state, prev, send) => {
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
-            <div class="p2 bg-neutral screenshot">
+            <div class="pa2 bg-neutral screenshot">
               <img src="/public/img/dat-gif.gif" />
             </div>
           </div>
@@ -70,7 +73,7 @@ $ dat share path/to/my/data</code></pre>
             <div class="col-xs-12 col-sm-7">
               <div class="row">
                 <div class="col-xs-12">
-                  <div class="bg-green mb4 p3 block-create block-create--import">
+                  <div class="bg-green mb4 pa3 block-create block-create--import">
                     <svg class="block-create__icon" >
                       <use xlink:href="#daticon-import-dat" />
                     </svg>
@@ -83,7 +86,7 @@ $ dat share path/to/my/data</code></pre>
                 </div>
                 <div class="col-xs-6">
                 <a href="#desktop">
-                  <div class="bg-blue hover-bg-blue-hover mb4 p3 block-create">
+                  <div class="bg-blue hover-bg-blue-hover mb4 pa3 block-create">
                     <svg class="block-create__icon">
                       <use xlink:href="#daticon-open-in-desktop" />
                     </svg>
@@ -93,7 +96,7 @@ $ dat share path/to/my/data</code></pre>
                 </div>
                 <div class="col-xs-6">
                 <a href="#terminal">
-                  <div class="bg-neutral hover-bg-neutral-80 mb4 p3 block-create">
+                  <div class="bg-neutral hover-bg-neutral-80 mb4 pa3 block-create">
                     <img src="/public/img/terminal-icon.svg" class="block-create__icon" />
                     <p class="mb0 f6 lh-title color-white">In the Terminal</p>
                   </div>

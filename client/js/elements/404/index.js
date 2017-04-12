@@ -12,7 +12,7 @@ module.exports = function (props) {
   if (props.link) {
     button = html`<p class="mb4">
      <button onclick="${props.onclick}"
-        class="btn btn--large btn--green take-me-home"
+        class="btn btn--large btn--green btn--full take-me-home"
         href="/">${props.linkText}</button>
     </p>`
   }

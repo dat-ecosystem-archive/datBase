@@ -20,13 +20,17 @@ module.exports = function (state, prev, send) {
       <img src="/public/img/screenshot-dat-desktop.png" />
     </div>
     <p class="tc pv3 color-white">
-      <a href="http://datproject.github.io/dat-desktop/mac" class="btn btn--green btn--cta open-desktop" target="_blank">
+      <a href="http://datproject.github.io/dat-desktop/mac" class="btn btn--green btn--full btn--cta open-desktop mt2" target="_blank">
         <svg><use xlink:href="#daticon-open-in-desktop"/></svg>
         Download for Mac
       </a>
+      <a href="http://datproject.github.io/dat-desktop/linux" class="btn btn--green btn--cta open-desktop mt2" target="_blank">
+        <svg><use xlink:href="#daticon-open-in-desktop"/></svg>
+        Download for Linux
+      </a>
     </p>
     <p class="f7 tc color-neutral-50">
-      <a href=" http://datproject.github.io/dat-desktop/linux">Download for Linux</a>. Windows coming soon.
+      Windows coming soon.
     </p>
   </div>
 </section>
@@ -35,7 +39,7 @@ module.exports = function (state, prev, send) {
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-5 col-md-6 flex flex-column justify-center">
-        <div class="p2 bg-neutral screenshot">
+        <div class="pa2 bg-neutral screenshot">
           <img src="/public/img/dat-gif.gif" />
         </div>
       </div>
@@ -47,7 +51,7 @@ module.exports = function (state, prev, send) {
           Dat is the package manager for data. Share files with version control, back up data to servers, browse remote files on demand, and automate long-term data preservation. Secure, distributed, fast.
         </p>
         <p>
-          <a href="/install" class="btn btn--green" target="_blank">
+          <a href="/install" class="btn btn--green btn--full" target="_blank">
             Install Dat CLI
           </a>
         </p>
@@ -89,7 +93,7 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="fr btn btn--green open-desktop" data-no-routing>
+            <a href="/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
             <a href="/download/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="copy-link">
@@ -117,7 +121,7 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="fr btn btn--green open-desktop" data-no-routing>
+            <a href="/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
             <a href="/download/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="copy-link">
@@ -143,7 +147,7 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="fr btn btn--green open-desktop" data-no-routing>
+            <a href="/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
             <a href="/download/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="copy-link">
@@ -185,7 +189,7 @@ module.exports = function (state, prev, send) {
       </div>
     </div>
     <p class="pt4">
-      <a href="http://docs.datproject.org" class="btn btn--green">Read the Full Documentation</a>
+      <a href="http://docs.datproject.org" class="btn btn--green btn--full">Read the Full Documentation</a>
     </p>
   </div>
 </section>

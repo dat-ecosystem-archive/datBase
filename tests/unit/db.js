@@ -32,7 +32,6 @@ test('database should create users', function (t) {
 test('database should get users', function (t) {
   db.models.users.get(function (err, body) {
     t.ifError(err)
-    console.log(body)
     t.same(body.length, 1, 'only one user')
     t.same(body[0].username, users.joe.username, 'new user is in the list')
     t.end()

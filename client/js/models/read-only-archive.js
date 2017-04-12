@@ -21,6 +21,11 @@ module.exports = {
     }
   },
   effects: {
+    directory: function (state, data, send, done) {
+      send('location:set', `/${state.key}/${data}`, function () {
+        send('archive:update', {root: data}, done)
+      })
+    },
     getMetadata: function (state, data, send, done) {
       if (!state.key) return done()
       http({url: `/metadata/${state.key}?timeout=${data.timeout}`, method: 'GET', json: true}, function (err, resp, json) {

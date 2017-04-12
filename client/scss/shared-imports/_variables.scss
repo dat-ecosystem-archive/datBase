@@ -1,12 +1,13 @@
-// Containers
-
-$xsmall: 30rem; /* 480px */
-$small: 40rem; /* 640px */
-$medium: 60rem; /* 960px */
-$large: 87.5rem; /* 1400px */
-$huge: 110rem; /* 1600px */
+// Breakpoint definitions
+$xs: 20rem; // 320px;
+$sm: 30rem; // 480px
+$md1: 40rem; // 640px
+$md2: 48rem;  // 768px;
+$lg: 64rem; // 1024px
+$xl: 80rem; // 1280px;
+$xxl: 90rem; // 1440px
+$xxxl: 110rem; // 1600px
 
 // Transitions
-
 $transition-duration: .05s;
 $transition-timing-function: ease-out;

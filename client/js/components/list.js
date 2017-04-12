@@ -9,7 +9,6 @@ module.exports = (state, prev, send) => {
   return html`
   <div class="dat-list">
   ${dats.map(function (dat) {
-    console.log(dat)
     var shortname = `${dat.username}/${dat.name}`
     return html`
     <div class="dat-list-item">
