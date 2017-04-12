@@ -1,53 +1,5 @@
 const html = require('choo/html')
 const form = require('get-form-data')
-const css = require('sheetify')
-
-var prefix = css`
-  :host {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    background-color: rgba(41,54,72,.8);
-    .modal {
-      min-width: 20rem;
-      min-width: 25rem;
-      padding: 2rem 2.5rem 2rem;
-      background-color: white;
-      box-shadow: 0 1.2rem 2.4rem rgba(0,0,0,.5);
-    }
-    form {
-      width: 16rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    label, input {
-      width: 100%;
-      text-transform: none;
-    }
-    .close-button {
-      position: absolute;
-      right: .5rem;
-      top: .5rem;
-      display: block;
-      overflow: hidden;
-      color: var(--color-neutral-20);
-      &:hover, &:focus {
-        color: var(--color-neutral-40);
-      }
-      svg {
-        fill: currentColor;
-        max-width: 1.5rem;
-        max-height: 1.5rem;
-      }
-    }
-  }
-`
 
 const login = (state, prev, send) => {
   function onSubmit (e) {
@@ -57,14 +9,9 @@ const login = (state, prev, send) => {
     return false
   }
 
-  return html`<div class="login ${state.user.login} ${prefix}">
-    <div class="relative flex flex-column justify-center modal">
+  return html`<div class="login">
+    <div class="mw5 pv5 center">
       <h3 class="f4">Log In</h3>
-      <a class="close-button" title="Close" onclick=${() => send('user:loginPanel', false)}>
-        <svg>
-          <use xlink:href="#daticon-cross" />
-        </svg>
-      </a>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>

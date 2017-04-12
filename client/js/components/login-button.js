@@ -15,7 +15,7 @@ module.exports = function (state, prev, send) {
     return html`
       ${button({
         text: 'Sign up',
-        click: () => send('user:registerPanel', true),
+        click: function () { window.location.href = '/register' },
         klass: 'btn btn--full btn--green'
       })}
     `
