@@ -174,14 +174,17 @@ module.exports = function (opts, db) {
   }
 
   function archiveRoute (key, cb) {
+    // TODO: handle this at the response level?
+    var cancelled = false
+
     function onerror (err) {
       log.warn(key, err)
+      if (cancelled) return
+      cancelled = true
       state.archive.error = {message: err.message}
       return cb(state)
     }
 
-    // TODO: handle this at the response level?
-    var cancelled = false
     var timeout = setTimeout(function () {
       var msg = 'timed out'
       if (cancelled) return
