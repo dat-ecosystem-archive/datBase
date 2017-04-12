@@ -85,10 +85,6 @@ function body (state, prev, send) {
 }
 
 module.exports = (state, prev, send) => {
-  if (!module.parent) {
-    send('user:loginPanel', false)
-  }
-
   return html`
     <div class="landing">
       ${header(state, prev, send)}

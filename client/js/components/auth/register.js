@@ -11,7 +11,7 @@ const register = (state, prev, send) => {
 
   return html`<div class="register">
     <div class="mw5 pv5 center">
-      <h1 class="f4">Create a New Account</h1>
+      <h3 class="f4">Create a New Account</h3>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>
@@ -39,7 +39,7 @@ const register = (state, prev, send) => {
           </label>
         </p>
         <p>
-          <input type="submit" value="Register" class="w100 btn btn--green btn--full w-100" />
+          <input type="submit" value="Register" class="w100 btn btn--green btn--full" />
         </p>
         <p class="f7">
           <a href="/login">Already Have an Account? Log In</a>

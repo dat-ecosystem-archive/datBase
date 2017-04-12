@@ -11,7 +11,7 @@ const login = (state, prev, send) => {
 
   return html`<div class="login">
     <div class="mw5 pv5 center">
-      <h1 class="f4">Log In</h1>
+      <h3 class="f4">Log In</h3>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.error ? state.error.message : ''}</div>
         <p>
@@ -31,7 +31,7 @@ const login = (state, prev, send) => {
           </label>
         </p>
         <p>
-          <input type="submit" value="Login" class="btn btn--green btn--full w-100" />
+          <input type="submit" value="Login" class="btn btn--green btn--full" />
         </p>
         <p class="f7">
           <a href="/reset-password" class="mr3">Forgot Password?</a>

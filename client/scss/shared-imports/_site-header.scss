@@ -6,12 +6,6 @@ $site-header-height: 4rem;
   height: $site-header-height;
   background-color: $color-neutral;
   color: $color-white;
-  .dat-button button:not(.dat-button--help) {
-   background-color: transparent;
-    &:hover, &:focus, &:active {
-      background-color: $color-neutral;
-    }
-  }
 }
 
 .site-header--external {
@@ -70,10 +64,10 @@ $site-header-height: 4rem;
   list-style: none;
   a:not(:last-child) {
     margin-right: 1rem;
-    @media screen and (min-width: $small) {
+    @media screen and (min-width: $md1) {
       margin-right: 2rem4;
     }
-    @media screen and (min-width: $medium) {
+    @media screen and (min-width: $lg) {
       margin-right: 2.75rem;
     }
   }

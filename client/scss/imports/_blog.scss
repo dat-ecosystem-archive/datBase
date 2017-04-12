@@ -60,7 +60,7 @@
 .post--preview {
   background: $color-white;
   padding: 1rem;
-  @media only screen and (min-width: $small) {
+  @media only screen and (min-width: $md1) {
     padding: 1.5rem 2rem 2rem;
   }
 }

@@ -67,7 +67,7 @@ ul {
 
 .mobile-only {
   display: block;
-  @media screen and (min-width: $small) {
+  @media screen and (min-width: $md1) {
     display: none;
   }
 }
