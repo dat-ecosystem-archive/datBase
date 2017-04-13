@@ -17,14 +17,23 @@ module.exports = (state, prev, send) => {
   <div>
   ${dats.map(function (dat) {
     return html`
-    <div class="mb3 pa1 ${prefix}">
-      <div class="share-link">
-        <a href="#" onclick=${() => open(dat)}>${dat.name}</a>
+    <div class="mb3 ph3 pv1 flex items-center ${prefix}">
+      <div class="flex-auto">
+        <div>
+          <a href="#" class="f4" onclick=${() => open(dat)}>${dat.name}</a> <span class="f7">Copy Link</span>
+        </div>
+        ${dat.title}
+        <div class="dat-detail">
+          ${dat.username}
+        </div>
+        <div class="dat-detail">
+          ${dat.created_at}
+        </div>
       </div>
-      <p>${dat.title}</p>
-      <div class="dat-detail">
-        ${dat.username} |
-        ${dat.created_at}
+      <div class="flex-none">
+        <a href="#" class="btn btn--small btn--green btn--full">
+          Preview
+        </a>
       </div>
     </div>
     `
