@@ -92,7 +92,7 @@ module.exports = function (state, prev, send) {
       </div>
       <div class="content">
         <div>My Dats</div>
-        <ul class="list-plain mb2 dat-list">
+        <ul class="list-plain mb2">
           ${state.user.dats.map(dat => {
             return html`
               <li>

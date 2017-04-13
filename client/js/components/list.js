@@ -1,4 +1,11 @@
 const html = require('choo/html')
+const css = require('sheetify')
+
+var prefix = css`
+  :host {
+    background-color: var(--color-neutral-04);
+  }
+`
 
 module.exports = (state, prev, send) => {
   var dats = state.list.data || []
@@ -7,15 +14,17 @@ module.exports = (state, prev, send) => {
     window.location.href = '/' + shortname
   }
   return html`
-  <div class="dat-list">
+  <div>
   ${dats.map(function (dat) {
-    var shortname = `${dat.username}/${dat.name}`
     return html`
-    <div class="dat-list-item">
-    <div class="share-link"><a href="#" onclick=${() => open(dat)}>${shortname}</a></div>
+    <div class="mb3 pa1 ${prefix}">
+      <div class="share-link">
+        <a href="#" onclick=${() => open(dat)}>${dat.name}</a>
+      </div>
       <p>${dat.title}</p>
       <div class="dat-detail">
-        <p>${dat.created_at}</p>
+        ${dat.username} |
+        ${dat.created_at}
       </div>
     </div>
     `
