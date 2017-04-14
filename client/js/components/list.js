@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const copyButton = require('./copy-button')
 const relativeDate = require('relative-date')
 const css = require('sheetify')
 
@@ -21,7 +22,8 @@ module.exports = (state, prev, send) => {
     <div class="mb3 ph3 pv1 flex items-center ${prefix}">
       <div class="flex-auto">
         <div>
-          <a href="#" class="f4" onclick=${() => open(dat)}>${dat.name}</a> <span class="f7">Copy Link</span>
+          <a href="#" class="f4" onclick=${() => open(dat)}>${dat.name}</a>
+          ${copyButton(dat.url, send)}
         </div>
         ${dat.title}
         <div class="dat-detail">
