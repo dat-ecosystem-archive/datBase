@@ -1,25 +1,20 @@
 const Archiver = require('hypercore-archiver')
-const level = require('level-party')
-const path = require('path')
 const mkdirp = require('mkdirp')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
+const ram = require('random-access-memory')
 const raf = require('random-access-file')
 const Swarm = require('discovery-swarm')
 const swarmDefaults = require('datland-swarm-defaults')
-const hyperhttp = require('hyperdrive-http')
-const collect = require('collect-stream')
 
 module.exports = Dats
 
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archiver = Archiver({db: level(path.join(dir, 'db')), dir: dir, sparse: true, storage: raf})
+  this.archiver = Archiver({dir: dir, sparse: true, storage: raf})
   this.swarm = createSwarm(this.archiver)
-  this.drive = hyperdrive(this.archiver.db)
   this.archives = {}
-  this.http = hyperhttp(this.get)
 }
 
 Dats.prototype.get = function (key, cb) {
@@ -31,7 +26,7 @@ Dats.prototype.get = function (key, cb) {
     self.archiver.get(buf, function (err, metadata, content) {
       if (err) return cb(err)
       if (content) {
-        var archive = self.drive.createArchive(buf, {metadata: metadata, content: content})
+        var archive = hyperdrive(ram, buf, {metadata: metadata, content: content})
         return cb(null, archive)
       }
     })
@@ -39,21 +34,9 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.entries = function (archive, cb) {
-  var stream = archive.list({live: false, limit: 500})
-  collect(stream, function (err, entries) {
+  archive.readdir(function (err, entries) {
     if (err) return cb(err)
     cb(null, entries)
-  })
-}
-
-Dats.prototype.file = function (key, filename, cb) {
-  var self = this
-  self.get(key, function (err, archive) {
-    if (err) return cb(err)
-    archive.get(filename, function (err, entry) {
-      if (err) return cb(err)
-      archive.download(entry, true, cb)
-    })
   })
 }
 
@@ -94,31 +77,15 @@ Dats.prototype.metadata = function (archive, opts, cb) {
           return done(err, dat)
         })
       }
-      archive.download(filename, true, function (err) {
+      archive.readFile(filename, function (err, metadata) {
         if (err || cancelled) return done(err, dat)
-        var readStream = archive.createFileReadStream(filename)
-        collect(readStream, function (err, metadata) {
-          if (err) return done(err, dat)
-          try {
-            dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
-          } catch (e) {
-          }
-          dat.size = archive.content.bytes
-          return done(null, dat)
-        })
+        try {
+          dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
+        } catch (e) {
+        }
+        dat.size = archive.content.bytes
+        return done(null, dat)
       })
-    })
-  })
-}
-
-Dats.prototype.fileContents = function (key, filename, cb) {
-  var self = this
-  self.get(key, function (err, archive) {
-    if (err) return cb(err)
-    self.file(key, filename, function (err) {
-      if (err) return cb(err)
-      var readStream = archive.createFileReadStream(filename)
-      collect(readStream, cb)
     })
   })
 }
