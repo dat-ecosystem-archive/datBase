@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const relativeDate = require('relative-date')
 const css = require('sheetify')
 
 var prefix = css`
@@ -27,7 +28,7 @@ module.exports = (state, prev, send) => {
           ${dat.username}
         </div>
         <div class="dat-detail">
-          ${dat.created_at}
+          updated ${relativeDate(new Date(dat.created_at))}
         </div>
       </div>
       <div class="flex-none">
