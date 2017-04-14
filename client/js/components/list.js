@@ -32,8 +32,8 @@ module.exports = (state, prev, send) => {
         </div>
       </div>
       <div class="flex-none">
-        <a href="#" class="btn btn--small btn--green btn--full">
-          Preview
+        <a href=${() => { window.location.href = `/${dat.username}/${dat.name}` }}
+          class="btn btn--small btn--green btn--full"> Preview
         </a>
       </div>
     </div>

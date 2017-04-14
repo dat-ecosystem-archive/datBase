@@ -100,10 +100,14 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/~:username', function (req, res) {
+  router.get('/:username', function (req, res) {
     db.models.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
-      if (!results.length) return onerror(new Error('Username not found.'), res)
+      if (!results.length) {
+        return archiveRoute(req.params.username, function (state) {
+          sendSPA(req, res, state)
+        })
+      }
       var user = results[0]
       db.models.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
@@ -112,7 +116,7 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/~:username/:dataset', function (req, res) {
+  router.get('/:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       var contentType = req.accepts(['html', 'json'])
