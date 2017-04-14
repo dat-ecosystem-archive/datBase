@@ -193,6 +193,7 @@ module.exports = function (opts, db) {
 
     var state = getDefaultAppState()
     try {
+      if (key.length !== 64) return onerror(new Error('Invalid key'))
       state.archive.key = encoding.toStr(key)
     } catch (err) {
       log.warn('key malformed', key)
