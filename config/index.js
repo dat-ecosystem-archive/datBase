@@ -27,13 +27,12 @@ var config = {
       },
       useNullAsDefault: true
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
     archiver: path.join(datadir, 'archiver'),
     port: process.env.PORT || 8888
   },
   development: {},
   test: {
-    whitelist: path.join(__dirname, '../tests/fixtures/whitelist.txt')
+    whitelist: false
   },
   production: () => {
     return {
