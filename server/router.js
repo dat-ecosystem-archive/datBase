@@ -231,15 +231,17 @@ module.exports = function (opts, db) {
 
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
-      log.info('got archive', archive.key.toString('hex'))
-      clearTimeout(timeout)
-      if (cancelled) return
-      cancelled = true
+      archive.on('ready', function () {
+        log.info('got archive', archive.key.toString('hex'))
+        clearTimeout(timeout)
+        if (cancelled) return
+        cancelled = true
 
-      dats.metadata(archive, {timeout: 1000}, function (err, info) {
-        if (err) state.archive.error = {message: err.message}
-        state.archive = xtend(state.archive, info)
-        cb(state)
+        dats.metadata(archive, {timeout: 1000}, function (err, info) {
+          if (err) state.archive.error = {message: err.message}
+          state.archive = xtend(state.archive, info)
+          cb(state)
+        })
       })
     })
   }

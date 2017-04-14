@@ -1,4 +1,5 @@
 const Archiver = require('hypercore-archiver')
+const Stat = require('hyperdrive/lib/messages').Stat
 const mkdirp = require('mkdirp')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
@@ -56,14 +57,23 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     return cb(err, dat)
   }
 
-  archive.readdir('/', function (err, entries) {
+  archive.tree.list('/', {nodes: true}, function (err, entries) {
+    for (var i in entries) {
+      var entry = entries[i]
+      var name = entry.name
+      entry = Stat.decode(entry.value)
+      entry.name = name
+      entry.type = 'file'
+      if (!entry.size) entry.size = 0
+      entries[i] = entry
+    }
     dat.entries = entries
-    console.log(dat.entries)
     if (err || cancelled) return done(err, dat)
     var filename = 'dat.json'
+    return done(null, dat)
     archive.stat(filename, function (err, entry) {
-      if (err || cancelled) return done(null, dat)
       archive.readFile(filename, function (err, metadata) {
+        console.log('hi', metadata)
         if (err || cancelled) return done(err, dat)
         try {
           dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
