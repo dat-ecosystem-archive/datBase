@@ -10,10 +10,10 @@ const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 
 var ARCHIVE_ERRORS = {
-  'Invalid key': 'No dat here.',
-  'timed out': 'Looking for sources…',
-  'Username not found.': 'That user does not exist.',
-  'Dat with that name not found.': 'That user does not have a dat with that name.'
+  'Invalid key': {header: 'No dat here.', body: 'Looks like the key is invalid. Are you sure it\'s correct?'},
+  'timed out': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct? This could take a while.'},
+  'Username not found.': {header: 'That user does not exist.'},
+  'Dat with that name not found.': {header: 'That user does not have a dat with that name.'}
 }
 
 const archivePage = (state, prev, send) => {
@@ -26,16 +26,8 @@ const archivePage = (state, prev, send) => {
       // we have the entries, but timed out trying to get the dat.json metadata.
       state.archive.error = {message: 'Loading dat.json contents…'}
     }
-    var cleaned = ARCHIVE_ERRORS[state.archive.error.message]
-    if (cleaned) {
-      var props = {
-        header: cleaned
-      }
-      if (cleaned === 'Looking for sources…') {
-        props.icon = 'loader'
-        props.body = 'Is the address correct? This could take a while.'
-      }
-
+    var props = ARCHIVE_ERRORS[state.archive.error.message]
+    if (props) {
       return html`
       <div>
       ${header(state, prev, send)}
