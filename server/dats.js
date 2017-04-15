@@ -70,8 +70,8 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     dat.entries = entries
     if (err || cancelled) return done(err, dat)
     var filename = 'dat.json'
-    return done(null, dat)
     archive.stat(filename, function (err, entry) {
+      if (err || cancelled) return done(null, dat)
       archive.readFile(filename, function (err, metadata) {
         console.log('hi', metadata)
         if (err || cancelled) return done(err, dat)

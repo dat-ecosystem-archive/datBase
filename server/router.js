@@ -82,7 +82,7 @@ module.exports = function (opts, db) {
 
   function onfile (archive, name, req, res) {
     archive.stat(name, function (err, st) {
-      if (err) return onerror(res, 404, err)
+      if (err) return onerror(err, res)
 
       if (st.isDirectory()) {
         res.statusCode = 302
@@ -180,6 +180,7 @@ module.exports = function (opts, db) {
             state.preview.error = {message: err.message}
             entry = {name: filename}
           }
+          entry.name = filename
           entry.archiveKey = req.params.archiveKey
           entry.type = entry.isDirectory() ? 'directory' : 'file'
           if (entry.type === 'directory') {
@@ -231,8 +232,7 @@ module.exports = function (opts, db) {
 
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
-      archive.on('ready', function () {
-        log.info('got archive', archive.key.toString('hex'))
+      archive.ready(function () {
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true
