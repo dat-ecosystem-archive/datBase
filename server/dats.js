@@ -38,7 +38,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
   else {
     dat = {
       peers: archive.content.peers.length,
-      size: archive.content.bytes
+      size: archive.content.length
     }
   }
   var cancelled = false
@@ -73,13 +73,12 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     archive.stat(filename, function (err, entry) {
       if (err || cancelled) return done(null, dat)
       archive.readFile(filename, function (err, metadata) {
-        console.log('hi', metadata)
         if (err || cancelled) return done(err, dat)
         try {
           dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
         } catch (e) {
         }
-        dat.size = archive.content.bytes
+        dat.size = archive.content.length
         return done(null, dat)
       })
     })
