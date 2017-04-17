@@ -38,7 +38,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
   else {
     dat = {
       peers: archive.content.peers.length,
-      size: archive.content.length
+      size: archive.content.byteLength
     }
   }
   var cancelled = false
@@ -78,7 +78,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
           dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
         } catch (e) {
         }
-        dat.size = archive.content.length
+        dat.size = archive.content.byteLength
         return done(null, dat)
       })
     })
