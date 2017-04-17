@@ -5,7 +5,7 @@ const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
 const ram = require('random-access-memory')
 const Swarm = require('discovery-swarm')
-const swarmDefaults = require('datland-swarm-defaults')
+const swarmDefaults = require('dat-swarm-defaults')
 
 module.exports = Dats
 
