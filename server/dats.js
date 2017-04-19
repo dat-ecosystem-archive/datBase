@@ -32,6 +32,7 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.metadata = function (archive, opts, cb) {
+  var self = this
   if (typeof opts === 'function') return this.metadata(archive, {}, opts)
   var dat
   if (!archive.content) dat = {}
@@ -68,6 +69,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
       entries[i] = entry
     }
     dat.entries = entries
+    dat.peers = archive.content.peers.length
     if (err || cancelled) return done(err, dat)
     var filename = 'dat.json'
     archive.stat(filename, function (err, entry) {
