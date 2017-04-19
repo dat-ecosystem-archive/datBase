@@ -9,14 +9,10 @@ const listPage = (state, prev, send) => {
 
     <section class="section bg-neutral-04">
       <div class="container">
-
         <h2 class="content-title">Shared with Dat</h2>
         <p class="content-subtitle horizontal-rule">
           Explore public data shared with Dat.
         </p>
-
-        {{3 Featured examples will go here.}}
-
       </div>
     </section>
 
