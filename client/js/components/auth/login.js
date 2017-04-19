@@ -4,7 +4,7 @@ const form = require('get-form-data')
 const login = (state, prev, send) => {
   function onSubmit (e) {
     const data = form(e.target)
-    send('user:login', data)
+    send('township:login', data)
     e.preventDefault()
     return false
   }
@@ -13,7 +13,7 @@ const login = (state, prev, send) => {
     <div class="mw5 pv5 center">
       <h3 class="f4">Log In</h3>
       <form onsubmit=${onSubmit}>
-        <div class="error">${state.error ? state.error.message : ''}</div>
+        <div class="error">${state.township.error}</div>
         <p>
           <label for="email" class="dat-input dat-input--icon w-100">
             <input name="email" type="email" placeholder="E-mail" class="dat-input__input dat-input__input--icon w-100" />

@@ -40,4 +40,30 @@ module.exports = new function () {
 
     client.end()
   }
+
+  testCases['view profile should work'] = (client) => {
+    client
+      .url(testServer + '/profile/testuser')
+      .assert.containsText('body', 'has published 0 dats')
+      .assert.containsText('body', 'testuser')
+
+    client.end()
+  }
+
+  testCases['edit profile should work'] = (client) => {
+    client
+      .url(testServer + '/profile/edit')
+      .assert.containsText('body', 'Edit your Profile')
+
+    client
+      .pause(5000)
+      .setValue(".edit-profile form input[name='description']", 'testing description')
+      .submitForm('.edit-profile form')
+    client
+      .url(testServer + '/profile/testuser')
+      .assert.containsText('body', 'testing description')
+      .assert.containsText('body', 'testuser')
+
+    client.end()
+  }
 }

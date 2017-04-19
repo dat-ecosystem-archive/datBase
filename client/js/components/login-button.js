@@ -1,21 +1,34 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const button = require('../elements/button')
 const gravatar = require('../elements/gravatar')
 
 module.exports = function (state, prev, send) {
-  if (state.user.email) {
+  return html``
+  if (state.township.email) {
+    var prefix = css`
+      :host {
+        img {
+          width: 2em;
+          height: 2em;
+          display: block;
+          vertical-align: middle;
+          border-radius: 1rem;
+        }
+      }
+  `
     return html`
       ${button({
-        text: gravatar(state.user),
-        click: () => send('user:sidePanel'),
-        klass: 'btn'
+        text: gravatar({email: state.township.email}),
+        click: () => send('township:sidePanel'),
+        klass: `btn ${prefix}`
       })}
     `
   } else {
     return html`
       ${button({
-        text: 'Sign up',
-        click: function () { window.location.href = '/register' },
+        text: 'Login',
+        click: function () { window.location.href = '/login' },
         klass: 'btn btn--full btn--green'
       })}
     `
