@@ -34,7 +34,7 @@ module.exports = (state, prev, send) => {
         </div>
       </div>
       <div class="flex-none">
-        <a href=${() => { window.location.href = `/${dat.username}/${dat.name}` }}
+        <a onclick=${function () { window.location.href = `/${dat.username}/${dat.name}` }}
           class="btn btn--small btn--green btn--full"> Preview
         </a>
       </div>
