@@ -32,7 +32,6 @@ Dats.prototype.get = function (key, cb) {
 }
 
 Dats.prototype.metadata = function (archive, opts, cb) {
-  var self = this
   if (typeof opts === 'function') return this.metadata(archive, {}, opts)
   var dat
   if (!archive.content) dat = {}
