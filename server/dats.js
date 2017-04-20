@@ -17,13 +17,14 @@ function Dats (dir) {
   this.archives = {}
 }
 
-Dats.prototype.get = function (key, cb) {
+Dats.prototype.get = function (key, opts, cb) {
+  if (typeof opts === 'function') return this.get(key, {}, opts)
   var self = this
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
   self.archiver.add(buf, function (err) {
     if (err) return cb(err)
-    self.archiver.get(buf, function (err, metadata, content) {
+    self.archiver.get(buf, {wait: !!opts.timeout, timeout: opts.timeout}, function (err, metadata, content) {
       if (err) return cb(err)
       var archive = hyperdrive(ram, buf, {metadata: metadata, content: content})
       return cb(null, archive)

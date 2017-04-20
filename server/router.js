@@ -117,10 +117,11 @@ module.exports = function (opts, db) {
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
+    const timeout = parseInt(req.query.timeout) || 1000
     log.debug('requesting metadata for key', req.params.archiveKey)
-    dats.get(req.params.archiveKey, function (err, archive) {
+    dats.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.metadata(archive, {timeout: parseInt(req.query.timeout)}, function (err, info) {
+      dats.metadata(archive, {timeout}, function (err, info) {
         if (err) return onerror(err, res)
         return res.status(200).json(info)
       })
