@@ -29,7 +29,7 @@ module.exports = new function () {
       .submitForm('.register form')
 
     client
-      .pause(2000)
+      .pause(5000)
       .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
     client.end()
