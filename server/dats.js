@@ -1,5 +1,4 @@
 const Archiver = require('hypercore-archiver')
-const Stat = require('hyperdrive/lib/messages').Stat
 const mkdirp = require('mkdirp')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
@@ -61,12 +60,9 @@ Dats.prototype.metadata = function (archive, opts, cb) {
   archive.tree.list('/', {nodes: true}, function (err, entries) {
     for (var i in entries) {
       var entry = entries[i]
-      var name = entry.name
-      entry = Stat.decode(entry.value)
-      entry.name = name
-      entry.type = 'file'
-      if (!entry.size) entry.size = 0
-      entries[i] = entry
+      entries[i] = entry.value
+      entries[i].name = entry.name
+      entries[i].type = 'file'
     }
     dat.entries = entries
     dat.peers = archive.content.peers.length
