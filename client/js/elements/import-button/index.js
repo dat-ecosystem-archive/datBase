@@ -13,7 +13,7 @@ module.exports = function (props) {
     }
   }
   return html`<label for="import-dat" class="dat-input">
-    <input name="import-dat" type="text" placeholder="Open Dat Link" onkeydown=${keydown} class="dat-input__input dat-input__input--icon dat-input__input--no-border">
+    <input name="import-dat" type="text" placeholder="PREVIEW DAT LINK" onkeydown=${keydown} class="dat-input__input dat-input__input--icon dat-input__input--no-border">
     <div class="dat-input__icon">
       <img src="/public/img/link.svg" />
     </div>
