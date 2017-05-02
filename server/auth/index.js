@@ -6,11 +6,11 @@ const verify = require('./verify')
 const errors = require('../errors')
 const createReset = require('./reset')
 
-module.exports = function (router, db, opts) {
-  const townshipDb = level(opts.township.db || path.join(__dirname, 'township.db'))
-  const ship = township(townshipDb, opts.township)
+module.exports = function (router, db, config) {
+  const townshipDb = level(config.township.db || path.join(__dirname, 'township.db'))
+  const ship = township(townshipDb, config.township)
   var reset
-  if (opts.email) reset = createReset(opts.email, townshipDb)
+  if (config.email) reset = createReset(config, townshipDb)
 
   function onerror (err, res) {
     var data = {statusCode: 400, message: errors.humanize(err).message}
@@ -21,7 +21,7 @@ module.exports = function (router, db, opts) {
     if (!req.body) return onerror(new Error('Requires email and username.'), res)
     if (!req.body.email) return onerror(new Error('Email required.'), res)
     if (!req.body.username) return onerror(new Error('Username required.'), res)
-    verify(req.body, {whitelist: opts.whitelist}, function (err) {
+    verify(req.body, {whitelist: config.whitelist}, function (err) {
       if (err) return onerror(err, res)
       ship.register(req, res, {body: req.body}, function (err, statusCode, obj) {
         if (err) return onerror(err, res)

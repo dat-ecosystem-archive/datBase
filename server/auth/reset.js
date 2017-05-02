@@ -2,11 +2,11 @@ const createMailer = require('township-email')
 const createReset = require('township-reset-password-token')
 const resetPasswordHTML = require('../mailers/resetPassword')
 
-module.exports = function (emailConfig, townshipDb) {
+module.exports = function (config, townshipDb) {
   const townshipReset = createReset(townshipDb, {
-    secret: 'not a secret' // passed to jsonwebtoken
+    secret: config.township.secret
   })
-  const mailer = createMailer(emailConfig)
+  const mailer = createMailer(config.email)
 
   return {
     mail: mail,
@@ -23,14 +23,14 @@ module.exports = function (emailConfig, townshipDb) {
 
       var emailOptions = {
         to: userEmail,
-        from: emailConfig.fromEmail,
+        from: config.email.fromEmail,
         subject: 'Reset your password at datproject.org',
         html: resetPasswordHTML({reseturl: reseturl})
       }
 
       mailer.send(emailOptions, function (err, info) {
         if (err) return cb(err)
-        if (emailConfig.transport.name === 'Mock') {
+        if (config.email.transport.name === 'Mock') {
           console.log('mock email sent', emailOptions)
         }
         cb()
