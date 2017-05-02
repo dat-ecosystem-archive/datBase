@@ -8,7 +8,7 @@ module.exports = function (props) {
       // TODO: basic parsing, validation of archive link before server-render
       link = link.toLowerCase()
       link = link.replace('dat://', '')
-      link = link.replace('dat.land/', '').replace(/^(http|https):\/\//, '')
+      link = link.replace('datproject.org/', '').replace(/^(http|https):\/\//, '')
       props.handler(link)
     }
   }
