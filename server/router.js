@@ -120,6 +120,7 @@ module.exports = function (opts, db) {
         if (err) return onerror(err, res)
         return res.status(200).json(dat)
       }
+      res.setHeader('Hyperdrive-Key', dat.url)
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
