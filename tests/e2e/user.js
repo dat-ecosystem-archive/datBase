@@ -18,7 +18,7 @@ module.exports = new function () {
       .execute(function(data) {
         return location;
       }, [], function(result) {
-        console.log(result.value.href);
+        console.log(result);
       })
       .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
