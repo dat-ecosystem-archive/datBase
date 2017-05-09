@@ -14,7 +14,7 @@ module.exports = new function () {
       .submitForm('.register form')
 
     client
-      .pause(5000)
+      .pause(10000)
       .execute(function(data) {
         return location;
       }, [], function(result) {
