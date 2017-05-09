@@ -15,10 +15,11 @@ module.exports = new function () {
 
     client
       .pause(10000)
-      .execute(function(data) {
-        return location;
-      }, [], function(result) {
-        console.log(result);
+      .execute(function (data) {
+        /* global location */
+        return location
+      }, [], function (result) {
+        console.log(result)
       })
       .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
