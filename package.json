@@ -51,7 +51,7 @@
     ]
   },
   "devDependencies": {
-    "dat-node": "^2.0.0",
+    "dat-node": "^3.2.3",
     "marked": "^0.3.6",
     "nodemon": "^1.10.0",
     "request": "^2.79.0",
@@ -91,7 +91,7 @@
     "get-form-data": "^1.2.5",
     "gravatar": "^1.6.0",
     "hypercore-archiver": "git://github.com/karissa/hypercore-archiver#v5",
-    "hyperdrive": "^8.0.0",
+    "hyperdrive": "^9.2.3",
     "hyperdrive-http": "^4.0.0",
     "intro.js": "^2.1.0",
     "is-my-json-valid": "^2.15.0",
