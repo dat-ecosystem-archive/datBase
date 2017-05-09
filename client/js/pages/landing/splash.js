@@ -96,10 +96,6 @@ module.exports = function (state, prev, send) {
             <a href="/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
-            <a href="/download/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="copy-link">
-              <svg><use xlink:href="#daticon-link" /></svg>
-              Download
-            </a>
           </div>
         </div>
       </div>
@@ -124,10 +120,6 @@ module.exports = function (state, prev, send) {
             <a href="/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
-            <a href="/download/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="copy-link">
-              <svg><use xlink:href="#daticon-link"/></svg>
-              Download
-            </a>
           </div>
         </div>
       </div>
@@ -149,10 +141,6 @@ module.exports = function (state, prev, send) {
           <div class="example-footer">
             <a href="/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
-            </a>
-            <a href="/download/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="copy-link">
-              <svg><use xlink:href="#daticon-link"/></svg>
-              Download
             </a>
           </div>
         </div>
@@ -197,7 +185,7 @@ module.exports = function (state, prev, send) {
 <section class="section">
   <div class="container">
     <h2 class="content-title">Sponsors and Supporters</h2>
-    <p class="content-subtitle horizontal-rule">Dat is developed by the non-for-profit group Code for Science & Society and supported by generous sponsors.</p>
+    <p class="content-subtitle horizontal-rule">Dat is developed by the not-for-profit group Code for Science & Society and supported by generous sponsors.</p>
 
     <div class="sponsor-logos">
       <a href="https://codeforscience.org/">
