@@ -16,8 +16,8 @@ module.exports = new function () {
     client
       .pause(10000)
       .execute(function (data) {
-        /* global location */
-        return location
+        /* eslint-disable */
+        return location;
       }, [], function (result) {
         console.log(result)
       })
