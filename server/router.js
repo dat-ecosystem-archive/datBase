@@ -1,4 +1,7 @@
 const fs = require('fs')
+const range = require('range-parser')
+const mime = require('mime')
+const pump = require('pump')
 const xtend = require('xtend')
 const path = require('path')
 const compression = require('compression')
@@ -77,23 +80,48 @@ module.exports = function (opts, db) {
     })
   })
 
+  function onfile (archive, name, req, res) {
+    archive.stat(name, function (err, st) {
+      if (err) return onerror(err, res)
+
+      if (st.isDirectory()) {
+        res.statusCode = 302
+        res.setHeader('Location', name + '/')
+        return
+      }
+
+      var r = req.headers.range && range(st.size, req.headers.range)[0]
+      res.setHeader('Accept-Ranges', 'bytes')
+      res.setHeader('Content-Type', mime.lookup(name))
+
+      if (r) {
+        res.statusCode = 206
+        res.setHeader('Content-Range', 'bytes ' + r.start + '-' + r.end + '/' + st.size)
+        res.setHeader('Content-Length', r.end - r.start + 1)
+      } else {
+        res.setHeader('Content-Length', st.size)
+      }
+
+      if (req.method === 'HEAD') return res.end()
+      pump(archive.createReadStream(name, r), res)
+    })
+  }
+
   router.get('/download/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
-    var filename = req.params[0]
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.file(req.params.archiveKey, filename, function (err) {
-        if (err) return onerror(err, res)
-        return dats.http.file(req, res, archive, filename)
-      })
+      var filename = req.params[0]
+      return onfile(archive, filename, req, res)
     })
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
+    const timeout = parseInt(req.query.timeout) || 1000
     log.debug('requesting metadata for key', req.params.archiveKey)
-    dats.get(req.params.archiveKey, function (err, archive) {
+    dats.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.metadata(archive, {timeout: parseInt(req.query.timeout)}, function (err, info) {
+      dats.metadata(archive, {timeout}, function (err, info) {
         if (err) return onerror(err, res)
         return res.status(200).json(info)
       })
@@ -149,12 +177,14 @@ module.exports = function (opts, db) {
     archiveRoute(req.params.archiveKey, function (state) {
       dats.get(req.params.archiveKey, function (err, archive) {
         if (err) return onerror(err, res)
-        archive.get(filename, function (err, entry) {
+        archive.stat(filename, function (err, entry) {
           if (err) {
             state.preview.error = {message: err.message}
             entry = {name: filename}
           }
+          entry.name = filename
           entry.archiveKey = req.params.archiveKey
+          entry.type = entry.isDirectory() ? 'directory' : 'file'
           if (entry.type === 'directory') {
             state.archive.root = entry.name
             return sendSPA(req, res, state)
@@ -204,15 +234,16 @@ module.exports = function (opts, db) {
 
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
-      log.info('got archive', archive.key.toString('hex'))
-      clearTimeout(timeout)
-      if (cancelled) return
-      cancelled = true
+      archive.ready(function () {
+        clearTimeout(timeout)
+        if (cancelled) return
+        cancelled = true
 
-      dats.metadata(archive, {timeout: 1000}, function (err, info) {
-        if (err) state.archive.error = {message: err.message}
-        state.archive = xtend(state.archive, info)
-        cb(state)
+        dats.metadata(archive, {timeout: 1000}, function (err, info) {
+          if (err) state.archive.error = {message: err.message}
+          state.archive = xtend(state.archive, info)
+          cb(state)
+        })
       })
     })
   }

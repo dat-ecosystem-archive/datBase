@@ -17,16 +17,17 @@ var ARCHIVE_ERRORS = {
 }
 
 const archivePage = (state, prev, send) => {
-  if (state.archive.error) {
-    if (state.archive.error.message === 'timed out') {
+  var err = state.archive.error
+  if (err) {
+    if (err.message === 'Block not downloaded') err.message = 'timed out'
+    if (err.message === 'timed out') {
       if (!module.parent) send('archive:getMetadata', {timeout: 60000})
+      if (state.archive.entries.indexOf('dat.json') > -1) {
+        // we have the entries, but timed out trying to get the dat.json metadata.
+        err.message = {message: 'Loading dat.json contents…'}
+      }
     }
-
-    if (state.archive.error.message === 'timed out' && state.archive.entries.indexOf('dat.json') > -1) {
-      // we have the entries, but timed out trying to get the dat.json metadata.
-      state.archive.error = {message: 'Loading dat.json contents…'}
-    }
-    var props = ARCHIVE_ERRORS[state.archive.error.message]
+    var props = ARCHIVE_ERRORS[err.message]
     if (props) {
       return html`
       <div>
@@ -65,7 +66,7 @@ const archivePage = (state, prev, send) => {
               ${permissions({owner: owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
-            <div id="peers" class="dat-detail">${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
+            ${peers > 0 ? html`<div id='peers' class='dat-detail'>${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>` : html``}
           </div>
         </div>
       </div>

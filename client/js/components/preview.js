@@ -10,8 +10,8 @@ const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const entry = state.preview.entry
   const entryName = entry && entry.name
-  const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
-  const downloadDisabled = entry && (entry.length > (1048576 * 10))
+  const size = (entry && entry.size) ? prettyBytes(entry.size) : 'N/A'
+  const downloadDisabled = entry && (entry.size > (1048576 * 10))
 
   function downloadButton () {
     if (downloadDisabled) return html``

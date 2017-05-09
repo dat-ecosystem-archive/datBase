@@ -23,7 +23,7 @@ module.exports = function (state, prev, send) {
   if (!entryName) return
   if (entryName === previousEntryName) return display
   if (!state.preview.panelOpen) send('preview:openPanel', {})
-  if (state.preview.entry.length > (1048576 * 10)) {
+  if (state.preview.entry.size > (1048576 * 10)) {
     return send('preview:update', {error: {
       message: 'Cannot preview',
       body: 'This file is too big, use the desktop app or CLI.'
@@ -37,6 +37,7 @@ module.exports = function (state, prev, send) {
   }})
   // proper escape is done, but # is special
   http({url: `/download/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
+    if (resp.statusCode === 400) err = new Error('File does not exist.')
     if (err) return send('preview:update', {error: err})
     renderData.render({
       name: entryName,

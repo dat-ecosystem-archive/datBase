@@ -3,13 +3,11 @@ const encoding = require('dat-encoding')
 const path = require('path')
 const TownshipClient = require('township-client')
 const request = require('request')
-const memdb = require('memdb')
+const ram = require('random-access-memory')
 const helpers = require('../helpers')
 const config = require('../config')
 const hyperdrive = require('hyperdrive')
 const xtend = require('xtend')
-
-var drive = hyperdrive(memdb())
 
 var rootUrl = 'http://localhost:' + config.port
 var api = rootUrl + '/api/v1'
@@ -150,17 +148,19 @@ test('api', function (t) {
     })
 
     test('api can create a dat', function (t) {
-      var archive = drive.createArchive()
-      dats.cats.url = encoding.toStr(archive.key)
-      client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
-        t.ifError(err)
-        t.ok(body.id, 'has an id')
-        dats.cats.id = body.id
-        dats.cats.user_id = body.user_id
-        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+      var archive = hyperdrive(ram)
+      archive.ready(function () {
+        dats.cats.url = encoding.toStr(archive.key)
+        client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.same(body.length, 1)
-          t.end()
+          t.ok(body.id, 'has an id')
+          dats.cats.id = body.id
+          dats.cats.user_id = body.user_id
+          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 1)
+            t.end()
+          })
         })
       })
     })
@@ -210,17 +210,19 @@ test('api', function (t) {
     })
 
     test('api can create another dat', function (t) {
-      var archive = drive.createArchive()
-      dats.penguins.url = encoding.toStr(archive.key)
-      client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
-        t.ifError(err)
-        t.ok(body.id, 'has an id')
-        dats.penguins.id = body.id
-        dats.penguins.user_id = body.user_id
-        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+      var archive = hyperdrive(ram)
+      archive.ready(function () {
+        dats.penguins.url = encoding.toStr(archive.key)
+        client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.same(body.length, 2)
-          t.end()
+          t.ok(body.id, 'has an id')
+          dats.penguins.id = body.id
+          dats.penguins.user_id = body.user_id
+          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 2)
+            t.end()
+          })
         })
       })
     })
