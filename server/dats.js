@@ -27,7 +27,8 @@ Dats.prototype.get = function (key, opts, cb) {
 }
 
 Dats.prototype.metadata = function (archive, opts, cb) {
-  if (typeof opts === 'function') return this.metadata(archive, {}, opts)
+  var self = this
+  if (typeof opts === 'function') return self.metadata(archive, {}, opts)
   var dat
   if (!archive.content) dat = {}
   else {
@@ -51,10 +52,13 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     cancelled = true
     return cb(err, dat)
   }
-
-  archive.metadata.update()
   archive.tree.list('/', {nodes: true}, function (err, entries) {
-    if (err) return done(err)
+    if (err) {
+      return archive.metadata.update(function () {
+        cancelled = true
+        self.metadata(archive, opts, cb)
+      })
+    }
     for (var i in entries) {
       var entry = entries[i]
       entries[i] = entry.value
@@ -74,7 +78,6 @@ Dats.prototype.metadata = function (archive, opts, cb) {
         }
         dat.peers = archive.content ? archive.content.peers.length : 0
         dat.size = archive.content.byteLength
-        console.log('got my data')
         return done(null, dat)
       })
     })

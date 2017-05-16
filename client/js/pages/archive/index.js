@@ -21,10 +21,6 @@ const archivePage = (state, prev, send) => {
   var err = state.archive.error
   if (err) {
     if (err.message === 'Block not downloaded') err.message = 'timed out'
-    if (err.message === 'timed out') {
-      if (!module.parent) send('archive:getMetadata', {timeout: 60000})
-      err.message = 'Looking for dat.json metadata...'
-    }
     if (!state.archive.entries.length) {
       var props = ARCHIVE_ERRORS[err.message]
       if (props) {
@@ -35,6 +31,10 @@ const archivePage = (state, prev, send) => {
         </div>
         `
       }
+    }
+    if (err.message === 'timed out') {
+      if (!module.parent) send('archive:getMetadata', {timeout: 60000})
+      err.message = 'Looking for dat.json metadata...'
     }
   }
   var peers = state.archive.peers
