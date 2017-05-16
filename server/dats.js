@@ -1,34 +1,26 @@
-const Archiver = require('hypercore-archiver')
 const mkdirp = require('mkdirp')
+const parallel = require('run-parallel')
+const hyperdiscovery = require('hyperdiscovery')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
-const ram = require('random-access-memory')
-const Swarm = require('discovery-swarm')
-const swarmDefaults = require('dat-swarm-defaults')
 
 module.exports = Dats
 
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archiver = Archiver({dir: dir})
-  this.swarm = createSwarm(this.archiver)
-  this.archives = {}
+  this.archives = []
 }
 
 Dats.prototype.get = function (key, opts, cb) {
   if (typeof opts === 'function') return this.get(key, {}, opts)
-  var self = this
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
-  self.archiver.add(buf, function (err) {
-    if (err) return cb(err)
-    self.archiver.get(buf, {wait: !!opts.timeout, timeout: opts.timeout}, function (err, metadata, content) {
-      if (err) return cb(err)
-      var archive = hyperdrive(ram, buf, {metadata: metadata, content: content})
-      return cb(null, archive)
-    })
-  })
+  var archive = hyperdrive('./archiver/ ' + key, buf, {sparse: true})
+  var swarm = hyperdiscovery(archive)
+  archive.swarm = swarm
+  this.archives.push(archive)
+  return cb(null, archive)
 }
 
 Dats.prototype.metadata = function (archive, opts, cb) {
@@ -57,6 +49,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     return cb(err, dat)
   }
 
+  archive.metadata.update()
   archive.tree.list('/', {nodes: true}, function (err, entries) {
     for (var i in entries) {
       var entry = entries[i]
@@ -65,7 +58,6 @@ Dats.prototype.metadata = function (archive, opts, cb) {
       entries[i].type = 'file'
     }
     dat.entries = entries
-    dat.peers = archive.content.peers.length
     if (err || cancelled) return done(err, dat)
     var filename = 'dat.json'
     archive.stat(filename, function (err, entry) {
@@ -76,6 +68,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
           dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
         } catch (e) {
         }
+        dat.peers = archive.content ? archive.content.peers.length : 0
         dat.size = archive.content.byteLength
         return done(null, dat)
       })
@@ -84,38 +77,15 @@ Dats.prototype.metadata = function (archive, opts, cb) {
 }
 
 Dats.prototype.close = function (cb) {
-  this.swarm.close(cb)
-}
-
-function createSwarm (archiver, opts) {
-  if (!archiver) throw new Error('hypercore archiver required')
-  if (!opts) opts = {}
-
-  var swarmOpts = swarmDefaults({
-    hash: false,
-    stream: function () {
-      return archiver.replicate()
-    }
-  })
-  var swarm = Swarm(swarmOpts)
-
-  archiver.changes(function (err, feed) {
-    if (err) throw err
-    swarm.join(feed.discoveryKey)
-  })
-
-  archiver.list().on('data', function (key) {
-    serveArchive(key)
-  })
-  archiver.on('add', serveArchive)
-  archiver.on('remove', function (key) {
-    swarm.leave(archiver.discoveryKey(key))
-  })
-
-  return swarm
-
-  function serveArchive (key) {
-    var hex = archiver.discoveryKey(key)
-    swarm.join(hex)
+  var tasks = []
+  for (var i in this.archives) {
+    var archive = this.archives[i]
+    var swarm = archive.swarm
+    tasks.push(function (next) {
+      swarm.leave(archive.discoveryKey)
+      swarm.destroy(next)
+    })
   }
+
+  parallel(tasks, cb)
 }
