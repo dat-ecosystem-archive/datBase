@@ -52,28 +52,29 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     return cb(err, dat)
   }
 
-  archive.metadata.update()
-  archive.tree.list('/', {nodes: true}, function (err, entries) {
-    for (var i in entries) {
-      var entry = entries[i]
-      entries[i] = entry.value
-      entries[i].name = entry.name
-      entries[i].type = 'file'
-    }
-    dat.entries = entries
-    if (err || cancelled) return done(err, dat)
-    var filename = 'dat.json'
-    archive.stat(filename, function (err, entry) {
-      if (err || cancelled) return done(null, dat)
-      archive.readFile(filename, function (err, metadata) {
-        if (err || cancelled) return done(err, dat)
-        try {
-          dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
-        } catch (e) {
-        }
-        dat.peers = archive.content ? archive.content.peers.length : 0
-        dat.size = archive.content.byteLength
-        return done(null, dat)
+  archive.metadata.update(function () {
+    archive.tree.list('/', {nodes: true}, function (err, entries) {
+      for (var i in entries) {
+        var entry = entries[i]
+        entries[i] = entry.value
+        entries[i].name = entry.name
+        entries[i].type = 'file'
+      }
+      dat.entries = entries
+      if (err || cancelled) return done(err, dat)
+      var filename = 'dat.json'
+      archive.stat(filename, function (err, entry) {
+        if (err || cancelled) return done(null, dat)
+        archive.readFile(filename, function (err, metadata) {
+          if (err || cancelled) return done(err, dat)
+          try {
+            dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
+          } catch (e) {
+          }
+          dat.peers = archive.content ? archive.content.peers.length : 0
+          dat.size = archive.content.byteLength
+          return done(null, dat)
+        })
       })
     })
   })
