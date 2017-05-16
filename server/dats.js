@@ -9,19 +9,20 @@ module.exports = Dats
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archives = []
+  this.archives = {}
 }
 
 Dats.prototype.get = function (key, opts, cb) {
   var self = this
   if (typeof opts === 'function') return this.get(key, {}, opts)
   key = encoding.toStr(key)
+  if (this.archives[key]) return cb(null, this.archives[key])
   var buf = encoding.toBuf(key)
   var archive = hyperdrive('./archiver/ ' + key, buf, {sparse: true, latest: false})
   archive.once('ready', function () {
     var swarm = hyperdiscovery(archive)
     archive.swarm = swarm
-    self.archives.push(archive)
+    self.archives[key] = archive
     return cb(null, archive)
   })
 }

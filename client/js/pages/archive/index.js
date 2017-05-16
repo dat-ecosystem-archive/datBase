@@ -37,7 +37,7 @@ const archivePage = (state, prev, send) => {
       err.message = 'Looking for dat.json metadata...'
     }
   }
-  var peers = state.archive.peers
+  var peers = Math.max(state.archive.peers - 1, 0) // we don't count
   var size = state.archive.size
   var meta = state.archive.metadata
   var owner = meta && meta.username === state.user.username
@@ -66,7 +66,7 @@ const archivePage = (state, prev, send) => {
               ${permissions({owner: owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
-            ${peers > 0 ? html`<div id='peers' class='dat-detail'>${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>` : html``}
+            <div id='peers' class='dat-detail'>${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
           </div>
         </div>
       </div>
