@@ -17,7 +17,7 @@ Dats.prototype.get = function (key, opts, cb) {
   if (typeof opts === 'function') return this.get(key, {}, opts)
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
-  var archive = hyperdrive('./archiver/ ' + key, buf, {sparse: true})
+  var archive = hyperdrive('./archiver/ ' + key, buf, {sparse: true, latest: false})
   archive.once('ready', function () {
     var swarm = hyperdiscovery(archive)
     archive.swarm = swarm
@@ -52,29 +52,31 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     return cb(err, dat)
   }
 
-  archive.metadata.update(function () {
-    archive.tree.list('/', {nodes: true}, function (err, entries) {
-      for (var i in entries) {
-        var entry = entries[i]
-        entries[i] = entry.value
-        entries[i].name = entry.name
-        entries[i].type = 'file'
-      }
-      dat.entries = entries
-      if (err || cancelled) return done(err, dat)
-      var filename = 'dat.json'
-      archive.stat(filename, function (err, entry) {
+  archive.tree.list('/', {nodes: true}, function (err, entries) {
+    if (err) return done(err)
+    for (var i in entries) {
+      var entry = entries[i]
+      entries[i] = entry.value
+      entries[i].name = entry.name
+      entries[i].type = 'file'
+    }
+    dat.entries = entries
+    if (cancelled) return done(null, dat)
+    var filename = 'dat.json'
+    console.log('hi')
+    archive.stat(filename, function (err, entry) {
+      if (err || cancelled) return done(null, dat)
+      console.log('got stat', entry)
+      archive.readFile(filename, function (err, metadata) {
         if (err || cancelled) return done(null, dat)
-        archive.readFile(filename, function (err, metadata) {
-          if (err || cancelled) return done(err, dat)
-          try {
-            dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
-          } catch (e) {
-          }
-          dat.peers = archive.content ? archive.content.peers.length : 0
-          dat.size = archive.content.byteLength
-          return done(null, dat)
-        })
+        try {
+          dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
+        } catch (e) {
+        }
+        dat.peers = archive.content ? archive.content.peers.length : 0
+        dat.size = archive.content.byteLength
+        console.log('got my data')
+        return done(null, dat)
       })
     })
   })
