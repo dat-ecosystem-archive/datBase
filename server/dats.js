@@ -52,6 +52,7 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     return cb(err, dat)
   }
 
+  archive.metadata.update()
   archive.tree.list('/', {nodes: true}, function (err, entries) {
     if (err) return done(err)
     for (var i in entries) {
@@ -63,10 +64,8 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     dat.entries = entries
     if (cancelled) return done(null, dat)
     var filename = 'dat.json'
-    console.log('hi')
     archive.stat(filename, function (err, entry) {
       if (err || cancelled) return done(null, dat)
-      console.log('got stat', entry)
       archive.readFile(filename, function (err, metadata) {
         if (err || cancelled) return done(null, dat)
         try {

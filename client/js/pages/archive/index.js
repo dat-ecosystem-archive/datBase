@@ -11,6 +11,7 @@ const hyperdriveStats = require('../../elements/hyperdrive-stats')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': {header: 'No dat here.', body: 'Looks like the key is invalid. Are you sure it\'s correct?'},
+  '/ could not be found': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct? This could take a while.'},
   'timed out': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct? This could take a while.'},
   'Username not found.': {header: 'That user does not exist.'},
   'Dat with that name not found.': {header: 'That user does not have a dat with that name.'}
