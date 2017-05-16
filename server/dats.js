@@ -13,14 +13,17 @@ function Dats (dir) {
 }
 
 Dats.prototype.get = function (key, opts, cb) {
+  var self = this
   if (typeof opts === 'function') return this.get(key, {}, opts)
   key = encoding.toStr(key)
   var buf = encoding.toBuf(key)
   var archive = hyperdrive('./archiver/ ' + key, buf, {sparse: true})
-  var swarm = hyperdiscovery(archive)
-  archive.swarm = swarm
-  this.archives.push(archive)
-  return cb(null, archive)
+  archive.once('ready', function () {
+    var swarm = hyperdiscovery(archive)
+    archive.swarm = swarm
+    self.archives.push(archive)
+    return cb(null, archive)
+  })
 }
 
 Dats.prototype.metadata = function (archive, opts, cb) {
