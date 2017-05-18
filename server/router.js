@@ -29,7 +29,7 @@ module.exports = function (opts, db) {
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
   router.use(redirect({
-    '/blog/2017-01-10-dat-desktop-is-here': '/blog/2017-02-21-dat-desktop-is-here'
+    '/blog': 'http://blog.datproject.org'
   }, 301))
 
   const ship = auth(router, db, opts)
@@ -44,8 +44,6 @@ module.exports = function (opts, db) {
   router.get('/install', send)
   router.get('/register', send)
   router.get('/', send)
-  router.get('/blog', send)
-  router.get('/blog/:name', send)
   router.get('/about', send)
   router.get('/team', send)
   router.get('/login', send)
@@ -59,6 +57,10 @@ module.exports = function (opts, db) {
       state.list.data = resp
       sendSPA(req, res, state)
     })
+  })
+
+  router.get('/blog/*', function (req, res) {
+    res.redirect(301, 'http://blog.datproject.org')
   })
 
   function onfile (archive, name, req, res) {
