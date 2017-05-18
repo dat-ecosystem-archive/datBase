@@ -57,7 +57,7 @@ module.exports = new function () {
 
     client
       .pause(5000)
-      .setValue(".edit-profile form input[name='description']", 'testing description')
+      .setValue(".edit-profile form textarea[name='description']", 'testing description')
       .submitForm('.edit-profile form')
     client
       .url(testServer + '/profile/testuser')
