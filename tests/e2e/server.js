@@ -60,6 +60,6 @@ module.exports = new function () {
       .url(testServer + '/install')
       .click("input[name='import-dat']")
       .keys([client.Keys[modificatorKey], 'v'])
-      .expect.element("input[name='import-dat']").value.to.equal(key).before(3000)
+      .expect.element("input[name='import-dat']").value.to.equal('dat://' + key).before(3000)
   }
 }

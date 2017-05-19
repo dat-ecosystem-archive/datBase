@@ -98,13 +98,4 @@ module.exports = new function () {
 
     client.end()
   }
-
-  testCases['profile successfully changed'] = (client) => {
-    client
-      .url(testServer + '/profile/testuser')
-      .assert.containsText('body', 'testing description')
-      .assert.containsText('body', 'testuser')
-
-    client.end()
-  }
 }
