@@ -83,7 +83,6 @@ module.exports = new function () {
       })
       .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
-
     client.end()
   }
 
@@ -96,6 +95,11 @@ module.exports = new function () {
       .pause(5000)
       .setValue(".edit-profile form textarea[name='description']", 'testing description')
       .submitForm('.edit-profile form')
+
+    client.end()
+  }
+
+  testCases['profile successfully changed'] = (client) => {
     client
       .url(testServer + '/profile/testuser')
       .assert.containsText('body', 'testing description')
