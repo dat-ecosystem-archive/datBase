@@ -40,7 +40,7 @@ const archivePage = (state, prev, send) => {
   var peers = Math.max(state.archive.peers - 1, 0) // we don't count
   var size = state.archive.size
   var meta = state.archive.metadata
-  var owner = meta && meta.username === state.township.username
+  var owner = (meta && state.township) && meta.username === state.township.username
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
 
