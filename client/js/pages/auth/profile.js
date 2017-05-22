@@ -4,6 +4,12 @@ const gravatar = require('./../../elements/gravatar')
 const header = require('./../../components/header')
 const list = require('./../../components/list')
 
+var prefix = css`
+  :host {
+    min-height: calc(100vh - 4rem);
+  }
+`
+
 module.exports = (state, prev, send) => {
   var username = state.profile.username
   var email = state.profile.email
@@ -15,47 +21,27 @@ module.exports = (state, prev, send) => {
     dat.shortname = `${state.profile.username}/${dat.name}`
     return dat
   })
-  var prefix = css`
-    :host {
-      display: flex;
-      position: relative;
-      .profile {
-        width: 250px;
-        background-color: var(--color-neutral-04);
-      }
-      .datasets {
-        min-width: 200px;
-        max-width: 800px;
-        width: 100%;
-      }
-
-      @media screen and (max-width: 40rem) {
-        display: block;
-        .profile {
-          width: 100%;
-          display: block;
-          align: items-center;
-        }
-      }
-    }
-  `
 
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="${prefix}">
-        <div class="profile pa4">
+      <div class="flex flex-column flex-row-m ${prefix}">
+        <div class="bg-neutral-04 pa4 tc tl-m">
           <div class="name">
-          <h2>${name}</h2>
-          <h3>${username}</h3>
-          <div class="pic">${pic}</div>
+          <h1 class="f4 mb1">Kristina Schneider${name}</h1>
+          <h2 class="f5 color-neutral-80">${username}</h2>
+          <div>
+            ${pic}
+          </div>
           </div>
           <h3 class="pt2 f5">
             ${description}
           </h3>
         </div>
-        <div class="pa4 datasets">
-          <h3>${username} has published ${numDats} dats</h3>
+        <div class="pa4">
+          <h3 class="f5">
+            ${username} has published ${numDats} dats
+          </h3>
           ${list(state.profile.dats, send)}
         </div>
       </div>
