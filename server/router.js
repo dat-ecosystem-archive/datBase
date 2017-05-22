@@ -154,13 +154,13 @@ module.exports = function (opts, db) {
         if (err) return onerror(err, res)
         return res.status(200).json(dat)
       }
-      res.setHeader('Hyperdrive-Key', dat.url)
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
         log.warn('could not get dat with ' + req.params, err)
         return sendSPA(req, res, state)
       }
+      res.setHeader('Hyperdrive-Key', dat.url)
       archiveRoute(dat.url, function (state) {
         state.archive.id = dat.id
         dat.username = req.params.username
