@@ -15,7 +15,7 @@ const preview = (state, prev, send) => {
 
   function downloadButton () {
     if (downloadDisabled) return html``
-    return html`<a href="/dat/${state.archive.key}/${entryName}"
+    return html`<a href="/download/${state.archive.key}/${entryName}"
       data-no-routing download="${entryName}" class="dat-header-action">
       <div class="btn__icon-wrapper">
       <img src="/public/img/download.svg" class="btn__icon-img">

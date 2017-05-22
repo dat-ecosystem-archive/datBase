@@ -40,9 +40,16 @@ const archivePage = (state, prev, send) => {
   var peers = Math.max(state.archive.peers - 1, 0) // we don't count
   var size = state.archive.size
   var meta = state.archive.metadata
-  var owner = meta && meta.username === state.user.username
-  var title = meta && meta.title || state.archive.key
+  var owner = (meta && state.township) && meta.username === state.township.username
+  var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
+
+  // TODO: add delete button with confirm modal.
+  // const deleteButton = require('../../elements/delete-button')
+  // function remove () {
+  //   send('archive:delete', meta.id)
+  // }
+  // ${owner ? deleteButton(remove) : html``}
 
   return html`
     <div>
@@ -50,14 +57,14 @@ const archivePage = (state, prev, send) => {
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header__actions">
-            ${copyButton(state.archive.key, send)}
+            ${copyButton('dat://' + state.archive.key, send)}
             <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
                 <svg><use xlink:href="#daticon-download" /></svg>
                 <span class="btn__icon-text">Download</span>
               </div>
             </a>
-          </div>
+            </div>
           <div id="title" class="share-link">${title}</div>
           <div id="author" class="author-name">${description}</div>
           ${error(state.archive.error)}

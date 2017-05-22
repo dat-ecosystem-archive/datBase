@@ -21,9 +21,10 @@ module.exports = {
     }
   },
   effects: {
-    directory: function (state, data, send, done) {
-      send('location:set', `/${state.key}/${data}`, function () {
-        send('archive:update', {root: data}, done)
+    directory: function (state, root, send, done) {
+      var path = root === '.' ? '' : `/contents/${root}`
+      send('location:set', `/${state.key}${path}`, function () {
+        send('archive:update', {root: root}, done)
       })
     },
     getMetadata: function (state, data, send, done) {
@@ -38,7 +39,7 @@ module.exports = {
     delete: function (state, data, send, done) {
       api.dats.delete({id: data.id}, function (err, resp, json) {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
-        window.location.href = '/explore'
+        window.location.href = '/profile'
       })
     }
   }

@@ -51,7 +51,7 @@ module.exports = new function () {
   }
   testCases['copying link works'] = (client) => {
     client.click('a.clipboard')
-    client.expect.element('.message.success').text.to.contain('Copied to clipboard!').before(1000)
+    client.expect.element('.success').text.to.contain('Copied to clipboard!').before(3000)
     client.expect.element("input[name='import-dat']").value.to.equal('')
   }
   testCases['pasting link works'] = (client) => {
@@ -60,6 +60,6 @@ module.exports = new function () {
       .url(testServer + '/install')
       .click("input[name='import-dat']")
       .keys([client.Keys[modificatorKey], 'v'])
-      .expect.element("input[name='import-dat']").value.to.equal(key).before(3000)
+      .expect.element("input[name='import-dat']").value.to.equal('dat://' + key).before(3000)
   }
 }

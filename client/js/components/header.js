@@ -2,6 +2,7 @@ const html = require('choo/html')
 const panel = require('./auth/user-panel')
 const button = require('../elements/button')
 const importButton = require('../elements/import-button')
+const loginButton = require('../components/login-button')
 const message = require('../elements/message')
 
 const header = (state, prev, send) => {
@@ -25,6 +26,7 @@ const header = (state, prev, send) => {
               klass: 'btn btn--white new-dat',
               click: function () { window.location.href = '/install' }
             })}
+            ${loginButton(state, prev, send)}
           </div>
         </div>
       </div>
