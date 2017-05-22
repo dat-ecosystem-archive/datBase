@@ -3,6 +3,14 @@ const css = require('sheetify')
 const form = require('get-form-data')
 const header = require('./../../components/header')
 
+var prefix = css`
+  :host {
+    textarea {
+      min-height: 7rem;
+    }
+  }
+`
+
 module.exports = (state, prev, send) => {
   function onSubmit (e) {
     const data = form(e.target)
@@ -11,41 +19,44 @@ module.exports = (state, prev, send) => {
     return false
   }
 
-  var prefix = css`
-    :host {
-      textarea { height: 100px; }
-    }
-  `
   var profile = state.township.profile
   return html`
     <div class="edit-profile ${prefix}">
       ${header(state, prev, send)}
       <div class="mw5 pv5 center">
-        <h2>Edit your Profile</h2>
+        <h3 class="f4">Edit your Profile</h3>
         <form onsubmit=${onSubmit}>
-          <label for="name" class="dat-input dat-input--icon w-100">
-            <input name="name" type="text" value=${profile.name || ''} placeholder="Full Name" class="dat-input__input dat-input__input--icon w-100" />
-            <svg class="dat-input__icon">
-              <use xlink:href="#daticon-happy-dat" />
-            </svg>
-          </label>
-          <label for="username" class="dat-input dat-input--icon w-100">
-            <input name="username" type="text" value=${profile.username || ''} placeholder="Username" class="dat-input__input dat-input__input--icon w-100" />
-            <svg class="dat-input__icon">
-              <use xlink:href="#daticon-file" />
-            </svg>
-          </label>
-          <label for="email" class="dat-input dat-input--icon w-100">
-            <input name="email" type="text" value=${profile.email || ''} placeholder="Email" class="dat-input__input dat-input__input--icon w-100" />
-            <svg class="dat-input__icon">
-              <use xlink:href="#daticon-letter" />
-            </svg>
-          </label>
-          <label for="description" class="dat-input w-100">
-            <textarea rows="4" name="description" placeholder="Description" class="dat-input__input w-100 pa2" >
-              ${profile.description}
-            </textarea>
-          </label>
+          <p>
+            <label for="name" class="dat-input dat-input--icon w-100">
+              <input name="name" type="text" value=${profile.name || ''} placeholder="Full Name" class="dat-input__input dat-input__input--icon w-100" />
+              <svg class="dat-input__icon">
+                <use xlink:href="#daticon-happy-dat" />
+              </svg>
+            </label>
+          </p>
+          <p>
+            <label for="username" class="dat-input dat-input--icon w-100">
+              <input name="username" type="text" value=${profile.username || ''} placeholder="Username" class="dat-input__input dat-input__input--icon w-100" />
+              <svg class="dat-input__icon">
+                <use xlink:href="#daticon-file" />
+              </svg>
+            </label>
+          </p>
+          <p>
+            <label for="email" class="dat-input dat-input--icon w-100">
+              <input name="email" type="text" value=${profile.email || ''} placeholder="Email" class="dat-input__input dat-input__input--icon w-100" />
+              <svg class="dat-input__icon">
+                <use xlink:href="#daticon-letter" />
+              </svg>
+            </label>
+          </p>
+          <p>
+            <label for="description" class="dat-input w-100">
+              <textarea rows="4" name="description" placeholder="Description" class=" w-100 pa2" >
+                ${profile.description}
+              </textarea>
+            </label>
+          </p>
           <p class="flex items-center justify-between w-100">
             <a href="/reset-password" class="mr3">Change your password</a>
             <input type="submit" value="Save" class="w100 btn btn--green btn--full" />

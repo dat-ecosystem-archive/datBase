@@ -46,7 +46,10 @@ const prefix = css`
       }
     }
     ul {
+      padding-left: 0;
+      border-top: 1px solid var(--color-neutral-20);
       a {
+        display: block;
         color: var(--color-neutral-60);
         &:hover, &:focus {
           color: var(--color-neutral-80);

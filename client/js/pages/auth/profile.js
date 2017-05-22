@@ -33,8 +33,8 @@ module.exports = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="flex flex-column flex-row-m ${profileStyles}">
-        <div class="bg-neutral-04 pa4 tc tl-m">
+      <div class="flex flex-column flex-row-m flex-row-l ${profileStyles}">
+        <div class="bg-neutral-04 pa4 tc tl-m tl-l">
           <div class="name">
             <h1 class="f4 mb1">Kristina Schneider${name}</h1>
             <h2 class="f5 color-neutral-80">${username}</h2>
