@@ -20,7 +20,6 @@ var avatarStyles = css`
 `
 
 module.exports = function (state, prev, send) {
-  return html``
   if (state.township.email) {
     return html`
       ${button({
