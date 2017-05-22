@@ -202,7 +202,7 @@ test('api', function (t) {
     })
 
     test('api can get a dat by username/dataset combo without login and get header', function (t) {
-      request({url: `${rootUrl}/~${users.joe.username}/${dats.cats.name}`}, function (err, resp, body) {
+      request({url: `${rootUrl}/${users.joe.username}/${dats.cats.name}`}, function (err, resp, body) {
         t.ifError(err)
         t.same(resp.headers['hyperdrive-key'], dats.cats.url.replace('dat://', ''), 'has url')
         t.end()
