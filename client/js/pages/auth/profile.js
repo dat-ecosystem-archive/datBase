@@ -24,7 +24,7 @@ module.exports = (state, prev, send) => {
   var name = state.profile.name
   var numDats = state.profile.dats.length
   var description = state.profile.description
-  var pic = gravatar({email}, '', avatarStyles)
+  var pic = gravatar({email}, {}, avatarStyles)
   state.profile.dats.map(function (dat) {
     dat.shortname = `${state.profile.username}/${dat.name}`
     return dat

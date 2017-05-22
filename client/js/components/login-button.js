@@ -24,7 +24,7 @@ module.exports = function (state, prev, send) {
   if (state.township.email) {
     return html`
       ${button({
-        text: gravatar({email: state.township.email}, '', avatarStyles),
+        text: gravatar({email: state.township.email}, {}, avatarStyles),
         click: () => send('township:sidePanel'),
         klass: `btn bn`
       })}
