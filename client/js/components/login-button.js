@@ -25,7 +25,7 @@ module.exports = function (state, prev, send) {
       ${button({
         text: gravatar({email: state.township.email}, {}, avatarStyles),
         click: () => send('township:sidePanel'),
-        klass: `btn bn`
+        klass: 'btn bn'
       })}
     `
   } else {
