@@ -19,7 +19,7 @@ module.exports = (state, prev, send) => {
   <div>
   ${dats.map(function (dat) {
     return html`
-    <div class="mb3 ph3 pv1 flex items-center ${prefix}">
+    <div class="mb3 ph3 pv2 flex items-center ${prefix}">
       <div class="flex-auto">
         <div>
           <a href="#" class="f4" onclick=${() => open(dat)}>${dat.name}</a>
@@ -35,7 +35,8 @@ module.exports = (state, prev, send) => {
       </div>
       <div class="flex-none">
         <a onclick=${function () { window.location.href = `/${dat.username}/${dat.name}` }}
-          class="btn btn--small btn--green btn--full"> Preview
+          class="btn btn--small btn--green btn--full">
+          Preview
         </a>
       </div>
     </div>

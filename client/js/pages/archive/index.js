@@ -49,7 +49,7 @@ const archivePage = (state, prev, send) => {
       ${header(state, prev, send)}
       <div id="dat-info" class="dat-header">
         <div class="container">
-          <div class="dat-header__actions">
+          <div class="dat-header-actions-wrapper">
             ${copyButton(state.archive.key, send)}
             <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
@@ -63,7 +63,7 @@ const archivePage = (state, prev, send) => {
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">
-              ${permissions({owner: owner})}
+              xx ${permissions({owner: owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
             <div id='peers' class='dat-detail'>${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
