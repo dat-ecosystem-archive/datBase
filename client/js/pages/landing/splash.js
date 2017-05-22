@@ -93,12 +93,8 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/bec32c0c3d2458c4497fd4c2238ec0926f95bc18521bd60d6532ed8ea3f85822" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
-            </a>
-            <a href="/download/79cf7ecc9baf627642099542b3714bbef51810da9f541eabb761029969d0161b" class="copy-link">
-              <svg><use xlink:href="#daticon-link" /></svg>
-              Download
             </a>
           </div>
         </div>
@@ -121,12 +117,8 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/054e2d07b9230c0dd0947494c7314cbe4891b576b049b777c99c4336171acd0b" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
-            </a>
-            <a href="/download/6fa91405f280c30cedd461dfcd3b4fffffb27759e26f8135b7cbdfe08870ccb2" class="copy-link">
-              <svg><use xlink:href="#daticon-link"/></svg>
-              Download
             </a>
           </div>
         </div>
@@ -147,12 +139,8 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/64375abb733a62fa301b1f124427e825d292a6d3ba25a26c9d4303a7987bec65" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
-            </a>
-            <a href="/download/f34f99538702f3b55ea3b88c9e374fb72db0ca35903c2249aaa09280accc2062" class="copy-link">
-              <svg><use xlink:href="#daticon-link"/></svg>
-              Download
             </a>
           </div>
         </div>
@@ -197,7 +185,7 @@ module.exports = function (state, prev, send) {
 <section class="section">
   <div class="container">
     <h2 class="content-title">Sponsors and Supporters</h2>
-    <p class="content-subtitle horizontal-rule">Dat is developed by the non-for-profit group Code for Science & Society and supported by generous sponsors.</p>
+    <p class="content-subtitle horizontal-rule">Dat is developed by the not-for-profit group Code for Science & Society and supported by generous sponsors.</p>
 
     <div class="sponsor-logos">
       <a href="https://codeforscience.org/">

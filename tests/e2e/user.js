@@ -2,21 +2,6 @@ var testServer = process.env.TEST_SERVER || 'https://datproject.org'
 
 module.exports = new function () {
   var testCases = this
-  testCases['Registration require email in whitelist'] = (client) => {
-    client
-      .url(testServer + '/register')
-      .assert.containsText('body', 'Create a New Account')
-
-    client
-      .setValue(".register form input[name='username']", 'testuser')
-      .setValue(".register form input[name='email']", 'hi@datproject.org')
-      .setValue(".register form input[name='password']", 'fnordfoobar')
-      .submitForm('.register form')
-      .expect.element('.register form .error').text.matches(/email not in invite list/).before(5000)
-
-    client.end()
-  }
-
   testCases['Registration works'] = (client) => {
     client
       .url(testServer + '/register')
@@ -29,7 +14,13 @@ module.exports = new function () {
       .submitForm('.register form')
 
     client
-      .pause(2000)
+      .pause(10000)
+      .execute(function (data) {
+        /* eslint-disable */
+        return location;
+      }, [], function (result) {
+        console.log(result)
+      })
       .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
     client.end()

@@ -1,6 +1,6 @@
 version: '2'
 services:
-  app:
+  datproject:
     build: .
     image: datproject/datfolder:${TAG}
     expose:
@@ -26,11 +26,11 @@ services:
     image: blueimp/nightwatch:0.9
     depends_on:
       - chromedriver
-      - app
+      - datproject
       - newdat
     environment:
       - PORT=80
-      - TEST_SERVER=http://app
-      - WAIT_FOR_HOSTS=app:80 chromedriver:4444 chromedriver:6060
+      - TEST_SERVER=http://datproject
+      - WAIT_FOR_HOSTS=datproject:80 chromedriver:4444 chromedriver:6060
     volumes:
       - ./tests:/home/node

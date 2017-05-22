@@ -12,7 +12,7 @@ module.exports = function (state, prev, send) {
             <nav class="main-nav">
               <a href="/install" class="header-nav-link">Install</a>
               <a href="/about" class="header-nav-link">About</a>
-              <a href="/blog" class="header-nav-link">Blog</a>
+              <a href="http://blog.datproject.org" class="header-nav-link">Blog</a>
               <a href="/team" class="header-nav-link">Team</a>
               <a href="http://docs.datproject.org" class="header-nav-link">Docs</a>
             </nav>

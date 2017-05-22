@@ -67,7 +67,7 @@ $ dat share path/to/my/data</code></pre>
               <p class="measure-wide">
                 Create a persistent, future-proof Dat link for your project
                 using Dat Desktop or our Command Line Tool and share your data
-                through the web using the “Open Dat Link” box.
+                through the web using the “Preview Dat Link” box.
               </p>
             </div>
             <div class="col-xs-12 col-sm-7">

@@ -51,7 +51,7 @@ module.exports = new function () {
   }
   testCases['copying link works'] = (client) => {
     client.click('a.clipboard')
-    client.expect.element('.message.success').text.to.contain('Copied to clipboard').before(1000)
+    client.expect.element('.message.success').text.to.contain('Copied to clipboard!').before(1000)
     client.expect.element("input[name='import-dat']").value.to.equal('')
   }
   testCases['pasting link works'] = (client) => {
