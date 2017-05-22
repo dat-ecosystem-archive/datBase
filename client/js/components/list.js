@@ -3,12 +3,6 @@ const copyButton = require('./copy-button')
 const relativeDate = require('relative-date')
 const css = require('sheetify')
 
-var prefix = css`
-  :host {
-    background-color: var(--color-neutral-04);
-  }
-`
-
 module.exports = (state, prev, send) => {
   var dats = state.list.data || []
   function open (dat) {
@@ -19,25 +13,23 @@ module.exports = (state, prev, send) => {
   <div>
   ${dats.map(function (dat) {
     return html`
-    <div class="mb3 ph3 pv2 flex items-center ${prefix}">
-      <div class="flex-auto">
+    <div class="mb3 flex items-center bg-neutral-04 hover-bg-neutral-10 pointer">
+      <div class="flex-auto pv2 pl2" onclick=${() => open(dat)}>
         <div>
-          <a href="#" class="f4" onclick=${() => open(dat)}>${dat.name}</a>
-          ${copyButton(dat.url, send)}
+          <h2 class="f4 dib mb0">${dat.name}</h2>
         </div>
         ${dat.title}
-        <div class="dat-detail">
-          ${dat.username}
-        </div>
-        <div class="dat-detail">
-          updated ${relativeDate(new Date(dat.created_at))}
+        <div class="f6 color-neutral-60">
+          <span class="mr1">
+            ${dat.username}
+          </span>
+          <span>
+            updated ${relativeDate(new Date(dat.created_at))}
+          </span>
         </div>
       </div>
-      <div class="flex-none">
-        <a onclick=${function () { window.location.href = `/${dat.username}/${dat.name}` }}
-          class="btn btn--small btn--green btn--full">
-          Preview
-        </a>
+      <div class="flex-none pv2">
+        ${copyButton(dat.url, send)}
       </div>
     </div>
     `

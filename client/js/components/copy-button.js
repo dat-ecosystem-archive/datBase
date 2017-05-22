@@ -5,13 +5,13 @@ const Clipboard = module.parent ? null : require('clipboard')
 var copyButton = css`
   :host {
     display: inline-block;
-    margin-left: 1rem;
-    font-size: .875rem;
     line-height: 1.25;
+    padding: 1rem;
+    font-size: .875rem;
     background-color: transparent;
     color: var(--color-neutral-60);
     .btn__icon-img {
-      width: 1rem;
+      width: 1.25rem;
       max-height: 1rem;
     }
   }
