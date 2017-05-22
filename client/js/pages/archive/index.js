@@ -63,7 +63,7 @@ const archivePage = (state, prev, send) => {
           ${error(state.archive.error)}
           <div class="dat-details">
             <div id="permissions" class="dat-detail">
-              xx ${permissions({owner: owner})}
+              ${permissions({owner: owner})}
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size ? prettyBytes(size) : ''}</p></div>
             <div id='peers' class='dat-detail'>${peers} Source${peers > 1 || peers === 0 ? 's' : ''}</div>
