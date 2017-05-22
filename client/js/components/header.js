@@ -26,7 +26,6 @@ const header = (state, prev, send) => {
               klass: 'btn btn--white new-dat',
               click: function () { window.location.href = '/install' }
             })}
-
             ${loginButton(state, prev, send)}
           </div>
         </div>
