@@ -29,7 +29,7 @@ module.exports = function (text, send) {
   `
   var clipboard = new Clipboard('a.clipboard')
   clipboard.on('success', function () {
-    send('message:success', 'Copied to clipboard!')
+    send('message:success', 'Link copied to clipboard')
   })
   return el
 }

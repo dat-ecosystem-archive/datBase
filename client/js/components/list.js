@@ -1,7 +1,6 @@
 const html = require('choo/html')
 const copyButton = require('./copy-button')
 const relativeDate = require('relative-date')
-const css = require('sheetify')
 
 module.exports = (state, prev, send) => {
   var dats = state.list.data || []
