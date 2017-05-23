@@ -12,6 +12,7 @@ var datadir = process.env.DATADIR || (
 
 var config = {
   shared: {
+    sentry: process.env.SENTRY,
     township: {
       secret: 'very very not secret',
       db: path.join(datadir, 'township.db')

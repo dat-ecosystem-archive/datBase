@@ -12,6 +12,7 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
+const Raven = require('raven')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
@@ -23,6 +24,7 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
+  if (opts.sentry) Raven.config(opts.sentry).install()
 
   var router = express()
   router.use(compression())
