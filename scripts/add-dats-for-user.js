@@ -8,12 +8,13 @@ var password = process.argv[3]
 var api = Api({server: rootUrl})
 
 function createDat (dat) {
-  var drive = hyperdrive(ram)
-  var archive = drive.createArchive()
-  dat.url = 'dat://' + archive.key.toString('hex')
-  api.dats.create(dat, function (err, resp, json) {
-    if (err) console.error(err)
-    console.log(json)
+  var archive = hyperdrive(ram)
+  archive.ready(function () {
+    dat.url = 'dat://' + archive.key.toString('hex')
+    api.dats.create(dat, function (err, resp, json) {
+      if (err) console.error(err)
+      console.log(json)
+    })
   })
 }
 

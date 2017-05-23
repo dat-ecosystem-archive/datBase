@@ -10,9 +10,20 @@ const listPage = (state, prev, send) => {
   return html`
   <div>
     ${header(state, prev, send)}
-    <div class="container">
-    ${list(state.list.data, send)}
-    </div>
+    <section class="section bg-neutral-04">
+      <div class="container">
+        <h2 class="content-title">Shared with Dat</h2>
+        <p class="content-subtitle horizontal-rule">
+          Explore public data shared with Dat.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        ${list(state.list.data, send)}
+      </div>
+    </section>
   </div>`
 }
 

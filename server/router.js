@@ -120,7 +120,11 @@ module.exports = function (opts, db) {
     var state = getDefaultAppState()
     db.models.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
-      if (!results.length) return onerror(new Error('Username not found.'), res)
+      if (!results.length) {
+        return archiveRoute(req.params.username, function (state) {
+          sendSPA(req, res, state)
+        })
+      }
       var user = results[0]
       state.profile = {
         username: user.username,
@@ -210,6 +214,7 @@ module.exports = function (opts, db) {
   })
 
   function onerror (err, res) {
+    console.trace(err)
     return res.status(400).json({statusCode: 400, message: err.message})
   }
 
