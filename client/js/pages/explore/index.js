@@ -21,7 +21,7 @@ const listPage = (state, prev, send) => {
 
     <section class="section">
       <div class="container">
-        ${list(state, prev, send)}
+        ${list(state.list.data, send)}
       </div>
     </section>
   </div>`
