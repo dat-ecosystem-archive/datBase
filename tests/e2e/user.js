@@ -40,4 +40,62 @@ module.exports = new function () {
 
     client.end()
   }
+
+  testCases['view profile should work'] = (client) => {
+    client
+      .url(testServer + '/profile/testuser')
+      .assert.containsText('body', 'has published 0 dats')
+      .assert.containsText('body', 'testuser')
+
+    client.end()
+  }
+
+  testCases['login with bad password displays error message'] = (client) => {
+    client
+      .url(testServer + '/login')
+
+    client
+      .pause(5000)
+      .setValue(".login form input[name='email']", 'hi@pam.com')
+      .setValue(".login form input[name='password']", 'badpassword')
+      .submitForm('.login form')
+      .expect.element('.login form .error').text.matches(/Incorrect email and password./).before(5000)
+    }
+
+
+  testCases['login should work'] = (client) => {
+    client
+      .url(testServer + '/login')
+
+    client
+      .pause(5000)
+      .setValue(".login form input[name='email']", 'hi@pam.com')
+      .setValue(".login form input[name='password']", 'fnordfoobar')
+      .submitForm('.login form')
+
+    client
+      .pause(10000)
+      .execute(function (data) {
+        /* eslint-disable */
+        return location;
+      }, [], function (result) {
+        console.log(result)
+      })
+      .assert.urlEquals(process.env.TEST_SERVER + '/install')
+
+    client.end()
+  }
+
+  testCases['edit profile should work'] = (client) => {
+    client
+      .url(testServer + '/profile/edit')
+      .assert.containsText('body', 'Edit your Profile')
+
+    client
+      .pause(5000)
+      .setValue(".edit-profile form textarea[name='description']", 'testing description')
+      .submitForm('.edit-profile form')
+
+    client.end()
+  }
 }

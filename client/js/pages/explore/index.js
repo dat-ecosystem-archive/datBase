@@ -3,10 +3,13 @@ const list = require('./../../components/list')
 const header = require('./../../components/header')
 
 const listPage = (state, prev, send) => {
+  state.list.data.map(function (dat) {
+    dat.shortname = `${dat.username}/${dat.name}`
+    return dat
+  })
   return html`
   <div>
     ${header(state, prev, send)}
-
     <section class="section bg-neutral-04">
       <div class="container">
         <h2 class="content-title">Shared with Dat</h2>

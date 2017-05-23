@@ -4,7 +4,7 @@ const form = require('get-form-data')
 const register = (state, prev, send) => {
   function onSubmit (e) {
     const data = form(e.target)
-    send('user:register', data)
+    send('township:register', data)
     e.preventDefault()
     return false
   }
@@ -13,7 +13,7 @@ const register = (state, prev, send) => {
     <div class="mw5 pv5 center">
       <h3 class="f4">Create a New Account</h3>
       <form onsubmit=${onSubmit}>
-        <div class="error">${state.error ? state.error.message : ''}</div>
+        <div class="error">${state.township.error}</div>
         <p>
           <label for="username" class="dat-input dat-input--icon w-100">
             <input name="username" type="text" placeholder="Username" class="dat-input__input dat-input__input--icon w-100" />

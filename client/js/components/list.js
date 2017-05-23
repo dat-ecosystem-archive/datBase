@@ -2,12 +2,11 @@ const html = require('choo/html')
 const copyButton = require('./copy-button')
 const relativeDate = require('relative-date')
 
-module.exports = (state, prev, send) => {
-  var dats = state.list.data || []
+module.exports = (dats, send) => {
   function open (dat) {
-    var shortname = `${dat.username}/${dat.name}`
-    window.location.href = '/' + shortname
+    window.location.href = `/${dat.shortname}`
   }
+
   return html`
   <div>
   ${dats.map(function (dat) {
