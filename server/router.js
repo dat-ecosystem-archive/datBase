@@ -54,7 +54,6 @@ module.exports = function (opts, db) {
     var state = getDefaultAppState()
     db.queries.datList(req.params, function (err, resp) {
       if (err) return onerror(err, res)
-      console.log(resp)
       state.list.data = resp
       sendSPA(req, res, state)
     })
