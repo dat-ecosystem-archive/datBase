@@ -144,6 +144,13 @@ module.exports = function (opts, db) {
     })
   })
 
+  router.get('/:archiveKey/contents', function (req, res) {
+    // just give me the archive, oopsie.
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
   router.get('/:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
@@ -170,13 +177,6 @@ module.exports = function (opts, db) {
   })
 
   router.get('/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
-  router.get('/:archiveKey/contents', function (req, res) {
-    // just give me the archive, oopsie.
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)
     })
