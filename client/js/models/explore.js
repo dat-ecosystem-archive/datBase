@@ -1,7 +1,8 @@
 var api = require('../api')()
+var xtend = require('xtend')
 
 var defaultState = {
-  data: null,
+  data: [],
   limit: 10,
   offset: 0
 }
@@ -11,7 +12,7 @@ module.exports = {
   state: module.parent ? defaultState : window.dl.init__dehydratedAppState.list,
   reducers: {
     update: (state, data) => {
-      return data
+      return xtend(state, data)
     }
   },
   effects: {

@@ -67,7 +67,7 @@ $ dat share path/to/my/data</code></pre>
               <p class="measure-wide">
                 Create a persistent, future-proof Dat link for your project
                 using Dat Desktop or our Command Line Tool and share your data
-                through the web using the “Open Dat Link” box.
+                through the web using the “Preview Dat Link” box.
               </p>
             </div>
             <div class="col-xs-12 col-sm-7">
@@ -80,7 +80,7 @@ $ dat share path/to/my/data</code></pre>
                   <p class="mb0 f6 lh-title color-white">
                     You can view an existing Dat <br>by entering the dat link.</p>
                     ${importButton({
-                      handler: function (link) { window.location.href = '/dat/' + link }
+                      handler: function (link) { window.location.href = '/' + link }
                     })}
                   </div>
                 </div>

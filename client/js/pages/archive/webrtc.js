@@ -39,7 +39,7 @@ const archivePage = (state, prev, send) => {
       ${header(state, prev, send)}
       <div id="dat-info" class="dat-header">
         <div class="container">
-          <div class="dat-header__actions">
+          <div class="dat-header-actions-wrapper">
             ${copyButton(state.archive.key, send)}
             <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
               <div class="btn__icon-wrapper ${downloadBtnDisabled}">
@@ -63,7 +63,7 @@ const archivePage = (state, prev, send) => {
             </div>
             <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
             <div id="peers" class="dat-detail">${sources} Source(s)</div>
-            <div id="speed" class="dat-detail dat-detail--speed"><div>${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}</div></div>
+            <div id="speed" class="dat-detail dn"><div>${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}</div></div>
           </div>
             <div class="dat-detail">
             ${archive && archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}

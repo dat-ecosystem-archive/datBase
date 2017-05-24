@@ -12,6 +12,7 @@ var datadir = process.env.DATADIR || (
 
 var config = {
   shared: {
+    mixpanel: process.env.MIXPANEL || 'notakey',
     township: {
       secret: 'very very not secret',
       db: path.join(datadir, 'township.db')
@@ -27,16 +28,16 @@ var config = {
       },
       useNullAsDefault: true
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
     archiver: path.join(datadir, 'archiver'),
     port: process.env.PORT || 8888
   },
   development: {},
   test: {
-    whitelist: path.join(__dirname, '../tests/fixtures/whitelist.txt')
+    whitelist: false
   },
   production: () => {
     return {
+      mixpanel: process.env.MIXPANEL || fs.readFileSync(path.join(datadir, 'secrets', 'mixpanel')).toString(),
       township: {
         db: path.join(datadir, 'datland-township.db'),
         publicKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString(),

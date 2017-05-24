@@ -7,7 +7,8 @@ module.exports = function verifyAccount (user, options, cb) {
     cb = options
     options = {}
   }
-  var notAllowed = ['users', 'dats']
+  var notAllowed = ['profile', 'user', 'edit', 'users', 'team', 'reset-password', 'browser', 'register', 'login',
+    'dats', 'view', 'api', 'install', 'download', 'explore', 'about', 'metadata', 'dat']
   if (notAllowed.indexOf(user.username) > -1) return cb(new Error('Username not allowed'))
 
   if (!options.whitelist) {

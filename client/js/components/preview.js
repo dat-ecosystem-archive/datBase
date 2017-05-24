@@ -10,12 +10,12 @@ const preview = (state, prev, send) => {
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const entry = state.preview.entry
   const entryName = entry && entry.name
-  const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
-  const downloadDisabled = entry && (entry.length > (1048576 * 10))
+  const size = (entry && entry.size) ? prettyBytes(entry.size) : 'N/A'
+  const downloadDisabled = entry && (entry.size > (1048576 * 10))
 
   function downloadButton () {
     if (downloadDisabled) return html``
-    return html`<a href="/dat/${state.archive.key}/${entryName}"
+    return html`<a href="/download/${state.archive.key}/${entryName}"
       data-no-routing download="${entryName}" class="dat-header-action">
       <div class="btn__icon-wrapper">
       <img src="/public/img/download.svg" class="btn__icon-img">

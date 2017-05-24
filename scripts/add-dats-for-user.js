@@ -1,6 +1,6 @@
 const Api = require('dat-registry')
 const hyperdrive = require('hyperdrive')
-const memdb = require('memdb')
+const ram = require('random-access-memory')
 
 var rootUrl = 'http://localhost:8080'
 var email = process.argv[2]
@@ -8,12 +8,13 @@ var password = process.argv[3]
 var api = Api({server: rootUrl})
 
 function createDat (dat) {
-  var drive = hyperdrive(memdb())
-  var archive = drive.createArchive()
-  dat.url = 'dat://' + archive.key.toString('hex')
-  api.dats.create(dat, function (err, resp, json) {
-    if (err) console.error(err)
-    console.log(json)
+  var archive = hyperdrive(ram)
+  archive.ready(function () {
+    dat.url = 'dat://' + archive.key.toString('hex')
+    api.dats.create(dat, function (err, resp, json) {
+      if (err) console.error(err)
+      console.log(json)
+    })
   })
 }
 

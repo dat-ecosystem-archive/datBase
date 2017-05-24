@@ -6,12 +6,11 @@ const css = require('sheetify')
 // try { localStorage.debug = 'webrtc-swarm' } catch (e) {}
 
 // define models:
-app.model(require('./models/read-only-archive'))
-app.model(require('./models/user'))
+app.model(require('./models/archive'))
+app.model(require('./models/township'))
 app.model(require('./models/explore'))
-app.model(require('./models/error'))
+app.model(require('./models/profile'))
 app.model(require('./models/message'))
-app.model(require('./models/help'))
 app.model(require('./models/preview'))
 
 css('dat-colors')
@@ -27,14 +26,16 @@ app.router({default: '/404'}, [
   ['/download/:archiveKey', require('./pages/download')],
   ['/dat/:archiveKey', require('./pages/archive')],
   ['/view/:archiveKey', require('./pages/archive')],
-  ['/~:username/:dataset', require('./pages/archive')],
+  ['/profile/:username', require('./pages/auth/profile')],
+  ['/profile/edit', require('./pages/auth/edit-profile')],
   ['/404', require('./pages/fourohfour')],
-  ['/blog', require('./pages/landing/blog')],
-  ['/blog/:name', require('./pages/landing/post')],
   ['/team', require('./pages/landing/team')],
   ['/about', require('./pages/landing/about')],
+  ['/:archiveKey/contents', require('./pages/archive')],
+  ['/:archiveKey/contents/*', require('./pages/archive')],
+  ['/:username/:dataset', require('./pages/archive')],
+  ['/:username/:dataset/*', require('./pages/archive')],
   ['/:archiveKey', require('./pages/archive')],
-  ['/:archiveKey/*', require('./pages/archive')],
   ['/', require('./pages/landing/splash')]
 ])
 

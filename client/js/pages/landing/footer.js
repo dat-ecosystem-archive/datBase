@@ -8,8 +8,8 @@ module.exports = function (state, prev, send) {
         <div class="col-xs-6 col-sm-4">
           <h4 class="footer-heading horizontal-rule-footer">Explore</h4>
           <ul class="footer-nav-list">
+            <li><a href="/explore">Explore Datasets</a></li>
             <li><a href="/team">Team</a></li>
-            <li><a href="https://www.stickermule.com/en/marketplace/9709-dat-data-v3">Get Stickers</a></li>
             <li><a href="/blog">Blog</a></li>
           </ul>
         </div>
@@ -28,6 +28,7 @@ module.exports = function (state, prev, send) {
             <li>
               <a href="https://tinyletter.com/datdata" target="_blank">Newsletter </a>
             </li>
+            <li><a href="https://www.stickermule.com/en/marketplace/9709-dat-data-v3">Get Stickers</a></li>
           </ul>
         </div>
       </div>

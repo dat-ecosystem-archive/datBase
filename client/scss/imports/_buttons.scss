@@ -1,0 +1,31 @@
+.btn__icon-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.btn__icon-img {
+  opacity: .5;
+  display: block;
+}
+
+.btn__icon-text {
+  margin-left: .5em;
+  white-space: nowrap;
+}
+
+.btn__reveal-text {
+  .btn__icon-text {
+    transition-property: width, margin, opacity;
+    transition-duration: $transition-duration;
+    transition-timing-function: $transition-timing-function;
+    transition-timing-function: 1s;
+  }
+  &:not(:hover) {
+    .btn__icon-text {
+      width: 0;
+      margin-left: 0;
+      opacity: 0;
+    }
+  }
+}

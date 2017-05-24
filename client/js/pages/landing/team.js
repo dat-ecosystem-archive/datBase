@@ -102,11 +102,11 @@ module.exports = function (state, prev, send) {
       <div class="container">
         <div class="gallery">
           <div class="gallery-item">
-            <div class="gallery-item-avatar" style="$(avatar('freeman-lab')}"></div>
+            <div class="gallery-item-avatar" style="$(avatar('kristenratan')}"></div>
 
             <div class="gallery-item-contents">
-              <div class="gallery-item-title">Jeremy Freeman</div>
-              <div class="gallery-item-subtitle">Group Leader, Jenelia Research Campus.
+              <div class="gallery-item-title">Kristen Ratan</div>
+              <div class="gallery-item-subtitle">Co-Founder of the Collaborative Knowledge Foundation, a nonprofit with a mission to evolve how knowledge is created, produced, and shared.
               </div>
             </div>
           </div>
