@@ -94,6 +94,5 @@ module.exports = function (state, prev, send) {
         <li><a href="http://github.com/datproject/datproject.org/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>
         <li><a href="#" onclick=${() => send('township:logout', {})}>Logout</a></li>
       </ul>
-
   </div>`
 }
