@@ -4,11 +4,13 @@ const response = require('response')
 const level = require('level-party')
 const verify = require('./verify')
 const errors = require('../errors')
+const Mixpanel = require('mixpanel')
 const createReset = require('./reset')
 
 module.exports = function (router, db, config) {
   const townshipDb = level(config.township.db || path.join(__dirname, 'township.db'))
   const ship = township(townshipDb, config.township)
+  const mx = Mixpanel.init(config.mixpanel)
   var reset
   if (config.email) reset = createReset(config, townshipDb)
 
@@ -24,9 +26,13 @@ module.exports = function (router, db, config) {
     verify(req.body, {whitelist: config.whitelist}, function (err) {
       if (err) return onerror(err, res)
       ship.register(req, res, {body: req.body}, function (err, statusCode, obj) {
-        if (err) return onerror(err, res)
+        if (err) {
+          mx.track('registration failed', {distinct_id: req.body.email, body: req.body, reason: err.message})
+          return onerror(err, res)
+        }
         db.models.users.create({email: req.body.email, username: req.body.username}, function (err, body) {
           if (err) return onerror(err, res)
+          mx.people.set(req.body.email, body)
           body.token = obj.token
           body.key = obj.key
           return response.json(body).status(200).pipe(res)
@@ -39,15 +45,30 @@ module.exports = function (router, db, config) {
     var body = req.body
     if (!body) return onerror(new Error('Requires email and password.'), res)
     ship.login(req, res, {body: body}, function (err, resp, obj) {
-      if (err) return onerror(err, res)
+      if (err) {
+        mx.track('login failed', {distinct_id: body.email, reason: err.message})
+        return onerror(err, res)
+      }
       db.models.users.get({email: body.email}, function (err, results) {
         if (err) return onerror(err, res)
-        if (!results.length) return onerror(new Error('User does not exist.'), res)
+        if (!results.length) {
+          err = new Error('User does not exist.')
+          mx.track('login failed', {distinct_id: body.email, reason: err.message})
+          return onerror(err, res)
+        }
         var user = results[0]
         obj.email = user.email
         obj.username = user.username
         obj.role = user.role
+        obj.name = user.name
         obj.description = user.description
+
+        // mixpanel modifies incoming object, copy it
+        var tracked = Object.assign({}, obj)
+        mx.track('login', tracked)
+        mx.people.increment(body.email, 'logins')
+        mx.people.set(body.email, tracked)
+
         return response.json(obj).status(200).pipe(res)
       })
     })
@@ -61,6 +82,7 @@ module.exports = function (router, db, config) {
       var accountKey = account.auth.key
       return reset.mail(userEmail, accountKey, function (err) {
         if (err) return onerror(err, res)
+        mx.people.increment(req.body.email, 'reset password')
         return response.json({ message: 'Check your email to finish resetting your password' }).pipe(res)
       })
     })
@@ -80,6 +102,7 @@ module.exports = function (router, db, config) {
       if (err) return onerror(new Error('problem confirming password reset'), res)
       reset.confirm({ token: body.resetToken, accountKey: body.accountKey }, function (err) {
         if (err) return onerror(new Error('reset token not valid'), res)
+        mx.people.increment(req.body.email, 'reset password confirm')
         response.json({ message: 'password successfully reset' }).pipe(res)
       })
     })

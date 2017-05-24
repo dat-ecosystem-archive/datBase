@@ -12,6 +12,7 @@ var datadir = process.env.DATADIR || (
 
 var config = {
   shared: {
+    mixpanel: process.env.MIXPANEL || 'notakey',
     township: {
       secret: 'very very not secret',
       db: path.join(datadir, 'township.db')
@@ -36,6 +37,7 @@ var config = {
   },
   production: () => {
     return {
+      mixpanel: fs.readFileSync(path.join(datadir, 'secrets', 'mixpanel')).toString(),
       township: {
         db: path.join(datadir, 'datland-township.db'),
         publicKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString(),

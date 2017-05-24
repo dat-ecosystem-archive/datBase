@@ -12,6 +12,7 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
+const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
@@ -23,6 +24,7 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
+  const mx = Mixpanel.init(opts.mixpanel)
 
   var router = express()
   router.use(compression())
@@ -33,7 +35,7 @@ module.exports = function (opts, db) {
   }, 301))
 
   const ship = auth(router, db, opts)
-  api(router, db, ship)
+  api(router, db, ship, opts)
 
   function send (req, res) {
     var state = getDefaultAppState()
@@ -66,6 +68,8 @@ module.exports = function (opts, db) {
   function onfile (archive, name, req, res) {
     archive.stat(name, function (err, st) {
       if (err) return onerror(err, res)
+      log.info('file requested', st.size)
+      mx.track('file requested', {size: st.size})
 
       if (st.isDirectory()) {
         res.statusCode = 302
@@ -126,6 +130,7 @@ module.exports = function (opts, db) {
         })
       }
       var user = results[0]
+      mx.track('profile viewed', {distinct_id: user.email})
       state.profile = {
         username: user.username,
         role: user.role,
@@ -153,6 +158,7 @@ module.exports = function (opts, db) {
 
   router.get('/:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
+    mx.track('shortname viewed', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
@@ -242,8 +248,10 @@ module.exports = function (opts, db) {
       state.archive.key = key
     } catch (err) {
       log.warn('key malformed', key)
+      mx.track('key malformed', {key: key})
       return onerror(err)
     }
+    mx.track('archive viewed', {key: state.archive.key})
 
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
