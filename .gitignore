@@ -15,7 +15,7 @@ selenium-debug.log
 dat.land
 township.db
 sqlite.db
-config.js
+config.local.js
 public/rendered
 invited-users
 secrets

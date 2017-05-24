@@ -2,7 +2,7 @@ const response = require('response')
 const Users = require('./users')
 const Dats = require('./dats')
 
-module.exports = function (router, db, ship) {
+module.exports = function (router, db, ship, config) {
   function onerror (err, res) {
     var data = {statusCode: 400, message: err.message}
     return response.json(data).status(400).pipe(res)
