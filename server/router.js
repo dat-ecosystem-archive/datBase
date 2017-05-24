@@ -1,4 +1,7 @@
 const fs = require('fs')
+const range = require('range-parser')
+const mime = require('mime')
+const pump = require('pump')
 const xtend = require('xtend')
 const path = require('path')
 const compression = require('compression')
@@ -9,11 +12,11 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
+const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
 const auth = require('./auth')
 const api = require('./api')
-const pkg = require('../package.json')
 const Dats = require('./dats')
 
 module.exports = function (opts, db) {
@@ -21,17 +24,18 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
+  const mx = Mixpanel.init(opts.mixpanel)
 
   var router = express()
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
   router.use(redirect({
-    '/blog/2017-01-10-dat-desktop-is-here': '/blog/2017-02-21-dat-desktop-is-here'
+    '/blog': 'http://blog.datproject.org'
   }, 301))
 
   const ship = auth(router, db, opts)
-  api(router, db, ship)
+  api(router, db, ship, opts)
 
   function send (req, res) {
     var state = getDefaultAppState()
@@ -42,8 +46,6 @@ module.exports = function (opts, db) {
   router.get('/install', send)
   router.get('/register', send)
   router.get('/', send)
-  router.get('/blog', send)
-  router.get('/blog/:name', send)
   router.get('/about', send)
   router.get('/team', send)
   router.get('/login', send)
@@ -59,77 +61,121 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/download/:archiveKey', function (req, res) {
-    var state = getDefaultAppState()
-    state.archive.key = req.params.archiveKey
-    sendSPA(req, res, state)
+  router.get('/blog/*', function (req, res) {
+    res.redirect(301, 'http://blog.datproject.org')
   })
 
-  router.get('/dat/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
+  function onfile (archive, name, req, res) {
+    archive.stat(name, function (err, st) {
+      if (err) return onerror(err, res)
+      log.info('file requested', st.size)
+      mx.track('file requested', {size: st.size})
 
-  router.get('/view/:archiveKey', function (req, res) {
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
+      if (st.isDirectory()) {
+        res.statusCode = 302
+        res.setHeader('Location', name + '/')
+        return
+      }
+
+      var r = req.headers.range && range(st.size, req.headers.range)[0]
+      res.setHeader('Accept-Ranges', 'bytes')
+      res.setHeader('Content-Type', mime.lookup(name))
+
+      if (r) {
+        res.statusCode = 206
+        res.setHeader('Content-Range', 'bytes ' + r.start + '-' + r.end + '/' + st.size)
+        res.setHeader('Content-Length', r.end - r.start + 1)
+      } else {
+        res.setHeader('Content-Length', st.size)
+      }
+
+      if (req.method === 'HEAD') return res.end()
+      pump(archive.createReadStream(name, r), res)
     })
-  })
+  }
 
   router.get('/download/:archiveKey/*', function (req, res) {
     log.debug('getting file contents', req.params)
-    var filename = req.params[0]
     dats.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.file(req.params.archiveKey, filename, function (err) {
-        if (err) return onerror(err, res)
-        return dats.http.file(req, res, archive, filename)
-      })
+      var filename = req.params[0]
+      return onfile(archive, filename, req, res)
     })
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
+    const timeout = parseInt(req.query.timeout) || 1000
     log.debug('requesting metadata for key', req.params.archiveKey)
-    dats.get(req.params.archiveKey, function (err, archive) {
+    dats.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.metadata(archive, {timeout: parseInt(req.query.timeout)}, function (err, info) {
+      dats.metadata(archive, {timeout}, function (err, info) {
         if (err) return onerror(err, res)
         return res.status(200).json(info)
       })
     })
   })
 
-  router.get('/~:username', function (req, res) {
+  router.get('/profile/edit', function (req, res) {
+    var state = getDefaultAppState()
+    return sendSPA(req, res, state)
+  })
+
+  router.get('/profile/:username', function (req, res) {
+    var state = getDefaultAppState()
     db.models.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
-      if (!results.length) return onerror(new Error('Username not found.'), res)
+      if (!results.length) {
+        return archiveRoute(req.params.username, function (state) {
+          sendSPA(req, res, state)
+        })
+      }
       var user = results[0]
+      mx.track('profile viewed', {distinct_id: user.email})
+      state.profile = {
+        username: user.username,
+        role: user.role,
+        name: user.name,
+        data: user.data,
+        description: user.description,
+        created_at: user.created_at,
+        email: user.email,
+        id: user.id
+      }
       db.models.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
-        return res.status(200).json(results)
+        state.profile.dats = results
+        return sendSPA(req, res, state)
       })
     })
   })
 
-  router.get('/~:username/:dataset', function (req, res) {
+  router.get('/:archiveKey/contents', function (req, res) {
+    // just give me the archive, oopsie.
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
+  router.get('/:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
+    mx.track('shortname viewed', req.params)
     db.queries.getDatByShortname(req.params, function (err, dat) {
-      var contentType = req.accepts(['html', 'json'])
-      if (contentType === 'json') {
-        if (err) return onerror(err, res)
-        return res.status(200).json(dat)
-      }
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
         log.warn('could not get dat with ' + req.params, err)
         return sendSPA(req, res, state)
       }
+      res.setHeader('Hyperdrive-Key', dat.url)
+      var contentType = req.accepts(['html', 'json'])
+      if (contentType === 'json') {
+        if (err) return onerror(err, res)
+        return res.status(200).json(dat)
+      }
       archiveRoute(dat.url, function (state) {
         state.archive.id = dat.id
         dat.username = req.params.username
-        dat.shortname = req.params.dataset
+        dat.shortname = req.params.username + '/' + req.params.dataset
         state.archive.metadata = dat
         return sendSPA(req, res, state)
       })
@@ -142,18 +188,22 @@ module.exports = function (opts, db) {
     })
   })
 
-  router.get('/:archiveKey/*', function (req, res) {
+  router.get('/:archiveKey/contents/*', function (req, res) {
     log.debug('getting file contents', req.params)
     var filename = req.params[0]
     archiveRoute(req.params.archiveKey, function (state) {
       dats.get(req.params.archiveKey, function (err, archive) {
         if (err) return onerror(err, res)
-        archive.get(filename, function (err, entry) {
+        archive.stat(filename, function (err, entry) {
           if (err) {
             state.preview.error = {message: err.message}
             entry = {name: filename}
           }
+          entry.name = filename
           entry.archiveKey = req.params.archiveKey
+          entry.type = entry.isDirectory
+            ? entry.isDirectory() ? 'directory' : 'file'
+              : 'file'
           if (entry.type === 'directory') {
             state.archive.root = entry.name
             return sendSPA(req, res, state)
@@ -170,6 +220,7 @@ module.exports = function (opts, db) {
   })
 
   function onerror (err, res) {
+    console.trace(err)
     return res.status(400).json({statusCode: 400, message: err.message})
   }
 
@@ -179,6 +230,7 @@ module.exports = function (opts, db) {
 
     function onerror (err) {
       log.warn(key, err)
+      if (cancelled) return true
       cancelled = true
       state.archive.error = {message: err.message}
       return cb(state)
@@ -186,31 +238,33 @@ module.exports = function (opts, db) {
 
     var timeout = setTimeout(function () {
       var msg = 'timed out'
-      if (cancelled) return
-      cancelled = true
       return onerror(new Error(msg))
     }, 1000)
 
     var state = getDefaultAppState()
     try {
-      state.archive.key = encoding.toStr(key)
+      key = encoding.toStr(key)
+      if (key.length !== 64) return onerror(new Error('Invalid key'))
+      state.archive.key = key
     } catch (err) {
       log.warn('key malformed', key)
-      cancelled = true
+      mx.track('key malformed', {key: key})
       return onerror(err)
     }
+    mx.track('archive viewed', {key: state.archive.key})
 
     dats.get(state.archive.key, function (err, archive) {
       if (err) return onerror(err)
-      log.info('got archive', archive.key.toString('hex'))
-      clearTimeout(timeout)
-      if (cancelled) return
-      cancelled = true
+      archive.ready(function () {
+        clearTimeout(timeout)
+        if (cancelled) return
+        cancelled = true
 
-      dats.metadata(archive, {timeout: 1000}, function (err, info) {
-        if (err) state.archive.error = {message: err.message}
-        state.archive = xtend(state.archive, info)
-        cb(state)
+        dats.metadata(archive, {timeout: 1000}, function (err, info) {
+          if (err) state.archive.error = {message: err.message}
+          state.archive = xtend(state.archive, info)
+          cb(state)
+        })
       })
     })
   }
@@ -227,7 +281,6 @@ module.exports = function (opts, db) {
       assert.equal(typeof model.state, 'object', 'getDefaultAppState: model must have a state property that is an object')
       state[model.namespace] = model.state
     })
-    state.user.version = pkg.version
     return JSON.parse(JSON.stringify(state))
   }
 

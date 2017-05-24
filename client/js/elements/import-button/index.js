@@ -8,12 +8,12 @@ module.exports = function (props) {
       // TODO: basic parsing, validation of archive link before server-render
       link = link.toLowerCase()
       link = link.replace('dat://', '')
-      link = link.replace('dat.land/', '').replace(/^(http|https):\/\//, '')
+      link = link.replace('datproject.org/', '').replace(/^(http|https):\/\//, '')
       props.handler(link)
     }
   }
   return html`<label for="import-dat" class="dat-input">
-    <input name="import-dat" type="text" placeholder="Open Dat Link" onkeydown=${keydown} class="dat-input__input dat-input__input--icon dat-input__input--no-border">
+    <input name="import-dat" type="text" placeholder="PREVIEW DAT LINK" onkeydown=${keydown} class="dat-input__input dat-input__input--icon dat-input__input--no-border">
     <div class="dat-input__icon">
       <img src="/public/img/link.svg" />
     </div>

@@ -8,7 +8,7 @@
   font-size: .8125rem;
 }
 
-.dat-header__actions {
+.dat-header-actions-wrapper {
   @media only screen and (min-width: $md1) {
     float: right;
     margin-left: 2rem;
@@ -33,6 +33,12 @@
   }
   &:disabled {
     opacity: 0.5;
+  }
+  svg,
+  .btn__icon-img {
+    width: 1rem;
+    max-width: 1.25rem;
+    max-height: 1rem;
   }
 }
 
@@ -59,8 +65,4 @@
   p {
     margin-bottom: 0;
   }
-}
-
-.dat-detail--speed {
-  display: none;
 }

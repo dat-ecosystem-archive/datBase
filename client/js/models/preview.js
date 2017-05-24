@@ -22,7 +22,7 @@ module.exports = {
     file: (state, data, send, done) => {
       data.error = false
       send('preview:update', data, function () {
-        send('location:set', `/${data.entry.archiveKey}/${data.entry.name}`, function () {
+        send('location:set', `/${data.entry.archiveKey}/contents/${data.entry.name}`, function () {
           send('preview:openPanel', {}, done)
         })
       })
@@ -31,7 +31,7 @@ module.exports = {
     closePanel: (state, data, send, done) => {
       var arr = state.entry.name.split('/')
       var path = arr.splice(0, arr.length - 1)
-      send('location:set', `/${state.entry.archiveKey}/${path}`, function () {
+      send('location:set', `/${state.entry.archiveKey}/contents/${path}`, function () {
         send('preview:update', defaultState, done)
       })
     }

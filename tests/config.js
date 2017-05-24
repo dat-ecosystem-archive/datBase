@@ -14,6 +14,7 @@ if (process.env.NODE_ENV === 'test') datadir = __dirname
 
 var config = {
   shared: {
+    mixpanel: process.env.MIXPANEL || 'notakey',
     township: {
       secret: 'very very not secret',
       db: path.join(datadir, 'township.db')
@@ -29,16 +30,16 @@ var config = {
       },
       useNullAsDefault: true
     },
-    whitelist: path.join(datadir, 'invited-users', 'README'),
     archiver: path.join(datadir, 'archiver'),
     port: process.env.PORT || 8888
   },
   development: {},
   test: {
-    whitelist: path.join(datadir, 'fixtures', 'whitelist.txt'),
+    whitelist: false
   },
   production: () => {
     return {
+      mixpanel: fs.readFileSync(path.join(datadir, 'secrets', 'mixpanel')).toString(),
       township: {
         db: path.join(datadir, 'datland-township.db'),
         publicKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString(),
