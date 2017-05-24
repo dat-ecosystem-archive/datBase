@@ -37,7 +37,7 @@ var config = {
   },
   production: () => {
     return {
-      mixpanel: fs.readFileSync(path.join(datadir, 'secrets', 'mixpanel')).toString(),
+      mixpanel: process.env.MIXPANEL || fs.readFileSync(path.join(datadir, 'secrets', 'mixpanel')).toString(),
       township: {
         db: path.join(datadir, 'datland-township.db'),
         publicKey: fs.readFileSync(path.join(datadir, 'secrets', 'ecdsa-p521-public.pem')).toString(),
