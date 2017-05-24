@@ -1,29 +1,28 @@
 const mkdirp = require('mkdirp')
-const parallel = require('run-parallel')
-const hyperdiscovery = require('hyperdiscovery')
+const ram = require('random-access-memory')
 const encoding = require('dat-encoding')
 const hyperdrive = require('hyperdrive')
+const archiver = require('hypercore-archiver')
+const swarm = require('hypercore-archiver/swarm')
 
 module.exports = Dats
 
 function Dats (dir) {
   if (!(this instanceof Dats)) return new Dats(dir)
   mkdirp.sync(dir)
-  this.archives = {}
+  this.ar = archiver(dir, {sparse: true})
+  this.swarm = swarm(this.ar)
 }
 
 Dats.prototype.get = function (key, opts, cb) {
   var self = this
   if (typeof opts === 'function') return this.get(key, {}, opts)
   key = encoding.toStr(key)
-  if (this.archives[key]) return cb(null, this.archives[key])
-  var buf = encoding.toBuf(key)
-  var archive = hyperdrive('./archiver/ ' + key, buf, {sparse: true, latest: false})
-  archive.once('ready', function () {
-    var swarm = hyperdiscovery(archive)
-    archive.swarm = swarm
-    self.archives[key] = archive
-    return cb(null, archive)
+  this.ar.add(key, function () {
+  })
+  self.ar.get(key, function (err, metadataFeed, contentFeed) {
+    if (err) return cb(err)
+    return cb(null, hyperdrive(ram, {metadata: metadataFeed, content: contentFeed}))
   })
 }
 
@@ -86,15 +85,5 @@ Dats.prototype.metadata = function (archive, opts, cb) {
 }
 
 Dats.prototype.close = function (cb) {
-  var tasks = []
-  for (var i in this.archives) {
-    var archive = this.archives[i]
-    var swarm = archive.swarm
-    tasks.push(function (next) {
-      swarm.leave(archive.discoveryKey)
-      swarm.destroy(next)
-    })
-  }
-
-  parallel(tasks, cb)
+  this.swarm.destroy(cb)
 }

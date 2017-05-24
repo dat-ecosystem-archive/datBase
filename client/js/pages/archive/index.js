@@ -33,10 +33,10 @@ const archivePage = (state, prev, send) => {
       }
     }
     if (err.message === 'timed out') {
-      if (!module.parent) send('archive:getMetadata', {timeout: 60000})
       err.message = 'Looking for dat.json metadata...'
     }
   }
+  if (!module.parent) send('archive:getMetadata', {timeout: 60000})
   var peers = Math.max(state.archive.peers - 1, 0) // we don't count
   var size = state.archive.size
   var meta = state.archive.metadata
