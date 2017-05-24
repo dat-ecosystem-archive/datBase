@@ -28,12 +28,14 @@ module.exports = {
       })
     },
     getMetadata: function (state, data, send, done) {
-      if (!state.key) return done()
-      http({url: `/metadata/${state.key}?timeout=${data.timeout}`, method: 'GET', json: true}, function (err, resp, json) {
-        if (err) return send('archive:update', {error: {message: err.message}}, done)
-        if (json.error) return send('archive:update', json, done)
-        if (json.entries) json.error = null
-        send('archive:update', json, done)
+      if (!state.key || state.fetched) return done()
+      send('archive:update', {fetched: true}, function () {
+        http({url: `/metadata/${state.key}?timeout=${data.timeout}`, method: 'GET', json: true}, function (err, resp, json) {
+          if (err) return send('archive:update', {error: {message: err.message}}, done)
+          if (json.error) return send('archive:update', json, done)
+          if (json.entries) json.error = null
+          send('archive:update', json, done)
+        })
       })
     },
     delete: function (state, data, send, done) {
