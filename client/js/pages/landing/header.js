@@ -10,7 +10,7 @@ module.exports = function (state, prev, send) {
               <span class="dat-logo__word">Dat</span>
             </a>
             <nav class="main-nav">
-              <a href="/explore" class="header-nav-link">Explore</a>
+              <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
               <a href="/install" class="header-nav-link">Install</a>
               <a href="/about" class="header-nav-link">About</a>
               <a href="http://blog.datproject.org" class="header-nav-link">Blog</a>

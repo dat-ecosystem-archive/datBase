@@ -74,7 +74,7 @@ module.exports = function (state, prev, send) {
 
     <h2 class="content-title">Shared with Dat</h2>
     <p class="content-subtitle horizontal-rule">
-      <a href="/explore">Explore</a> public data shared with Dat.
+      <a href="/explore" data-no-routing>Explore</a> public data shared with Dat.
     </p>
 
     <div class="row">
