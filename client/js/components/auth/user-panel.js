@@ -3,15 +3,15 @@ const html = require('choo/html')
 
 const prefix = css`
   :host {
-    position: fixed;
-    right: .5rem;
-    top: .5rem;
+    position: absolute;
+    right: 0;
+    top: 3.75rem;
     z-index: 100;
-    min-width: 16rem;
+    min-width: 18rem;
     padding: 1rem;
     background-color: var(--color-white);
     color: var(--color-neutral-80);
-    box-shadow: 0 0 1rem rgba(0,0,0,.2);
+    box-shadow: 0 0 .75rem rgba(0,0,0,.25);
     .gravatar {
       border-radius: 50%;
       width: 3rem;
