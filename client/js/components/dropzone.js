@@ -2,7 +2,7 @@ const html = require('choo/html')
 const drop = require('drag-drop')
 
 module.exports = (state, prev, send) => {
-  return html`<div class="landing-create-new-dat" onload=${
+  return html`<div onload=${
     (el) => drop(el, (files) => send('archive:importFiles', {files, createArchive: 1}))
   }>
 

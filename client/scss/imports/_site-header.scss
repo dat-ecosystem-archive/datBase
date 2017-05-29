@@ -23,6 +23,12 @@
   }
 }
 
+@media screen and (max-width: $sm) {
+  .hidden-on-mobile {
+    display: none;
+  }
+}
+
 // dat-button
 .dat-button {
   display: inline-block;
