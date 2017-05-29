@@ -14,6 +14,7 @@ var avatarStyles = css`
   :host {
     display: block;
     margin: 0 auto;
+    height: auto;
     box-shadow: 0 0 1.5rem rgba(0,0,0,.15);
   }
 `
@@ -44,7 +45,7 @@ module.exports = (state, prev, send) => {
             ${description}
           </h3>
         </div>
-        <div class="pa4">
+        <div class="pa4 flex-auto">
           <h3 class="f5">
             ${username} has published ${numDats} dats
           </h3>
