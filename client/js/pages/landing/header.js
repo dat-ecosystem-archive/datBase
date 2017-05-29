@@ -2,7 +2,7 @@ var html = require('choo/html')
 
 module.exports = function (state, prev, send) {
   return html`
-    <header class="site-header site-header--external">
+    <header class="site-header">
       <div class="container container--top-bar">
           <div class="site-header__wrapper">
             <a href="/" class="dat-logo">

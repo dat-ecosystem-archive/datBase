@@ -4,11 +4,7 @@ $site-header-height: 4rem;
 
 .site-header {
   height: $site-header-height;
-  background-color: $color-neutral;
-  color: $color-white;
-}
-
-.site-header--external {
+  position: relative;
   background-color: $color-white;
   border-bottom: 1px solid $color-neutral-04;
 }
@@ -47,37 +43,29 @@ $site-header-height: 4rem;
     inset 0 -1px 0 rgba(0,0,0,.15);
 }
 
-// website / external pages only
-
-.header-nav-link {
-  color: $color-neutral;
-  &.active {
-    color: $color-blue;
-  }
-  &:hover, &:focus {
-    color: $color-neutral-80;
-  }
+.main-nav {
+  display: flex;
+  line-height: $site-header-height;
 }
 
-.main-nav {
-  line-height: $site-header-height;
-  list-style: none;
-  a:not(:last-child) {
-    margin-right: 1rem;
-    @media screen and (min-width: $md1) {
-      margin-right: 2rem4;
-    }
-    @media screen and (min-width: $lg) {
-      margin-right: 2.75rem;
-    }
+.header-nav-link {
+  font-size: .875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  color: $color-neutral;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  @media screen and (min-width: $md2) {
+    padding-right: .75rem;
+    padding-left: .75rem;
   }
-  a {
-    font-size: .875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: inline-block;
-    &:hover, &:focus {
-      text-decoration: none;
-    }
+  @media screen and (min-width: $lg) {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
+  &:hover, &:focus {
+    color: $color-green;
+    text-decoration: none;
   }
 }

@@ -1,22 +1,21 @@
 const html = require('choo/html')
 const panel = require('./auth/user-panel')
-const button = require('../elements/button')
 const importButton = require('../elements/import-button')
 const loginButton = require('../components/login-button')
 const message = require('../elements/message')
 
 const header = (state, prev, send) => {
   return html`<div>
-    ${panel(state, prev, send)}
     <header class="site-header">
       ${message(state.message)}
       <div class="container container--top-bar">
-        <div class="site-header__wrapper">
-          <a href="/" data-no-routing class="dat-logo dat-logo--on-dark">
-            <img src="/public/img/dat-hexagon.svg" />
-            <span class="dat-logo__word">Dat</span>
-          </a>
+        <div class="site-header__wrapper relative">
+          ${panel(state, prev, send)}
           <nav class="main-nav">
+            <a href="/" data-no-routing class="dat-logo">
+              <img src="/public/img/dat-hexagon.svg" />
+              <span class="dat-logo__word">Dat</span>
+            </a>
             <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
             <a href="/install" class="header-nav-link">Install</a>
             <a href="/about" class="header-nav-link">About</a>
