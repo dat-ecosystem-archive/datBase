@@ -16,15 +16,16 @@ const header = (state, prev, send) => {
             <img src="/public/img/dat-hexagon.svg" />
             <span class="dat-logo__word">Dat</span>
           </a>
+          <nav class="main-nav">
+            <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
+            <a href="/install" class="header-nav-link">Install</a>
+            <a href="/about" class="header-nav-link">About</a>
+            <a href="http://blog.datproject.org" class="header-nav-link">Blog</a>
+            <a href="http://docs.datproject.org" class="header-nav-link">Docs</a>
+          </nav>
           <div class="site-header__actions">
             ${importButton({
               handler: function (link) { window.location.href = '/' + link }
-            })}
-            ${button({
-              icon: '/public/img/create-new-dat.svg',
-              text: 'Create new Dat',
-              klass: 'btn btn--white new-dat',
-              click: function () { window.location.href = '/install' }
             })}
             ${loginButton(state, prev, send)}
           </div>
