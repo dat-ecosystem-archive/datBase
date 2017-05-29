@@ -1,19 +1,26 @@
 /* header */
 
-$site-header-height: 4rem;
-
-.site-header {
-  height: $site-header-height;
-  position: relative;
-  background-color: $color-white;
-  border-bottom: 1px solid $color-neutral-04;
-}
-
-.site-header__wrapper {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header-nav-link {
+  display: inline-block;
+  padding-top: .15rem;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  line-height: var(--site-header-height);
+  font-size: .875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;  color: var(--color-neutral);
+  &:hover, &:focus {
+    color: var(--color-green);
+    text-decoration: none;
+  }
+  @media screen and (min-width: $md2) {
+    padding-right: .75rem;
+    padding-left: .75rem;
+  }
+  @media screen and (min-width: $lg) {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
 }
 
 // dat-button
@@ -41,32 +48,4 @@ $site-header-height: 4rem;
     0 0 1px rgba(0,0,0,.1),
     inset 0 1px 0 rgba(255,255,255,.25),
     inset 0 -1px 0 rgba(0,0,0,.15);
-}
-
-.main-nav {
-  display: flex;
-  line-height: $site-header-height;
-}
-
-.header-nav-link {
-  font-size: .875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: inline-block;
-  color: $color-neutral;
-  padding-top: .15rem;
-  padding-right: .5rem;
-  padding-left: .5rem;
-  @media screen and (min-width: $md2) {
-    padding-right: .75rem;
-    padding-left: .75rem;
-  }
-  @media screen and (min-width: $lg) {
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-  }
-  &:hover, &:focus {
-    color: $color-green;
-    text-decoration: none;
-  }
 }
