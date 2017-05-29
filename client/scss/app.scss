@@ -43,6 +43,10 @@
 
 @import "shared-imports/tachyons";
 
+:root {
+  --site-header-height: 4rem;
+}
+
 h2, h3 {
   font-weight: 300;
 }
@@ -59,13 +63,6 @@ pre {
 ul {
   list-style: initial;
   padding-left: 1rem;
-}
-
-.mobile-only {
-  display: block;
-  @media screen and (min-width: $md1) {
-    display: none;
-  }
 }
 
 .content-title {
@@ -107,4 +104,10 @@ ul {
 .content-card-subtitle {
   color: $color-neutral-70;
   line-height: 1.75;
+}
+
+@media screen and (max-width: $sm1) {
+  .hidden-on-mobile {
+    display: none;
+  }
 }
