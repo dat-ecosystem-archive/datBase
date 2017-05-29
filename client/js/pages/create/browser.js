@@ -6,7 +6,7 @@ const landingPage = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="landing-main container">
+      <div class="container">
         ${dropzone(state, prev, send)}
       </div>
     </div>`

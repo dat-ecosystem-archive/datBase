@@ -1,6 +1,41 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const prettyBytes = require('pretty-bytes')
 const display = require('./display')
+
+var displayStyles = css`
+  :host {
+    img,
+    video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    iframe {
+      width: 100%;
+      height: 70%;
+      border: 1px solid var(--color-neutral-20);
+    }
+    table {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+    table th,
+    table td {
+      margin: 0;
+      border: 1px solid var(--color-neutral-80);
+      text-align: left;
+      padding: 5px 10px;
+      color: var(--color-neutral);
+      min-height: 1.42857143;
+    }
+  }
+`
 
 const preview = (state, prev, send) => {
   if (typeof document !== 'undefined') {
@@ -24,7 +59,7 @@ const preview = (state, prev, send) => {
     </a>`
   }
 
-  return html`<section id="preview" class="panel ${isOpen}">
+  return html`<section id="preview" class="bg-white panel ${isOpen}">
     <div class="panel-header">
       <button onclick=${() => send('preview:closePanel')} class="panel-header__close-button">
       Close
@@ -48,7 +83,7 @@ const preview = (state, prev, send) => {
       </div>
     </div>
     <div class="panel-main">
-      <div id="display">
+      <div id="display" class="${displayStyles} mb5">
         ${display(state, prev, send)}
       </div>
     </div>
