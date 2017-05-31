@@ -15,13 +15,9 @@ module.exports = new function () {
 
     client
       .pause(10000)
-      .execute(function (data) {
-        /* eslint-disable */
-        return location;
-      }, [], function (result) {
-        console.log(result)
+      .url(function (result) {
+        this.assert.equal(result.value, process.env.TEST_SERVER + '/install')
       })
-      .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
     client.end()
   }
@@ -75,13 +71,9 @@ module.exports = new function () {
 
     client
       .pause(10000)
-      .execute(function (data) {
-        /* eslint-disable */
-        return location;
-      }, [], function (result) {
-        console.log(result)
+      .url(function (result) {
+        this.assert.equal(result.value, process.env.TEST_SERVER + '/install')
       })
-      .assert.urlEquals(process.env.TEST_SERVER + '/install')
 
     client.end()
   }
