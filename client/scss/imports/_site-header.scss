@@ -1,0 +1,57 @@
+/* header */
+
+.header-nav-link {
+  display: inline-block;
+  padding-top: .15rem;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  line-height: var(--site-header-height);
+  font-size: .875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;  color: var(--color-neutral);
+  &:hover, &:focus {
+    color: var(--color-green);
+    text-decoration: none;
+  }
+  @media screen and (min-width: $md2) {
+    padding-right: .75rem;
+    padding-left: .75rem;
+  }
+  @media screen and (min-width: $lg) {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .hidden-on-mobile {
+    display: none;
+  }
+}
+
+// dat-button
+.dat-button {
+  display: inline-block;
+  button {
+    text-transform: uppercase;
+    letter-spacing: .075em;
+    &:hover, &:focus, &:active {
+      outline: none;
+      cursor: pointer;
+    }
+  }
+}
+
+.dat-button--help {
+  position: fixed;
+  bottom: 2rem;
+  right: .5rem;
+  z-index: 10;
+  $radius: 24px;
+  border-radius: $radius;
+  box-shadow:
+    0 2px 10px rgba(0,0,0,.3),
+    0 0 1px rgba(0,0,0,.1),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -1px 0 rgba(0,0,0,.15);
+}

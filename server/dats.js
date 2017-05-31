@@ -75,10 +75,11 @@ Dats.prototype.metadata = function (archive, opts, cb) {
         try {
           dat.metadata = metadata ? JSON.parse(metadata.toString()) : undefined
         } catch (e) {
+          err = new Error('dat.json file malformed')
         }
         dat.peers = archive.content ? archive.content.peers.length : 0
         dat.size = archive.content.byteLength
-        return done(null, dat)
+        return done(err, dat)
       })
     })
   })

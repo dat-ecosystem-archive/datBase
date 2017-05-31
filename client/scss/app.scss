@@ -9,26 +9,22 @@
  */
 @import "~dat-design/scss/base.scss";
 
-@import "shared-imports/variables";
-@import "shared-imports/colors";
-@import "shared-imports/bg-colors";
-@import "shared-imports/base";
-@import "shared-imports/layout";
-@import "shared-imports/grid";
-@import "shared-imports/site-header";
-@import "shared-imports/header-logo";
-@import "shared-imports/sections";
-@import "shared-imports/horizontal-rule";
-@import "shared-imports/block-create";
-@import "shared-imports/screenshot";
-
+@import "imports/variables";
+@import "imports/colors";
+@import "imports/bg-colors";
+@import "imports/base";
+@import "imports/layout";
+@import "imports/grid";
+@import "imports/site-header";
+@import "imports/header-logo";
+@import "imports/sections";
+@import "imports/horizontal-rule";
+@import "imports/block-create";
+@import "imports/screenshot";
 @import "imports/footer";
-@import "imports/cli-tutorial";
 @import "imports/sponsor-logos";
 @import "imports/example-datasets";
-@import "imports/gallery";
-@import "imports/video";
-
+@import "imports/team-gallery";
 @import "imports/inline-error";
 @import "imports/status-bar";
 @import "imports/dat-header";
@@ -36,12 +32,12 @@
 @import "imports/buttons";
 @import "imports/panel"; //
 @import "imports/error-page";
-@import "imports/preview"; // TODO: this should move into dat-design - @lauren
-@import "imports/landing-page";
-@import "imports/preview-display"; // TODO: delete this after choo migration
-@import "imports/landing-page";
 
-@import "shared-imports/tachyons";
+@import "imports/tachyons";
+
+:root {
+  --site-header-height: 4rem;
+}
 
 h2, h3 {
   font-weight: 300;
@@ -59,13 +55,6 @@ pre {
 ul {
   list-style: initial;
   padding-left: 1rem;
-}
-
-.mobile-only {
-  display: block;
-  @media screen and (min-width: $md1) {
-    display: none;
-  }
 }
 
 .content-title {
