@@ -1,5 +1,5 @@
 var html = require('choo/html')
-var header = require('./header')
+const header = require('../../components/header')
 var footer = require('./footer')
 
 module.exports = function (state, prev, send) {

@@ -42,7 +42,7 @@ module.exports = {
     whoami: (state, data, send, done) => {
       const user = api.whoami()
       if (user.username) {
-        api.users.get(data, function (err, resp, results) {
+        api.users.get({username: user.username}, function (err, resp, results) {
           if (err && err.message === 'jwt expired') return send('township:logout', data, done)
           if (!results.length) return done()
           user.profile = results[0]

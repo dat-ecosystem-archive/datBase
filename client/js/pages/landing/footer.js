@@ -8,7 +8,7 @@ module.exports = function (state, prev, send) {
         <div class="col-xs-6 col-sm-4">
           <h4 class="footer-heading horizontal-rule-footer">Explore</h4>
           <ul class="footer-nav-list">
-            <li><a href="/explore">Explore Datasets</a></li>
+            <li><a href="/explore" data-no-routing>Explore Datasets</a></li>
             <li><a href="/team">Team</a></li>
             <li><a href="/blog">Blog</a></li>
           </ul>

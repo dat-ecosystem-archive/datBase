@@ -20,16 +20,10 @@
   }
 }
 
-.dat-logo--on-dark {
-  color: $color-white;
-  &:hover, &:focus {
-    color: $color-white;
-  }
-}
-
 .dat-logo__word {
   display: none;
   @media only screen and (min-width: $md1) {
     display: block;
+    margin-right: 1rem;
   }
 }

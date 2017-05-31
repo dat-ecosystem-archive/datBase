@@ -9,6 +9,7 @@ var messageStyles = css`
     width: 100%;
     text-align: center;
     z-index: 999;
+    color: var(--color-white);
     &.success {
       background-color: var(--color-blue);
     }
