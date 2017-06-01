@@ -12,8 +12,7 @@ module.exports = new function () {
       .setValue(".register form input[name='email']", 'hi@pam.com')
       .setValue(".register form input[name='password']", 'fnordfoobar')
       .submitForm('.register form')
-      .pause(10000)
-      .assert.containsText('body', 'Powerful dataset sharing')  // install page
+
     client.end()
   }
 
@@ -62,8 +61,6 @@ module.exports = new function () {
       .setValue(".login form input[name='email']", 'hi@pam.com')
       .setValue(".login form input[name='password']", 'fnordfoobar')
       .submitForm('.login form')
-      .pause(10000)
-      .assert.containsText('body', 'Powerful dataset sharing')  // install page
 
     client.end()
   }
