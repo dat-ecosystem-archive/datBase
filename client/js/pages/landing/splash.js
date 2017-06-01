@@ -93,7 +93,7 @@ module.exports = function (state, prev, send) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/bec32c0c3d2458c4497fd4c2238ec0926f95bc18521bd60d6532ed8ea3f85822" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/7a9225a79f68f0a41d2d20c1827408eb25d5d8fecd4f49cfc8dfd97d0d0c004a" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
           </div>
