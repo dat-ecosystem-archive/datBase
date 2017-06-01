@@ -49,7 +49,7 @@ module.exports = new function () {
       .setValue(".login form input[name='email']", 'hi@pam.com')
       .setValue(".login form input[name='password']", 'badpassword')
       .submitForm('.login form')
-      .expect.element('.login form .error').text.matches(/Incorrect email and password./).before(5000)
+      .expect.element('.login form .error').text.matches(/Password incorrect./).before(5000)
   }
 
   testCases['login should work'] = (client) => {
