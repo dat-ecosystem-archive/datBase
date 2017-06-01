@@ -13,12 +13,6 @@ module.exports = new function () {
       .setValue(".register form input[name='password']", 'fnordfoobar')
       .submitForm('.register form')
 
-    client
-      .pause(10000)
-      .url(function (result) {
-        this.assert.equal(result.value, process.env.TEST_SERVER + '/install')
-      })
-
     client.end()
   }
 
@@ -67,12 +61,6 @@ module.exports = new function () {
       .setValue(".login form input[name='email']", 'hi@pam.com')
       .setValue(".login form input[name='password']", 'fnordfoobar')
       .submitForm('.login form')
-
-    client
-      .pause(10000)
-      .url(function (result) {
-        this.assert.equal(result.value, process.env.TEST_SERVER + '/install')
-      })
 
     client.end()
   }
