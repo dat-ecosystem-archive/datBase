@@ -12,7 +12,9 @@ module.exports = function (state, prev, send) {
   const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
   if (state.preview.error) {
-    if (!state.preview.panelOpen) send('preview:openPanel', {})
+    if (!state.preview.isPanelOpen) {
+      send('preview:openPanel', {})
+    }
     return fourohfour({
       icon: state.preview.error.icon,
       header: state.preview.error.message,
@@ -22,7 +24,7 @@ module.exports = function (state, prev, send) {
   }
   if (!entryName) return
   if (entryName === previousEntryName) return display
-  if (!state.preview.panelOpen) send('preview:openPanel', {})
+  if (!state.preview.isPanelOpen) send('preview:openPanel', {})
   if (state.preview.entry.size > (1048576 * 10)) {
     return send('preview:update', {error: {
       message: 'Cannot preview',
@@ -47,6 +49,7 @@ module.exports = function (state, prev, send) {
     }, display, function (err) {
       if (err) {
         var update = {}
+        console.error(err)
         var message = 'Unsupported filetype'
         update.isLoading = false // Allow downloads for unsupported files
         update.error = {message: message}
