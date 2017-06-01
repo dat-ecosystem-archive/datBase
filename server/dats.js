@@ -18,11 +18,14 @@ Dats.prototype.get = function (key, opts, cb) {
   var self = this
   if (typeof opts === 'function') return this.get(key, {}, opts)
   key = encoding.toStr(key)
-  this.ar.add(key, function () {
-  })
-  self.ar.get(key, function (err, metadataFeed, contentFeed) {
-    if (err) return cb(err)
-    return cb(null, hyperdrive(ram, {metadata: metadataFeed, content: contentFeed}))
+  self.ar.get(key, function (err, metadata, content) {
+    if (!err) return cb(null, hyperdrive(ram, {metadata, content}))
+    if (err.message === 'Could not find feed') {
+      self.ar.add(key, function (err) {
+        if (err) return cb(err)
+        return self.get(key, opts, cb)
+      })
+    } else return cb(err)
   })
 }
 
