@@ -109,7 +109,7 @@ module.exports = function (opts, db) {
     dats.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
       dats.metadata(archive, {timeout}, function (err, info) {
-        if (err) return onerror(err, res)
+        if (err) info.error = {message: err.message}
         return res.status(200).json(info)
       })
     })
