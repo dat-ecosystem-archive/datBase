@@ -44,10 +44,8 @@ Dats.prototype.metadata = function (archive, opts, cb) {
 
   var timeout = setTimeout(function () {
     var msg = 'timed out'
-    if (cancelled) return
-    cancelled = true
-    return cb(new Error(msg), dat)
-  }, opts.timeout)
+    return done(new Error(msg), dat)
+  }, parseInt(opts.timeout))
 
   function done (err, dat) {
     clearTimeout(timeout)
@@ -55,13 +53,17 @@ Dats.prototype.metadata = function (archive, opts, cb) {
     cancelled = true
     return cb(err, dat)
   }
+  archive.metadata.update()
   archive.tree.list('/', {nodes: true}, function (err, entries) {
     if (err) {
       return archive.metadata.update(function () {
+        if (cancelled) return
         cancelled = true
         self.metadata(archive, opts, cb)
       })
     }
+    if (cancelled) return done(null, dat)
+
     for (var i in entries) {
       var entry = entries[i]
       entries[i] = entry.value
@@ -69,7 +71,6 @@ Dats.prototype.metadata = function (archive, opts, cb) {
       entries[i].type = 'file'
     }
     dat.entries = entries
-    if (cancelled) return done(null, dat)
     var filename = 'dat.json'
     archive.stat(filename, function (err, entry) {
       if (err || cancelled) return done(null, dat)

@@ -11,17 +11,20 @@ const hyperdriveStats = require('../../elements/hyperdrive-stats')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': {header: 'No dat here.', body: 'Looks like the key is invalid. Are you sure it\'s correct?'},
-  '/ could not be found': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct? This could take a while.'},
-  'timed out': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct? This could take a while.'},
+  '/ could not be found': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct?'},
+  'timed out': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct?'},
   'Username not found.': {header: 'That user does not exist.'},
-  'Dat with that name not found.': {header: 'That user does not have a dat with that name.'}
+  'Dat with that name not found.': {header: 'That user does not have a dat with that name.'},
+  'too many retries': {header: 'Could not find that dat.', body: 'Is the address correct? Try refreshing your browser.'}
 }
 
 const archivePage = (state, prev, send) => {
   var err = state.archive.error
+  if (!module.parent && state.archive.retries < 3) send('archive:getMetadata', {timeout: 3000})
   if (err) {
     if (err.message === 'Block not downloaded') err.message = 'timed out'
     if (!state.archive.entries.length) {
+      if (state.archive.retries >= 3) err = {message: 'too many retries'}
       var props = ARCHIVE_ERRORS[err.message]
       if (props) {
         return html`
@@ -36,8 +39,7 @@ const archivePage = (state, prev, send) => {
       err.message = 'Looking for dat.json metadata...'
     }
   }
-  if (!module.parent) send('archive:getMetadata', {timeout: 60000})
-  var peers = Math.max(state.archive.peers - 1, 0) // we don't count
+  var peers = state.archive.peers
   var size = state.archive.size
   var meta = state.archive.metadata
   var owner = (meta && state.township) && meta.username === state.township.username
