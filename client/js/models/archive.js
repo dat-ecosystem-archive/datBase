@@ -5,10 +5,12 @@ const http = require('nets')
 var defaultState = {
   id: null,
   key: null,
+  retries: 0,
   peers: 0,
   error: null,
   root: '',
   metadata: {},
+  fetching: false,
   entries: []
 }
 
@@ -28,10 +30,11 @@ module.exports = {
       })
     },
     getMetadata: function (state, data, send, done) {
-      if (!state.key || state.fetched) return done()
-      send('archive:update', {fetched: true}, function () {
+      if (!state.key || state.fetching) return done()
+      send('archive:update', {fetching: true, retries: state.retries + 1}, function () {
         http({url: `/metadata/${state.key}?timeout=${data.timeout}`, method: 'GET', json: true}, function (err, resp, json) {
-          if (err) return send('archive:update', {error: {message: err.message}}, done)
+          json.fetching = false
+          if (err) return send('archive:update', xtend({error: {message: err.message}}, json), done)
           if (json.error) return send('archive:update', json, done)
           if (json.entries) json.error = null
           send('archive:update', json, done)
