@@ -1,19 +1,20 @@
 const test = require('tape')
 const path = require('path')
-// XXX: somehow cloning the config is necessary for tape to work
-const config = JSON.parse(JSON.stringify(require('../config')))
 const helpers = require('../helpers')
 const initDb = require('../../server/api/database/init')
+const Config = require('../../server/config')
 var db
+
+// XXX: cloning the config is necessary for tape to not clobber eachother
 var users = JSON.parse(JSON.stringify(helpers.users))
 var dats = JSON.parse(JSON.stringify(helpers.dats))
+var config = JSON.parse(JSON.stringify(Config()))
 delete users.joe.password
 delete users.bob.password
 
 test('db', function (t) {
-  const dbConfig = Object.assign({}, config.db)
-  dbConfig.connection.filename = path.join(__dirname, 'test-db.sqlite')
-  initDb(dbConfig, function (err, adb) {
+  config.db.connection.filename = path.join(__dirname, 'test-db.sqlite')
+  initDb(config.db.connection.filename, function (err, adb) {
     if (err) throw err
     db = adb
     t.end()

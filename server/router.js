@@ -297,6 +297,7 @@ module.exports = function (config) {
   }
 
   router.dats = dats
+  router.api = api
   return router
 
   /* helpers */

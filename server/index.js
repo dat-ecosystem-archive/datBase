@@ -1,12 +1,11 @@
 const http = require('http')
 const createRouter = require('./router')
 
-module.exports = function (config, db) {
+module.exports = function (config) {
   var log = config.log
-  if (!config.archiver) throw new Error('config.archiver directory required')
   const router = createRouter(config)
 
-  return http.createServer(function (req, res) {
+  var server = http.createServer(function (req, res) {
     var time = Date.now()
     if (log) log.info({message: 'request', method: req.method, url: req.url})
     res.on('finish', end)
@@ -28,4 +27,12 @@ module.exports = function (config, db) {
       }
     }
   })
+
+  server.on('close', function () {
+    router.api.db.knex.destroy(function () {
+      router.dats.close()
+    })
+  })
+
+  return server
 }

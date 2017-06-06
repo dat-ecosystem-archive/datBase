@@ -1,4 +1,5 @@
 const database = require('./')
+const Config = require('../../config')
 module.exports = init
 
 /**
@@ -8,6 +9,7 @@ module.exports = init
  */
 function init (dbConfig, cb) {
   var db = database(dbConfig)
+  console.log('creating', dbConfig)
   db.knex.schema.hasTable('users').then(function (exists) {
     if (!exists) {
       return db.knex.schema.createTable('users', function (table) {
@@ -58,8 +60,7 @@ if (!module.parent) {
       useNullAsDefault: true
     }
   } else {
-    const defaultConfig = require('../../../config')
-    dbConfig = defaultConfig.db
+    dbConfig = Config().db
   }
   init(dbConfig, function (err) {
     if (err) throw err

@@ -21,4 +21,4 @@ invited-users
 secrets
 archiver
 .datcache/
-
+config/config.development.js
