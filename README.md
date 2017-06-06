@@ -18,3 +18,25 @@ Clone this repository, then copy the default config file to `config.local.js`
 npm install
 cp config/index.js config.local.js
 ```
+
+Create the database
+
+```
+npm run database
+```
+
+Start the server
+```
+npm start
+```
+
+## Configuration
+
+User accounts are created using [township](http://github.com/township), a modular user account system.
+
+```
+township: {
+  secret: '<VERY SECRET KEY>'
+  db: '<LOCATION OF DATABASE>'
+},
+```
