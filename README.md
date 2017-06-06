@@ -1,128 +1,20 @@
-# datproject.org
+# Dat Registry
 
-A registry for dats. [datproject.org](http://datproject.org)
+A web registry for the dat network. Hosted at [http://datproject.org](http://datproject.org).
 
 [![Build Status](https://travis-ci.org/datproject/datproject.org.svg?branch=master)](https://travis-ci.org/datproject/datproject.org)
 
-### Develop
+## Features
 
-Install dependencies.
+* Preview the files in a dat in the browser.
+* Download individual files from dats.
+* Create short links for dats with user accounts.
+
+## Setup
+
+Clone this repository, then copy the default config file to `config.local.js`
 
 ```
 npm install
+cp config/index.js config.local.js
 ```
-
-Create config file.
-
-You can use override the defaults by copying the example config to `config.local.js` and make changes.
-
-Initialize the database. You only have to do this once:
-
-```
-node server/database/init.js
-```
-
-
-Watch assets and start server in one command:
-
-```
-npm start
-```
-
-### Creating examples
-
-Run the following command to create a user with the given email address. The
-user will have the password `dogsandcats.`
-
-```
-node scripts/user-and-dat.js <email-address>
-```
-
-To create just dats for a given user that already exists, use
-```
-node scripts/add-dats-for-user.js <email-address> <password>
-```
-
-
-
-### Build for production
-```
-npm run build
-npm run minify
-npm run version
-```
-
-### Getting invited-users list
-
-```
-git clone git@github.com:datproject/invited-users.git
-```
-
-
-### Running end-to-end tests
-
-Docker and `docker-compose` are required.
-
-```
-docker-compose build
-docker-compose up -d newdat && sleep 10
-docker-compose run --rm nightwatch
-```
-
-You may also see the test browser in action with [VNC](https://github.com/blueimp/nightwatch).
-
-## API
-
-##### ```GET /api/v1/:model```
-
-Can pass query parameters like `?username='martha'` to filter results.
-
-Additional options:
-
-  * `limit`: 100 (default)
-  * `offset`: 0 (default)
-
-##### ```POST /api/v1/:model```
-
-Success returns model with `id` field added.
-
-##### ```PUT /api/v1/:model?id=```
-
-`id` required
-
-Success returns number of rows modified.
-```
-{updated: 1}
-```
-
-##### ```DELETE /api/v1/:model?id=```
-
-`id` required
-
-Success returns number of rows deleted.
-```
-{deleted: 1}
-```
-
-##### users model: ```/api/v1/users```
-
-- `id` (required)
-- `email` (required)
-- `username`
-- `description`
-- `created_at`
-- `updated_at`
-
-##### dats model: ```/api/v1/dats```
-
-- `id`
-- `user_id`
-- `name`
-- `title`
-- `hash`
-- `description`
-- `created_at`
-- `updated_at`
-
-#####  ```/api/v1/register```
-#####  ```/api/v1/login```
