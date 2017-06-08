@@ -5,10 +5,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/datproject/dat.land.git"
+    "url": "https://github.com/datproject/datproject.org.git"
   },
   "bugs": {
-    "url": "https://github.com/datproject/dat.land/issues"
+    "url": "https://github.com/datproject/datproject.org/issues"
   },
   "main": "server/index.js",
   "bin": "server/cli.js",
