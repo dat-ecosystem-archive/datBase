@@ -12,6 +12,7 @@ const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
+const Raven = require('raven')
 const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
@@ -24,6 +25,7 @@ module.exports = function (opts, db) {
 
   const log = bole(__filename)
   const dats = opts.dats || Dats(opts.archiver)
+  if (opts.sentry) Raven.config(opts.sentry).install()
   const mx = Mixpanel.init(opts.mixpanel)
 
   var router = express()

@@ -12,6 +12,7 @@ var datadir = process.env.DATADIR || (
 
 var config = {
   shared: {
+    sentry: process.env.SENTRY,
     mixpanel: process.env.MIXPANEL || 'notakey',
     township: {
       secret: 'very very not secret',
