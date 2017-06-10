@@ -1,7 +1,7 @@
 const fs = require('fs')
 const rimraf = require('rimraf')
 const Dats = require('../server/dats')
-const initDb = require('../server/database/init')
+const initDb = require('../server/api/database/init')
 const Server = require('../server')
 
 module.exports = {
@@ -9,7 +9,8 @@ module.exports = {
     initDb(config.db, function (err, db) {
       if (err) throw err
       config.dats = Dats(config.archiver)
-      const server = Server(config, db)
+      config.db = db
+      const server = Server(config)
       server.listen(config.port, function () {
         cb(db, close)
       })

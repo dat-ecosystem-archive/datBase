@@ -12,7 +12,8 @@ bole.output({
 const log = bole(__filename)
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
 const db = database(config.db)
-const server = Server(config, db, {log: log})
+config.log = log
+const server = Server(config, db)
 
 server.listen(PORT, function () {
   log.info({

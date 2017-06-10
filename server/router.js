@@ -15,16 +15,17 @@ const redirect = require('express-simple-redirect')
 const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
-const auth = require('./auth')
-const api = require('./api')
+const Api = require('./api')
 const Dats = require('./dats')
 
-module.exports = function (opts, db) {
-  opts = opts || {}
+module.exports = function (config) {
+  config = config || {}
 
   const log = bole(__filename)
-  const dats = opts.dats || Dats(opts.archiver)
-  const mx = Mixpanel.init(opts.mixpanel)
+  const dats = config.dats || Dats(config.archiver)
+  const mx = Mixpanel.init(config.mixpanel)
+  const api = Api(config)
+  const db = api.db
 
   var router = express()
   router.use(compression())
@@ -34,8 +35,34 @@ module.exports = function (opts, db) {
     '/blog': 'http://blog.datproject.org'
   }, 301))
 
-  const ship = auth(router, db, opts)
-  api(router, db, ship, opts)
+  router.post('/api/v1/users', api.users.post)
+  router.get('/api/v1/users', api.users.get)
+  router.put('/api/v1/users', api.users.put)
+  router.delete('/api/v1/users', api.users.delete)
+
+  router.get('/api/v1/dats', api.dats.get)
+  router.post('/api/v1/dats', api.dats.post)
+  router.put('/api/v1/dats', api.dats.put)
+  router.delete('/api/v1/dats', api.dats.delete)
+
+  router.post('/api/v1/register', api.auth.register)
+  router.post('/api/v1/login', api.auth.login)
+  router.post('/api/v1/reset-password', api.auth.passwordReset)
+  router.post('/api/v1/reset-password-confirm', api.auth.passwordResetConfirm)
+
+  router.get('/api/v1/:username/:dataset', function (req, res) {
+    db.queries.getDatByShortname(req.params, function (err, dat) {
+      if (err) return onerror(err, res)
+      res.json(dat)
+    })
+  })
+
+  router.get('/api/v1/browse', function (req, res) {
+    db.queries.datList(req.params, function (err, resp) {
+      if (err) return onerror(err, res)
+      res.json(resp)
+    })
+  })
 
   function send (req, res) {
     var state = getDefaultAppState()
