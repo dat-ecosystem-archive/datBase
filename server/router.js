@@ -47,8 +47,8 @@ module.exports = function (config) {
 
   router.post('/api/v1/register', api.auth.register)
   router.post('/api/v1/login', api.auth.login)
-  router.post('/api/v1/reset-password', api.auth.passwordReset)
-  router.post('/api/v1/reset-password-confirm', api.auth.passwordResetConfirm)
+  router.post('/api/v1/password-reset', api.auth.passwordReset)
+  router.post('/api/v1/password-reset-confirm', api.auth.passwordResetConfirm)
 
   router.get('/api/v1/:username/:dataset', function (req, res) {
     db.queries.getDatByShortname(req.params, function (err, dat) {
