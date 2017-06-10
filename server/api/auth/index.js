@@ -7,8 +7,7 @@ const errors = require('../errors')
 const Mixpanel = require('mixpanel')
 const createReset = require('./reset')
 
-module.exports = function (config) {
-  var db = config.db
+module.exports = function (config, db) {
   const townshipDb = level(config.township.db || path.join(__dirname, 'township.db'))
   const ship = township(townshipDb, config.township)
   const mx = Mixpanel.init(config.mixpanel)

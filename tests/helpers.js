@@ -9,7 +9,7 @@ module.exports = {
     initDb(config.db, function (err, db) {
       if (err) throw err
       config.dats = Dats(config.archiver)
-      config.db = db
+      config.database = db
       const server = Server(config)
       server.listen(config.port, function () {
         cb(db, close)

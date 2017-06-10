@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const bole = require('bole')
 const config = require('../config')
-const database = require('./database')
 const Server = require('./')
 
 bole.output({
@@ -11,9 +10,8 @@ bole.output({
 
 const log = bole(__filename)
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
-const db = database(config.db)
 config.log = log
-const server = Server(config, db)
+const server = Server(config)
 
 server.listen(PORT, function () {
   log.info({
