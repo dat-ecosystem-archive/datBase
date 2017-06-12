@@ -9,7 +9,7 @@ var headerStyles = css`
  :host {
    height: var(--site-header-height);
    background-color: var(--color-white);
-   border-bottom: 1px solid var(--color-neutral-04);
+   border-bottom: 1px solid var(--color-neutral-10);
  }
 `
 
