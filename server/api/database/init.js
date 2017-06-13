@@ -58,7 +58,7 @@ if (!module.parent) {
       useNullAsDefault: true
     }
   } else {
-    const defaultConfig = require('../../config')
+    const defaultConfig = require('../../../config')
     dbConfig = defaultConfig.db
   }
   init(dbConfig, function (err) {
