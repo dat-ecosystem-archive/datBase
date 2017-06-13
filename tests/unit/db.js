@@ -3,7 +3,7 @@ const path = require('path')
 // XXX: somehow cloning the config is necessary for tape to work
 const config = JSON.parse(JSON.stringify(require('../config')))
 const helpers = require('../helpers')
-const initDb = require('../../server/database/init')
+const initDb = require('../../server/api/database/init')
 var db
 var users = JSON.parse(JSON.stringify(helpers.users))
 var dats = JSON.parse(JSON.stringify(helpers.dats))

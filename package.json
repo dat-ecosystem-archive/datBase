@@ -28,7 +28,7 @@
   "scripts": {
     "server": "node ./server/cli",
     "lint": "standard",
-    "database": "node ./server/database/init",
+    "database": "node ./server/api/database/init",
     "clean-test": "rm -rf tests/archiver && rm -rf tests/township.db && rm -rf tests/unit/*.sqlite",
     "test": "standard && npm run clean-test && NODE_ENV=test tape tests/unit/*.js | tap-spec",
     "start": "npm run watch-js & npm run watch-css & npm run watch-server",

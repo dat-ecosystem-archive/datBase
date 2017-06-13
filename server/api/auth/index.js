@@ -7,7 +7,7 @@ const errors = require('../errors')
 const Mixpanel = require('mixpanel')
 const createReset = require('./reset')
 
-module.exports = function (router, db, config) {
+module.exports = function (config, db) {
   const townshipDb = level(config.township.db || path.join(__dirname, 'township.db'))
   const ship = township(townshipDb, config.township)
   const mx = Mixpanel.init(config.mixpanel)
@@ -19,7 +19,33 @@ module.exports = function (router, db, config) {
     return response.json(data).status(400).pipe(res)
   }
 
-  router.post('/api/v1/register', function (req, res) {
+  return {
+    currentUser: currentUser,
+    register: register,
+    login: login,
+    passwordReset: passwordReset,
+    passwordResetConfirm: passwordResetConfirm
+  }
+
+  function currentUser (req, cb) {
+    var authHeader = req.headers.authorization
+    if (authHeader && authHeader.indexOf('Bearer') > -1) {
+      var token = authHeader.split('Bearer ')[1]
+      if (!token) return cb(null)
+    }
+    if (!authHeader) return cb(null)
+    ship.verify(req, function (err, decoded, token) {
+      if (err) return cb(err)
+      if (!decoded) return cb(null)
+      db.models.users.get({email: decoded.auth.basic.email}, function (err, results) {
+        if (err) return cb(err)
+        var user = results[0]
+        return cb(null, user)
+      })
+    })
+  }
+
+  function register (req, res) {
     if (!req.body) return onerror(new Error('Requires email and username.'), res)
     if (!req.body.email) return onerror(new Error('Email required.'), res)
     if (!req.body.username) return onerror(new Error('Username required.'), res)
@@ -39,9 +65,9 @@ module.exports = function (router, db, config) {
         })
       })
     })
-  })
+  }
 
-  router.post('/api/v1/login', function (req, res) {
+  function login (req, res) {
     var body = req.body
     if (!body) return onerror(new Error('Requires email and password.'), res)
     ship.login(req, res, {body: body}, function (err, resp, obj) {
@@ -72,9 +98,9 @@ module.exports = function (router, db, config) {
         return response.json(obj).status(200).pipe(res)
       })
     })
-  })
+  }
 
-  router.post('/api/v1/password-reset', function (req, res, ctx) {
+  function passwordReset (req, res) {
     if (!reset) return onerror(new Error('config.email not set.'))
     const userEmail = req.body.email
     ship.accounts.findByEmail(userEmail, function (err, account) {
@@ -86,9 +112,9 @@ module.exports = function (router, db, config) {
         return response.json({ message: 'Check your email to finish resetting your password' }).pipe(res)
       })
     })
-  })
+  }
 
-  router.post('/api/v1/password-reset-confirm', function (req, res, ctx) {
+  function passwordResetConfirm (req, res) {
     const body = req.body
     var options = {
       key: body.accountKey,
@@ -106,7 +132,5 @@ module.exports = function (router, db, config) {
         response.json({ message: 'password successfully reset' }).pipe(res)
       })
     })
-  })
-
-  return ship
+  }
 }
