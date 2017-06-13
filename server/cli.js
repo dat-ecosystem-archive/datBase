@@ -14,6 +14,7 @@ const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
 config.log = bole(__filename)
 const server = Server(config)
 db(config.db, function (err, db) {
+  if (err) throw err
   db.knex.destroy(function () {
     server.listen(PORT, function () {
       config.log.info({
