@@ -5,7 +5,7 @@ const Dats = require('./dats')
 const database = require('./database')
 
 module.exports = function (config) {
-  var db = config.database || database(config.db)
+  var db = database(config.db)
   const ship = auth(config, db)
   var users = Users(db.models.users)
   var dats = Dats(db.models.dats)

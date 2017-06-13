@@ -1,4 +1,5 @@
 const township = require('township')
+const debug = require('debug')('dat-registry')
 const path = require('path')
 const response = require('response')
 const level = require('level-party')
@@ -15,6 +16,7 @@ module.exports = function (config, db) {
   if (config.email) reset = createReset(config, townshipDb)
 
   function onerror (err, res) {
+    debug('error', err)
     var data = {statusCode: 400, message: errors.humanize(err).message}
     return response.json(data).status(400).pipe(res)
   }
@@ -51,12 +53,15 @@ module.exports = function (config, db) {
     if (!req.body.username) return onerror(new Error('Username required.'), res)
     verify(req.body, {whitelist: config.whitelist}, function (err) {
       if (err) return onerror(err, res)
+      debug('registering')
       ship.register(req, res, {body: req.body}, function (err, statusCode, obj) {
         if (err) {
           mx.track('registration failed', {distinct_id: req.body.email, body: req.body, reason: err.message})
           return onerror(err, res)
         }
-        db.models.users.create({email: req.body.email, username: req.body.username}, function (err, body) {
+        var user = {email: req.body.email, username: req.body.username}
+        debug('creating user', user)
+        db.models.users.create(user, function (err, body) {
           if (err) return onerror(err, res)
           mx.people.set(req.body.email, body)
           body.token = obj.token
@@ -70,11 +75,13 @@ module.exports = function (config, db) {
   function login (req, res) {
     var body = req.body
     if (!body) return onerror(new Error('Requires email and password.'), res)
+    debug('logging in')
     ship.login(req, res, {body: body}, function (err, resp, obj) {
       if (err) {
         mx.track('login failed', {distinct_id: body.email, reason: err.message})
         return onerror(err, res)
       }
+      debug('getting user with email', body.email)
       db.models.users.get({email: body.email}, function (err, results) {
         if (err) return onerror(err, res)
         if (!results.length) {
@@ -94,6 +101,7 @@ module.exports = function (config, db) {
         mx.track('login', tracked)
         mx.people.increment(body.email, 'logins')
         mx.people.set(body.email, tracked)
+        debug('returning', obj)
 
         return response.json(obj).status(200).pipe(res)
       })

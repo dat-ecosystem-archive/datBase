@@ -1,28 +1,32 @@
 #!/usr/bin/env node
 const bole = require('bole')
-const config = require('../config')
 const Server = require('./')
+const Config = require('./config')
 
 bole.output({
   level: 'info',
   stream: process.stdout
 })
 
-const log = bole(__filename)
+const config = Config()
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
-config.log = log
+config.log = bole(__filename)
 const server = Server(config)
 
 server.listen(PORT, function () {
-  log.info({
+  config.log.info({
     message: 'listening',
     port: server.address().port,
     env: process.env.NODE || 'undefined'
   })
 })
 
+process.on('SIGINT', function () {
+  server.close()
+})
+
 process.once('uncaughtException', function (err) {
-  log.error({message: 'error', error: err.message, stack: err.stack})
+  config.log.error({message: 'error', error: err.message, stack: err.stack})
   console.error(err.stack)
   process.exit(1)
 })
