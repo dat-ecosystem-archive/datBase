@@ -15,7 +15,7 @@ const redirect = require('express-simple-redirect')
 const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
-const Api = require('./api')
+const Api = require('dat-registry-api')
 const Dats = require('./dats')
 
 module.exports = function (config) {
