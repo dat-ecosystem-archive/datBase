@@ -17,7 +17,10 @@ module.exports = (state, prev, send) => {
       <div class="mw5 pv5 center">
         <h3>Delete your account</h3>
 
-        <p>If you want to delete your account, please enter your email below. **This cannot be undone**.</p>
+        <p><b>This action CANNOT be undone.</b>  </p>
+        <p>This will permanently delete the <b>${state.township.profile.username}</b> user account, profile information, and dats.</p>
+
+        <p>If you want to delete your account, please enter the email associated with your account below.</p>
 
         <form onsubmit=${onsubmitConfirm}>
           <p>
