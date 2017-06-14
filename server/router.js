@@ -1,7 +1,6 @@
 const fs = require('fs')
 const range = require('range-parser')
 const debug = require('debug')('dat-registry')
-const resolve = require('dat-link-resolve')
 const mime = require('mime')
 const pump = require('pump')
 const xtend = require('xtend')
