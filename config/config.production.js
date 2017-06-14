@@ -3,6 +3,7 @@ const postmarkTransport = require('nodemailer-postmark-transport')
 var path = require('path')
 
 module.exports = {
+  data: '',
   mixpanel: process.env.MIXPANEL || path.join('secrets', 'mixpanel'),
   township: {
     db: 'datland-township.db',
