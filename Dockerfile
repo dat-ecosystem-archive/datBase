@@ -1,5 +1,6 @@
 FROM node:6.9
 EXPOSE 80
+EXPOSE 25
 
 ENV PORT 80
 ENV NODE_ENV development
