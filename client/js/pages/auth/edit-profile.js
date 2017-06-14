@@ -58,8 +58,13 @@ module.exports = (state, prev, send) => {
             </label>
           </p>
           <p class="flex items-center justify-between w-100">
-            <a href="/reset-password" class="mr3">Change your password</a>
-            <input type="submit" value="Save" class="w100 btn btn--green btn--full" />
+            <input type="submit" value="Save Profile" class="w100 btn btn--green btn--full" />
+          </p>
+          <p class="flex items-center justify-between w-100">
+            <a href="/reset-password" class="mr3 btn btn--green">Change my password</a>
+          </p>
+          <p class="flex items-center justify-between w-100">
+            <a href="/profile/delete" class="mr3 btn btn--red">Delete my account</a>
           </p>
         </form>
       </div>
