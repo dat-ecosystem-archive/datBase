@@ -1,6 +1,7 @@
 const mkdirp = require('mkdirp')
+const debug = require('debug')('dat-registry')
 const ram = require('random-access-memory')
-const encoding = require('dat-encoding')
+const resolve = require('dat-link-resolve')
 const hyperdrive = require('hyperdrive')
 const archiver = require('hypercore-archiver')
 const swarm = require('hypercore-archiver/swarm')
@@ -14,18 +15,24 @@ function Dats (dir) {
   this.swarm = swarm(this.ar)
 }
 
-Dats.prototype.get = function (key, opts, cb) {
+Dats.prototype.get = function (link, opts, cb) {
   var self = this
-  if (typeof opts === 'function') return this.get(key, {}, opts)
-  key = encoding.toStr(key)
-  self.ar.get(key, function (err, metadata, content) {
-    if (!err) return cb(null, hyperdrive(ram, {metadata, content}))
-    if (err.message === 'Could not find feed') {
-      self.ar.add(key, function (err) {
-        if (err) return cb(err)
-        return self.get(key, opts, cb)
-      })
-    } else return cb(err)
+  if (typeof opts === 'function') return this.get(link, {}, opts)
+  resolve(link, function (err, key) {
+    if (err) {
+      console.trace(err)
+      return cb(new Error('Invalid key'))
+    }
+    debug('got key', key)
+    self.ar.get(key, function (err, metadata, content) {
+      if (!err) return cb(null, hyperdrive(ram, {metadata, content}), key)
+      if (err.message === 'Could not find feed') {
+        self.ar.add(key, function (err) {
+          if (err) return cb(err)
+          return self.get(key, opts, cb)
+        })
+      } else return cb(err)
+    })
   })
 }
 

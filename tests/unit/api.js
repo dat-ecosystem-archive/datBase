@@ -1,5 +1,4 @@
 const test = require('tape')
-const encoding = require('dat-encoding')
 const TownshipClient = require('township-client')
 const request = require('request')
 const ram = require('random-access-memory')
@@ -148,7 +147,6 @@ test('api', function (t) {
     test('api can create a dat', function (t) {
       var archive = hyperdrive(ram)
       archive.ready(function () {
-        dats.cats.url = encoding.toStr(archive.key)
         client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.ok(body.id, 'has an id')
@@ -202,7 +200,7 @@ test('api', function (t) {
     test('api can get a dat by username/dataset combo without login', function (t) {
       request({url: `${rootUrl}/${users.joe.username}/${dats.cats.name}`, json: true}, function (err, resp, body) {
         t.ifError(err)
-        t.same(resp.headers['hyperdrive-key'], dats.cats.url.replace('dat://', ''), 'has url')
+        t.same(resp.headers['hyperdrive-key'], dats.cats.url, 'has url')
         t.end()
       })
     })
@@ -210,7 +208,6 @@ test('api', function (t) {
     test('api can create another dat', function (t) {
       var archive = hyperdrive(ram)
       archive.ready(function () {
-        dats.penguins.url = encoding.toStr(archive.key)
         client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.ok(body.id, 'has an id')

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const range = require('range-parser')
+const debug = require('debug')('dat-registry')
 const mime = require('mime')
 const pump = require('pump')
 const xtend = require('xtend')
@@ -7,7 +8,6 @@ const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const assert = require('assert')
-const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
@@ -266,24 +266,18 @@ module.exports = function (config) {
 
     var timeout = setTimeout(function () {
       var msg = 'timed out'
+      if (cancelled) return
+      cancelled = true
       return onerror(new Error(msg))
     }, 1000)
 
     var state = getDefaultAppState()
-    try {
-      key = encoding.toStr(key)
-      if (key.length !== 64) return onerror(new Error('Invalid key'))
-      state.archive.key = key
-    } catch (err) {
-      log.warn('key malformed', key)
-      mx.track('key malformed', {key: key})
-      return onerror(err)
-    }
-    mx.track('archive viewed', {key: state.archive.key})
+    mx.track('archive viewed', {key: key})
 
-    dats.get(state.archive.key, function (err, archive) {
+    dats.get(key, function (err, archive, key) {
       if (err) return onerror(err)
       archive.ready(function () {
+        debug('archive key', key)
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true
@@ -291,6 +285,7 @@ module.exports = function (config) {
         dats.metadata(archive, {timeout: 1000}, function (err, info) {
           if (err) state.archive.error = {message: err.message}
           state.archive = xtend(state.archive, info)
+          state.archive.key = key
           cb(state)
         })
       })
