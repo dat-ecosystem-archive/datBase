@@ -217,7 +217,7 @@ module.exports = function (config) {
   })
 
   router.get('/view', function (req, res) {
-    archiveRoute(req.query.dat, function (state) {
+    archiveRoute(req.query.dat || req.query.link, function (state) {
       return sendSPA(req, res, state)
     })
   })
