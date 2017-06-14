@@ -1,6 +1,7 @@
 const fs = require('fs')
 const range = require('range-parser')
 const debug = require('debug')('dat-registry')
+const resolve = require('dat-link-resolve')
 const mime = require('mime')
 const pump = require('pump')
 const xtend = require('xtend')
@@ -210,8 +211,14 @@ module.exports = function (config) {
     })
   })
 
+  router.get('/dat://:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
   router.get('/view', function (req, res) {
-    archiveRoute(req.query.link, function (state) {
+    archiveRoute(req.query.dat, function (state) {
       return sendSPA(req, res, state)
     })
   })

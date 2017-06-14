@@ -24,6 +24,7 @@ app.router({default: '/404'}, [
   ['/reset-password', require('./pages/auth/reset-password')],
   ['/download/:archiveKey', require('./pages/download')],
   ['/dat/:archiveKey', require('./pages/archive')],
+  ['/dat://:archiveKey', require('./pages/archive')],
   ['/view/:archiveKey', require('./pages/archive')],
   ['/view', require('./pages/archive')],
   ['/profile/:username', require('./pages/auth/profile')],
