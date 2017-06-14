@@ -19,6 +19,16 @@ module.exports = {
     }
   },
   effects: {
+    delete: (state, data, send, done) => {
+      api.users.delete(data, function (err, resp, json) {
+        if (err) return send('township:error', err.message, done)
+        send('profile:update', {profile: defaultState}, function () {
+          send('township:logout', {}, function () {
+            window.location.href = '/'
+          })
+        })
+      })
+    },
     edit: (state, data, send, done) => {
       api.users.update(data, function (err, resp, json) {
         if (err) return send('township:error', err.message, done)

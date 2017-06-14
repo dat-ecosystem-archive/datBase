@@ -27,6 +27,7 @@ app.router({default: '/404'}, [
   ['/view/:archiveKey', require('./pages/archive')],
   ['/profile/:username', require('./pages/auth/profile')],
   ['/profile/edit', require('./pages/auth/edit-profile')],
+  ['/profile/delete', require('./pages/auth/delete-account')],
   ['/404', require('./pages/fourohfour')],
   ['/team', require('./pages/landing/team')],
   ['/about', require('./pages/landing/about')],

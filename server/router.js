@@ -77,6 +77,7 @@ module.exports = function (config) {
   router.get('/team', send)
   router.get('/login', send)
   router.get('/reset-password', send)
+  router.get('/profile/delete', send)
   router.get('/browser', send)
 
   router.get('/explore', function (req, res) {
