@@ -77,5 +77,4 @@ module.exports = new function () {
 
     client.end()
   }
-
 }
