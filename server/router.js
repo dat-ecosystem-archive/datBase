@@ -210,6 +210,12 @@ module.exports = function (config) {
     })
   })
 
+  router.get('/view', function (req, res) {
+    archiveRoute(req.query.link, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
   router.get('/:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)
@@ -253,7 +259,7 @@ module.exports = function (config) {
   }
 
   function archiveRoute (key, cb) {
-    // TODO: handle this at the response level?
+    debug('finding', key)
     var cancelled = false
 
     function onerror (err) {
@@ -277,7 +283,7 @@ module.exports = function (config) {
     dats.get(key, function (err, archive, key) {
       if (err) return onerror(err)
       archive.ready(function () {
-        debug('archive key', key)
+        debug('got archive key', key)
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true

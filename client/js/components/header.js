@@ -39,7 +39,7 @@ const header = (state, prev, send) => {
           </nav>
           <div class="site-header__actions">
             ${importButton({
-              handler: function (link) { window.location.href = '/' + link }
+              handler: function (link) { send('archive:view', link) }
             })}
             ${loginButton(state, prev, send)}
           </div>

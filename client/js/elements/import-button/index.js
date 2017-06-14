@@ -5,10 +5,6 @@ module.exports = function (props) {
     if (e.keyCode === 13) {
       var link = e.target.value
       e.target.value = ''
-      // TODO: basic parsing, validation of archive link before server-render
-      link = link.toLowerCase()
-      link = link.replace('dat://', '')
-      link = link.replace('datproject.org/', '').replace(/^(http|https):\/\//, '')
       props.handler(link)
     }
   }

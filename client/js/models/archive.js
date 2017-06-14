@@ -46,6 +46,9 @@ module.exports = {
         if (err) return send('archive:update', {error: {message: err.message}}, done)
         window.location.href = '/profile'
       })
+    },
+    view: function (state, link, send, done) {
+      window.location.href = '/view?link=' + link
     }
   }
 }
