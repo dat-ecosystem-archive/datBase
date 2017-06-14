@@ -10,7 +10,7 @@ const register = (state, prev, send) => {
   }
 
   return html`<div class="register">
-    <div class="mw5 pv5 center">
+    <div class="mw5 pv6 center">
       <h1 class="f4">Create a New Account</h1>
       <form onsubmit=${onSubmit}>
         <div class="error">${state.township.error}</div>
