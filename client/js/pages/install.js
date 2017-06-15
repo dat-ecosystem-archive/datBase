@@ -1,6 +1,6 @@
 const html = require('choo/html')
-const header = require('./../../components/header')
-const importButton = require('./../../elements/import-button')
+const header = require('../components/header')
+const importButton = require('../elements/import-button')
 
 const createPage = (state, prev, send) => {
   return html`
@@ -79,9 +79,7 @@ $ dat share path/to/my/data</code></pre>
                     </svg>
                   <p class="mb0 f6 lh-title color-white">
                     You can view an existing Dat <br>by entering the dat link.</p>
-                    ${importButton({
-                      handler: function (link) { window.location.href = '/' + link }
-                    })}
+                    ${importButton(send)}
                   </div>
                 </div>
                 <div class="col-xs-6">

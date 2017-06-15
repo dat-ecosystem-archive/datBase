@@ -19,6 +19,20 @@ var avatarStyles = css`
   }
 `
 
+function placeholder () {
+  return html`
+    <section class="section" id="publish">
+      <div class="container">
+        <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
+          <h2>Welcome to Dat!</h2>
+          <h1>You have not published any dats.</h1>
+          <h4><a class="btn btn--green btn--full" href="/publish">Publish Now</a></h4>
+        </div>
+      </div>
+    </section>
+  `
+}
+
 module.exports = (state, prev, send) => {
   var username = state.profile.username
   var email = state.profile.email
@@ -26,6 +40,9 @@ module.exports = (state, prev, send) => {
   var numDats = state.profile.dats.length
   var description = state.profile.description
   var pic = gravatar({email}, {}, avatarStyles)
+  var owner = state.township.profile.username === state.profile.username
+  var showPlaceholder = numDats === 0 && owner
+
   state.profile.dats.map(function (dat) {
     dat.shortname = `${state.profile.username}/${dat.name}`
     return dat
@@ -34,7 +51,7 @@ module.exports = (state, prev, send) => {
   return html`
     <div>
       ${header(state, prev, send)}
-      <div class="flex flex-column flex-row-m flex-row-l ${profileStyles}">
+      <div class="flex flex-column flex-row-m flex-row-l ${profileStyles}  bg-splash-02">
         <div class="bg-neutral-04 pa4 tc tl-m tl-l">
           <div class="name">
             <h1 class="f4 mb1">${name}</h1>
@@ -47,10 +64,10 @@ module.exports = (state, prev, send) => {
         </div>
         <div class="pa4 flex-auto">
           <h3 class="f5">
-            ${username} has published ${numDats} dats
+            ${showPlaceholder ? placeholder() : html`<div>${username} has published ${numDats} dats<div>`}
           </h3>
           ${list(state.profile.dats, send)}
         </div>
-      </div>
-    </div>`
+    </div>
+  </div>`
 }
