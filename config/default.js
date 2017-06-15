@@ -6,7 +6,8 @@ module.exports = {
     db: 'township.db'
   },
   email: {
-    fromEmail: 'hi@example.com'
+    from: 'hi@example.com',
+    smtpConfig: undefined
   },
   db: {
     dialect: 'sqlite3',

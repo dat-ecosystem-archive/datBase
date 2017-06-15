@@ -100,7 +100,6 @@
     "node-sass": "^3.8.0",
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
-    "nodemailer-postmark-transport": "^1.1.0",
     "pretty-bytes": "^3.0.1",
     "pump": "^1.0.2",
     "random-access-file": "^1.5.0",

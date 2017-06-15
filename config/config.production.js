@@ -1,5 +1,3 @@
-const postmarkTransport = require('nodemailer-postmark-transport')
-
 var path = require('path')
 
 module.exports = {
@@ -12,11 +10,15 @@ module.exports = {
     algorithm: 'ES512'
   },
   email: {
-    fromEmail: 'noreply@datproject.org',
-    transport: postmarkTransport(
-      {
-        auth: {apiKey: process.env.POSTMARK_KEY}
-      })
+    from: 'noreply@datproject.org',
+    smtpConfig: {
+      host: 'smtp.postmarkapp.com',
+      port: 25,
+      auth: {
+        username: process.env.POSTMARK_KEY,
+        password: process.env.POSTMARK_KEY
+      }
+    }
   },
   db: {
     dialect: 'sqlite3',

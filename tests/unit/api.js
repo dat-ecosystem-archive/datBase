@@ -328,7 +328,7 @@ test('api', function (t) {
         json: true
       }, function (err, resp, body) {
         t.ifError(err)
-        const sent = config.email.transport.sentMail
+        const sent = config.email.mailer.transporter.sentMail
         t.same(sent.length, 1)
         t.same(sent[0].data.to, users.joe.email)
         const [, urlstring] = sent[0].message.content.match(/href="(.*?)"/)
