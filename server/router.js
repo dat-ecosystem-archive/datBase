@@ -150,7 +150,7 @@ module.exports = function (config) {
 
   router.get('/profile/:username', function (req, res) {
     var state = getDefaultAppState()
-    db.models.users.get({username: req.params.username}, function (err, results) {
+    db.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
       if (!results.length) {
         return archiveRoute(req.params.username, function (state) {
@@ -169,7 +169,7 @@ module.exports = function (config) {
         email: user.email,
         id: user.id
       }
-      db.models.dats.get({user_id: user.id}, function (err, results) {
+      db.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
         state.profile.dats = results
         return sendSPA(req, res, state)
