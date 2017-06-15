@@ -64,10 +64,11 @@ module.exports = (state, prev, send) => {
         </div>
         <div class="pa4 flex-auto">
           <h3 class="f5">
-            ${showPlaceholder ? placeholder() : html`<div>${username} has published ${numDats} dats<div>`}
+            ${showPlaceholder ? placeholder() : html`<div>${username} has published ${numDats} dats</div>`}
           </h3>
           ${list(state.profile.dats, send)}
         </div>
+      </div>
     </div>
-  </div>`
+   `
 }
