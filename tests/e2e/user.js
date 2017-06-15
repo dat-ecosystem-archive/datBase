@@ -34,8 +34,7 @@ module.exports = new function () {
   testCases['view profile should work'] = (client) => {
     client
       .url(testServer + '/profile/testuser')
-      .assert.containsText('body', 'has published 0 dats')
-      .assert.containsText('body', 'testuser')
+      .assert.containsText('body', 'testuser has published 0 dats')
 
     client.end()
   }
