@@ -1,20 +1,17 @@
 const test = require('tape')
-const encoding = require('dat-encoding')
-const path = require('path')
 const TownshipClient = require('township-client')
 const request = require('request')
 const ram = require('random-access-memory')
-const helpers = require('../helpers')
-const config = require('../config')
 const hyperdrive = require('hyperdrive')
 const xtend = require('xtend')
+const helpers = require('../helpers')
+const Config = require('../../server/config')
+var config = JSON.parse(JSON.stringify(Config()))
 
 var rootUrl = 'http://localhost:' + config.port
 var api = rootUrl + '/api/v1'
 test('api', function (t) {
-  const dbConfig = Object.assign({}, config.db)
-  dbConfig.connection.filename = path.join(__dirname, 'test-api.sqlite')
-  helpers.server(xtend(config, {db: dbConfig}), function (db, close) {
+  helpers.server(config, function (close) {
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))
 
@@ -150,7 +147,6 @@ test('api', function (t) {
     test('api can create a dat', function (t) {
       var archive = hyperdrive(ram)
       archive.ready(function () {
-        dats.cats.url = encoding.toStr(archive.key)
         client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.ok(body.id, 'has an id')
@@ -204,7 +200,7 @@ test('api', function (t) {
     test('api can get a dat by username/dataset combo without login', function (t) {
       request({url: `${rootUrl}/${users.joe.username}/${dats.cats.name}`, json: true}, function (err, resp, body) {
         t.ifError(err)
-        t.same(resp.headers['hyperdrive-key'], dats.cats.url.replace('dat://', ''), 'has url')
+        t.same(resp.headers['hyperdrive-key'], dats.cats.url, 'has url')
         t.end()
       })
     })
@@ -212,7 +208,6 @@ test('api', function (t) {
     test('api can create another dat', function (t) {
       var archive = hyperdrive(ram)
       archive.ready(function () {
-        dats.penguins.url = encoding.toStr(archive.key)
         client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.ok(body.id, 'has an id')
@@ -333,7 +328,7 @@ test('api', function (t) {
         json: true
       }, function (err, resp, body) {
         t.ifError(err)
-        const sent = config.email.transport.sentMail
+        const sent = config.email.mailer.transporter.sentMail
         t.same(sent.length, 1)
         t.same(sent[0].data.to, users.joe.email)
         const [, urlstring] = sent[0].message.content.match(/href="(.*?)"/)

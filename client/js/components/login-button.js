@@ -30,7 +30,7 @@ module.exports = function (state, prev, send) {
   } else {
     return html`
       ${button({
-        text: 'Login',
+        text: 'Log In',
         click: function () { window.location.href = '/login' },
         klass: 'btn btn--full btn--green'
       })}

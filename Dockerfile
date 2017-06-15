@@ -1,5 +1,6 @@
 FROM node:6.9
 EXPOSE 80
+EXPOSE 25
 
 ENV PORT 80
 ENV NODE_ENV development
@@ -15,6 +16,6 @@ RUN npm install --production --loglevel warn && npm cache clean
 COPY . /usr/src/app
 RUN npm run build-css && npm run build-js-prod && npm run minify && npm run version
 
-# do docker exec: node /usr/src/app/server/database/init.js
+# do docker exec: npm run database
 
-CMD node server/database/init.js && npm run server
+CMD npm run database && npm run server

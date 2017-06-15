@@ -3,6 +3,8 @@ services:
   datproject:
     build: .
     image: datproject/datfolder:${TAG}
+    ports:
+      - 25:25
     expose:
       - 80
     environment:

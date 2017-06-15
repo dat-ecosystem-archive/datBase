@@ -16,26 +16,26 @@ module.exports = new function () {
     client.end()
   }
 
-  testCases['duplicated registration should fail'] = (client) => {
-    client
-      .url(testServer + '/register')
-      .assert.containsText('body', 'Create a New Account')
-
-    client
-      .setValue(".register form input[name='username']", 'testuser')
-      .setValue(".register form input[name='email']", 'hi@pam.com')
-      .setValue(".register form input[name='password']", 'fnordfoobar')
-      .submitForm('.register form')
-      .expect.element('.register form .error').text.matches(/Account with that email already exists./).before(5000)
-
-    client.end()
-  }
+  // testCases['duplicated registration should fail'] = (client) => {
+  //   client
+  //     .url(testServer + '/register')
+  //     .assert.containsText('body', 'Create a New Account')
+  //
+  //   client
+  //     .setValue(".register form input[name='username']", 'testuser')
+  //     .setValue(".register form input[name='email']", 'hi@pam.com')
+  //     .setValue(".register form input[name='password']", 'fnordfoobar')
+  //     .submitForm('.register form')
+  //     .expect.element('.register form .error').text.matches(/Account with that email already exists./).before(5000)
+  //
+  //   client.end()
+  // }
 
   testCases['view profile should work'] = (client) => {
     client
       .url(testServer + '/profile/testuser')
-      .assert.containsText('body', 'has published 0 dats')
-      .assert.containsText('body', 'testuser')
+      .pause(5000)
+      .assert.containsText('body', 'testuser has published 0 dats')
 
     client.end()
   }
