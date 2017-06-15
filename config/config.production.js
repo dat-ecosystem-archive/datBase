@@ -13,10 +13,10 @@ module.exports = {
     from: 'noreply@datproject.org',
     smtpConfig: {
       host: 'smtp.postmarkapp.com',
-      port: 25,
+      port: 2525,
       auth: {
-        username: process.env.POSTMARK_KEY,
-        password: process.env.POSTMARK_KEY
+        user: process.env.POSTMARK_KEY,
+        pass: process.env.POSTMARK_KEY
       }
     }
   },
