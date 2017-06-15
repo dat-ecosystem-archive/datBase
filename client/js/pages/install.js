@@ -1,6 +1,5 @@
 const html = require('choo/html')
 const header = require('../components/header')
-const importButton = require('../elements/import-button')
 
 const createPage = (state, prev, send) => {
   return html`
