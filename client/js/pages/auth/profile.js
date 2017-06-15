@@ -54,7 +54,6 @@ module.exports = (state, prev, send) => {
       <div class="flex flex-column flex-row-m flex-row-l ${profileStyles}  bg-splash-02">
         <div class="bg-neutral-04 pa4 tc tl-m tl-l">
           <div class="name">
-            ${owner ? html`<a class="btn btn--green" href="/profile/edit">Edit your profile</a>` : ''}
             <h1 class="f4 mb1">${name}</h1>
             <h2 class="f5 color-neutral-80">${username}</h2>
             ${pic}
