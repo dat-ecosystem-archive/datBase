@@ -15,7 +15,9 @@ var headerStyles = css`
 
 var navStyles = css`
   :host {
+    display: flex;
     height: var(--site-header-height);
+    align-items: center;
   }
 `
 
@@ -24,23 +26,19 @@ const header = (state, prev, send) => {
     <header class="relative ${headerStyles}">
       ${message(state.message)}
       <div class="container container--top-bar">
-        <div class="flex items-center justify-between relative">
+        <div class="flex justify-between items-center relative">
           ${panel(state, prev, send)}
-          <nav class="flex ${navStyles}">
+          <nav class="flex items-center ${navStyles}">
             <a href="/" data-no-routing class="dat-logo">
               <img src="/public/img/dat-hexagon.svg" />
               <span class="dat-logo__word">Dat</span>
             </a>
+            ${importButton(send)}
             <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
             <a href="/install" class="header-nav-link">Install</a>
-            <a href="/about" class="header-nav-link hidden-on-mobile">About</a>
-            <a href="http://blog.datproject.org" class="header-nav-link hidden-on-mobile">Blog</a>
-            <a href="http://docs.datproject.org" class="header-nav-link hidden-on-mobile">Docs</a>
           </nav>
-          <div class="site-header__actions">
-            ${importButton({
-              handler: function (link) { send('archive:view', link) }
-            })}
+          <div>
+            ${state.township.email ? html`<a href="/create" class="btn btn--green">Publish</a>` : ''}
             ${loginButton(state, prev, send)}
           </div>
         </div>

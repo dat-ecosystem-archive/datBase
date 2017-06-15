@@ -1,15 +1,15 @@
 const html = require('choo/html')
 
-module.exports = function (props) {
+module.exports = function (send) {
   const keydown = (e) => {
     if (e.keyCode === 13) {
       var link = e.target.value
       e.target.value = ''
-      props.handler(link)
+      send('archive:view', link)
     }
   }
   return html`<label for="import-dat" class="dat-input">
-    <input name="import-dat" type="text" placeholder="Preview Dat Link" onkeydown=${keydown} class="dat-input__input dat-input__input--icon">
+    <input name="import-dat" type="text" placeholder="Search" onkeydown=${keydown} class="dat-input__input dat-input__input--icon">
     <div class="dat-input__icon">
       <img src="/public/img/link.svg" />
     </div>

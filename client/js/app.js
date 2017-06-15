@@ -17,7 +17,8 @@ css('dat-colors')
 
 // define routes:
 app.router({default: '/404'}, [
-  ['/install', require('./pages/create')],
+  ['/install', require('./pages/install')],
+  ['/publish', require('./pages/publish')],
   ['/explore', require('./pages/explore')],
   ['/register', require('./pages/auth/register')],
   ['/login', require('./pages/auth/login')],
