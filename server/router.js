@@ -51,14 +51,14 @@ module.exports = function (config) {
   router.post('/api/v1/password-reset-confirm', api.auth.passwordResetConfirm)
 
   router.get('/api/v1/:username/:dataset', function (req, res) {
-    db.queries.getDatByShortname(req.params, function (err, dat) {
+    db.dats.getByShortname(req.params, function (err, dat) {
       if (err) return onerror(err, res)
       res.json(dat)
     })
   })
 
   router.get('/api/v1/browse', function (req, res) {
-    db.queries.datList(req.params, function (err, resp) {
+    db.dats.list(req.params, function (err, resp) {
       if (err) return onerror(err, res)
       res.json(resp)
     })
@@ -82,7 +82,7 @@ module.exports = function (config) {
 
   router.get('/explore', function (req, res) {
     var state = getDefaultAppState()
-    db.queries.datList(req.params, function (err, resp) {
+    db.dats.list(req.params, function (err, resp) {
       if (err) return onerror(err, res)
       state.list.data = resp
       sendSPA(req, res, state)
@@ -150,7 +150,7 @@ module.exports = function (config) {
 
   router.get('/profile/:username', function (req, res) {
     var state = getDefaultAppState()
-    db.models.users.get({username: req.params.username}, function (err, results) {
+    db.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
       if (!results.length) {
         return archiveRoute(req.params.username, function (state) {
@@ -169,7 +169,7 @@ module.exports = function (config) {
         email: user.email,
         id: user.id
       }
-      db.models.dats.get({user_id: user.id}, function (err, results) {
+      db.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
         state.profile.dats = results
         return sendSPA(req, res, state)
@@ -187,7 +187,7 @@ module.exports = function (config) {
   router.get('/:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
     mx.track('shortname viewed', req.params)
-    db.queries.getDatByShortname(req.params, function (err, dat) {
+    db.dats.getByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
