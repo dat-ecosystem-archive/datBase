@@ -1,14 +1,13 @@
 const http = require('http')
 const createRouter = require('./router')
 
-module.exports = function (config, db, opts) {
-  if (!opts) opts = {}
-  if (!config.archiver) throw new Error('config.archiver directory required')
-  const router = createRouter(config, db)
+module.exports = function (config) {
+  var log = config.log
+  const router = createRouter(config)
 
-  return http.createServer(function (req, res) {
+  var server = http.createServer(function (req, res) {
     var time = Date.now()
-    if (opts.log) opts.log.info({message: 'request', method: req.method, url: req.url})
+    if (log) log.info({message: 'request', method: req.method, url: req.url})
     res.on('finish', end)
     res.on('close', end)
     router(req, res)
@@ -16,8 +15,8 @@ module.exports = function (config, db, opts) {
     function end () {
       res.removeListener('close', end)
       res.removeListener('finish', end)
-      if (opts.log) {
-        opts.log.info({
+      if (log) {
+        log.info({
           message: 'response',
           finished: res.finished,
           method: req.method,
@@ -28,4 +27,12 @@ module.exports = function (config, db, opts) {
       }
     }
   })
+
+  server.on('close', function () {
+    router.api.close(function () {
+      router.dats.close()
+    })
+  })
+
+  return server
 }

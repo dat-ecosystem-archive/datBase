@@ -1,128 +1,103 @@
-# datproject.org
+# Dat Registry
 
-A registry for dats. [datproject.org](http://datproject.org)
+A web registry for the dat network. Hosted at [http://datproject.org](http://datproject.org).
 
 [![Build Status](https://travis-ci.org/datproject/datproject.org.svg?branch=master)](https://travis-ci.org/datproject/datproject.org)
 
-### Develop
+## Features
 
-Install dependencies.
+* Preview the files in a dat in the browser.
+* Download individual files from dats.
+* Create short links for dats with user accounts.
+
+## Setup
+
+0. Clone this repository, then copy the configuration file:
+
+```
+cp config/config.default.js config/config.development.js
+```
+
+1. Install the dependencies:
 
 ```
 npm install
 ```
 
-Create config file.
-
-You can use override the defaults by copying the example config to `config.local.js` and make changes.
-
-Initialize the database. You only have to do this once:
+Create the database
 
 ```
-node server/database/init.js
+npm run database
 ```
 
-
-Watch assets and start server in one command:
-
+Start the server
 ```
 npm start
 ```
 
-### Creating examples
-
-Run the following command to create a user with the given email address. The
-user will have the password `dogsandcats.`
-
-```
-node scripts/user-and-dat.js <email-address>
-```
-
-To create just dats for a given user that already exists, use
-```
-node scripts/add-dats-for-user.js <email-address> <password>
-```
+## Configuration
 
 
+### Secret key
 
-### Build for production
-```
-npm run build
-npm run minify
-npm run version
-```
+Each deployment should have a different secret key. You want to set the secret key for generating password hashes and salts.
 
-### Getting invited-users list
+Set the secret key by using the `TOWNSHIP_SECRET` environment variable.
+
+### Default location of account and sqlite databases
+
+Specify where you want data for the app (databases and also by default the archiver) to be located. By default, all the data will be stored in `./data`. If you'd like the data to be stored somewhere else, add a `data` key:
 
 ```
-git clone git@github.com:datproject/invited-users.git
+{
+  data: '/path/to/my/data'
+}
 ```
 
+### Closed beta
 
-### Running end-to-end tests
-
-Docker and `docker-compose` are required.
+To create a closed beta, add the `whitelist` key with the path to a newline-delimited list of emails allowed to sign up. Default value `false` allows anyone to register an account.
 
 ```
-docker-compose build
-docker-compose up -d newdat && sleep 10
-docker-compose run --rm nightwatch
+{ whitelist: '/path/to/my/list/of/folks.txt'}
 ```
 
-You may also see the test browser in action with [VNC](https://github.com/blueimp/nightwatch).
+`folks.txt` should have a list of valid emails, each separated by a new line character. For example:
 
-## API
-
-##### ```GET /api/v1/:model```
-
-Can pass query parameters like `?username='martha'` to filter results.
-
-Additional options:
-
-  * `limit`: 100 (default)
-  * `offset`: 0 (default)
-
-##### ```POST /api/v1/:model```
-
-Success returns model with `id` field added.
-
-##### ```PUT /api/v1/:model?id=```
-
-`id` required
-
-Success returns number of rows modified.
 ```
-{updated: 1}
+pamlikesdata@gmail.com
+robert.singletown@sbcglobal.netw
 ```
 
-##### ```DELETE /api/v1/:model?id=```
+### Location of cached and archived dat data
 
-`id` required
+You can set the location where dat data is cached on the filesystem. By default it is stored in the `data` directory (above), in the `archiver` subdirectory. You can change this by using the `archiver` key:
 
-Success returns number of rows deleted.
 ```
-{deleted: 1}
+{ archiver: '/mnt1/bigdisk/archiver-data' }
 ```
 
-##### users model: ```/api/v1/users```
+### Mixpanel account
 
-- `id` (required)
-- `email` (required)
-- `username`
-- `description`
-- `created_at`
-- `updated_at`
+The site will report basic information to Mixpanel if you have an account. It will by default use the environment variable `MIXPANEL_KEY`.
 
-##### dats model: ```/api/v1/dats```
+This can also be set in the configuration file by using the `mixpanel` key:
 
-- `id`
-- `user_id`
-- `name`
-- `title`
-- `hash`
-- `description`
-- `created_at`
-- `updated_at`
+```
+{ mixpanel: '<my-api-key-here>' }
+```
 
-#####  ```/api/v1/register```
-#####  ```/api/v1/login```
+### Advanced password security
+
+If you want to have advanced security for generating passwords, you can use ES512 keys, for example. Generate the keys using [this tutorial](https://connect2id.com/products/nimbus-jose-jwt/openssl-key-generation) and set their locations in the configuration file.
+
+```
+{
+  township: {
+    db: 'township.db',
+    publicKey: path.join('secrets', 'ecdsa-p521-public.pem'),
+    privateKey: path.join('secrets', 'ecdsa-p521-private.pem'),
+    algorithm: 'ES512'
+  }
+}
+```

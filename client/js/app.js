@@ -17,16 +17,20 @@ css('dat-colors')
 
 // define routes:
 app.router({default: '/404'}, [
-  ['/install', require('./pages/create')],
+  ['/install', require('./pages/install')],
+  ['/publish', require('./pages/publish')],
   ['/explore', require('./pages/explore')],
   ['/register', require('./pages/auth/register')],
   ['/login', require('./pages/auth/login')],
   ['/reset-password', require('./pages/auth/reset-password')],
   ['/download/:archiveKey', require('./pages/download')],
   ['/dat/:archiveKey', require('./pages/archive')],
+  ['/dat://:archiveKey', require('./pages/archive')],
   ['/view/:archiveKey', require('./pages/archive')],
+  ['/view', require('./pages/archive')],
   ['/profile/:username', require('./pages/auth/profile')],
   ['/profile/edit', require('./pages/auth/edit-profile')],
+  ['/profile/delete', require('./pages/auth/delete-account')],
   ['/404', require('./pages/fourohfour')],
   ['/team', require('./pages/landing/team')],
   ['/about', require('./pages/landing/about')],

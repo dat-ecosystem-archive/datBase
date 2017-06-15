@@ -1,5 +1,6 @@
 const fs = require('fs')
 const range = require('range-parser')
+const debug = require('debug')('dat-registry')
 const mime = require('mime')
 const pump = require('pump')
 const xtend = require('xtend')
@@ -7,7 +8,6 @@ const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const assert = require('assert')
-const encoding = require('dat-encoding')
 const UrlParams = require('uparams')
 const bole = require('bole')
 const express = require('express')
@@ -15,16 +15,17 @@ const redirect = require('express-simple-redirect')
 const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
-const auth = require('./auth')
-const api = require('./api')
+const Api = require('dat-registry-api')
 const Dats = require('./dats')
 
-module.exports = function (opts, db) {
-  opts = opts || {}
+module.exports = function (config) {
+  config = config || {}
 
   const log = bole(__filename)
-  const dats = opts.dats || Dats(opts.archiver)
-  const mx = Mixpanel.init(opts.mixpanel)
+  const dats = config.dats || Dats(config.archiver)
+  const mx = Mixpanel.init(config.mixpanel)
+  const api = Api(config)
+  const db = api.db
 
   var router = express()
   router.use(compression())
@@ -34,8 +35,34 @@ module.exports = function (opts, db) {
     '/blog': 'http://blog.datproject.org'
   }, 301))
 
-  const ship = auth(router, db, opts)
-  api(router, db, ship, opts)
+  router.post('/api/v1/users', api.users.post)
+  router.get('/api/v1/users', api.users.get)
+  router.put('/api/v1/users', api.users.put)
+  router.delete('/api/v1/users', api.users.delete)
+
+  router.get('/api/v1/dats', api.dats.get)
+  router.post('/api/v1/dats', api.dats.post)
+  router.put('/api/v1/dats', api.dats.put)
+  router.delete('/api/v1/dats', api.dats.delete)
+
+  router.post('/api/v1/register', api.auth.register)
+  router.post('/api/v1/login', api.auth.login)
+  router.post('/api/v1/password-reset', api.auth.passwordReset)
+  router.post('/api/v1/password-reset-confirm', api.auth.passwordResetConfirm)
+
+  router.get('/api/v1/:username/:dataset', function (req, res) {
+    db.dats.getByShortname(req.params, function (err, dat) {
+      if (err) return onerror(err, res)
+      res.json(dat)
+    })
+  })
+
+  router.get('/api/v1/browse', function (req, res) {
+    db.dats.list(req.params, function (err, resp) {
+      if (err) return onerror(err, res)
+      res.json(resp)
+    })
+  })
 
   function send (req, res) {
     var state = getDefaultAppState()
@@ -50,11 +77,12 @@ module.exports = function (opts, db) {
   router.get('/team', send)
   router.get('/login', send)
   router.get('/reset-password', send)
+  router.get('/profile/delete', send)
   router.get('/browser', send)
 
   router.get('/explore', function (req, res) {
     var state = getDefaultAppState()
-    db.queries.datList(req.params, function (err, resp) {
+    db.dats.list(req.params, function (err, resp) {
       if (err) return onerror(err, res)
       state.list.data = resp
       sendSPA(req, res, state)
@@ -122,7 +150,7 @@ module.exports = function (opts, db) {
 
   router.get('/profile/:username', function (req, res) {
     var state = getDefaultAppState()
-    db.models.users.get({username: req.params.username}, function (err, results) {
+    db.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
       if (!results.length) {
         return archiveRoute(req.params.username, function (state) {
@@ -141,7 +169,7 @@ module.exports = function (opts, db) {
         email: user.email,
         id: user.id
       }
-      db.models.dats.get({user_id: user.id}, function (err, results) {
+      db.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
         state.profile.dats = results
         return sendSPA(req, res, state)
@@ -159,7 +187,7 @@ module.exports = function (opts, db) {
   router.get('/:username/:dataset', function (req, res) {
     log.debug('requesting username/dataset', req.params)
     mx.track('shortname viewed', req.params)
-    db.queries.getDatByShortname(req.params, function (err, dat) {
+    db.dats.getByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
@@ -179,6 +207,18 @@ module.exports = function (opts, db) {
         state.archive.metadata = dat
         return sendSPA(req, res, state)
       })
+    })
+  })
+
+  router.get('/dat://:archiveKey', function (req, res) {
+    archiveRoute(req.params.archiveKey, function (state) {
+      return sendSPA(req, res, state)
+    })
+  })
+
+  router.get('/view', function (req, res) {
+    archiveRoute(req.query.dat || req.query.link, function (state) {
+      return sendSPA(req, res, state)
     })
   })
 
@@ -225,7 +265,7 @@ module.exports = function (opts, db) {
   }
 
   function archiveRoute (key, cb) {
-    // TODO: handle this at the response level?
+    debug('finding', key)
     var cancelled = false
 
     function onerror (err) {
@@ -238,24 +278,18 @@ module.exports = function (opts, db) {
 
     var timeout = setTimeout(function () {
       var msg = 'timed out'
+      if (cancelled) return
+      cancelled = true
       return onerror(new Error(msg))
     }, 1000)
 
     var state = getDefaultAppState()
-    try {
-      key = encoding.toStr(key)
-      if (key.length !== 64) return onerror(new Error('Invalid key'))
-      state.archive.key = key
-    } catch (err) {
-      log.warn('key malformed', key)
-      mx.track('key malformed', {key: key})
-      return onerror(err)
-    }
-    mx.track('archive viewed', {key: state.archive.key})
+    mx.track('archive viewed', {key: key})
 
-    dats.get(state.archive.key, function (err, archive) {
+    dats.get(key, function (err, archive, key) {
       if (err) return onerror(err)
       archive.ready(function () {
+        debug('got archive key', key)
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true
@@ -263,6 +297,7 @@ module.exports = function (opts, db) {
         dats.metadata(archive, {timeout: 1000}, function (err, info) {
           if (err) state.archive.error = {message: err.message}
           state.archive = xtend(state.archive, info)
+          state.archive.key = key
           cb(state)
         })
       })
@@ -270,6 +305,7 @@ module.exports = function (opts, db) {
   }
 
   router.dats = dats
+  router.api = api
   return router
 
   /* helpers */
