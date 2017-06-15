@@ -44,6 +44,9 @@ module.exports = function hyperhealth (state, emit) {
         : ''}
     </div>
     <div class="dat-detail">${progressPeers} ${plural(progressPeers)} downloading</div>
+    <div class="dat-detail">
+      updated [[relative date]]
+    </div>
   </div>
     <div>
       ${data.peers.map((peer, i) => {
