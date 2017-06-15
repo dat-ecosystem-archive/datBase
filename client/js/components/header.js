@@ -38,7 +38,7 @@ const header = (state, prev, send) => {
             <a href="/install" class="header-nav-link">Install</a>
           </nav>
           <div>
-            ${state.township.email ? html`<a href="/create" class="btn btn--green">Publish</a>` : ''}
+            ${state.township.email ? html`<a href="/publish" class="btn btn--green">Publish</a>` : ''}
             ${loginButton(state, prev, send)}
           </div>
         </div>
