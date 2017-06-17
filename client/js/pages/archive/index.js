@@ -4,7 +4,6 @@ const hyperdrive = require('../../components/hyperdrive')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
-const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
@@ -40,9 +39,9 @@ const archivePage = (state, prev, send) => {
     }
   }
   var peers = state.archive.peers
+  // var owner = (meta && state.township) && meta.username === state.township.username
   var size = state.archive.size
   var meta = state.archive.metadata
-  var owner = (meta && state.township) && meta.username === state.township.username
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
 
@@ -71,13 +70,6 @@ const archivePage = (state, prev, send) => {
           <div id="author" class="author-name">${description}</div>
           ${error(state.archive.error)}
           <div class="dat-details">
-            ${permissions
-              ? html`
-                <div id="permissions" class="dat-detail">
-                  ${permissions({owner: owner})}
-                </div>
-                `
-              : ''}
             ${size
               ? html`
                 <div id="hyperdrive-size" class="dat-detail">
