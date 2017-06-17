@@ -2,7 +2,7 @@ const html = require('choo/html')
 const header = require('./../../components/header')
 const form = require('get-form-data')
 
-function body (state, prev, send) {
+function body (state, emit) {
 //  const authenticated = state.township.username
   const {accountKey, resetToken, email} = state.location ? state.location.search || {} : {}
 
@@ -12,13 +12,13 @@ function body (state, prev, send) {
     data.accountKey = accountKey
     data.resetToken = resetToken
     data.email = email
-    send('township:resetPasswordConfirmation', data)
+    emit('township:resetPasswordConfirmation', data)
   }
 
   function onsubmitEmail (e) {
     e.preventDefault()
     var data = form(e.target)
-    send('township:resetPassword', data.email)
+    emit('township:resetPassword', data.email)
   }
 
   if (accountKey && resetToken) {
@@ -84,10 +84,10 @@ function body (state, prev, send) {
   }
 }
 
-module.exports = (state, prev, send) => {
+module.exports = (state, emit) => {
   return html`
     <div class="landing">
-      ${header(state, prev, send)}
-      ${body(state, prev, send)}
+      ${header(state, emit)}
+      ${body(state, emit)}
     </div>`
 }

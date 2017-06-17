@@ -17,9 +17,9 @@ var ARCHIVE_ERRORS = {
   'too many retries': {header: 'Could not find that dat.', body: 'Is the address correct? Try refreshing your browser.'}
 }
 
-const archivePage = (state, prev, send) => {
+const archivePage = (state, emit) => {
   var err = state.archive.error
-  if (!module.parent && state.archive.retries < 3) send('archive:getMetadata', {timeout: 3000})
+  if (!module.parent && state.archive.retries < 3) emit('archive:getMetadata', {timeout: 3000})
   if (err) {
     if (err.message === 'Block not downloaded') err.message = 'timed out'
     if (!state.archive.entries.length) {
@@ -28,7 +28,7 @@ const archivePage = (state, prev, send) => {
       if (props) {
         return html`
         <div>
-        ${header(state, prev, send)}
+        ${header(state, emit)}
         ${fourohfour(props)}
         </div>
         `
@@ -48,17 +48,17 @@ const archivePage = (state, prev, send) => {
   // TODO: add delete button with confirm modal.
   // const deleteButton = require('../../elements/delete-button')
   // function remove () {
-  //   send('archive:delete', meta.id)
+  //   emit('archive:delete', meta.id)
   // }
   // ${owner ? deleteButton(remove) : html``}
 
   return html`
     <div>
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header-actions-wrapper">
-            ${copyButton('dat://' + state.archive.key, send)}
+            ${copyButton('dat://' + state.archive.key, emit)}
             <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
                 <svg><use xlink:href="#daticon-download" /></svg>
@@ -89,7 +89,7 @@ const archivePage = (state, prev, send) => {
       </div>
       <main class="site-main">
         <div class="container">
-          ${hyperdrive(state, prev, send)}
+          ${hyperdrive(state, emit)}
         </div>
       </main>
       <div class="status-bar">
@@ -102,7 +102,7 @@ const archivePage = (state, prev, send) => {
             : ''}
         </div>
       </div>
-      ${preview(state, prev, send)}
+      ${preview(state, emit)}
     </div>`
 }
 

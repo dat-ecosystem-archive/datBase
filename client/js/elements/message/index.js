@@ -22,7 +22,7 @@ var messageStyles = css`
   }
 `
 module.exports = function (props) {
-  if (!props.message) return html``
+  if (!props || !props.message) return html``
   return html`<div class="${messageStyles} ${props.type}">
     ${props.message}
   </div>`

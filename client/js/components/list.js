@@ -2,7 +2,7 @@ const html = require('choo/html')
 const copyButton = require('./copy-button')
 const relativeDate = require('relative-date')
 
-module.exports = (dats, send) => {
+module.exports = (dats, emit) => {
   function open (dat) {
     window.location.href = `/${dat.shortname}`
   }
@@ -27,7 +27,7 @@ module.exports = (dats, send) => {
         </div>
       </div>
       <div class="flex-none pv2">
-        ${copyButton(dat.url, send)}
+        ${copyButton(dat.url, emit)}
       </div>
     </div>
     `

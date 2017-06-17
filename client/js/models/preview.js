@@ -1,39 +1,27 @@
 var xtend = require('xtend')
+var defaults = require('./defaults')
 
-var defaultState = {
-  isPanelOpen: false,
-  isLoading: false,
-  entry: null,
-  error: false
-}
+module.exports = function (state, emitter) {
+  emitter.on('preview:update', function (data) {
+    state.preview = xtend(state.preview, data)
+    emitter.emit('render')
+  })
 
-module.exports = {
-  namespace: 'preview',
-  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.preview,
-  reducers: {
-    update: (state, data) => {
-      return xtend(state, data)
-    },
-    openPanel: (state, data) => {
-      return {isPanelOpen: true}
-    }
-  },
-  effects: {
-    file: (state, data, send, done) => {
-      data.error = false
-      send('preview:update', data, function () {
-        send('location:set', `/${data.entry.archiveKey}/contents/${data.entry.name}`, function () {
-          send('preview:openPanel', {}, done)
-        })
-      })
-      // TODO: state.preview.isPanelOpen + corresponding loading indicator in ui
-    },
-    closePanel: (state, data, send, done) => {
-      var arr = state.entry.name.split('/')
-      var path = arr.splice(0, arr.length - 1)
-      send('location:set', `/${state.entry.archiveKey}/contents/${path}`, function () {
-        send('preview:update', defaultState, done)
-      })
-    }
-  }
+  emitter.on('preview:openPanel', function (data) {
+    emitter.emit('preview:update', {isPanelOpen: true, error: null})
+  })
+
+  emitter.on('preview:file', function (data) {
+    data.error = false
+    emitter.emit('preview:update', data)
+    emitter.emit('pushState', `/dat://${data.entry.archiveKey}/contents/${data.entry.name}`)
+    emitter.emit('preview:openPanel')
+  })
+
+  emitter.on('preview:closePanel', function (data) {
+    var arr = state.preview.entry.name.split('/')
+    var path = arr.splice(0, arr.length - 1)
+    emitter.emit('pushState', `/dat://${state.preview.entry.archiveKey}/contents/${path}`)
+    emitter.emit('preview:update', defaults.preview)
+  })
 }

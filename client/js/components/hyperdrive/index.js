@@ -1,14 +1,14 @@
 const hyperdriveRenderer = require('./client.js')
 const noop = function () {}
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   var onclick = (ev, entry) => {
     if (entry.type === 'directory') {
-      send('archive:directory', entry.name)
+      emit('archive:directory', entry.name)
       return true
     } else {
       entry.archiveKey = state.archive.key
-      send('preview:file', {entry: entry}, noop)
+      emit('preview:file', {entry: entry}, noop)
       return false
     }
   }

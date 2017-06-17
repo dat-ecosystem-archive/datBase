@@ -1,101 +1,89 @@
-const api = require('../api')()
+const Api = require('../api')
 const xtend = require('xtend')
+const defaults = require('./defaults')
 
-const defaultState = {
-  username: null,
-  profile: {},
-  key: null,
-  email: null,
-  token: null,
-  register: 'hidden',
-  sidePanel: 'hidden',
-  passwordResetResponse: null,
-  passwordResetConfirmResponse: null
-}
+module.exports = function (state, emitter) {
+  emitter.on('DOMContentLoaded', function () {
+    emitter.emit('township:whoami', {})
+  })
+  var api = Api()
 
-module.exports = {
-  namespace: 'township',
-  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.township,
-  reducers: {
-    update: (state, data) => {
-      return xtend(state, data)
-    },
-    sidePanel: (state, data) => {
-      return { sidePanel: state.sidePanel === 'hidden' ? '' : 'hidden' }
-    },
-    passwordResetResponse: function (state, data) {
-      return { passwordResetResponse: data }
-    },
-    passwordResetConfirmResponse: function (state, data) {
-      return { passwordResetConfirmResponse: data, passwordResetResponse: null }
-    },
-    error: function (state, data) {
-      return xtend(state, {error: data})
+  emitter.on('township:update', function (data) {
+    state.township = xtend(state.township, data)
+    state.township.whoami = true
+    emitter.emit('render')
+  })
+
+  emitter.on('township:sidePanel', function (data) {
+    state.township.sidePanel = state.township.sidePanel === 'hidden' ? '' : 'hidden'
+    emitter.emit('render')
+  })
+
+  emitter.on('township:whoami', function (data) {
+    const user = api.whoami()
+    if (user.username) {
+      api.users.get({username: user.username}, function (err, resp, results) {
+        if (err && err.message === 'jwt expired') {
+          emitter.emit('township:logout', data)
+          return done()
+        }
+        if (!results.length) return done()
+        var newState = user
+        newState.profile = results[0]
+        api.dats.get({user_id: user.id}, function (err, resp, results) {
+          if (err && err.message === 'jwt expired') {
+            emitter.emit('township:logout', data)
+            return done()
+          }
+          newState.dats = results
+          newState.whoami = true
+          emitter.emit('township:update', newState)
+        })
+      })
+    } else done()
+    function done () {
+      emitter.emit('township:update', {})
     }
-  },
-  subscriptions: {
-    checktownship: function (send, done) {
-      send('township:whoami', {}, done)
-    }
-  },
-  effects: {
-    whoami: (state, data, send, done) => {
-      const user = api.whoami()
-      if (user.username) {
-        api.users.get({username: user.username}, function (err, resp, results) {
-          if (err && err.message === 'jwt expired') return send('township:logout', data, done)
-          if (!results.length) return done()
-          user.profile = results[0]
-          api.dats.get({user_id: user.id}, function (err, resp, results) {
-            if (err && err.message === 'jwt expired') return send('township:logout', data, done)
-            user.dats = results
-            send('township:update', user, done)
-          })
-        })
-      } else done()
-    },
-    logout: (state, data, send, done) => {
-      api.logout(data, function (err, resp, data) {
-        if (err) return send('township:error', err.message, done)
-        send('township:update', defaultState, function () {
-          send('message:success', 'Logged out.', function () {
-            window.location.href = '/explore'
-          })
-        })
-      })
-    },
-    login: (state, data, send, done) => {
-      api.login(data, function (err, resp, data) {
-        if (err) return send('township:error', err.message, done)
-        data.login = 'hidden'
-        send('township:update', data, function () {
-          send('message:success', 'Logged in successfully.', done)
-          window.location.href = '/install'
-        })
-      })
-    },
-    register: (state, data, send, done) => {
-      api.register(data, function (err, resp, data) {
-        if (err) return send('township:error', err.message, done)
-        data.register = 'hidden'
-        send('township:update', data, function () {
-          send('message:success', 'Registered successfully.', done)
-          window.location.href = '/install'
-        })
-      })
-    },
-    resetPassword: function (state, data, send, done) {
-      var email = data || state.account.auth.basic.email
-      api.users.resetPassword({email}, function (err, res, body) {
-        if (err) return send('township:error', err.message, done)
-        send('township:passwordResetResponse', body.message, done)
-      })
-    },
-    resetPasswordConfirmation: function (state, data, send, done) {
-      api.users.resetPasswordConfirmation(data, function (err, res, body) {
-        if (err) return send('township:error', err.message, done)
-        send('township:passwordResetConfirmResponse', body.message, done)
-      })
-    }
-  }
+  })
+
+  emitter.on('township:logout', function (data) {
+    api.logout(data, function (err, resp, data) {
+      if (err) return emitter.emit('township:update', {error: err.message})
+      emitter.emit('township:update', defaults.township)
+      emitter.emit('message:success', 'Logged out.')
+    })
+  })
+
+  emitter.on('township:login', function (data) {
+    api.login(data, function (err, resp, data) {
+      if (err) return emitter.emit('township:update', {error: err.message})
+      data.login = 'hidden'
+      emitter.emit('township:update', data)
+      window.location.href = '/' + data.username
+    })
+  })
+
+  emitter.on('township:register', function (data) {
+    api.register(data, function (err, resp, data) {
+      if (err) return emitter.emit('township:error', {error: err.message})
+      data.register = 'hidden'
+      emitter.emit('township:update', data)
+      window.location.href = '/' + data.username
+    })
+  })
+
+  emitter.on('township:resetPassword', function (data) {
+    var email = data || state.township.account.auth.basic.email
+    api.users.resetPassword({email}, function (err, res, body) {
+      if (err) return emitter.emit('township:error', err.message)
+      emitter.emit('township:update', {passwordResetResponse: body.message})
+    })
+  })
+
+  emitter.on('township:resetPasswordConfirmation', function (data) {
+    api.users.resetPasswordConfirmation(data, function (err, res, body) {
+      if (err) return emitter.emit('township:error', err.message)
+      emitter.emit('township:update', {passwordResetConfirmResponse: body.message, passwordResetResponse: null})
+    })
+  })
 }

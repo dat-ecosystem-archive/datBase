@@ -1,6 +1,6 @@
 const html = require('choo/html')
 
-module.exports = (state, prev, send) => {
+module.exports = (state, emit) => {
   const writing = state.importQueue.writing
   const writingProgressPct = state.importQueue.writingProgressPct
   const next = state.importQueue.next
