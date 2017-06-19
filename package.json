@@ -78,7 +78,7 @@
     "dat-icons": "^2.5.0",
     "dat-link-resolve": "^1.0.0",
     "dat-registry": "^3.0.2",
-    "dat-registry-api": "^4.0.0",
+    "dat-registry-api": "^5.0.0",
     "dat-swarm-defaults": "^1.0.0",
     "debug": "^2.6.8",
     "discovery-swarm": "^4.2.0",

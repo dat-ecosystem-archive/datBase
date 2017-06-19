@@ -33,6 +33,6 @@ module.exports = function (state, emitter) {
     })
   })
   emitter.on('archive:view', function (link) {
-    window.location.href = '/view?link=' + link
+    window.location.href = '/view?query=' + link
   })
 }

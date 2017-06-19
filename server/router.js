@@ -47,17 +47,16 @@ module.exports = function (config) {
   router.post('/api/v1/password-reset', api.auth.passwordReset)
   router.post('/api/v1/password-reset-confirm', api.auth.passwordResetConfirm)
 
+  router.get('/api/v1/dats/search', function (req, res) {
+    api.db.dats.search(req.query, function (err, resp) {
+      if (err) return onerror(err, res)
+      res.json(resp)
+    })
+  })
   router.get('/api/v1/:username/:dataset', function (req, res) {
     db.dats.getByShortname(req.params, function (err, dat) {
       if (err) return onerror(err, res)
       res.json(dat)
-    })
-  })
-
-  router.get('/api/v1/browse', function (req, res) {
-    db.dats.list(req.params, function (err, resp) {
-      if (err) return onerror(err, res)
-      res.json(resp)
     })
   })
 
@@ -78,14 +77,19 @@ module.exports = function (config) {
   router.get('/browser', send)
 
   router.get('/view', function (req, res) {
-    archiveRoute(req.query.dat || req.query.link, function (state) {
+    archiveRoute(req.query.query, function (state) {
+      if (state.archive.error && state.archive.error.message === 'Invalid key') {
+        var url = '/explore' + req._parsedUrl.search
+        console.log('redirecting', url)
+        return res.redirect(301, url)
+      }
       return sendSPA(req, res, state)
     })
   })
 
   router.get('/explore', function (req, res) {
     var state = getDefaultAppState()
-    db.dats.list(req.params, function (err, resp) {
+    db.dats.search(req.query, function (err, resp) {
       if (err) return onerror(err, res)
       state.explore.data = resp
       sendSPA(req, res, state)

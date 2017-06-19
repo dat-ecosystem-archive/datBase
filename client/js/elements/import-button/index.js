@@ -9,7 +9,7 @@ module.exports = function (emit) {
     }
   }
   return html`<label for="import-dat" class="dat-input">
-    <input name="import-dat" type="text" placeholder="Search Dat Link" onkeydown=${keydown} class="dat-input__input dat-input__input--icon">
+    <input name="import-dat" type="text" placeholder="Search" onkeydown=${keydown} class="dat-input__input dat-input__input--icon">
     <svg class="dat-input__icon pa1">
       <use xlink:href="#daticon-search" />
     </svg>
