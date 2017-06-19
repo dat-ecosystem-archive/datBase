@@ -1,6 +1,6 @@
 var html = require('choo/html')
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   return html`
   <footer class="footer">
     <div class="container">

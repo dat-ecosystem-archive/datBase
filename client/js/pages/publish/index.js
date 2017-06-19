@@ -1,10 +1,10 @@
 const html = require('choo/html')
 const header = require('./../../components/header')
 
-const publish = (state, prev, send) => {
+const publish = (state, emit) => {
   return html`
     <div>
-    ${header(state, prev, send)}
+    ${header(state, emit)}
 
     <section class="section bg-splash-02" id="publish">
       <div class="container">

@@ -47,8 +47,7 @@ function page (url, contents, appState) {
       </body>
       ${datIcons()}
       <script>
-        window.dl = window.dl || {};
-        window.dl.init__dehydratedAppState = ${dehydratedAppState};
+        window._store = ${dehydratedAppState};
       </script>
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

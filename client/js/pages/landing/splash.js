@@ -2,10 +2,10 @@ var html = require('choo/html')
 const header = require('../../components/header')
 var footer = require('./footer')
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   return html`
     <div>
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       <section class="section bg-splash">
   <div class="container">
     <h1 class="mt0 tc normal f2 f1-ns ">
@@ -200,7 +200,7 @@ module.exports = function (state, prev, send) {
     </div>
   </div>
 </section>
-      ${footer(state, prev, send)}
+      ${footer(state, emit)}
     </div>
   `
 }

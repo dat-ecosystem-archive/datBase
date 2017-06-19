@@ -17,7 +17,7 @@ var copyButton = css`
   }
 `
 
-module.exports = function (text, send) {
+module.exports = function (text, emit) {
   if (module.parent) return html``
   var el = html`
     <a class="clipboard ${copyButton}" data-clipboard-text="${text}">
@@ -29,7 +29,7 @@ module.exports = function (text, send) {
   `
   var clipboard = new Clipboard('a.clipboard')
   clipboard.on('success', function () {
-    send('message:success', 'Link copied to clipboard')
+    emit('message:success', 'Link copied to clipboard')
   })
   return el
 }

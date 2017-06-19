@@ -2,10 +2,10 @@ var html = require('choo/html')
 const header = require('../../components/header')
 var footer = require('./footer')
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   return html`
   <div>
-  ${header(state, prev, send)}
+  ${header(state, emit)}
   <header class="bg-white">
     <div class="container">
       <h1 class="content-title horizontal-rule">About Dat</h1>
@@ -37,7 +37,7 @@ module.exports = function (state, prev, send) {
       <p>In the winter of 2016, the <a href="https://blog.datproject.org/2016/02/01/announcing-publicbits-org/">Knight Foundation provided significant funding to create a registry for Dat-hosted datasets</a>, as well as enabling the project to grow and establish a 501(c)(3) non-profit.</p>
     </div>
   </section>
-  ${footer(state, prev, send)}
+  ${footer(state, emit)}
   </div>
 `
 }

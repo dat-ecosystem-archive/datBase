@@ -21,25 +21,25 @@ var navStyles = css`
   }
 `
 
-const header = (state, prev, send) => {
+const header = (state, emit) => {
   return html`<div>
     <header class="relative ${headerStyles}">
       ${message(state.message)}
       <div class="container container--top-bar">
         <div class="flex justify-between items-center relative">
-          ${panel(state, prev, send)}
+          ${panel(state, emit)}
           <nav class="flex items-center ${navStyles}">
             <a href="/" data-no-routing class="dat-logo">
               <img src="/public/img/dat-hexagon.svg" />
               <span class="dat-logo__word">Dat</span>
             </a>
-            ${importButton(send)}
+            ${importButton(emit)}
             <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
             <a href="/install" class="header-nav-link">Install</a>
           </nav>
           <div>
             ${state.township.email ? html`<a href="/publish" class="btn btn--green">Publish</a>` : ''}
-            ${loginButton(state, prev, send)}
+            ${loginButton(state, emit)}
           </div>
         </div>
       </div>

@@ -1,10 +1,10 @@
 const html = require('choo/html')
 const form = require('get-form-data')
 
-const login = (state, prev, send) => {
+const login = (state, emit) => {
   function onSubmit (e) {
     const data = form(e.target)
-    send('township:login', data)
+    emit('township:login', data)
     e.preventDefault()
     return false
   }

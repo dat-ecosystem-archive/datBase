@@ -2,13 +2,13 @@ var html = require('choo/html')
 const header = require('../../components/header')
 var footer = require('./footer')
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   function avatar (username) {
     return "background-image: url('https://github.com/" + username + ".png')"
   }
   var doc = html`
   <div>
-    ${header(state, prev, send)}
+    ${header(state, emit)}
     <header>
       <div class="container">
         <h1 class="content-title horizontal-rule">Development Team</h1>
@@ -204,7 +204,7 @@ module.exports = function (state, prev, send) {
         </div>
       </div>
     </section>
-    ${footer(state, prev, send)}
+    ${footer(state, emit)}
     </div>
   `
   return doc

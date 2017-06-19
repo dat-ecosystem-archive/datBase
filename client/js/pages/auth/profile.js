@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const fourohfour = require('../../elements/404')
 const css = require('sheetify')
 const gravatar = require('./../../elements/gravatar')
 const header = require('./../../components/header')
@@ -33,7 +34,16 @@ function placeholder () {
   `
 }
 
-module.exports = (state, prev, send) => {
+module.exports = (state, emit) => {
+  if (state.error) {
+    return html`
+    <div>
+      ${header(state, emit)}
+      ${fourohfour()}
+    </div>
+    `
+  }
+
   var username = state.profile.username
   var email = state.profile.email
   var name = state.profile.name
@@ -47,10 +57,9 @@ module.exports = (state, prev, send) => {
     dat.shortname = `${state.profile.username}/${dat.name}`
     return dat
   })
-
   return html`
     <div>
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       <div class="flex flex-column flex-row-m flex-row-l ${profileStyles}  bg-splash-02">
         <div class="bg-neutral-04 pa4 tc tl-m tl-l">
           <div class="name">
@@ -66,7 +75,7 @@ module.exports = (state, prev, send) => {
           <h3 class="f5">
             ${showPlaceholder ? placeholder() : html`<div>${username} has published ${numDats} dats</div>`}
           </h3>
-          ${list(state.profile.dats, send)}
+          ${list(state.profile.dats, emit)}
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 const html = require('choo/html')
 
-module.exports = function (send) {
+module.exports = function (emit) {
   const keydown = (e) => {
     if (e.keyCode === 13) {
       var link = e.target.value
       e.target.value = ''
-      send('archive:view', link)
+      emit('archive:view', link)
     }
   }
   return html`<label for="import-dat" class="dat-input">

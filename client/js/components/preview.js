@@ -14,7 +14,7 @@ var displayStyles = css`
     }
     iframe {
       width: 100%;
-      height: 70%;
+      height: 100%;
       border: 1px solid var(--color-neutral-20);
     }
     table {
@@ -37,13 +37,14 @@ var displayStyles = css`
   }
 `
 
-const preview = (state, prev, send) => {
+const preview = (state, emit) => {
   if (typeof document !== 'undefined') {
     if (state.preview.isPanelOpen) document.body.classList.add('panel-open')
     else document.body.classList.remove('panel-open')
   }
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const entry = state.preview.entry
+  if (!entry) return
   const entryName = entry && entry.name
   const size = (entry && entry.size) ? prettyBytes(entry.size) : 'N/A'
   const downloadDisabled = entry && (entry.size > (1048576 * 10))
@@ -61,7 +62,7 @@ const preview = (state, prev, send) => {
 
   return html`<section id="preview" class="bg-white panel ${isOpen}">
     <div class="panel-header">
-      <button onclick=${() => send('preview:closePanel')} class="panel-header__close-button">
+      <button onclick=${() => emit('preview:closePanel')} class="panel-header__close-button">
       Close
       </button>
       <div class="panel-header__title-group">
@@ -83,8 +84,8 @@ const preview = (state, prev, send) => {
       </div>
     </div>
     <div class="panel-main">
-      <div id="display" class="${displayStyles} mb5">
-        ${display(state, prev, send)}
+      <div id="display" class="${displayStyles}">
+        ${display(state, emit)}
       </div>
     </div>
   </section>
