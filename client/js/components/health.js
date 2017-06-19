@@ -15,17 +15,16 @@ module.exports = function hyperhealth (state, emit) {
   }
 
   var styles = css`
-  
   .dat-details {
-    padding-top: 1.5rem;
+    padding-top: .75rem;
     padding-bottom: .25rem;
   }
 
   .dat-detail {
     display: inline-block;
     margin-right: 1rem;
-    color: $color-neutral-60;
-    @media only screen and (min-width: $md1) {
+    color: var(--color-neutral-60);
+    @media only screen and (min-width: 40rem) {
       margin-right: 1.5rem;
     }
     p {
@@ -36,17 +35,14 @@ module.exports = function hyperhealth (state, emit) {
 
 
   return html`
-  <div class="${styles}">
-  <div class="dat-details">
-    <div class="dat-detail f4">${prettyBytes(data.byteLength)}</div>
-    <div class="dat-detail f4">${peers > 0 ? html`
-            <span>${completedPeers} Completed Peer${plural(completedPeers)}</span>
+  <div class="${styles} dat-details">
+    <div class="dat-detail">${prettyBytes(data.byteLength)}</div>
+    <div class="dat-detail">${peers > 0 ? html`
+            <span>${completedPeers} source${plural(completedPeers)} available</span>
           `
         : ''}
     </div>
-  </div>
-  <div>
-    <div class="f5">${progressPeers} peer${plural(progressPeers)} downloading</div>
+    <div class="dat-detail">${progressPeers} peer${plural(progressPeers)} downloading</div>
       ${data.peers.map((peer, i) => {
         const prog = (peer.have * 100) / peer.length
         if (prog < 100) return circle(prog)

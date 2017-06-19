@@ -44,51 +44,49 @@ const archivePage = (state, emit) => {
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
   var styles = css`
-    .dat-header {
-      padding-top: 1.25rem;
-      padding-bottom: .75rem;
-      border-bottom: 1px solid $color-neutral-10;
-      background-color: $color-neutral-04;
-      font-size: .8125rem;
-    }
+    :host {
+      .dat-header {
+        padding-top: 1.25rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--color-neutral-10);
+        background-color: var(--color-neutral-04);
+        font-size: .8125rem;
 
-    .dat-header-actions-wrapper {
-      @media only screen and (min-width: $md1) {
-        float: right;
-        margin-left: 2rem;
-      }
-    }
+        .dat-header-actions-wrapper {
+          @media only screen and (min-width: 40rem) {
+            float: right;
+            margin-left: 2rem;
+          }
+        }
 
-    .dat-header-action {
-      display: inline-block;
-      margin-left: 1rem;
-      padding-top: .4rem;
-      border: 0;
-      font-size: .875rem;
-      line-height: 1.25;
-      background-color: transparent;
-      color: $color-neutral-80;
-      &:not([disabled]):hover, &:not([disabled]):focus {
-        color: $color-neutral;
       }
-      &:first-child {
-        margin-left: 0;
-        padding-left: 0;
-      }
-      &:disabled {
-        opacity: 0.5;
-      }
-      svg,
-      .btn__icon-img {
-        width: 1rem;
-        max-width: 1.25rem;
-        max-height: 1rem;
-      }
-    }
 
-    .share-link {
-      display: flex;
-      font-size: 1.375rem;
+      .dat-header-action {
+        display: inline-block;
+        margin-left: 1rem;
+        padding-top: .4rem;
+        border: 0;
+        font-size: .875rem;
+        line-height: 1.25;
+        background-color: transparent;
+        color: var(--color-neutral-80);
+        &:not([disabled]):hover, &:not([disabled]):focus {
+          color: var(--color-neutral);
+        }
+        &:first-child {
+          margin-left: 0;
+          padding-left: 0;
+        }
+        &:disabled {
+          opacity: 0.5;
+        }
+        svg,
+        .btn__icon-img {
+          width: 1rem;
+          max-width: 1.25rem;
+          max-height: 1rem;
+        }
+      }
     }
   `
 
@@ -113,9 +111,8 @@ const archivePage = (state, emit) => {
               </div>
             </a>
             </div>
-          <div id="title" class="share-link">${title}</div>
+          <div id="title" class="f3 share-link">${title}</div>
           <div id="author" class="author-name">${description || 'No description.'}</div>
-          <div id="link" class="author-name">dat://${state.archive.key}</div>
           ${hyperhealth(state, emit)}
           ${error(state.archive.error)}
         </div>
