@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const relative = require('relative-date')
 const prettyBytes = require('pretty-bytes')
 const circle = require('./circle')
 const css = require('sheetify')
@@ -43,7 +44,10 @@ module.exports = function hyperhealth (state, emit) {
           `
         : ''}
     </div>
-    <div class="dat-detail">${progressPeers} ${plural(progressPeers)} downloading</div>
+    <div class="dat-detail">${progressPeers} downloading</div>
+    ${state.archive.updatedAt ? html`<div class="dat-detail">
+      updated ${relative(state.archive.updatedAt)}
+    </div>` : ''}
   </div>
     <div>
       ${data.peers.map((peer, i) => {
