@@ -138,6 +138,15 @@ module.exports = function (config) {
     })
   })
 
+  router.get('/health/:archiveKey', function (req, res) {
+    dats.get(req.params.archiveKey, function (err, archive, key) {
+      if (err) return onerror(err, res)
+      archive.ready(function () {
+        return res.status(200).json(dats.health(archive))
+      })
+    })
+  })
+
   router.get('/metadata/:archiveKey', function (req, res) {
     const timeout = parseInt(req.query.timeout) || 1000
     debug('requesting metadata for key', req.params.archiveKey)
@@ -145,6 +154,7 @@ module.exports = function (config) {
       if (err) return onerror(err, res)
       dats.metadata(archive, {timeout}, function (err, info) {
         if (err) info.error = {message: err.message}
+        info.health = dats.health(archive)
         debug('got', info)
         return res.status(200).json(info)
       })
@@ -288,6 +298,7 @@ module.exports = function (config) {
       if (err) return onerror(err)
       archive.ready(function () {
         debug('got archive key', key)
+        state.archive.health = dats.health(archive)
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true

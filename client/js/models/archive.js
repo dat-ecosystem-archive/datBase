@@ -14,6 +14,13 @@ module.exports = function (state, emitter) {
     emitter.emit('archive:update', {root: root})
   })
 
+  emitter.on('archive:health', function (data) {
+    http({url: `/health/${state.archive.key}`, method: 'GET', json: true}, function (err, resp, json) {
+      if (err) console.error(err)
+      emitter.emit('archive:update', {health: json})
+    })
+  })
+
   emitter.on('archive:getMetadata', function (data) {
     if (!state.archive.key || state.archive.fetching) return
     state.archive.fetching = true

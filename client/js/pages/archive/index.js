@@ -1,12 +1,13 @@
 const html = require('choo/html')
-const prettyBytes = require('pretty-bytes')
 const hyperdrive = require('../../components/hyperdrive')
+const hyperhealth = require('../../components/health')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
+const css = require('sheetify')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': {header: 'No dat here.', body: 'Looks like the key is invalid. Are you sure it\'s correct?'},
@@ -38,12 +39,56 @@ const archivePage = (state, emit) => {
       err.message = 'Looking for dat.json metadata...'
     }
   }
-  var peers = state.archive.peers
   // var owner = (meta && state.township) && meta.username === state.township.username
-  var size = state.archive.size
   var meta = state.archive.metadata
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
+  var styles = css`
+    :host {
+      .dat-header {
+        padding-top: 1.25rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--color-neutral-10);
+        background-color: var(--color-neutral-04);
+        font-size: .8125rem;
+
+        .dat-header-actions-wrapper {
+          @media only screen and (min-width: 40rem) {
+            float: right;
+            margin-left: 2rem;
+          }
+        }
+
+      }
+
+      .dat-header-action {
+        display: inline-block;
+        margin-left: 1rem;
+        padding-top: .4rem;
+        border: 0;
+        font-size: .875rem;
+        line-height: 1.25;
+        background-color: transparent;
+        color: var(--color-neutral-80);
+        &:not([disabled]):hover, &:not([disabled]):focus {
+          color: var(--color-neutral);
+        }
+        &:first-child {
+          margin-left: 0;
+          padding-left: 0;
+        }
+        &:disabled {
+          opacity: 0.5;
+        }
+        svg,
+        .btn__icon-img {
+          width: 1rem;
+          max-width: 1.25rem;
+          max-height: 1rem;
+        }
+      }
+    }
+  `
 
   // TODO: add delete button with confirm modal.
   // const deleteButton = require('../../elements/delete-button')
@@ -53,7 +98,7 @@ const archivePage = (state, emit) => {
   // ${owner ? deleteButton(remove) : html``}
 
   return html`
-    <div>
+    <div class="${styles}">
       ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
@@ -66,25 +111,10 @@ const archivePage = (state, emit) => {
               </div>
             </a>
             </div>
-          <div id="title" class="share-link">${title}</div>
-          <div id="author" class="author-name">${description}</div>
+          <div id="title" class="f3 share-link">${title}</div>
+          <div id="author" class="author-name">${description || 'No description.'}</div>
+          ${hyperhealth(state, emit)}
           ${error(state.archive.error)}
-          <div class="dat-details">
-            ${size
-              ? html`
-                <div id="hyperdrive-size" class="dat-detail">
-                  ${prettyBytes(size)}
-                </div>
-                `
-              : ''}
-            ${peers
-              ? html`
-                <div id="peers" class="dat-detail">
-                  ${peers} Source${peers > 1 || peers === 0 ? 's' : ''}
-                </div>
-                `
-              : ''}
-          </div>
         </div>
       </div>
       <main class="site-main">
