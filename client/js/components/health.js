@@ -43,7 +43,7 @@ module.exports = function hyperhealth (state, emit) {
           `
         : ''}
     </div>
-    <div class="dat-detail">${progressPeers} peer${plural(progressPeers)} downloading</div>
+    <div class="dat-detail">${progressPeers} ${plural(progressPeers)} downloading</div>
   </div>
     <div>
       ${data.peers.map((peer, i) => {
