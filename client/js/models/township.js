@@ -68,7 +68,7 @@ module.exports = function (state, emitter) {
       if (err) return emitter.emit('township:error', {error: err.message})
       data.register = 'hidden'
       emitter.emit('township:update', data)
-      window.location.href = '/' + data.username
+      window.location.href = '/profile/edit'
     })
   })
 

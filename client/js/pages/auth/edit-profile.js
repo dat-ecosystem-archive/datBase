@@ -52,9 +52,7 @@ module.exports = (state, emit) => {
           </p>
           <p>
             <label for="description" class="dat-input w-100">
-              <textarea rows="4" name="description" placeholder="Description" class=" w-100 pa2" >
-                ${profile.description}
-              </textarea>
+              <textarea rows="4" name="description" placeholder="Description" class=" w-100 pa2" >${profile.description}</textarea>
             </label>
           </p>
           <p class="flex items-center justify-between w-100">
