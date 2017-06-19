@@ -37,6 +37,7 @@ module.exports = {
   archive: {
     health: null,
     id: null,
+    updatedAt: false,
     key: null,
     retries: 0,
     peers: 0,
