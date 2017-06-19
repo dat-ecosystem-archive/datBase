@@ -159,8 +159,7 @@ module.exports = function (config) {
       if (err) return onerror(err, res)
       if (!results.length) {
         debug('user not found')
-        state.error = new Error('Not found.')
-        return sendSPA(req, res, state)
+        return res.redirect(301, '/dat://' + req.params.username)
       }
       var user = results[0]
       debug('profile views', user)
