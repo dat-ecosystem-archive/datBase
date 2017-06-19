@@ -35,6 +35,7 @@ module.exports = {
     message: ''
   },
   archive: {
+    health: null,
     id: null,
     key: null,
     retries: 0,

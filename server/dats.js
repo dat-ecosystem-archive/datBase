@@ -1,4 +1,5 @@
 const mkdirp = require('mkdirp')
+const hyperhealth = require('hyperhealth')
 const debug = require('debug')('dat-registry')
 const ram = require('random-access-memory')
 const resolve = require('dat-link-resolve')
@@ -15,6 +16,19 @@ function Dats (dir) {
   this.swarm = swarm(this.ar)
 }
 
+Dats.prototype.health = function (archive) {
+  var health = archive.health.get()
+  if (!health) return
+  health.completedPeers = health.peers ? health.peers.filter(peer => {
+    return peer.have === peer.length
+  }) : []
+  health.progressPeers = health.peers ? health.peers.filter(peer => {
+    return peer.have !== peer.length
+  }) : []
+  debug('got health', health)
+  return health
+}
+
 Dats.prototype.get = function (link, opts, cb) {
   var self = this
   if (typeof opts === 'function') return this.get(link, {}, opts)
@@ -25,7 +39,11 @@ Dats.prototype.get = function (link, opts, cb) {
     }
     debug('got key', key)
     self.ar.get(key, function (err, metadata, content) {
-      if (!err) return cb(null, hyperdrive(ram, {metadata, content}), key)
+      if (!err) {
+        var archive = hyperdrive(ram, {metadata, content})
+        archive.health = hyperhealth(archive)
+        return cb(null, archive, key)
+      }
       if (err.message === 'Could not find feed') {
         self.ar.add(key, function (err) {
           if (err) return cb(err)
