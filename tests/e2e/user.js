@@ -44,7 +44,7 @@ module.exports = new function () {
     client
       .url(testServer + '/doesnotexist')
       .pause(5000)
-      .assert.containsText('body', '404')
+      .assert.containsText('body', 'Looks like the key is invalid')
 
     client.end()
   }
