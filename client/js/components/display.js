@@ -4,7 +4,16 @@ const from = require('from2')
 const html = require('choo/html')
 
 const renderData = module.parent ? function () { } : require('render-data')
-const display = html`<div id="item"></div>`
+const display = html`<div id="item">
+
+${fourohfour({
+  icon: 'loader',
+  header: 'Loading...',
+  body: 'This could take a second..',
+  link: false
+})}
+
+</div>`
 
 module.exports = function (state, emit) {
   if (module.parent) return
@@ -31,7 +40,6 @@ module.exports = function (state, emit) {
     })
   }
 
-  emit('preview:update', {isLoading: true})
   // proper escape is done, but # is special
   http({url: `/download/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
     if (resp.statusCode === 400) err = new Error('File does not exist.')
