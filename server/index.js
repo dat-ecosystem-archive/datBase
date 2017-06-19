@@ -10,7 +10,6 @@ module.exports = function (config) {
 
   server.on('close', function () {
     router.api.close(function () {
-      router.dats.close()
     })
   })
 
