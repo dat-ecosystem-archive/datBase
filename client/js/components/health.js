@@ -5,11 +5,13 @@ const circle = require('./circle')
 const css = require('sheetify')
 
 module.exports = function hyperhealth (state, emit) {
+  // TODO: display the circles in another tab called 'health'
+
   const data = state.archive.health
   if (!data) return ''
   var peers = data.peers.length
-  var completedPeers = data.completedPeers.length
-  var progressPeers = data.progressPeers.length
+  // var completedPeers = data.completedPeers.length
+  // var progressPeers = data.progressPeers.length
 
   function plural (num) {
     return num > 1 || num === 0 ? 's' : ''
@@ -40,11 +42,10 @@ module.exports = function hyperhealth (state, emit) {
   <div class="${styles} dat-details">
     <div class="dat-detail">${prettyBytes(data.byteLength)}</div>
     <div class="dat-detail">${peers > 0 ? html`
-            <span>${completedPeers} source${plural(completedPeers)} available</span>
+            <span>${peers} source${plural(peers)} available</span>
           `
         : ''}
     </div>
-    <div class="dat-detail">${progressPeers} downloading</div>
     ${state.archive.updatedAt ? html`<div class="dat-detail">
       updated ${relative(state.archive.updatedAt)}
     </div>` : ''}
@@ -52,7 +53,7 @@ module.exports = function hyperhealth (state, emit) {
     <div>
       ${data.peers.map((peer, i) => {
         const prog = (peer.have * 100) / peer.length
-        if (prog < 100) return circle(prog)
+        if (!prog) return circle(prog)
       })}
       </div>
   </div>
