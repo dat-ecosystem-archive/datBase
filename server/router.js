@@ -184,13 +184,6 @@ module.exports = function (config) {
     })
   })
 
-  router.get('/dat/:archiveKey/contents', function (req, res) {
-    // just give me the archive, oopsie.
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
   router.get('/:username/:dataset', function (req, res) {
     debug('requesting username/dataset', req.params)
     mx.track('shortname viewed', req.params)
@@ -228,6 +221,7 @@ module.exports = function (config) {
       return sendSPA(req, res, state)
     })
   })
+
   router.get('/dat://:archiveKey/contents/*', function (req, res) {
     debug('getting file contents', req.params)
     var filename = req.params[0]
