@@ -35,6 +35,7 @@ module.exports = function hyperhealth (state, emit) {
 
 
   return html`
+  <div class="">
   <div class="${styles} dat-details">
     <div class="dat-detail">${prettyBytes(data.byteLength)}</div>
     <div class="dat-detail">${peers > 0 ? html`
@@ -43,10 +44,13 @@ module.exports = function hyperhealth (state, emit) {
         : ''}
     </div>
     <div class="dat-detail">${progressPeers} peer${plural(progressPeers)} downloading</div>
+  </div>
+    <div>
       ${data.peers.map((peer, i) => {
         const prog = (peer.have * 100) / peer.length
         if (prog < 100) return circle(prog)
       })}
+      </div>
   </div>
   `
 }
