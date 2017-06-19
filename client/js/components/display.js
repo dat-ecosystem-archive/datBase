@@ -24,10 +24,11 @@ module.exports = function (state, emit) {
   if (!entryName) return display
   if (!state.preview.isPanelOpen) return emit('preview:openPanel', {})
   if (state.preview.entry.size > (1048576 * 10)) {
-    return emit('preview:update', {error: {
-      message: 'Cannot preview',
-      body: 'This file is too big, use the desktop app or CLI.'
-    }})
+    return fourohfour({
+      header: 'Cannot preview',
+      body: 'This file is too big, use the desktop app or CLI.',
+      link: false
+    })
   }
 
   emit('preview:update', {isLoading: true})
