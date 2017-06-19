@@ -49,7 +49,6 @@ module.exports = new function () {
     client.end()
   }
 
-
   testCases['login with bad password displays error message'] = (client) => {
     client
       .url(testServer + '/login')
