@@ -41,11 +41,7 @@ module.exports = function hyperhealth (state, emit) {
   <div class="">
   <div class="${styles} dat-details">
     <div class="dat-detail">${prettyBytes(data.byteLength)}</div>
-    <div class="dat-detail">${peers > 0 ? html`
-            <span>${peers} source${plural(peers)} available</span>
-          `
-        : ''}
-    </div>
+    <div class="dat-detail">${html`<span>${peers} source${plural(peers)} available</span>`}</div>
     ${state.archive.updatedAt ? html`<div class="dat-detail">
       updated ${relative(state.archive.updatedAt)}
     </div>` : ''}
