@@ -50,7 +50,6 @@ module.exports = function (state, emitter) {
     api.logout(data, function (err, resp, data) {
       if (err) return emitter.emit('township:update', {error: err.message})
       emitter.emit('township:update', defaults.township)
-      emitter.emit('message:success', 'Logged out.')
     })
   })
 
