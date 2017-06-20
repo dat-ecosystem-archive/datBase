@@ -98,6 +98,7 @@ module.exports = function (config) {
   router.get('/blog/*', function (req, res) {
     res.redirect(301, 'http://bdatproject.org')
   })
+  // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
   function onfile (archive, name, req, res) {
     archive.stat(name, function (err, st) {
