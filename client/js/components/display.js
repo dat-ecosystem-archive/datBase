@@ -4,18 +4,18 @@ const from = require('from2')
 const html = require('choo/html')
 
 const renderData = module.parent ? function () { } : require('render-data')
-const display = html`<div id="item">
-
-${fourohfour({
-  icon: 'loader',
-  header: 'Loading...',
-  body: 'This could take a second..',
-  link: false
-})}
-
-</div>`
 
 module.exports = function (state, emit) {
+  var display = html`<div id="item">
+
+  ${fourohfour({
+    icon: 'loader',
+    header: 'Loading...',
+    body: 'This could take a second..',
+    link: false
+  })}
+
+  </div>`
   if (module.parent) return
   const entryName = state.preview.entry && state.preview.entry.name
 
