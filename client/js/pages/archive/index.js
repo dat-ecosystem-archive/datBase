@@ -35,9 +35,6 @@ const archivePage = (state, emit) => {
         `
       }
     }
-    if (err.message === 'timed out') {
-      err.message = 'Looking for dat.json metadata...'
-    }
   }
   // var owner = (meta && state.township) && meta.username === state.township.username
   var meta = state.archive.metadata

@@ -14,15 +14,14 @@ const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
 const Api = require('dat-registry-api')
-const Dats = require('./dats')
 
 module.exports = function (config) {
   config = config || {}
 
-  const dats = config.dats || Dats(config.archiver)
   const mx = Mixpanel.init(config.mixpanel)
   const api = Api(config)
   const db = api.db
+  const archiver = api.archiver
 
   var router = express()
   router.use(compression())
@@ -99,6 +98,7 @@ module.exports = function (config) {
   router.get('/blog/*', function (req, res) {
     res.redirect(301, 'http://bdatproject.org')
   })
+  // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
   function onfile (archive, name, req, res) {
     archive.stat(name, function (err, st) {
@@ -131,7 +131,7 @@ module.exports = function (config) {
 
   router.get('/download/:archiveKey/*', function (req, res) {
     debug('getting file contents', req.params)
-    dats.get(req.params.archiveKey, function (err, archive) {
+    archiver.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
       var filename = req.params[0]
       return onfile(archive, filename, req, res)
@@ -139,10 +139,10 @@ module.exports = function (config) {
   })
 
   router.get('/health/:archiveKey', function (req, res) {
-    dats.get(req.params.archiveKey, function (err, archive, key) {
+    archiver.get(req.params.archiveKey, function (err, archive, key) {
       if (err) return onerror(err, res)
       archive.ready(function () {
-        return res.status(200).json(dats.health(archive))
+        return res.status(200).json(archiver.health(archive))
       })
     })
   })
@@ -150,11 +150,11 @@ module.exports = function (config) {
   router.get('/metadata/:archiveKey', function (req, res) {
     const timeout = parseInt(req.query.timeout) || 1000
     debug('requesting metadata for key', req.params.archiveKey)
-    dats.get(req.params.archiveKey, {timeout}, function (err, archive) {
+    archiver.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.metadata(archive, {timeout}, function (err, info) {
+      archiver.metadata(archive, {timeout}, function (err, info) {
         if (err) info.error = {message: err.message}
-        info.health = dats.health(archive)
+        info.health = archiver.health(archive)
         debug('got', info)
         return res.status(200).json(info)
       })
@@ -240,7 +240,7 @@ module.exports = function (config) {
     debug('getting file contents', req.params)
     var filename = req.params[0]
     archiveRoute(req.params.archiveKey, function (state) {
-      dats.get(req.params.archiveKey, function (err, archive) {
+      archiver.get(req.params.archiveKey, function (err, archive) {
         if (err) return onerror(err, res)
         archive.stat(filename, function (err, entry) {
           if (err) {
@@ -294,16 +294,16 @@ module.exports = function (config) {
     var state = getDefaultAppState()
     mx.track('archive viewed', {key: key})
 
-    dats.get(key, function (err, archive, key) {
+    archiver.get(key, function (err, archive, key) {
       if (err) return onerror(err)
       archive.ready(function () {
         debug('got archive key', key)
-        state.archive.health = dats.health(archive)
+        state.archive.health = archiver.health(archive)
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true
 
-        dats.metadata(archive, {timeout: 1000}, function (err, info) {
+        archiver.metadata(archive, {timeout: 1000}, function (err, info) {
           if (err) state.archive.error = {message: err.message}
           state.archive = xtend(state.archive, info)
           state.archive.key = key
@@ -313,7 +313,7 @@ module.exports = function (config) {
     })
   }
 
-  router.dats = dats
+  router.archiver = archiver
   router.api = api
   return router
 
