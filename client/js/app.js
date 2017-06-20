@@ -5,7 +5,8 @@ const defaults = require('./models/defaults')
 const css = require('sheetify')
 
 // define models:
-app.use(persist())
+var key = module.parent ? '' : window.location.origin
+app.use(persist({name: 'choo-datproject.org:'+ key}))
 app.use(logger)
 app.use(require('./defaults')(defaults))
 app.use(require('./models/archive'))
