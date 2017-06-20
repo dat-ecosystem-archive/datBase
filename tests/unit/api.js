@@ -1,8 +1,6 @@
 const test = require('tape')
 const TownshipClient = require('township-client')
 const request = require('request')
-const ram = require('random-access-memory')
-const hyperdrive = require('hyperdrive')
 const xtend = require('xtend')
 const helpers = require('../helpers')
 const Config = require('../../server/config')
@@ -145,18 +143,15 @@ test('api', function (t) {
     })
 
     test('api can create a dat', function (t) {
-      var archive = hyperdrive(ram)
-      archive.ready(function () {
-        client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.ok(body.id, 'has an id')
+        dats.cats.id = body.id
+        dats.cats.user_id = body.user_id
+        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.ok(body.id, 'has an id')
-          dats.cats.id = body.id
-          dats.cats.user_id = body.user_id
-          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
-            t.ifError(err)
-            t.same(body.length, 1)
-            t.end()
-          })
+          t.same(body.length, 1)
+          t.end()
         })
       })
     })
@@ -206,18 +201,15 @@ test('api', function (t) {
     })
 
     test('api can create another dat', function (t) {
-      var archive = hyperdrive(ram)
-      archive.ready(function () {
-        client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.ok(body.id, 'has an id')
+        dats.penguins.id = body.id
+        dats.penguins.user_id = body.user_id
+        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.ok(body.id, 'has an id')
-          dats.penguins.id = body.id
-          dats.penguins.user_id = body.user_id
-          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
-            t.ifError(err)
-            t.same(body.length, 2)
-            t.end()
-          })
+          t.same(body.length, 2)
+          t.end()
         })
       })
     })

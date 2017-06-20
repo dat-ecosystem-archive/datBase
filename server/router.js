@@ -295,7 +295,7 @@ module.exports = function (config) {
     mx.track('archive viewed', {key: key})
 
     archiver.get(key, function (err, archive, key) {
-      if (err) return onerror(err)
+      if (err) return cb(err)
       archive.ready(function () {
         debug('got archive key', key)
         state.archive.health = archiver.health(archive)
