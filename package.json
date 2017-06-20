@@ -36,7 +36,7 @@
     "new-dat": "node tests/new-dat",
     "watch-render": "nodemon --watch public -i public/rendered -e html bin/render-static",
     "watch-css": "nodemon --watch client -e scss -x \"npm run build-css\"",
-    "watch-js": "watchify --fast --verbose -t brfs -p [ css-extract -o bundle.css ] client/js/app.js -o public/js/app.js",
+    "watch-js": "mkdir -p public/js && watchify --fast --verbose -t brfs -p [ css-extract -o bundle.css ] client/js/app.js -o public/js/app.js",
     "watch-server": "nodemon server/cli --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/app.scss public/css/app.css",
