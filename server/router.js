@@ -59,11 +59,6 @@ module.exports = function (config) {
     })
   })
 
-  function send (req, res) {
-    var state = getDefaultAppState()
-    sendSPA(req, res, state)
-  }
-
   // landing page
   router.get('/install', send)
   router.get('/register', send)
@@ -82,7 +77,7 @@ module.exports = function (config) {
         console.log('redirecting', url)
         return res.redirect(301, url)
       }
-      return sendSPA(req, res, state)
+      return send(req, res, state)
     })
   })
 
@@ -91,7 +86,7 @@ module.exports = function (config) {
     db.dats.search(req.query, function (err, resp) {
       if (err) return onerror(err, res)
       state.explore.data = resp
-      sendSPA(req, res, state)
+      send(req, res, state)
     })
   })
 
@@ -163,7 +158,7 @@ module.exports = function (config) {
 
   router.get('/profile/edit', function (req, res) {
     var state = getDefaultAppState()
-    return sendSPA(req, res, state)
+    return send(req, res, state)
   })
 
   router.get('/:username', function (req, res) {
@@ -193,7 +188,7 @@ module.exports = function (config) {
         if (err) return onerror(err, res)
         state.profile.dats = results
         debug('sending profile', state.profile)
-        return sendSPA(req, res, state)
+        return send(req, res, state)
       })
     })
   })
@@ -206,7 +201,7 @@ module.exports = function (config) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
         debug('could not get dat with ' + req.params, err)
-        return sendSPA(req, res, state)
+        return send(req, res, state)
       }
       res.setHeader('Hyperdrive-Key', dat.url)
       var contentType = req.accepts(['html', 'json'])
@@ -219,20 +214,20 @@ module.exports = function (config) {
         dat.username = req.params.username
         dat.shortname = req.params.username + '/' + req.params.dataset
         state.archive.metadata = dat
-        return sendSPA(req, res, state)
+        return send(req, res, state)
       })
     })
   })
 
   router.get('/dat://:archiveKey', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
+      return send(req, res, state)
     })
   })
 
   router.get('/dat://:archiveKey/contents', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
+      return send(req, res, state)
     })
   })
 
@@ -254,14 +249,14 @@ module.exports = function (config) {
               : 'file'
           if (entry.type === 'directory') {
             state.archive.root = entry.name
-            return sendSPA(req, res, state)
+            return send(req, res, state)
           }
           if (entry.type === 'file') {
             var arr = entry.name.split('/')
             if (arr.length > 1) state.archive.root = arr.splice(0, arr.length - 1).join('/')
           }
           state.preview.entry = entry
-          return sendSPA(req, res, state)
+          return send(req, res, state)
         })
       })
     })
@@ -326,9 +321,9 @@ module.exports = function (config) {
     return JSON.parse(JSON.stringify(state))
   }
 
-  function sendSPA (req, res, state) {
+  function send (req, res, state) {
     var route = req.url
-    if (!state) state = {}
+    if (!state) state = getDefaultAppState()
     const frozenState = Object.freeze(state)
     const contents = app.toString(route, frozenState)
     const urlParams = new UrlParams(req.url)
