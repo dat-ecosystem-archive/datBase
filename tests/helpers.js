@@ -22,8 +22,8 @@ module.exports = {
     admin: {name: 'pam spam', username: 'pam', password: 'secret123', email: 'hi@pam.com', description: 'i dont eat it', token: null, role: 'admin'}
   },
   dats: {
-    cats: {name: 'cats', url: 'dat://96cf4957539aff4fc856fa0804e613181064ed193e5f7882c9623ec7bed38deb', title: 'all of the cats', description: 'live on the corner of washington and 7th', keywords: 'furry, fluffy'},
-    penguins: {name: 'penguins', url: 'dat://96cf4957539aff4fc856fa0804e613181064ed193e5f7882c9623ec7bed38deb', title: 'all of the penguins', description: 'lives in your house', keywords: 'sloppy, loud'},
-    dogs: {name: 'dogs', url: 'dat://96cf4957539aff4fc856fa0804e613181064ed193e5f7882c9623ec7bed38deb', title: 'all of the dogs', description: 'lives in your house', keywords: 'sloppy, loud'}
+    cats: {name: 'cats', title: 'all of the cats', description: 'live on the corner of washington and 7th', keywords: 'furry, fluffy'},
+    penguins: {name: 'penguins', title: 'all of the penguins', description: 'lives in your house', keywords: 'sloppy, loud'},
+    dogs: {name: 'dogs', title: 'all of the dogs', description: 'lives in your house', keywords: 'sloppy, loud'}
   }
 }
