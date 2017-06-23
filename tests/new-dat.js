@@ -1,17 +1,26 @@
 #!/usr/bin/env node
-var fs = require('fs')
-var Dat = require('dat-node')
-var path = require('path')
-var rimraf = require('rimraf')
+const fs = require('fs')
+const Dat = require('dat-node')
+const path = require('path')
+const rimraf = require('rimraf')
 
-var loc = path.join(__dirname, 'fixtures')
-rimraf(path.join(loc, '.dat'), function () {
-  Dat(loc, function (err, dat) {
-    if (err) throw err
-    dat.importFiles(function () {
+module.exports = newDat
+
+function newDat (loc, cb) {
+  rimraf(path.join(loc, '.dat'), function () {
+    Dat(loc, function (err, dat) {
+      if (err) return cb(err)
+      dat.importFiles()
+      dat.joinNetwork()
+      fs.writeFile(path.join(__dirname, 'key.txt'), dat.key.toString('hex'))
+      cb(null, dat)
     })
-
-    dat.joinNetwork()
-    fs.writeFile(path.join(__dirname, 'key.txt'), dat.key.toString('hex'))
   })
-})
+}
+
+if (!module.parent) {
+  newDat(path.join(__dirname, 'fixtures'), function (err, dat) {
+    if (err) throw err
+    console.log('listening to', dat.key.toString('hex'))
+  })
+}
