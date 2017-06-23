@@ -38,8 +38,7 @@ const archivePage = (state, emit) => {
   }
   // var owner = (meta && state.township) && meta.username === state.township.username
   var meta = state.archive.metadata
-  var title = state.archive.key
-  console.log(state.archive.key)
+  var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
   var styles = css`
     :host {
