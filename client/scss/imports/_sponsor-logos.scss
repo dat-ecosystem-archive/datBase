@@ -1,0 +1,17 @@
+.sponsor-logos {
+  display: flex;
+  align-items: center;
+  a {
+    display: block;
+    padding: 1rem;
+  }
+  img {
+    width: 100%;
+    max-width: 220px;
+    display: block;
+    margin: 0 auto;
+  }
+  .code-for-science-logo {
+    max-width: 130px;
+  }
+}

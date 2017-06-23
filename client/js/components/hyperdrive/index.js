@@ -1,22 +1,42 @@
 const hyperdriveRenderer = require('./client.js')
+const path = require('path')
 const noop = function () {}
 
-module.exports = function (state, prev, send) {
-  if (!module.parent && !state.archive.instance && state.archive.key) {
-    send('archive:create', state.archive.key)
+module.exports = function (state, emit) {
+  var lookup = {}
+  var updated = null // last modified date
+  for (var i in state.archive.entries) {
+    var entry = state.archive.entries[i]
+    if (!updated) updated = new Date(entry.mtime)
+    else {
+      var compare = new Date(entry.mtime)
+      if (updated.getTime() < compare.getTime()) updated = compare
+    }
+    if (entry.name[0] === '/') entry.name = entry.name.substring(1, entry.name.length)
+    lookup[entry.name] = entry
+    var dir = path.dirname(entry.name)
+    if (!lookup[dir]) {
+      lookup[dir] = {
+        type: 'directory',
+        name: dir,
+        length: 0
+      }
+    }
   }
-  var onclick = (ev, entry, opts) => {
-    if (ev.target.classList.contains('pagination')) {
-      send('archive:update', opts)
-      return // TODO: what does return do here
-    } else if (entry.type === 'directory') {
-      send('archive:update', {root: entry.name, offset: 0})
+  
+  emit('archive:update', {updatedAt: updated})
+  var vals = Object.keys(lookup).map(key => lookup[key])
+  var onclick = (ev, entry) => {
+    if (entry.type === 'directory') {
+      emit('archive:directory', entry.name)
       return true
     } else {
-      send('preview:file', {archiveKey: state.archive.key, entry: entry}, noop)
+      entry.archiveKey = state.archive.key
+      emit('preview:file', {entry: entry}, noop)
       return false
     }
   }
+  
   var opts = {
     offset: state.archive.offset,
     limit: state.archive.limit

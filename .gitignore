@@ -1,3 +1,4 @@
+package-lock.json
 .DS_Store
 node_modules/
 data/*
@@ -5,7 +6,6 @@ public/css/*
 public/js/app.js
 public/js/app.min.js
 public/js/app.min.*.js
-public/js/browser-warning.*.js
 server/page-debug.js
 .tmp-deploy
 npm-debug.log
@@ -16,5 +16,10 @@ selenium-debug.log
 dat.land
 township.db
 sqlite.db
-config.js
+config.local.js
 public/rendered
+invited-users
+secrets
+archiver
+.datcache/
+config/config.development.js

@@ -1,21 +1,40 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const button = require('../elements/button')
 const gravatar = require('../elements/gravatar')
 
-module.exports = function (state, prev, send) {
-  var text, click
-  if (state.user.email) {
-    text = gravatar(state.user)
-    click = () => send('user:panel')
-  } else {
-    return ''
+var avatarStyles = css`
+  :host {
+    display: block;
+    width: 2.25em;
+    height: 2.25em;
+    vertical-align: middle;
+    border: 2px solid var(--color-white);
+    background-color: var(--color-pink);
+    margin: auto;
+    &:hover, &:focus {
+      border-color: var(--color-green);
+    }
   }
+`
 
-  return html`
-    ${button({
-      text: text,
-      click: click,
-      klass: 'btn btn--green outline'
-    })}
-  `
+module.exports = function (state, emit) {
+  if (module.parent || !state.township.whoami) return html``
+  if (state.township.email) {
+    return html`
+      ${button({
+        text: gravatar({email: state.township.email}, {}, avatarStyles),
+        click: () => emit('township:sidePanel'),
+        klass: 'btn bn pr0'
+      })}
+    `
+  } else {
+    return html`
+      ${button({
+        text: 'Log In',
+        click: function () { window.location.href = '/login' },
+        klass: 'btn btn--full btn--green'
+      })}
+    `
+  }
 }

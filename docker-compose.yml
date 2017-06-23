@@ -1,0 +1,38 @@
+version: '2'
+services:
+  datproject:
+    build: .
+    image: datproject/datfolder:${TAG}
+    ports:
+      - 25:25
+    expose:
+      - 80
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    volumes:
+      - ./data:/data
+  newdat:
+    build: .
+    image: datproject/datfolder:${TAG}
+    command: sh -c 'npm i dat-node && node tests/new-dat.js'
+    volumes:
+      - ./tests:/usr/src/app/tests
+  chromedriver:
+    image: blueimp/chromedriver
+    environment:
+      - VNC_ENABLED=true
+      - EXPOSE_X11=true
+    ports:
+      - 5900:5900
+  nightwatch:
+    image: blueimp/nightwatch:0.9
+    depends_on:
+      - chromedriver
+      - datproject
+      - newdat
+    environment:
+      - PORT=80
+      - TEST_SERVER=http://datproject
+      - WAIT_FOR_HOSTS=datproject:80 chromedriver:4444 chromedriver:6060
+    volumes:
+      - ./tests:/home/node

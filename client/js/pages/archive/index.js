@@ -1,82 +1,122 @@
 const html = require('choo/html')
-const importQueue = require('../../components/import-queue')
 const hyperdrive = require('../../components/hyperdrive')
+const hyperhealth = require('../../components/health')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
-const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
-const addFiles = require('../../elements/add-files')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
-const prettyBytes = require('pretty-bytes')
+const css = require('sheetify')
 
-const archivePage = (state, prev, send) => {
-  // XXX: have an error enum?
-  if (state.archive.error && state.archive.error.message === 'Invalid key') {
-    var props = {
-      header: 'No dat here.'
+var ARCHIVE_ERRORS = {
+  'Invalid key': {header: 'No dat here.', body: 'Looks like the key is invalid. Are you sure it\'s correct?'},
+  '/ could not be found': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct?'},
+  'timed out': {header: 'Looking for sources…', icon: 'loader', body: 'Is the address correct?'},
+  'Username not found.': {header: 'That user does not exist.'},
+  'Dat with that name not found.': {header: 'That user does not have a dat with that name.'},
+  'too many retries': {header: 'Could not find that dat.', body: 'Is the address correct? Try refreshing your browser.'}
+}
+
+const archivePage = (state, emit) => {
+  var err = state.archive.error
+  if (!module.parent && state.archive.retries < 3) emit('archive:getMetadata', {timeout: 3000})
+  if (err) {
+    if (err.message === 'Block not downloaded') err.message = 'timed out'
+    if (!state.archive.entries.length) {
+      if (state.archive.retries >= 3) err = {message: 'too many retries'}
+      var props = ARCHIVE_ERRORS[err.message]
+      if (props) {
+        return html`
+        <div>
+        ${header(state, emit)}
+        ${fourohfour(props)}
+        </div>
+        `
+      }
     }
-    return html`
-    <div>
-    ${header(state, prev, send)}
-    ${fourohfour(props)}
-    </div>
-    `
   }
-  var archive = state.archive.instance
-  var health = state.archive.health
-  var swarm = state.archive.swarm // webrtc swarm
-  var webrtcPeers = swarm ? swarm.connections : 0
-  var sources = webrtcPeers + health.connected
-  var bytes = archive && archive.content ? archive.content.bytes
-    : health ? health.bytes : 0
-  var size = prettyBytes(bytes)
-  var downloadBtnDisabled = webrtcPeers > 0 ? '' : 'display:none;'
+  // var owner = (meta && state.township) && meta.username === state.township.username
+  var meta = state.archive.metadata
+  var title = meta && meta.title || meta.shortname || state.archive.key
+  var description = meta && meta.description
+  var styles = css`
+    :host {
+      .dat-header {
+        padding-top: 1.25rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--color-neutral-10);
+        background-color: var(--color-neutral-04);
+        font-size: .8125rem;
+
+        .dat-header-actions-wrapper {
+          @media only screen and (min-width: 40rem) {
+            float: right;
+            margin-left: 2rem;
+          }
+        }
+
+      }
+
+      .dat-header-action {
+        display: inline-block;
+        margin-left: 1rem;
+        padding-top: .4rem;
+        border: 0;
+        font-size: .875rem;
+        line-height: 1.25;
+        background-color: transparent;
+        color: var(--color-neutral-80);
+        &:not([disabled]):hover, &:not([disabled]):focus {
+          color: var(--color-neutral);
+        }
+        &:first-child {
+          margin-left: 0;
+          padding-left: 0;
+        }
+        &:disabled {
+          opacity: 0.5;
+        }
+        svg,
+        .btn__icon-img {
+          width: 1rem;
+          max-width: 1.25rem;
+          max-height: 1rem;
+        }
+      }
+    }
+  `
+
+  // TODO: add delete button with confirm modal.
+  // const deleteButton = require('../../elements/delete-button')
+  // function remove () {
+  //   emit('archive:delete', meta.id)
+  // }
+  // ${owner ? deleteButton(remove) : html``}
 
   return html`
-    <div>
-      ${header(state, prev, send)}
+    <div class="${styles}">
+      ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
-          <div class="dat-header__actions">
-            <div class="dat-header-action">
-              ${copyButton(state.archive.key, send)}
-           </div>
-            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
-              <div class="btn__icon-wrapper ${downloadBtnDisabled}">
-                <img src="/public/img/download.svg" class="btn__icon-img">
+          <div class="dat-header-actions-wrapper">
+            ${copyButton('dat://' + state.archive.key, emit)}
+            <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
+              <div class="btn__icon-wrapper">
+                <svg><use xlink:href="#daticon-download" /></svg>
                 <span class="btn__icon-text">Download</span>
               </div>
-            </button>
-            <a href="https://github.com/datproject/dat-desktop" target="_blank" class="dat-header-action">
-              <div class="btn__icon-wrapper">
-                <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
-                <span class="btn__icon-text">Open in Desktop App</span>
-              </div>
             </a>
-          </div>
-          <div id="title" class="share-link">${state.archive.metadata.title || state.archive.key}</div>
-          <div id="author" class="author-name">${state.archive.metadata.author}</div>
+            </div>
+          <div id="title" class="f3 share-link">${title}</div>
+          <div id="author" class="author-name">${description || 'No description.'}</div>
+          ${hyperhealth(state, emit)}
           ${error(state.archive.error)}
-          <div class="dat-details">
-            <div id="permissions" class="dat-detail">
-              ${permissions({owner: archive ? archive.owner : false})}
-            </div>
-            <div id="hyperdrive-size" class="dat-detail"><p class="size">${size}</p></div>
-            <div id="peers" class="dat-detail">${sources} Source(s)</div>
-            <div id="speed" class="dat-detail dat-detail--speed"><div>${hyperdriveStats({ downloaded: state.archive.downloadSpeed, uploaded: state.archive.uploadSpeed })}</div></div>
-          </div>
-            <div class="dat-detail">
-            ${archive && archive.owner ? 'Data is deleted once the browser tab is closed.' : ''}
-            </div>
         </div>
       </div>
       <main class="site-main">
         <div class="container">
-          <div id="add-files">${archive && archive.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', {files}) }) : ''}</div>
-          ${importQueue(state, prev, send)}
-          ${hyperdrive(state, prev, send)}
+          ${hyperdrive(state, emit)}
         </div>
       </main>
       <div class="status-bar">
@@ -89,7 +129,7 @@ const archivePage = (state, prev, send) => {
             : ''}
         </div>
       </div>
-      ${preview(state, prev, send)}
+      ${preview(state, emit)}
     </div>`
 }
 

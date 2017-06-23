@@ -1,65 +1,31 @@
 /* header */
 
-$site-header-height: 4rem;
-
-.site-header {
-  height: $site-header-height;
-  background-color: $color-neutral;
-  color: $color-white;
-  .dat-button button:not(.dat-button--help) {
-  //  background-color: transparent;
-    &:hover, &:focus, &:active {
-      background-color: $color-green--darker;
-    }
-  }
-}
-
-.site-header__actions {
-  float: right;
-}
-
-.container--site-header {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.dat-import {
+.header-nav-link {
   display: inline-block;
-  max-width: 14rem;
-  vertical-align: middle;
+  padding-top: .15rem;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  line-height: var(--site-header-height);
+  font-size: .875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;  color: var(--color-neutral);
+  &:hover, &:focus {
+    color: var(--color-green);
+    text-decoration: none;
+  }
+  @media screen and (min-width: $md2) {
+    padding-right: .75rem;
+    padding-left: .75rem;
+  }
+  @media screen and (min-width: $lg) {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
 }
 
-.dat-logo {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: $color-white;
-  letter-spacing: .025em;
-  > div {
+@media screen and (max-width: $sm) {
+  .hidden-on-mobile {
     display: none;
-  }
-  @include breakpoint (md1) {
-    div {
-      display: block;
-    }
-  }
-  img {
-    display: block;
-    max-width: 2rem;
-    margin-right: .75rem;
-    transition: transform .5s ease-in-out;
-  }
-  span {
-    opacity: .5;
-  }
-  &:hover, &:focus {
-    color: $color-white;
-    img {
-      transform: rotate(360deg);
-    }
   }
 }
 
@@ -84,8 +50,8 @@ $site-header-height: 4rem;
   $radius: 24px;
   border-radius: $radius;
   box-shadow:
-    0px 2px 10px rgba(0,0,0,.3),
-    0px 0px 1px rgba(0,0,0,.1),
-    inset 0px 1px 0px rgba(255,255,255,.25),
-    inset 0px -1px 0px rgba(0,0,0,.15);
+    0 2px 10px rgba(0,0,0,.3),
+    0 0 1px rgba(0,0,0,.1),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -1px 0 rgba(0,0,0,.15);
 }

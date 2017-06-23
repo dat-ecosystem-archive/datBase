@@ -1,37 +1,30 @@
-var defaultState = {
-  message: ''
-}
+module.exports = function (state, emitter) {
+  emitter.on('DOMContentLoaded', function () {
+    emitter.emit('message:clear')
+  })
+  emitter.on('message:update', function (data) {
+    state.message = {message: data.message, type: data.type}
+    emitter.emit('render')
+  })
+  emitter.on('message:clear', function (data) {
+    state.message = {message: '', type: ''}
+    emitter.emit('render')
+  })
 
-module.exports = {
-  namespace: 'message',
-  state: module.parent ? defaultState : window.dl.init__dehydratedAppState.message,
-  reducers: {
-    update: (data, state) => {
-      return {message: data.message, type: data.type}
-    },
-    clear: (_, state) => {
-      return {message: '', type: ''}
-    }
-  },
-  effects: {
-    new: (data, state, send, done) => {
-      send('message:update', data, function () {
-        done()
-      })
-      setTimeout(function () {
-        send('message:update', data, function () {
-          send('message:clear', null, done)
-        })
-      }, 3000)
-    },
-    success: (message, state, send, done) => {
-      send('message:new', {message: message, type: 'success'}, done)
-    },
-    error: (message, state, send, done) => {
-      send('message:new', {message: message, type: 'error'}, done)
-    },
-    warning: (message, state, send, done) => {
-      send('message:new', {message: message, type: 'warning'}, done)
-    }
-  }
+  emitter.on('message:new', function (data) {
+    emitter.emit('message:update', data)
+    setTimeout(function () {
+      emitter.emit('message:clear')
+    }, 2000)
+  })
+
+  emitter.on('message:success', function (message) {
+    emitter.emit('message:new', {message: message, type: 'success'})
+  })
+  emitter.on('message:error', function (message) {
+    emitter.emit('message:new', {message: message, type: 'error'})
+  })
+  emitter.on('message:warning', function (message) {
+    emitter.emit('message:new', {message: message, type: 'warning'})
+  })
 }

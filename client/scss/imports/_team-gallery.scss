@@ -1,0 +1,47 @@
+// team page
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.gallery-item {
+  flex: 0 1 100%;
+  @media screen and (min-width: $sm) {
+    flex-basis: 48%;
+  }
+  @media screen and (min-width: $lg) {
+    flex-basis: 30%;
+  }
+  text-align: left;
+  background-color: white;
+  position: relative;
+  margin-bottom: 3rem;
+  border: 4px solid $color-blue;
+}
+.gallery-item-contents {
+  padding: 1.75rem 2rem 1.5rem 2rem;
+}
+.gallery-item-title {
+  font-weight: 300;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  max-width: 50%;
+}
+.gallery-item-subtitle {
+  color: $color-neutral-70;
+  line-height: 24px;
+  margin-top: 10px;
+}
+.gallery-item-avatar {
+  $size: 4rem;
+  background-color: $color-white;
+  width: $size;
+  height: $size;
+  float: right;
+  margin: 1.75rem 1.5rem 1rem .5rem;
+  background-size: $size;
+  border-radius: 50%;
+}

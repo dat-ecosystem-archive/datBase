@@ -1,21 +1,68 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const prettyBytes = require('pretty-bytes')
-const button = require('../elements/button')
 const display = require('./display')
 
-const preview = (state, prev, send) => {
+var displayStyles = css`
+  :host {
+    img,
+    video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--color-neutral-20);
+    }
+    table {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+    table th,
+    table td {
+      margin: 0;
+      border: 1px solid var(--color-neutral-80);
+      text-align: left;
+      padding: 5px 10px;
+      color: var(--color-neutral);
+      min-height: 1.42857143;
+    }
+  }
+`
+
+const preview = (state, emit) => {
   if (typeof document !== 'undefined') {
     if (state.preview.isPanelOpen) document.body.classList.add('panel-open')
     else document.body.classList.remove('panel-open')
   }
   const isOpen = state.preview.isPanelOpen ? 'open' : ''
   const entry = state.preview.entry
+  if (!entry) return
   const entryName = entry && entry.name
-  const size = (entry && entry.length) ? prettyBytes(entry.length) : 'N/A'
+  const size = (entry && entry.size) ? prettyBytes(entry.size) : 'N/A'
+  const downloadDisabled = entry && (entry.size > (1048576 * 10))
 
-  return html`<section id="preview" class="panel ${isOpen}">
+  function downloadButton () {
+    if (downloadDisabled) return html``
+    return html`<a href="/download/${state.archive.key}/${entryName}"
+      data-no-routing download="${entryName}" class="dat-header-action">
+      <div class="btn__icon-wrapper">
+      <img src="/public/img/download.svg" class="btn__icon-img">
+      <span class="btn__icon-text">Download</span>
+    </div>
+    </a>`
+  }
+
+  return html`<section id="preview" class="bg-white panel ${isOpen}">
     <div class="panel-header">
-      <button onclick=${() => send('preview:closePanel')} class="panel-header__close-button">
+      <button onclick=${() => emit('preview:closePanel')} class="panel-header__close-button">
       Close
       </button>
       <div class="panel-header__title-group">
@@ -27,15 +74,7 @@ const preview = (state, prev, send) => {
         </div>
       </div>
       <div class="panel-header__action-group">
-        ${button({
-          klass: 'dat-header-action',
-          icon: '/public/img/download.svg',
-          text: 'Download',
-          disabled: state.preview.isLoading,
-          click: () => {
-            send('archive:downloadAsZip', {entryName})
-          }
-        })}
+        ${downloadButton()}
         <a href="dat://${state.archive.key}" class="dat-header-action">
           <div class="btn__icon-wrapper">
             <img src="/public/img/open-in-desktop.svg" class="btn__icon-img">
@@ -45,8 +84,8 @@ const preview = (state, prev, send) => {
       </div>
     </div>
     <div class="panel-main">
-      <div id="display">
-        ${display(state, prev, send)}
+      <div id="display" class="${displayStyles}">
+        ${display(state, emit)}
       </div>
     </div>
   </section>

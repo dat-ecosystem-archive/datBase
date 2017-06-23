@@ -1,51 +1,72 @@
-const html = require('choo/html')
-const loading = require('../elements/loading')
 const fourohfour = require('../elements/404')
+const http = require('nets')
+const from = require('from2')
+const html = require('choo/html')
 
-// XXX: server-side data rendering could pull from a cache if we want
 const renderData = module.parent ? function () { } : require('render-data')
-const display = html`<div id="item">${loading()}</div>`
 
-module.exports = function (state, prev, send) {
-  const archive = state.archive.instance
+module.exports = function (state, emit) {
+  var display = html`<div id="item">
+
+  ${fourohfour({
+    icon: 'loader',
+    header: 'Loading...',
+    body: 'This could take a second..',
+    link: false
+  })}
+
+  </div>`
+  if (module.parent) return
   const entryName = state.preview.entry && state.preview.entry.name
-  const previousEntryName = prev && prev.preview ? prev.preview.entry && prev.preview.entry.name : null
 
   if (state.preview.error) {
+    if (!state.preview.isPanelOpen) {
+      emit('preview:openPanel', {})
+    }
     return fourohfour({
+      icon: state.preview.error.icon,
       header: state.preview.error.message,
       body: state.preview.error.body || `${entryName} cannot be rendered.`,
       link: false
     })
   }
-
-  // only render/re-render when the entry name changes!
-  if (!entryName) {
-    return
-  } else if (entryName === previousEntryName) {
-    return display
-  }
-
-  send('preview:update', {isLoading: true})
-
-  if (entryName && archive) {
-    send('preview:update', {error: {message: 'Looking for peers...', body: 'If it is taking a long time, use the desktop app.'}})
-    var stream = archive.createFileReadStream(entryName)
-    renderData.render({
-      name: entryName,
-      createReadStream: function () { return stream }
-    }, display, function (error) {
-      if (error) {
-        var update = {}
-        var message = 'Unsupported filetype'
-        if (error.message === 'premature close') message = 'Could not find any peer sources.'
-        else update.isLoading = false // Allow downloads for unsupported files
-        update.error = {message: message}
-        return send('preview:update', update)
-      }
-      send('preview:update', {isLoading: false, error: error})
+  if (!entryName) return display
+  if (!state.preview.isPanelOpen) return emit('preview:openPanel', {})
+  if (state.preview.entry.size > (1048576 * 10)) {
+    return fourohfour({
+      header: 'Cannot preview',
+      body: 'This file is too big, use the desktop app or CLI.',
+      link: false
     })
   }
 
+  // proper escape is done, but # is special
+  http({url: `/download/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
+    if (resp.statusCode === 400) err = new Error('File does not exist.')
+    if (err) return emit('preview:update', {error: err})
+    try {
+      renderData.render({
+        name: entryName,
+        createReadStream: function () {
+          return from([file])
+        }
+      }, display, function (err) {
+        if (err) return onerror(err)
+      })
+    } catch (err) {
+      onerror(err)
+    }
+
+    function onerror (err) {
+      console.log('got err', err)
+      var update = {}
+      console.error(err)
+      var message = 'Unsupported filetype'
+      update.isLoading = false // Allow downloads for unsupported files
+      update.error = {message: message}
+      console.log('sending', update)
+      return emit('preview:update', update)
+    }
+  })
   return display
 }

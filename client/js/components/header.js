@@ -1,33 +1,46 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const panel = require('./auth/user-panel')
-const login = require('./auth/login')
-const loginButton = require('./login-button')
-const button = require('../elements/button')
 const importButton = require('../elements/import-button')
+const loginButton = require('../components/login-button')
 const message = require('../elements/message')
 
-const header = (state, prev, send) => {
+var headerStyles = css`
+ :host {
+   height: var(--site-header-height);
+   background-color: var(--color-white);
+   border-bottom: 1px solid var(--color-neutral-10);
+ }
+`
+
+var navStyles = css`
+  :host {
+    display: flex;
+    height: var(--site-header-height);
+    align-items: center;
+  }
+`
+
+const header = (state, emit) => {
   return html`<div>
-    ${panel(state, prev, send)}
-    ${login(state, prev, send)}
-    <header class="site-header"><div id="intro"></div>
+    <header class="relative ${headerStyles}">
       ${message(state.message)}
-      <div class="container container--site-header">
-        <a href="/" class="dat-logo">
-          <img src="/public/img/dat-hexagon.svg" />
-          <div>Dat</div>
-        </a>
-        <div class="site-header__actions">
-          ${importButton({
-            handler: function (link) { window.location.href = '/view/' + link }
-          })}
-          ${button({
-            icon: '/public/img/create-new-dat.svg',
-            text: 'Create new Dat',
-            klass: 'btn btn--green new-dat',
-            click: function () { window.location.href = '/create' }
-          })}
-          ${loginButton(state, prev, send)}
+      <div class="container container--top-bar">
+        <div class="flex justify-between items-center relative">
+          ${panel(state, emit)}
+          <nav class="flex items-center ${navStyles}">
+            <a href="/" data-no-routing class="dat-logo">
+              <img src="/public/img/dat-hexagon.svg" />
+              <span class="dat-logo__word">Dat</span>
+            </a>
+            ${importButton(emit)}
+            <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
+            <a href="/install" class="header-nav-link">Install</a>
+          </nav>
+          <div>
+            ${state.township.email ? html`<a href="/publish" class="btn btn--green">Publish</a>` : ''}
+            ${loginButton(state, emit)}
+          </div>
         </div>
       </div>
     </header>

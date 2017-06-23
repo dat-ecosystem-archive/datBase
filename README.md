@@ -1,140 +1,103 @@
-# dat.land
+# Dat Registry
 
-An online place for dats.
+A web registry for the dat network. Hosted at [http://datproject.org](http://datproject.org).
 
-[![Build Status](https://travis-ci.org/datproject/datfolder.svg?branch=master)](https://travis-ci.org/datproject/datfolder)
+[![Build Status](https://travis-ci.org/datproject/datproject.org.svg?branch=master)](https://travis-ci.org/datproject/datproject.org)
 
-[Try dat.land now](http://dat.land)
+## Features
 
-## API
+* Preview the files in a dat in the browser.
+* Download individual files from dats.
+* Create short links for dats with user accounts.
 
-#### Users
+## Setup
 
-Fields:
-- `id` (required)
-- `email` (required)
-- `username`
-- `description`
+0. Clone this repository, then copy the configuration file:
 
-NOTE: ```POST /api/v1/users``` Method not allowed. Use /api/v1/register instead.
+```
+cp config/default.js config/config.development.js
+```
 
-#### Dats
-
-Fields:
-- `id`
-- `user_id`
-- `name`
-- `title`
-- `hash`
-- `description`
-
-##### ```GET /api/v1/:model```
-
-Responds with a list of results that match the query. Can pass query parameters
-like `?username='martha'` or `?name=cats` to filter results.
-
-
-Additional options:
-
-  * `limit`: 100 (default)
-  * `offset`: 0 (default)
-
-
-##### ```PUT /api/v1/:model```
-
-`id` required.
-
-Success returns number of updated rows (e.g., ```{updated: 1}```)
-
-##### ```DELETE /api/v1/:model```
-
-`id` required. 
-
-Success returns number of deleted rows (e.g., ```{deleted: 1}```)
-
-##### ```POST /api/v1/:model```
-
-Success returns the model as it exists in the database.
-
-
-### Develop
-
-Install dependencies.
+1. Install the dependencies:
 
 ```
 npm install
 ```
 
-Create config file.
-
-You can use defaults by copying the example config to `config.js`. If you want to some other database, you can change these defaults in `config.js`.
+Create the database
 
 ```
-cp example.config.js config.js
+npm run database
 ```
 
-Initialize the database. You only have to do this once:
-
-```
-node server/database/init.js
-```
-
-
-Watch assets and start server in one command:
-
+Start the server
 ```
 npm start
 ```
 
-### Getting test user and dat
-
-Run the following command to create a user with the given email address. The
-user will have the password `dogsandcats.`
-
-```
-node server/database/populate.js <email-address>
-```
+## Configuration
 
 
-### Build for production
-```
-npm run build
-npm run minify
-npm run version
-```
+### Secret key
 
-### Running end-to-end tests
+Each deployment should have a different secret key. You want to set the secret key for generating password hashes and salts.
 
-Chrome:
+Set the secret key by using the `TOWNSHIP_SECRET` environment variable.
+
+### Default location of account and sqlite databases
+
+Specify where you want data for the app (databases and also by default the archiver) to be located. By default, all the data will be stored in `./data`. If you'd like the data to be stored somewhere else, add a `data` key:
 
 ```
-npm run build
-npm run start &
-DATLAND_CHROME_PATH=/path/to/chrome_bin TEST_SERVER=http://localhost:8080 npm run test:e2e
+{
+  data: '/path/to/my/data'
+}
 ```
 
-Firefox: (currently not working)
+### Closed beta
+
+To create a closed beta, add the `whitelist` key with the path to a newline-delimited list of emails allowed to sign up. Default value `false` allows anyone to register an account.
 
 ```
-TEST_SERVER=http://localhost:8080 npm run test:e2e:firefox
+{ whitelist: '/path/to/my/list/of/folks.txt'}
 ```
 
-### Using shipit for deployment and install
-[shipit](https://github.com/shipitjs/shipit) and [shipit-deploy](https://github.com/shipitjs/shipit-deploy) depends on rsync version 3+, git version 1.7.8+, and OpenSSH version 5+. To upgrade rsync on a macosx machine, [follow instructions here](https://static.afp548.com/mactips/rsync.html) (see "compile rsync 3.0.7" section).
+`folks.txt` should have a list of valid emails, each separated by a new line character. For example:
 
-install shipit-cli locally, globally:
 ```
-npm install shipit-cli -g
-```
-
-the config file is `shipitfile.js`. you'll need to set the environment var `DATLAND_USER` in your local shell for it to know which account to use to access the server.
-
-to test your access to machine via shipit from your local command line, call shipit, then the environment (in this case `uat`, which is tracking the master branch), then the actual command which corresponds to tasks defined in the shipitfile:
-```
-shipit uat pwd
+pamlikesdata@gmail.com
+robert.singletown@sbcglobal.netw
 ```
 
-to deploy and install a build on remote machine (note that shipit pulls build source from github, not your local project dir):
+### Location of cached and archived dat data
+
+You can set the location where dat data is cached on the filesystem. By default it is stored in the `data` directory (above), in the `archiver` subdirectory. You can change this by using the `archiver` key:
+
 ```
-npm run deploy
+{ archiver: '/mnt1/bigdisk/archiver-data' }
+```
+
+### Mixpanel account
+
+The site will report basic information to Mixpanel if you have an account. It will by default use the environment variable `MIXPANEL_KEY`.
+
+This can also be set in the configuration file by using the `mixpanel` key:
+
+```
+{ mixpanel: '<my-api-key-here>' }
+```
+
+### Advanced password security
+
+If you want to have advanced security for generating passwords, you can use ES512 keys, for example. Generate the keys using [this tutorial](https://connect2id.com/products/nimbus-jose-jwt/openssl-key-generation) and set their locations in the configuration file.
+
+```
+{
+  township: {
+    db: 'township.db',
+    publicKey: path.join('secrets', 'ecdsa-p521-public.pem'),
+    privateKey: path.join('secrets', 'ecdsa-p521-private.pem'),
+    algorithm: 'ES512'
+  }
+}
 ```

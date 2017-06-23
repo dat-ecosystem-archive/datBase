@@ -1,0 +1,29 @@
+.dat-logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $color-neutral;
+  letter-spacing: .025em;
+  img {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    margin-right: .75rem;
+    transition: transform .5s ease-in-out;
+  }
+  &:hover, &:focus {
+    color: $color-neutral;
+    img {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.dat-logo__word {
+  display: none;
+  @media only screen and (min-width: $md1) {
+    display: block;
+    margin-right: 1rem;
+  }
+}

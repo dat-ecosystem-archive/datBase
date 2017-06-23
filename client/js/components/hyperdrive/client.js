@@ -1,4 +1,3 @@
-var path = require('path')
 var yofs = require('yo-fs')
 
 module.exports = function ui (root, entries, opts, onclick) {

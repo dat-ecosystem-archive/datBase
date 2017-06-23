@@ -1,18 +1,18 @@
 const test = require('tape')
-const encoding = require('dat-encoding')
-const path = require('path')
 const TownshipClient = require('township-client')
 const request = require('request')
+const xtend = require('xtend')
 const helpers = require('../helpers')
-const config = JSON.parse(JSON.stringify(require('../config')))
-const Dat = require('dat-js')
+const Config = require('../../server/config')
+const fs = require('fs')
+const path = require('path')
+const datKey = fs.readFileSync(path.join(__dirname, '..', 'key.txt')).toString()
+var config = JSON.parse(JSON.stringify(Config()))
 
-const dat = new Dat()
-
-var api = 'http://localhost:' + config.port + '/api/v1'
+var rootUrl = 'http://localhost:' + config.port
+var api = rootUrl + '/api/v1'
 test('api', function (t) {
-  config.db.connection.filename = path.join(__dirname, 'test-api.sqlite')
-  helpers.server(config, function (db, close) {
+  helpers.server(config, function (close) {
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))
 
@@ -39,6 +39,14 @@ test('api', function (t) {
       })
     })
 
+    test('api GET dats should pass without login', function (t) {
+      request({url: api + '/dats', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body, [], 'zero dats')
+        t.end()
+      })
+    })
+
     test('api should register users', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ifError(err)
@@ -61,7 +69,6 @@ test('api', function (t) {
         })
       })
     })
-
     test('api usernames should be unique', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ok(err)
@@ -113,7 +120,6 @@ test('api', function (t) {
         })
       })
     })
-
     test('api joe cannot update bob', function (t) {
       client.secureRequest({url: '/users', method: 'put', body: {id: users.bob.id, email: 'joebob@email.com'}, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -140,18 +146,16 @@ test('api', function (t) {
     })
 
     test('api can create a dat', function (t) {
-      dat.add(function (repo) {
-        dats.cats.url = encoding.toStr(repo.key)
-        client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
+      dats.cats.url = datKey
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.cats, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.ok(body.id, 'has an id')
+        dats.cats.id = body.id
+        dats.cats.user_id = body.user_id
+        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.ok(body.id, 'has an id')
-          dats.cats.id = body.id
-          dats.cats.user_id = body.user_id
-          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
-            t.ifError(err)
-            t.same(body.length, 1)
-            t.end()
-          })
+          t.same(body.length, 1)
+          t.end()
         })
       })
     })
@@ -164,38 +168,19 @@ test('api', function (t) {
         t.end()
       })
     })
-    //
-    // test('api can get a dats health', function (t) {
-    //   var stream = client.secureRequest({
-    //     stream: true,
-    //     url: '/dats/health?key=' + dats.cats.url,
-    //     forever: true
-    //   })
-    //   stream.on('error', function (err) {
-    //     t.ifError(err)
-    //   })
-    //   var repo = dat.get(dats.cats.url)
-    //   var writer = repo.archive.createFileWriteStream('hello.txt')
-    //   writer.write('world')
-    //   writer.end()
-    //   stream.on('data', function (body) {
-    //     if (!body) return
-    //     var data = JSON.parse(body.toString())
-    //     t.same(data.connected, 1, 'has one connected')
-    //     t.same(data.bytes, 5, 'has five bytes')
-    //     if (data.peers && data.peers.length > 0) {
-    //       t.ok(data.peers[0].blocks, 'found the peers')
-    //       stream.abort()
-    //       stream.agent.destroy()
-    //     }
-    //     stream.on('end', function () {
-    //       t.end()
-    //     })
-    //   })
-    // })
+
+    test('api can update a dat thats mine using POST', function (t) {
+      dats.cats.description = 'this is a new description'
+      client.secureRequest({url: '/dats', body: dats.cats, method: 'POST', json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(body.updated, 1)
+        t.end()
+      })
+    })
 
     test('api dats need to have correct names', function (t) {
       var bad = Object.assign({}, dats.penguins)
+      bad.url = datKey
       bad.name = 'this is a bad name'
       client.secureRequest({method: 'POST', url: '/dats', body: bad, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -205,26 +190,32 @@ test('api', function (t) {
     })
 
     test('api can get a dat by username/dataset combo', function (t) {
-      client.secureRequest({url: '/' + users.joe.username + '/' + dats.cats.name, json: true}, function (err, resp, user) {
+      client.secureRequest({url: `/${users.joe.username}/${dats.cats.name}`, json: true}, function (err, resp, user) {
         t.ifError(err)
         t.same(user.name, dats.cats.name, 'is the right dat')
         t.end()
       })
     })
 
+    test('api can get a dat by username/dataset combo without login', function (t) {
+      request({url: `${rootUrl}/${users.joe.username}/${dats.cats.name}`, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.same(resp.headers['hyperdrive-key'], dats.cats.url, 'has url')
+        t.end()
+      })
+    })
+
     test('api can create another dat', function (t) {
-      dat.add(function (repo) {
-        dats.penguins.url = encoding.toStr(repo.key)
-        client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
+      dats.penguins.url = datKey
+      client.secureRequest({method: 'POST', url: '/dats', body: dats.penguins, json: true}, function (err, resp, body) {
+        t.ifError(err)
+        t.ok(body.id, 'has an id')
+        dats.penguins.id = body.id
+        dats.penguins.user_id = body.user_id
+        client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.ok(body.id, 'has an id')
-          dats.penguins.id = body.id
-          dats.penguins.user_id = body.user_id
-          client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
-            t.ifError(err)
-            t.same(body.length, 2)
-            t.end()
-          })
+          t.same(body.length, 2)
+          t.end()
         })
       })
     })
@@ -234,15 +225,6 @@ test('api', function (t) {
         t.ifError(err)
         t.same(body.length, 1, 'has one dat')
         t.same(body[0].name, dats.penguins.name, 'is the right dat')
-        t.end()
-      })
-    })
-
-    test('api dats contain related user models', function (t) {
-      client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
-        t.ifError(err)
-        console.log(body)
-        t.ok(body[0].username, 'has user model')
         t.end()
       })
     })
@@ -268,6 +250,19 @@ test('api', function (t) {
       })
     })
 
+    test('api bob cannot update joes dat using POST', function (t) {
+      client.secureRequest({method: 'POST', url: '/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
+        t.ok(err)
+        t.same(err.statusCode, 400, 'request denied')
+        client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.length, 1, 'got the dat')
+          t.same(body[0].name, dats.cats.name, 'name is the same')
+          t.end()
+        })
+      })
+    })
+
     test('api bob cannot update joes dat', function (t) {
       client.secureRequest({method: 'PUT', url: '/dats', body: {id: dats.cats.id, name: 'hax00rs'}, json: true}, function (err, resp, body) {
         t.ok(err)
@@ -282,13 +277,14 @@ test('api', function (t) {
     })
 
     test('api bob can delete his own dat', function (t) {
+      dats.dogs.url = datKey
       client.secureRequest({method: 'POST', url: '/dats', body: dats.dogs, json: true}, function (err, resp, body) {
         t.ifError(err)
         t.ok(body.id, 'has an id')
         dats.dogs.id = body.id
         dats.dogs.user_id = body.user_id
         t.same(body.name, dats.dogs.name, 'is the right dat')
-        client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.dogs.id}, json: true}, function (err, resp, body) {
+        client.secureRequest({method: 'DELETE', url: '/dats', body: {name: dats.dogs.name}, json: true}, function (err, resp, body) {
           t.ifError(err)
           t.same(body.deleted, 1, 'deletes one row')
           client.secureRequest({url: '/dats', json: true}, function (err, resp, body) {
@@ -323,11 +319,47 @@ test('api', function (t) {
       })
     })
 
+    test('api should allow password reset', function (t) {
+      client.secureRequest({
+        url: '/password-reset',
+        body: {email: users.joe.email},
+        method: 'POST',
+        json: true
+      }, function (err, resp, body) {
+        t.ifError(err)
+        const sent = config.email.mailer.transporter.sentMail
+        t.same(sent.length, 1)
+        t.same(sent[0].data.to, users.joe.email)
+        const [, urlstring] = sent[0].message.content.match(/href="(.*?)"/)
+        const {query} = require('url').parse(urlstring, 1)
+        const goodQuery = xtend(query, {newPassword: 'foobar'})
+        const brokenQuery = xtend(goodQuery, {resetToken: 'zzz'})
+        client.secureRequest({
+          url: '/password-reset-confirm',
+          body: brokenQuery,
+          method: 'POST',
+          json: true
+        }, function (err, resp, body) {
+          t.same(err.statusCode, 400)
+          t.same(err.message, 'reset token not valid')
+          client.secureRequest({
+            url: '/password-reset-confirm',
+            body: goodQuery,
+            method: 'POST',
+            json: true
+          }, function (err, resp, body) {
+            t.ifError(err)
+            /* XXX: verify joe's password is updated */
+            t.end()
+          })
+        })
+      })
+    })
+
     test('tear down', function (t) {
       client.logout(function () {
         helpers.tearDown(config, function () {
           close(function () {
-            dat.close()
             t.end()
           })
         })

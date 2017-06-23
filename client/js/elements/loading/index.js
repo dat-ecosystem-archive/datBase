@@ -1,8 +1,13 @@
 const html = require('choo/html')
+const loaderIcon = require('../loader-icon')
 
 module.exports = function () {
-  // XXX TODO: https://github.com/datproject/design/issues/20
   return html`<div class="loading">
-    <h2>Loading...</h2>
-    </div>`
+    <div class="error-page">
+      <div class="mb3">
+        ${loaderIcon()}
+      </div>
+      <h3>Loading…</h3>
+     </div>
+  `
 }

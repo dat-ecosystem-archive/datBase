@@ -8,20 +8,91 @@
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
 @import "~dat-design/scss/base.scss";
+
+@import "imports/variables";
+@import "imports/colors";
+@import "imports/bg-colors";
 @import "imports/base";
-@import "imports/inline-error";
+@import "imports/layout";
+@import "imports/grid";
 @import "imports/site-header";
+@import "imports/header-logo";
+@import "imports/sections";
+@import "imports/horizontal-rule";
+@import "imports/block-create";
+@import "imports/screenshot";
+@import "imports/footer";
+@import "imports/sponsor-logos";
+@import "imports/example-datasets";
+@import "imports/team-gallery";
+@import "imports/inline-error";
 @import "imports/status-bar";
-@import "imports/dat-header";
-@import "imports/message";
-@import "imports/gravatar";
 @import "imports/file-system";
-@import "imports/add-button";
+@import "imports/buttons";
 @import "imports/panel"; //
 @import "imports/error-page";
-@import "imports/preview"; // TODO: this should move into dat-design - @lauren
-@import "imports/landing-page";
-@import "imports/preview-display"; // TODO: delete this after choo migration
-@import "imports/landing-page";
-@import "imports/introjs-custom";
-@import "imports/list";
+
+@import "imports/tachyons";
+
+:root {
+  --site-header-height: 4rem;
+}
+
+h2, h3 {
+  font-weight: 300;
+}
+
+pre {
+  padding: .5em;
+  font-size: .875rem;
+  background-color: $color-neutral;
+  color: $color-neutral-10;
+  border: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+}
+
+ul {
+  list-style: initial;
+  padding-left: 1rem;
+}
+
+.content-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.content-subtitle {
+  font-size: 1.25rem;
+  color: $color-neutral-70;
+  padding-bottom: 15px;
+}
+
+.bg-neutral {
+  .content-subtitle,
+  .content-card-subtitle {
+    color: $color-neutral-40;
+  }
+}
+.content-code-intro {
+  text-align: left;
+  margin-bottom: 60px;
+}
+.content-card {
+  position: relative;
+  background-color: $color-white;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 30px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+.content-card-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+.content-card-subtitle {
+  color: $color-neutral-70;
+  line-height: 1.75;
+}

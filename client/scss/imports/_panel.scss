@@ -23,9 +23,9 @@
   z-index:1;
   top:0;
   width: 100%;
-  height: $site-header-height;
-  border-bottom: 1px solid $color-neutral--10;
-  background-color: $color-neutral--04;
+  height: var(--site-header-height);
+  border-bottom: 1px solid $color-neutral-10;
+  background-color: $color-neutral-04;
   font-size: .8125rem;
   display: flex;
   flex-direction: row;
@@ -33,19 +33,18 @@
 }
 
 .panel-header__close-button {
-  width: $site-header-height;
-  height: $site-header-height;
-  flex-basis: $site-header-height;
+  width: var(--site-header-height);
+  height: var(--site-header-height);
+  flex-basis: var(--site-header-height);
   flex-shrink: 0;
   border: none;
   margin-right: 1rem;
   position: relative;
-  text-indent: -999px;
   overflow: hidden;
   background-color: $color-green;
   color: $color-white;
   &:hover, &:focus {
-    background-color: $color-green--hover;
+    background-color: $color-green-hover;
     color: $color-white;
   }
   &:before,
@@ -53,8 +52,8 @@
     content: '';
     position: absolute;
     top: calc(50% - 2px);
-    left: calc(50% - #{$site-header-height} / 4);
-    width: $site-header-height / 2;
+    left: calc(50% - #{var(--site-header-height)} / 4);
+    width: var(--site-header-height) / 2;
     height: 2px;
     transform: rotate(-45deg);
     background-color: currentColor;
@@ -80,8 +79,4 @@
   max-width: calc(100vw - 25rem);
   font-size: 1.375rem;
   margin-right: 1rem;
-}
-
-.panel-main {
-  padding: 1rem;
 }
