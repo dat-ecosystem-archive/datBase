@@ -35,16 +35,16 @@ module.exports = function hyperhealth (state, emit) {
     }
   }
   `
-
+  var parsedDate = relative(state.archive.updatedAt)
 
   return html`
   <div class="">
   <div class="${styles} dat-details">
     <div class="dat-detail">${prettyBytes(data.byteLength)}</div>
     <div class="dat-detail">${html`<span>${peers} source${plural(peers)} available</span>`}</div>
-    ${state.archive.updatedAt ? html`<div class="dat-detail">
-      updated ${relative(state.archive.updatedAt)}
-    </div>` : ''}
+    <div class="dat-detail">
+      updated ${parsedDate === '48 years ago' ? '?' : parsedDate}
+    </div>
   </div>
     <div>
       ${data.peers.map((peer, i) => {
