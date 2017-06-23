@@ -45,7 +45,7 @@
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/app.css > public/css/app.min.css",
     "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
-    "version": "./bin/git-sha.js && ./bin/version-assets.js"
+    "version": "./bin/version-assets.js"
   },
   "standard": {
     "ignore": [
