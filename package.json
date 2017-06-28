@@ -53,14 +53,15 @@
     ]
   },
   "devDependencies": {
+    "dat-node": "^3.5.0",
     "marked": "^0.3.6",
     "nodemon": "^1.10.0",
-    "dat-node": "^3.5.0",
     "request": "^2.79.0",
     "rimraf": "^2.5.4",
     "standard": "^7.1.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
+    "uglify-es": "github:mishoo/UglifyJS2#harmony",
     "watchify": "~3.6.0"
   },
   "dependencies": {
