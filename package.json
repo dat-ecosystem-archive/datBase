@@ -44,7 +44,7 @@
     "build-js-prod": "mkdir -p public/js && NODE_ENV=production browserify -t brfs -t envify -p [ css-extract -o bundle.css ] client/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/app.css > public/css/app.min.css",
-    "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
+    "minify-js": "./node_modules/uglify-es/bin/uglifyjs public/js/app.js -o public/js/app.min.js",
     "version": "./bin/version-assets.js"
   },
   "standard": {
