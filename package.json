@@ -36,15 +36,15 @@
     "new-dat": "node tests/new-dat",
     "watch-render": "nodemon --watch public -i public/rendered -e html bin/render-static",
     "watch-css": "nodemon --watch client -e scss -x \"npm run build-css\"",
-    "watch-js": "watchify --fast --verbose -t brfs -g [ babelify --blacklist strict  ] client/js/app.js -o public/js/app.js",
+    "watch-js": "watchify --fast --verbose -t brfs -p [ css-extract -o bundle.css ] client/js/app.js -o public/js/app.js",
     "watch-server": "nodemon server/cli --watch server --watch client",
     "build": "npm run build-js && npm run build-css",
     "build-css": "node-sass --importer node_modules/node-sass-magic-importer client/scss/app.scss public/css/app.css",
-    "build-js": "mkdir -p public/js && browserify -t brfs -g [ babelify --blacklist strict  ] client/js/app.js > public/js/app.js",
-    "build-js-prod": "mkdir -p public/js && NODE_ENV=production node --max-executable-size=2000 ./node_modules/.bin/browserify -g [ babelify --blacklist strict  ] -t brfs -t envify client/js/app.js > public/js/app.js",
+    "build-js": "mkdir -p public/js && browserify -t brfs -p [ css-extract -o bundle.css ] client/js/app.js > public/js/app.js",
+    "build-js-prod": "mkdir -p public/js && NODE_ENV=production browserify -t brfs -t envify -p [ css-extract -o bundle.css ] client/js/app.js > public/js/app.js",
     "minify": "npm run minify-css && npm run minify-js",
     "minify-css": "minify public/css/app.css > public/css/app.min.css",
-    "minify-js": "uglifyjs public/js/app.js -o public/js/app.min.js",
+    "minify-js": "./node_modules/uglify-es/bin/uglifyjs public/js/app.js -o public/js/app.min.js",
     "version": "./bin/version-assets.js"
   },
   "standard": {
@@ -53,9 +53,9 @@
     ]
   },
   "devDependencies": {
+    "dat-node": "^3.5.0",
     "marked": "^0.3.6",
     "nodemon": "^1.10.0",
-    "dat-node": "^3.5.0",
     "request": "^2.79.0",
     "rimraf": "^2.5.4",
     "standard": "^7.1.2",
@@ -64,6 +64,7 @@
     "watchify": "~3.6.0"
   },
   "dependencies": {
+    "uglify-es": "github:mishoo/UglifyJS2#harmony",
     "babel-preset-es2015": "^6.18.0",
     "babelify": "^5.0.0",
     "body-parser": "^1.15.2",
@@ -75,6 +76,7 @@
     "clipboard": "^1.6.1",
     "collect-stream": "^1.1.1",
     "compression": "^1.6.2",
+    "css-extract": "^1.2.0",
     "dat-colors": "^3.4.0",
     "dat-design": "^5.0.0",
     "dat-icons": "^2.5.0",
@@ -109,7 +111,6 @@
     "sheetify": "^6.0.1",
     "sheetify-nested": "^1.0.2",
     "township-client": "^1.2.2",
-    "uglifyjs": "^2.4.10",
     "uparams": "^1.3.1",
     "xhr": "^2.4.0",
     "xtend": "^4.0.1",

@@ -12,9 +12,9 @@ VOLUME /data
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
-RUN npm install --production --loglevel warn && npm cache clean
+RUN npm install --production --loglevel warn 
 COPY . /usr/src/app
-RUN npm run build-css && npm run build-js-prod && npm run minify && npm run version
+RUN npm run build-js-prod && npm run build-css && npm run minify && npm run version
 
 # do docker exec: npm run database
 
