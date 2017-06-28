@@ -17,19 +17,19 @@ var copyButton = css`
   }
 `
 
-module.exports = function (text, send) {
-  if (module.parent) return html``
+module.exports = function (text, emit) {
   var el = html`
-    <a class="clipboard ${copyButton}" data-clipboard-text="${text}">
+    <a class="clipboard ${copyButton} dat-header-action" data-clipboard-text="${text}">
       <div class="btn__icon-wrapper">
         <svg class="btn__icon-img"><use xlink:href="#daticon-link" /></svg>
         <span class="btn__icon-text">Copy Link</span>
       </div>
     </a>
   `
+  if (module.parent) return el
   var clipboard = new Clipboard('a.clipboard')
   clipboard.on('success', function () {
-    send('message:success', 'Link copied to clipboard')
+    emit('message:success', 'Link copied to clipboard')
   })
   return el
 }

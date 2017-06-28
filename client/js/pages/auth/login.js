@@ -2,10 +2,10 @@ const html = require('choo/html')
 const header = require('./../../components/header')
 const login = require('./../../components/auth/login')
 
-module.exports = (state, prev, send) => {
+module.exports = (state, emit) => {
   return html`
     <div class="landing">
-      ${header(state, prev, send)}
-      ${login(state, prev, send)}
+      ${header(state, emit)}
+      ${login(state, emit)}
     </div>`
 }

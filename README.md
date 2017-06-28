@@ -15,7 +15,7 @@ A web registry for the dat network. Hosted at [http://datproject.org](http://dat
 0. Clone this repository, then copy the configuration file:
 
 ```
-cp config/config.default.js config/config.development.js
+cp config/default.js config/config.development.js
 ```
 
 1. Install the dependencies:

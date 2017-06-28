@@ -15,14 +15,14 @@ module.exports = new function () {
     .url(testServer)
     .assert.containsText('body', 'dat')
   }
-  testCases['viewing a dat that doesnt exist gives 404'] = (client) => {
+  testCases['viewing a dat that doesnt exist gives explore page'] = (client) => {
     client
       .url(testServer + '/install')
       .expect.element("input[name='import-dat']").value.to.equal('').before(2000)
     client
       .setValue("input[name='import-dat']", 'hello')
       .keys(client.Keys.ENTER)
-      .expect.element('body').text.to.contain('No dat here.').before(2000)
+      .expect.element('body').text.to.contain('Shared with Dat').before(2000)
   }
   testCases['viewing a dat with a key that doesnt exist gives 404'] = (client) => {
     // this is just a valid hash but doesn't resolve to a dat

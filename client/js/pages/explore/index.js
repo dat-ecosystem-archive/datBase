@@ -2,14 +2,15 @@ const html = require('choo/html')
 const list = require('./../../components/list')
 const header = require('./../../components/header')
 
-const listPage = (state, prev, send) => {
-  state.list.data.map(function (dat) {
+const listPage = (state, emit) => {
+  console.log('list page got', state.explore.data)
+  var dats = state.explore.data.map(function (dat) {
     dat.shortname = `${dat.username}/${dat.name}`
     return dat
   })
   return html`
   <div>
-    ${header(state, prev, send)}
+    ${header(state, emit)}
     <section class="section bg-neutral-04">
       <div class="container">
         <h2 class="content-title">Shared with Dat</h2>
@@ -21,7 +22,7 @@ const listPage = (state, prev, send) => {
 
     <section class="section">
       <div class="container">
-        ${list(state.list.data, send)}
+        ${list(dats, emit)}
       </div>
     </section>
   </div>`

@@ -1,17 +1,17 @@
 const html = require('choo/html')
 
-module.exports = function (send) {
+module.exports = function (emit) {
   const keydown = (e) => {
     if (e.keyCode === 13) {
       var link = e.target.value
       e.target.value = ''
-      send('archive:view', link)
+      emit('archive:view', link)
     }
   }
   return html`<label for="import-dat" class="dat-input">
     <input name="import-dat" type="text" placeholder="Search" onkeydown=${keydown} class="dat-input__input dat-input__input--icon">
-    <div class="dat-input__icon">
-      <img src="/public/img/link.svg" />
-    </div>
+    <svg class="dat-input__icon pa1">
+      <use xlink:href="#daticon-search" />
+    </svg>
   </label>`
 }

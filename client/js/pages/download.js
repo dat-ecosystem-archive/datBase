@@ -1,10 +1,10 @@
 const html = require('choo/html')
 const header = require('../components/header')
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   return html`
     <div>
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       <section class="section">
         <div class="container">
           <h1>Desktop app</h1>

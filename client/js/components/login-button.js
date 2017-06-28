@@ -18,12 +18,13 @@ var avatarStyles = css`
   }
 `
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
+  if (module.parent || !state.township.whoami) return html``
   if (state.township.email) {
     return html`
       ${button({
         text: gravatar({email: state.township.email}, {}, avatarStyles),
-        click: () => send('township:sidePanel'),
+        click: () => emit('township:sidePanel'),
         klass: 'btn bn pr0'
       })}
     `

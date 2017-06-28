@@ -18,4 +18,4 @@ RUN npm run build-css && npm run build-js-prod && npm run minify && npm run vers
 
 # do docker exec: npm run database
 
-CMD npm run database && npm run server
+CMD npm run database && DEBUG=dat-registry npm run server

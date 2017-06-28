@@ -7,32 +7,28 @@ const xtend = require('xtend')
 const path = require('path')
 const compression = require('compression')
 const bodyParser = require('body-parser')
-const assert = require('assert')
 const UrlParams = require('uparams')
-const bole = require('bole')
 const express = require('express')
 const redirect = require('express-simple-redirect')
 const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
 const Api = require('dat-registry-api')
-const Dats = require('./dats')
 
 module.exports = function (config) {
   config = config || {}
 
-  const log = bole(__filename)
-  const dats = config.dats || Dats(config.archiver)
   const mx = Mixpanel.init(config.mixpanel)
   const api = Api(config)
   const db = api.db
+  const archiver = api.archiver
 
   var router = express()
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
   router.use(redirect({
-    '/blog': 'http://blog.datproject.org'
+    '/blog': 'https://blog.datproject.org'
   }, 301))
 
   router.post('/api/v1/users', api.users.post)
@@ -50,17 +46,16 @@ module.exports = function (config) {
   router.post('/api/v1/password-reset', api.auth.passwordReset)
   router.post('/api/v1/password-reset-confirm', api.auth.passwordResetConfirm)
 
+  router.get('/api/v1/dats/search', function (req, res) {
+    api.db.dats.search(req.query, function (err, resp) {
+      if (err) return onerror(err, res)
+      res.json(resp)
+    })
+  })
   router.get('/api/v1/:username/:dataset', function (req, res) {
     db.dats.getByShortname(req.params, function (err, dat) {
       if (err) return onerror(err, res)
       res.json(dat)
-    })
-  })
-
-  router.get('/api/v1/browse', function (req, res) {
-    db.dats.list(req.params, function (err, resp) {
-      if (err) return onerror(err, res)
-      res.json(resp)
     })
   })
 
@@ -80,23 +75,35 @@ module.exports = function (config) {
   router.get('/profile/delete', send)
   router.get('/browser', send)
 
+  router.get('/view', function (req, res) {
+    archiveRoute(req.query.query, function (state) {
+      if (state.archive.error && state.archive.error.message === 'Invalid key') {
+        var url = '/explore' + req._parsedUrl.search
+        console.log('redirecting', url)
+        return res.redirect(301, url)
+      }
+      return sendSPA(req, res, state)
+    })
+  })
+
   router.get('/explore', function (req, res) {
     var state = getDefaultAppState()
-    db.dats.list(req.params, function (err, resp) {
+    db.dats.search(req.query, function (err, resp) {
       if (err) return onerror(err, res)
-      state.list.data = resp
+      state.explore.data = resp
       sendSPA(req, res, state)
     })
   })
 
   router.get('/blog/*', function (req, res) {
-    res.redirect(301, 'http://blog.datproject.org')
+    res.redirect(301, 'http://bdatproject.org')
   })
+  // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
   function onfile (archive, name, req, res) {
     archive.stat(name, function (err, st) {
       if (err) return onerror(err, res)
-      log.info('file requested', st.size)
+      debug('file requested', st.size)
       mx.track('file requested', {size: st.size})
 
       if (st.isDirectory()) {
@@ -123,21 +130,32 @@ module.exports = function (config) {
   }
 
   router.get('/download/:archiveKey/*', function (req, res) {
-    log.debug('getting file contents', req.params)
-    dats.get(req.params.archiveKey, function (err, archive) {
+    debug('getting file contents', req.params)
+    archiver.get(req.params.archiveKey, function (err, archive) {
       if (err) return onerror(err, res)
       var filename = req.params[0]
       return onfile(archive, filename, req, res)
     })
   })
 
+  router.get('/health/:archiveKey', function (req, res) {
+    archiver.get(req.params.archiveKey, function (err, archive, key) {
+      if (err) return onerror(err, res)
+      archive.ready(function () {
+        return res.status(200).json(archiver.health(archive))
+      })
+    })
+  })
+
   router.get('/metadata/:archiveKey', function (req, res) {
     const timeout = parseInt(req.query.timeout) || 1000
-    log.debug('requesting metadata for key', req.params.archiveKey)
-    dats.get(req.params.archiveKey, {timeout}, function (err, archive) {
+    debug('requesting metadata for key', req.params.archiveKey)
+    archiver.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
-      dats.metadata(archive, {timeout}, function (err, info) {
+      archiver.metadata(archive, {timeout}, function (err, info) {
         if (err) info.error = {message: err.message}
+        info.health = archiver.health(archive)
+        debug('got', info)
         return res.status(200).json(info)
       })
     })
@@ -148,16 +166,17 @@ module.exports = function (config) {
     return sendSPA(req, res, state)
   })
 
-  router.get('/profile/:username', function (req, res) {
+  router.get('/:username', function (req, res) {
     var state = getDefaultAppState()
+    debug('looking for user', req.params.username)
     db.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
       if (!results.length) {
-        return archiveRoute(req.params.username, function (state) {
-          sendSPA(req, res, state)
-        })
+        debug('user not found')
+        return res.redirect(301, '/dat://' + req.params.username)
       }
       var user = results[0]
+      debug('profile views', user)
       mx.track('profile viewed', {distinct_id: user.email})
       state.profile = {
         username: user.username,
@@ -169,29 +188,24 @@ module.exports = function (config) {
         email: user.email,
         id: user.id
       }
+      debug('getting dats')
       db.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
         state.profile.dats = results
+        debug('sending profile', state.profile)
         return sendSPA(req, res, state)
       })
     })
   })
 
-  router.get('/:archiveKey/contents', function (req, res) {
-    // just give me the archive, oopsie.
-    archiveRoute(req.params.archiveKey, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
   router.get('/:username/:dataset', function (req, res) {
-    log.debug('requesting username/dataset', req.params)
+    debug('requesting username/dataset', req.params)
     mx.track('shortname viewed', req.params)
     db.dats.getByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}
-        log.warn('could not get dat with ' + req.params, err)
+        debug('could not get dat with ' + req.params, err)
         return sendSPA(req, res, state)
       }
       res.setHeader('Hyperdrive-Key', dat.url)
@@ -216,23 +230,17 @@ module.exports = function (config) {
     })
   })
 
-  router.get('/view', function (req, res) {
-    archiveRoute(req.query.dat || req.query.link, function (state) {
-      return sendSPA(req, res, state)
-    })
-  })
-
-  router.get('/:archiveKey', function (req, res) {
+  router.get('/dat://:archiveKey/contents', function (req, res) {
     archiveRoute(req.params.archiveKey, function (state) {
       return sendSPA(req, res, state)
     })
   })
 
-  router.get('/:archiveKey/contents/*', function (req, res) {
-    log.debug('getting file contents', req.params)
+  router.get('/dat://:archiveKey/contents/*', function (req, res) {
+    debug('getting file contents', req.params)
     var filename = req.params[0]
     archiveRoute(req.params.archiveKey, function (state) {
-      dats.get(req.params.archiveKey, function (err, archive) {
+      archiver.get(req.params.archiveKey, function (err, archive) {
         if (err) return onerror(err, res)
         archive.stat(filename, function (err, entry) {
           if (err) {
@@ -269,7 +277,7 @@ module.exports = function (config) {
     var cancelled = false
 
     function onerror (err) {
-      log.warn(key, err)
+      debug(key, err)
       if (cancelled) return true
       cancelled = true
       state.archive.error = {message: err.message}
@@ -286,15 +294,16 @@ module.exports = function (config) {
     var state = getDefaultAppState()
     mx.track('archive viewed', {key: key})
 
-    dats.get(key, function (err, archive, key) {
+    archiver.get(key, function (err, archive, key) {
       if (err) return onerror(err)
       archive.ready(function () {
         debug('got archive key', key)
+        state.archive.health = archiver.health(archive)
         clearTimeout(timeout)
         if (cancelled) return
         cancelled = true
 
-        dats.metadata(archive, {timeout: 1000}, function (err, info) {
+        archiver.metadata(archive, {timeout: 1000}, function (err, info) {
           if (err) state.archive.error = {message: err.message}
           state.archive = xtend(state.archive, info)
           state.archive.key = key
@@ -304,19 +313,16 @@ module.exports = function (config) {
     })
   }
 
-  router.dats = dats
+  router.archiver = archiver
   router.api = api
   return router
 
   /* helpers */
   function getDefaultAppState () {
     var state = {}
-    app._store._models.forEach((model) => {
-      assert.equal(typeof model, 'object', 'getDefaultAppState: model must be an object')
-      assert.equal(typeof model.namespace, 'string', 'getDefaultAppState: model must have a namespace property that is a string')
-      assert.equal(typeof model.state, 'object', 'getDefaultAppState: model must have a state property that is an object')
-      state[model.namespace] = model.state
-    })
+    for (var key in app.defaults) {
+      state[key] = app.defaults[key]
+    }
     return JSON.parse(JSON.stringify(state))
   }
 

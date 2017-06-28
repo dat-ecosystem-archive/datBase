@@ -11,7 +11,7 @@ const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const prettyBytes = require('pretty-bytes')
 
-const archivePage = (state, prev, send) => {
+const archivePage = (state, emit) => {
   // XXX: have an error enum?
   if (state.archive.error && state.archive.error.message === 'Invalid key') {
     var props = {
@@ -19,7 +19,7 @@ const archivePage = (state, prev, send) => {
     }
     return html`
     <div>
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       ${fourohfour(props)}
     </div>
     `
@@ -36,12 +36,12 @@ const archivePage = (state, prev, send) => {
 
   return html`
     <div>
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header-actions-wrapper">
-            ${copyButton(state.archive.key, send)}
-            <button class="dat-header-action" onclick=${() => send('archive:downloadAsZip')} style=${downloadBtnDisabled}>
+            ${copyButton(state.archive.key, emit)}
+            <button class="dat-header-action" onclick=${() => emit('archive:downloadAsZip')} style=${downloadBtnDisabled}>
               <div class="btn__icon-wrapper ${downloadBtnDisabled}">
                 <svg><use xlink:href="#daticon-open-in-desktop" /></svg>
                 <span class="btn__icon-text">Download</span>
@@ -72,9 +72,9 @@ const archivePage = (state, prev, send) => {
       </div>
       <main class="site-main">
         <div class="container">
-          <div id="add-files">${archive && archive.owner ? addFiles({ onfiles: (files) => send('archive:importFiles', {files}) }) : ''}</div>
-          ${importQueue(state, prev, send)}
-          ${hyperdrive(state, prev, send)}
+          <div id="add-files">${archive && archive.owner ? addFiles({ onfiles: (files) => emit('archive:importFiles', {files}) }) : ''}</div>
+          ${importQueue(state, emit)}
+          ${hyperdrive(state, emit)}
         </div>
       </main>
       <div class="status-bar">
@@ -87,7 +87,7 @@ const archivePage = (state, prev, send) => {
             : ''}
         </div>
       </div>
-      ${preview(state, prev, send)}
+      ${preview(state, emit)}
     </div>`
 }
 

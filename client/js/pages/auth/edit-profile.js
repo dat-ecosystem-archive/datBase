@@ -11,18 +11,18 @@ var prefix = css`
   }
 `
 
-module.exports = (state, prev, send) => {
+module.exports = (state, emit) => {
   function onSubmit (e) {
     const data = form(e.target)
     data.id = state.township.profile.id
-    send('profile:edit', data)
+    emit('profile:edit', data)
     return false
   }
 
   var profile = state.township.profile
   return html`
     <div class="edit-profile ${prefix}">
-      ${header(state, prev, send)}
+      ${header(state, emit)}
       <div class="mw5 pv5 center">
         <h3 class="f4">Edit your Profile</h3>
         <form onsubmit=${onSubmit}>
@@ -52,9 +52,7 @@ module.exports = (state, prev, send) => {
           </p>
           <p>
             <label for="description" class="dat-input w-100">
-              <textarea rows="4" name="description" placeholder="Description" class=" w-100 pa2" >
-                ${profile.description}
-              </textarea>
+              <textarea rows="4" name="description" placeholder="Description" class=" w-100 pa2" >${profile.description}</textarea>
             </label>
           </p>
           <p class="flex items-center justify-between w-100">

@@ -62,7 +62,7 @@ module.exports = new function () {
         const datlink = data.toString()
         console.info('using datlink', datlink)
         client
-          .url(testServer + 'view/' + datlink)
+          .url(testServer + 'dat://' + datlink)
           .waitForElementVisible('body', 10000)
       })
     }

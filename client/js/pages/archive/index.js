@@ -1,13 +1,13 @@
 const html = require('choo/html')
-const prettyBytes = require('pretty-bytes')
 const hyperdrive = require('../../components/hyperdrive')
+const hyperhealth = require('../../components/health')
 const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
-const permissions = require('../../elements/permissions')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
+const css = require('sheetify')
 
 var ARCHIVE_ERRORS = {
   'Invalid key': {header: 'No dat here.', body: 'Looks like the key is invalid. Are you sure it\'s correct?'},
@@ -18,9 +18,9 @@ var ARCHIVE_ERRORS = {
   'too many retries': {header: 'Could not find that dat.', body: 'Is the address correct? Try refreshing your browser.'}
 }
 
-const archivePage = (state, prev, send) => {
+const archivePage = (state, emit) => {
   var err = state.archive.error
-  if (!module.parent && state.archive.retries < 3) send('archive:getMetadata', {timeout: 3000})
+  if (!module.parent && state.archive.retries < 3) emit('archive:getMetadata', {timeout: 3000})
   if (err) {
     if (err.message === 'Block not downloaded') err.message = 'timed out'
     if (!state.archive.entries.length) {
@@ -29,37 +29,83 @@ const archivePage = (state, prev, send) => {
       if (props) {
         return html`
         <div>
-        ${header(state, prev, send)}
+        ${header(state, emit)}
         ${fourohfour(props)}
         </div>
         `
       }
     }
-    if (err.message === 'timed out') {
-      err.message = 'Looking for dat.json metadata...'
-    }
   }
-  var peers = state.archive.peers
-  var size = state.archive.size
+  // var owner = (meta && state.township) && meta.username === state.township.username
   var meta = state.archive.metadata
-  var owner = (meta && state.township) && meta.username === state.township.username
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
+  var styles = css`
+    :host {
+      .dat-header {
+        padding-top: 1.25rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--color-neutral-10);
+        background-color: var(--color-neutral-04);
+        font-size: .8125rem;
+
+        .dat-header-actions-wrapper {
+          @media only screen and (min-width: 40rem) {
+            float: right;
+            margin-left: 2rem;
+          }
+        }
+
+      }
+
+      .title {
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+
+      .dat-header-action {
+        display: inline-block;
+        margin-left: 1rem;
+        padding-top: .4rem;
+        border: 0;
+        font-size: .875rem;
+        line-height: 1.25;
+        background-color: transparent;
+        color: var(--color-neutral-80);
+        &:not([disabled]):hover, &:not([disabled]):focus {
+          color: var(--color-neutral);
+        }
+        &:first-child {
+          margin-left: 0;
+          padding-left: 0;
+        }
+        &:disabled {
+          opacity: 0.5;
+        }
+        svg,
+        .btn__icon-img {
+          width: 1rem;
+          max-width: 1.25rem;
+          max-height: 1rem;
+        }
+      }
+    }
+  `
 
   // TODO: add delete button with confirm modal.
   // const deleteButton = require('../../elements/delete-button')
   // function remove () {
-  //   send('archive:delete', meta.id)
+  //   emit('archive:delete', meta.id)
   // }
   // ${owner ? deleteButton(remove) : html``}
 
   return html`
-    <div>
-      ${header(state, prev, send)}
+    <div class="${styles}">
+      ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header-actions-wrapper">
-            ${copyButton('dat://' + state.archive.key, send)}
+            ${copyButton('dat://' + state.archive.key, emit)}
             <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
                 <svg><use xlink:href="#daticon-download" /></svg>
@@ -67,37 +113,15 @@ const archivePage = (state, prev, send) => {
               </div>
             </a>
             </div>
-          <div id="title" class="share-link">${title}</div>
-          <div id="author" class="author-name">${description}</div>
+          <div id="title" class="f3 share-link">${title}</div>
+          <div id="author" class="author-name">${description || 'No description.'}</div>
+          ${hyperhealth(state, emit)}
           ${error(state.archive.error)}
-          <div class="dat-details">
-            ${permissions
-              ? html`
-                <div id="permissions" class="dat-detail">
-                  ${permissions({owner: owner})}
-                </div>
-                `
-              : ''}
-            ${size
-              ? html`
-                <div id="hyperdrive-size" class="dat-detail">
-                  ${prettyBytes(size)}
-                </div>
-                `
-              : ''}
-            ${peers
-              ? html`
-                <div id="peers" class="dat-detail">
-                  ${peers} Source${peers > 1 || peers === 0 ? 's' : ''}
-                </div>
-                `
-              : ''}
-          </div>
         </div>
       </div>
       <main class="site-main">
         <div class="container">
-          ${hyperdrive(state, prev, send)}
+          ${hyperdrive(state, emit)}
         </div>
       </main>
       <div class="status-bar">
@@ -110,7 +134,7 @@ const archivePage = (state, prev, send) => {
             : ''}
         </div>
       </div>
-      ${preview(state, prev, send)}
+      ${preview(state, emit)}
     </div>`
 }
 

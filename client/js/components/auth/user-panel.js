@@ -74,25 +74,25 @@ const prefix = css`
   }
 `
 
-module.exports = function (state, prev, send) {
+module.exports = function (state, emit) {
   if (!state.township.username) return
 
   return html`<div class="user-panel ${prefix} ${state.township.sidePanel}">
-      <a class="close-button" title="Close" href="#" onclick=${() => send('township:sidePanel')}>
+      <a class="close-button" title="Close" href="#" onclick=${() => emit('township:sidePanel')}>
         <svg>
           <use xlink:href="#daticon-cross" />
         </svg>
       </a>
       <div class="flex items-center mb2">
         <div>
-          ${state.township.email}
+          Signed in as <b>${state.township.profile.username}</b>
         </div>
       </div>
       <ul>
-        <li><a href="/profile/${state.township.username}" data-no-routing>View Profile</a></li>
+        <li><a href="/${state.township.username}" data-no-routing>View Profile</a></li>
         <li><a href="/profile/edit" data-no-routing>Edit Profile</a></li>
         <li><a href="http://github.com/datproject/datproject.org/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>
-        <li><a href="#" onclick=${() => send('township:logout', {})}>Logout</a></li>
+        <li><a href="#" onclick=${() => emit('township:logout', {})}>Logout</a></li>
       </ul>
   </div>`
 }

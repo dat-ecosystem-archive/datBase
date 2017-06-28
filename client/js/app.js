@@ -1,49 +1,55 @@
-const mount = require('choo/mount')
 const choo = require('choo')
+const persist = require('choo-persist')
 const app = choo()
+const defaults = require('./models/defaults')
 const css = require('sheetify')
-// Enable webrtc debugging:
-// try { localStorage.debug = 'webrtc-swarm' } catch (e) {}
 
 // define models:
-app.model(require('./models/archive'))
-app.model(require('./models/township'))
-app.model(require('./models/explore'))
-app.model(require('./models/profile'))
-app.model(require('./models/message'))
-app.model(require('./models/preview'))
+var key = module.parent ? '' : window.location.origin
+app.use(persist({name: 'choo-datproject.org:' + key}))
+app.use(logger)
+app.use(require('./defaults')(defaults))
+app.use(require('./models/archive'))
+app.use(require('./models/township'))
+app.use(require('./models/explore'))
+app.use(require('./models/profile'))
+app.use(require('./models/message'))
+app.use(require('./models/preview'))
+
+function logger (state, emitter) {
+  emitter.on('*', function (messageName, data) {
+    console.log('event', messageName, data)
+  })
+}
 
 css('dat-colors')
 
 // define routes:
-app.router({default: '/404'}, [
-  ['/install', require('./pages/install')],
-  ['/publish', require('./pages/publish')],
-  ['/explore', require('./pages/explore')],
-  ['/register', require('./pages/auth/register')],
-  ['/login', require('./pages/auth/login')],
-  ['/reset-password', require('./pages/auth/reset-password')],
-  ['/download/:archiveKey', require('./pages/download')],
-  ['/dat/:archiveKey', require('./pages/archive')],
-  ['/dat://:archiveKey', require('./pages/archive')],
-  ['/view/:archiveKey', require('./pages/archive')],
-  ['/view', require('./pages/archive')],
-  ['/profile/:username', require('./pages/auth/profile')],
-  ['/profile/edit', require('./pages/auth/edit-profile')],
-  ['/profile/delete', require('./pages/auth/delete-account')],
-  ['/404', require('./pages/fourohfour')],
-  ['/team', require('./pages/landing/team')],
-  ['/about', require('./pages/landing/about')],
-  ['/:archiveKey/contents', require('./pages/archive')],
-  ['/:archiveKey/contents/*', require('./pages/archive')],
-  ['/:username/:dataset', require('./pages/archive')],
-  ['/:username/:dataset/*', require('./pages/archive')],
-  ['/:archiveKey', require('./pages/archive')],
-  ['/', require('./pages/landing/splash')]
-])
+app.route('/install', require('./pages/install'))
+app.route('/publish', require('./pages/publish'))
+app.route('/explore', require('./pages/explore'))
+app.route('/register', require('./pages/auth/register'))
+app.route('/login', require('./pages/auth/login'))
+app.route('/reset-password', require('./pages/auth/reset-password'))
+app.route('/404', require('./pages/fourohfour'))
+app.route('/team', require('./pages/landing/team'))
+app.route('/about', require('./pages/landing/about'))
+app.route('/view', require('./pages/archive'))
+app.route('/download/:archiveKey', require('./pages/download'))
+app.route('/profile/edit', require('./pages/auth/edit-profile'))
+app.route('/profile/delete', require('./pages/auth/delete-account'))
+app.route('/dat://:archiveKey', require('./pages/archive'))
+app.route('/dat://:archiveKey/contents', require('./pages/archive'))
+app.route('/dat://:archiveKey/contents/*', require('./pages/archive'))
+app.route('/:username/:dataset', require('./pages/archive'))
+app.route('/:username/:dataset/*', require('./pages/archive'))
+app.route('/:username', require('./pages/auth/profile'))
+app.route('/', require('./pages/landing/splash'))
+
+app.defaults = defaults
 
 if (module.parent) {
   module.exports = app
 } else {
-  mount('#app-root', app.start())
+  app.mount('#app-root')
 }

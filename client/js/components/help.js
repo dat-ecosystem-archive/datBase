@@ -1,9 +1,9 @@
 const html = require('choo/html')
 const button = require('../elements/button')
 
-module.exports = (state, prev, send) => {
+module.exports = (state, emit) => {
   if (module.parent || window.location.pathname === '/') return ''
-  const intro = () => send('help:show')
+  const intro = () => emit('help:show')
   return html`
     ${button({
       icon: '/public/img/question.svg',
