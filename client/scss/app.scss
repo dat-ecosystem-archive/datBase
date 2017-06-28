@@ -7,7 +7,10 @@
  * More magic importer features:
  * https://github.com/maoberlehner/node-sass-magic-importer
  */
+
 @import "~dat-design/scss/base.scss";
+
+@import "../bundle.css";
 
 @import "imports/variables";
 @import "imports/colors";
