@@ -5,7 +5,6 @@ services:
 dist: trusty
 node_js:
   - 6
-  - 8
 
 env:
   global:
