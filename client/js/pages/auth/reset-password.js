@@ -4,8 +4,7 @@ const form = require('get-form-data')
 
 function body (state, emit) {
 //  const authenticated = state.township.username
-  const {accountKey, resetToken, email} = state.location ? state.location.search || {} : {}
-
+  const {accountKey, resetToken, email} = state.query || {}
   function onsubmitConfirm (e) {
     e.preventDefault()
     var data = form(e.target)
