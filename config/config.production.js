@@ -4,6 +4,7 @@ module.exports = {
   data: '',
   mixpanel: process.env.MIXPANEL || path.join('secrets', 'mixpanel'),
   township: {
+    secret: process.env.TOWNSHIP_SECRET,
     db: 'datland-township.db',
     publicKey: path.join('secrets', 'ecdsa-p521-public.pem'),
     privateKey: path.join('secrets', 'ecdsa-p521-private.pem'),
