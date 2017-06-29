@@ -6,8 +6,9 @@ const form = require('get-form-data')
 
 function body (state, emit) {
 //  const authenticated = state.township.username
-  var u = url.parse(window.location.href)
-  const {accountKey, resetToken, email} = querystring.parse(u.query)
+  var query = {}
+  if (!module.parent) query = url.parse(window.location.href)
+  const {accountKey, resetToken, email} = querystring.parse(query)
   function onsubmitConfirm (e) {
     e.preventDefault()
     var data = form(e.target)
