@@ -1,11 +1,13 @@
 const html = require('choo/html')
+const url = require('url')
+const querystring = require('querystring')
 const header = require('./../../components/header')
 const form = require('get-form-data')
 
 function body (state, emit) {
 //  const authenticated = state.township.username
-  const {accountKey, resetToken, email} = state.location ? state.location.search || {} : {}
-
+  var u = url.parse(window.location.href)
+  const {accountKey, resetToken, email} = querystring.parse(u.query)
   function onsubmitConfirm (e) {
     e.preventDefault()
     var data = form(e.target)
