@@ -7,11 +7,12 @@ const form = require('get-form-data')
 function body (state, emit) {
 //  const authenticated = state.township.username
   var query = {}
-  if (!module.parent) query = url.parse(window.location.href)
+  if (!module.parent) query = url.parse(window.location.href).query
   const {accountKey, resetToken, email} = querystring.parse(query)
   function onsubmitConfirm (e) {
     e.preventDefault()
     var data = form(e.target)
+    if (data.newPassword !== data.otherPassword) return emit('message:error', 'Passwords do not match.')
     data.accountKey = accountKey
     data.resetToken = resetToken
     data.email = email
@@ -43,7 +44,13 @@ function body (state, emit) {
           <form action="" method="POST" id="password-reset-confirm-form" onsubmit=${onsubmitConfirm}>
             <p>
               <label for="newPassword" class="dat-input dat-input--icon">
-                <input name="newPassword" type="password" placeholder="New password" class="dat-input__input dat-input__input--icon" />
+                <input name="newPassword" type="password" placeholder="New password" class="dat-input__input dat-input__input--icon w-100" />
+                <svg class="dat-input__icon">
+                  <use xlink:href="#daticon-lock" />
+                </svg>
+              </label>
+              <label for="otherPassword" class="dat-input dat-input--icon">
+                <input name="otherPassword" type="password" placeholder="Confirm new password" class="dat-input__input dat-input__input--icon w-100" />
                 <svg class="dat-input__icon">
                   <use xlink:href="#daticon-lock" />
                 </svg>

@@ -15,7 +15,7 @@ module.exports = function (state, emitter) {
     emitter.emit('message:update', data)
     setTimeout(function () {
       emitter.emit('message:clear')
-    }, 2000)
+    }, 4000)
   })
 
   emitter.on('message:success', function (message) {

@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const form = require('get-form-data')
 
 const login = (state, emit) => {
@@ -9,7 +10,18 @@ const login = (state, emit) => {
     return false
   }
 
-  return html`<div class="login">
+  var styles = css`
+    :host {
+      .error {
+        font-size: .875rem;
+        font-weight: normal;
+        color: $color-red;
+      }
+    }
+  `
+
+
+  return html`<div class="${styles} login">
     <div class="mw5 pv6 center">
       <h1 class="f4">Log In</h1>
       <form onsubmit=${onSubmit}>
