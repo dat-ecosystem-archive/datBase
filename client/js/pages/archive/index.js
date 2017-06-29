@@ -55,12 +55,11 @@ const archivePage = (state, emit) => {
             margin-left: 2rem;
           }
         }
-
       }
 
       .title {
         word-wrap: break-word;
-        word-break: break-all;
+        font-size: 1.15rem;
       }
 
       .dat-header-action {
@@ -113,7 +112,7 @@ const archivePage = (state, emit) => {
               </div>
             </a>
             </div>
-          <div id="title" class="f3 share-link">${title}</div>
+          <div id="title" class="title f4 share-link">${title}</div>
           <div id="author" class="author-name">${description || 'No description.'}</div>
           ${hyperhealth(state, emit)}
           ${error(state.archive.error)}
