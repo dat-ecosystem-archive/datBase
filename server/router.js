@@ -96,7 +96,7 @@ module.exports = function (config) {
   })
 
   router.get('/blog/*', function (req, res) {
-    res.redirect(301, 'http://bdatproject.org')
+    res.redirect(301, 'http://blog.datproject.org')
   })
   // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
@@ -148,7 +148,7 @@ module.exports = function (config) {
   })
 
   router.get('/metadata/:archiveKey', function (req, res) {
-    const timeout = parseInt(req.query.timeout) || 1000
+    var timeout = parseInt(req.query.timeout, 10) || 1000
     debug('requesting metadata for key', req.params.archiveKey)
     archiver.get(req.params.archiveKey, {timeout}, function (err, archive) {
       if (err) return onerror(err, res)
