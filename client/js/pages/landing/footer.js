@@ -10,7 +10,7 @@ module.exports = function (state, emit) {
           <ul class="footer-nav-list">
             <li><a href="/explore" data-no-routing>Explore Datasets</a></li>
             <li><a href="/team">Team</a></li>
-            <li><a href="/blog">Blog</a></li>
+            <li><a href="https://blog.datproject.org">Blog</a></li>
           </ul>
         </div>
         <div class="col-xs-6 col-sm-4">

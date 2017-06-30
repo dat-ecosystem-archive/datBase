@@ -96,7 +96,7 @@ module.exports = function (config) {
   })
 
   router.get('/blog/*', function (req, res) {
-    res.redirect(301, 'http://bdatproject.org')
+    res.redirect(301, 'http://blog.datproject.org')
   })
   // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
