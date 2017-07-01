@@ -154,7 +154,7 @@ module.exports = function (state, emit) {
   <div class="container">
     <h2 class="content-title">Built With Care</h2>
     <p class="content-subtitle horizontal-rule">
-      Dat is built within a vibrant open source module-based ecosystem. <a href="http://awesome.datproject.org/" class="color-blue-disabled hover-color-pink">Learn more.</a>
+      Dat is built within a vibrant open source module-based ecosystem. <a href="http://datproject.org/paper" class="color-blue-disabled hover-color-pink">Read the paper.</a>
     </p>
     <div class="row pv4">
       <div class="col-xs-12 col-sm-4">
