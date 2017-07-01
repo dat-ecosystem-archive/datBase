@@ -31,6 +31,9 @@ module.exports = function (config) {
     '/blog': 'https://blog.datproject.org'
   }, 301))
 
+  router.get('/paper', function (req, res) {
+    fs.createReadStream(path.join(__dirname, '..', 'public', 'dat-paper.pdf')).pipe(res)
+  })
   router.post('/api/v1/users', api.users.post)
   router.get('/api/v1/users', api.users.get)
   router.put('/api/v1/users', api.users.put)
