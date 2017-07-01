@@ -155,7 +155,6 @@ module.exports = function (config) {
       archiver.metadata(archive, {timeout}, function (err, info) {
         if (err) info.error = {message: err.message}
         info.health = archiver.health(archive)
-        debug('got', info)
         return res.status(200).json(info)
       })
     })
