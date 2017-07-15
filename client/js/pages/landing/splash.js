@@ -93,7 +93,7 @@ module.exports = function (state, emit) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/7a9225a79f68f0a41d2d20c1827408eb25d5d8fecd4f49cfc8dfd97d0d0c004a" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/534fa5db12b8ea8c0d1a51a31702797b37cea60ee4dee10ec35b59bfb284e4d4" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
           </div>
@@ -117,7 +117,7 @@ module.exports = function (state, emit) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/054e2d07b9230c0dd0947494c7314cbe4891b576b049b777c99c4336171acd0b" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/dfa1660194d17862bb2e017f9926eccc6d73493e3985f25e0b89d06204d30b39" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
           </div>
@@ -139,7 +139,7 @@ module.exports = function (state, emit) {
             </p>
           </div>
           <div class="example-footer">
-            <a href="/64375abb733a62fa301b1f124427e825d292a6d3ba25a26c9d4303a7987bec65" class="fr btn btn--green btn--full open-desktop" data-no-routing>
+            <a href="/9df6c69a6337cb24d6a45f8a71364f8e58fa37608f14ca37fec743a856b3ed97" class="fr btn btn--green btn--full open-desktop" data-no-routing>
               Preview
             </a>
           </div>
