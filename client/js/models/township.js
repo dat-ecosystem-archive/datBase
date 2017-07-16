@@ -1,9 +1,7 @@
 const Api = require('../api')
 const xtend = require('xtend')
 const defaults = require('./defaults')
-var roles = {
-  '0': 'Unverified', '1': 'Verified', '2': 'Admin'
-}
+const roles = require('./roles')
 
 module.exports = function (state, emitter) {
   emitter.on('DOMContentLoaded', function () {

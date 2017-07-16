@@ -1,9 +1,25 @@
 const html = require('choo/html')
-const fourohfour = require('../../elements/404')
 const css = require('sheetify')
+const fourohfour = require('../../elements/404')
 const gravatar = require('./../../elements/gravatar')
 const header = require('./../../components/header')
 const list = require('./../../components/list')
+const button = require('../../elements/button')
+
+const unsuspendButton = function (state, emit) {
+  return button({
+    text: 'Unsuspend',
+    click: () => emit('profile:edit', {id: state.profile.id, role: '0'}),
+    klass: 'btn btn--red'
+  })
+}
+const suspendButton = function (state, emit) {
+  return button({
+    text: 'Suspend',
+    click: () => emit('profile:edit', {id: state.profile.id, role: '86'}),
+    klass: 'btn btn--red'
+  })
+}
 
 var profileStyles = css`
   :host {
@@ -52,17 +68,23 @@ module.exports = (state, emit) => {
   var pic = gravatar({email}, {}, avatarStyles)
   var owner = state.township.profile.username === state.profile.username
   var showPlaceholder = numDats === 0 && owner
+  var currentUser = state.township.profile
+
   state.profile.dats.map(function (dat) {
     dat.shortname = `${state.profile.username}/${dat.name}`
     return dat
   })
-  console.log(state.profile.role)
+
   return html`
     <div>
       ${header(state, emit)}
       <div class="flex flex-column flex-row-m flex-row-l ${profileStyles}  bg-splash-02">
         <div class="bg-neutral-04 pa4 tc tl-m tl-l">
           <div class="name">
+            ${currentUser.admin
+              ? state.profile.role !== '86'
+              ? suspendButton(state, emit) : unsuspendButton(state, emit)
+              : ''}
             <h1 class="f4 mb1">${name}</h1>
             <h2 class="f5 color-neutral-80">${username}</h2>
             ${pic}
