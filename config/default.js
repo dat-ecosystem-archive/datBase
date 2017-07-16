@@ -18,5 +18,9 @@ module.exports = {
     useNullAsDefault: true
   },
   whitelist: false,
-  archiver: 'archiver'
+  archiver: {
+    dir: 'archiver',
+    verifyConnection: false,
+    timeout: 3000
+  }
 }

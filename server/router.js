@@ -36,6 +36,7 @@ module.exports = function (config) {
   router.get('/api/v1/users', api.users.get)
   router.put('/api/v1/users', api.users.put)
   router.delete('/api/v1/users', api.users.delete)
+  router.put('/api/v1/users/suspend', api.users.suspend)
 
   router.get('/api/v1/dats', api.dats.get)
   router.post('/api/v1/dats', api.dats.post)

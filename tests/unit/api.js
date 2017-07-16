@@ -356,31 +356,31 @@ test('api', function (t) {
       })
     })
 
-    test('api admin can update joe', function (t) {
+    test('api admin can delete joes dat', function (t) {
       client.login(users.admin, function (err) {
         t.ifError(err)
-        client.secureRequest({method: 'PUT', url: '/users', body: {id: users.joe.id, description: 'admin pwned'}, json: true}, function (err, resp, body) {
-          t.ok(err)
-          t.same(err.statusCode, 200, 'request accepted')
-          client.secureRequest({url: '/users?id=' + users.joe.id, json: true}, function (err, resp, body) {
+        client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.cats.id}, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.deleted, 1, 'one row deleted')
+          client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
             t.ifError(err)
-            t.same(body.length, 1, 'has one user')
-            t.same(body[0].description, 'admin pwned', 'has new description')
+            t.same(body.length, 0, 'dat is gone')
             t.end()
           })
         })
       })
     })
 
-    test('api admin can delete joe', function (t) {
+    test('api admin can suspend joe', function (t) {
       client.login(users.admin, function (err) {
         t.ifError(err)
-        client.secureRequest({method: 'DELETE', url: '/users', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
-          t.ok(err)
-          t.same(err.statusCode, 200, 'request accepted')
-          client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
+        client.secureRequest({method: 'PUT', url: '/users/suspend', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.updated, 1, 'one row updated')
+          client.secureRequest({url: '/users?id=' + users.joe.id, json: true}, function (err, resp, body) {
             t.ifError(err)
-            t.same(body.length, 1, 'has one user')
+            t.same(body.length, 1, 'got joe')
+            t.same(body[0].role, '86', 'joe is suspended')
             t.end()
           })
         })
