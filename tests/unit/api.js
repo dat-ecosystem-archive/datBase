@@ -376,12 +376,15 @@ test('api', function (t) {
         t.ifError(err)
         client.secureRequest({method: 'PUT', url: '/users/suspend', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
           t.ifError(err)
-          t.same(body.updated, 1, 'one row updated')
+          t.same(body.suspended, 1, 'one row suspended')
           client.secureRequest({url: '/users?id=' + users.joe.id, json: true}, function (err, resp, body) {
             t.ifError(err)
             t.same(body.length, 1, 'got joe')
             t.same(body[0].role, '86', 'joe is suspended')
-            t.end()
+            client.login(users.joe, function (err) {
+              t.ok(err)
+              t.end()
+            })
           })
         })
       })
