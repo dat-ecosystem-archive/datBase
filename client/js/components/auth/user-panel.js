@@ -77,10 +77,6 @@ const prefix = css`
 module.exports = function (state, emit) {
   if (!state.township.username) return
 
-  var role = {
-    '0': 'Unverified', '1': 'Verified', '2': 'Admin'
-  }[state.profile.role]
-
   return html`<div class="user-panel ${prefix} ${state.township.sidePanel}">
       <a class="close-button" title="Close" href="#" onclick=${() => emit('township:sidePanel')}>
         <svg>
@@ -93,7 +89,7 @@ module.exports = function (state, emit) {
         </div>
       </div>
       <ul>
-        ${role === 'Admin' ? html`<li><a href="/admin">Admin</a></li>` : html``}
+        ${state.township.profile.role === 'Admin' ? html`<li><a href="/admin">Admin</a></li>` : html``}
         <li><a href="/${state.township.username}" data-no-routing>View Profile</a></li>
         <li><a href="/profile/edit" data-no-routing>Edit Profile</a></li>
         <li><a href="http://github.com/datproject/datproject.org/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>

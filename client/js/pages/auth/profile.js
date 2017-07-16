@@ -52,11 +52,11 @@ module.exports = (state, emit) => {
   var pic = gravatar({email}, {}, avatarStyles)
   var owner = state.township.profile.username === state.profile.username
   var showPlaceholder = numDats === 0 && owner
-
   state.profile.dats.map(function (dat) {
     dat.shortname = `${state.profile.username}/${dat.name}`
     return dat
   })
+  console.log(state.profile.role)
   return html`
     <div>
       ${header(state, emit)}

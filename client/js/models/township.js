@@ -1,6 +1,9 @@
 const Api = require('../api')
 const xtend = require('xtend')
 const defaults = require('./defaults')
+var roles = {
+  '0': 'Unverified', '1': 'Verified', '2': 'Admin'
+}
 
 module.exports = function (state, emitter) {
   emitter.on('DOMContentLoaded', function () {
@@ -30,6 +33,7 @@ module.exports = function (state, emitter) {
         if (!results.length) return done()
         var newState = user
         newState.profile = results[0]
+        newState.profile.role = roles[newState.profile.role]
         api.dats.get({user_id: user.id}, function (err, resp, results) {
           if (err && err.message === 'jwt expired') {
             emitter.emit('township:logout', data)
