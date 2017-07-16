@@ -1,5 +1,6 @@
 module.exports = {
   data: 'data',
+  admins: ['admins'],
   mixpanel: process.env.MIXPANEL || 'notakey',
   township: {
     secret: process.env.TOWNSHIP_SECRET || 'very very not secret',

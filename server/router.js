@@ -20,7 +20,6 @@ module.exports = function (config) {
 
   const mx = Mixpanel.init(config.mixpanel)
   const api = Api(config)
-  const db = api.db
   const archiver = api.archiver
 
   var router = express()
@@ -55,8 +54,9 @@ module.exports = function (config) {
       res.json(resp)
     })
   })
+
   router.get('/api/v1/:username/:dataset', function (req, res) {
-    db.dats.getByShortname(req.params, function (err, dat) {
+    api.db.dats.getByShortname(req.params, function (err, dat) {
       if (err) return onerror(err, res)
       res.json(dat)
     })
@@ -72,6 +72,7 @@ module.exports = function (config) {
   router.get('/register', send)
   router.get('/', send)
   router.get('/about', send)
+  router.get('/admin', send)
   router.get('/team', send)
   router.get('/login', send)
   router.get('/reset-password', send)
@@ -91,7 +92,7 @@ module.exports = function (config) {
 
   router.get('/explore', function (req, res) {
     var state = getDefaultAppState()
-    db.dats.search(req.query, function (err, resp) {
+    api.db.dats.search(req.query, function (err, resp) {
       if (err) return onerror(err, res)
       state.explore.data = resp
       sendSPA(req, res, state)
@@ -171,7 +172,7 @@ module.exports = function (config) {
   router.get('/:username', function (req, res) {
     var state = getDefaultAppState()
     debug('looking for user', req.params.username)
-    db.users.get({username: req.params.username}, function (err, results) {
+    api.db.users.get({username: req.params.username}, function (err, results) {
       if (err) return onerror(err, res)
       if (!results.length) {
         debug('user not found')
@@ -191,7 +192,7 @@ module.exports = function (config) {
         id: user.id
       }
       debug('getting dats')
-      db.dats.get({user_id: user.id}, function (err, results) {
+      api.db.dats.get({user_id: user.id}, function (err, results) {
         if (err) return onerror(err, res)
         state.profile.dats = results
         debug('sending profile', state.profile)
@@ -203,7 +204,7 @@ module.exports = function (config) {
   router.get('/:username/:dataset', function (req, res) {
     debug('requesting username/dataset', req.params)
     mx.track('shortname viewed', req.params)
-    db.dats.getByShortname(req.params, function (err, dat) {
+    api.db.dats.getByShortname(req.params, function (err, dat) {
       if (err) {
         var state = getDefaultAppState()
         state.archive.error = {message: err.message}

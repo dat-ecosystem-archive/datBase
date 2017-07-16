@@ -69,6 +69,7 @@ test('api', function (t) {
         })
       })
     })
+
     test('api usernames should be unique', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ok(err)
@@ -350,6 +351,21 @@ test('api', function (t) {
           }, function (err, resp, body) {
             t.ifError(err)
             /* XXX: verify joe's password is updated */
+            t.end()
+          })
+        })
+      })
+    })
+
+    test('api admin can delete joe', function (t) {
+      client.login(users.admin, function (err) {
+        t.ifError(err)
+        client.secureRequest({method: 'DELETE', url: '/users', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
+          t.ok(err)
+          t.same(err.statusCode, 200, 'request accepted')
+          client.secureRequest({url: '/users', json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 1, 'has one user')
             t.end()
           })
         })

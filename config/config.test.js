@@ -2,6 +2,9 @@ var path = require('path')
 
 module.exports = {
   data: path.join(__dirname, '..', 'tests'),
+  admins: [
+    'admin'
+  ],
   db: {
     dialect: 'sqlite3',
     connection: {
