@@ -11,16 +11,15 @@ const UrlParams = require('uparams')
 const express = require('express')
 const redirect = require('express-simple-redirect')
 const Mixpanel = require('mixpanel')
+const Api = require('dat-registry-api')
 const app = require('../client/js/app')
 const page = require('./page')
-const Api = require('dat-registry-api')
 
 module.exports = function (config) {
-  config = config || {}
-
-  const mx = Mixpanel.init(config.mixpanel)
+  if (!config) throw new Error('Config required!')
   const api = Api(config)
   const archiver = api.archiver
+  const mx = Mixpanel.init(config.mixpanel || 'mixpanel disabled')
 
   var router = express()
   router.use(compression())

@@ -3,7 +3,6 @@ const fourohfour = require('../../pages/fourohfour')
 const header = require('../../components/header')
 
 module.exports = function (state, emit) {
-  console.log(state.township.profile)
   if (state.township.profile.role !== 'Admin') return fourohfour(state, emit)
   return html`
   <div>

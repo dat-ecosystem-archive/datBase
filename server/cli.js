@@ -1,15 +1,17 @@
 #!/usr/bin/env node
+const path = require('path')
 const bole = require('bole')
 const db = require('dat-registry-api/database/init')
 const Server = require('./')
-const Config = require('./config')
+
+const env = process.env.NODE_ENV || 'development'
+var config = require(path.join(__dirname, '..', 'config', 'config.' + env + '.js'))
 
 bole.output({
   level: 'info',
   stream: process.stdout
 })
 
-const config = Config()
 const PORT = process.env.PORT || process.env.DATLAND_PORT || 8080
 config.log = bole(__filename)
 const server = Server(config)
