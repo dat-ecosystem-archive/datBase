@@ -3,11 +3,10 @@ const TownshipClient = require('township-client')
 const request = require('request')
 const xtend = require('xtend')
 const helpers = require('../helpers')
-const Config = require('../../server/config')
 const fs = require('fs')
 const path = require('path')
 const datKey = fs.readFileSync(path.join(__dirname, '..', 'key.txt')).toString()
-var config = JSON.parse(JSON.stringify(Config()))
+var config = JSON.parse(JSON.stringify(require('../../config/config.test.js')))
 
 var rootUrl = 'http://localhost:' + config.port
 var api = rootUrl + '/api/v1'
@@ -351,6 +350,22 @@ test('api', function (t) {
           }, function (err, resp, body) {
             t.ifError(err)
             /* XXX: verify joe's password is updated */
+            t.end()
+          })
+        })
+      })
+    })
+
+    test('api admin can update joe', function (t) {
+      client.login(users.admin, function (err) {
+        t.ifError(err)
+        client.secureRequest({method: 'PUT', url: '/users', body: {id: users.joe.id, description: 'admin pwned'}, json: true}, function (err, resp, body) {
+          t.ok(err)
+          t.same(err.statusCode, 200, 'request accepted')
+          client.secureRequest({url: '/users?id=' + users.joe.id, json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 1, 'has one user')
+            t.same(body[0].description, 'admin pwned', 'has new description')
             t.end()
           })
         })
