@@ -1,5 +1,5 @@
 const html = require('choo/html')
-const loaderIcon = require('../loader-icon')
+const loaderIcon = require('./loader-icon')
 
 module.exports = function () {
   return html`<div class="loading">
