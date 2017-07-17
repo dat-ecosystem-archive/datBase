@@ -221,7 +221,7 @@ module.exports = function (config) {
         state.archive.id = dat.id
         dat.username = req.params.username
         dat.shortname = req.params.username + '/' + req.params.dataset
-        state.archive.metadata = dat
+        state.archive.metadata = xtend(state.archive.metadata, dat)
         return sendSPA(req, res, state)
       })
     })

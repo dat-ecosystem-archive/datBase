@@ -5,6 +5,7 @@ const copyButton = require('../../components/copy-button')
 const header = require('../../components/header')
 const preview = require('../../components/preview')
 const fourohfour = require('../../elements/404')
+const deleteButton = require('../../components/delete-button')
 const error = require('../../elements/error')
 const hyperdriveStats = require('../../elements/hyperdrive-stats')
 const css = require('sheetify')
@@ -36,7 +37,6 @@ const archivePage = (state, emit) => {
       }
     }
   }
-  // var owner = (meta && state.township) && meta.username === state.township.username
   var meta = state.archive.metadata
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
@@ -91,19 +91,13 @@ const archivePage = (state, emit) => {
     }
   `
 
-  // TODO: add delete button with confirm modal.
-  // const deleteButton = require('../../elements/delete-button')
-  // function remove () {
-  //   emit('archive:delete', meta.id)
-  // }
-  // ${owner ? deleteButton(remove) : html``}
-
   return html`
     <div class="${styles}">
       ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header-actions-wrapper">
+            ${deleteButton(state, emit)}
             ${copyButton('dat://' + state.archive.key, emit)}
             <a href="/download/${state.archive.key}" target="_blank" class="dat-header-action">
               <div class="btn__icon-wrapper">
