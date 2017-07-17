@@ -7,7 +7,7 @@ module.exports = function (state, emit) {
   if (!state.township.profile.admin && !owner) return html``
 
   return button({
-    text: 'Delete',
+    text: 'Unpublish',
     click: () => emit('archive:delete', {id: state.archive.id}),
     klass: 'btn btn--red'
   })
