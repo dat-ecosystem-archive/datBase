@@ -8,7 +8,7 @@ module.exports = function (state, emit) {
 
   return button({
     text: 'Delete',
-    click: () => emit('archive:delete', {id: meta.id}),
+    click: () => emit('archive:delete', {id: state.archive.id}),
     klass: 'btn btn--red'
   })
 }
