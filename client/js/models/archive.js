@@ -35,7 +35,6 @@ module.exports = function (state, emitter) {
   })
 
   emitter.on('archive:delete', function (data) {
-    console.log('deleting', data)
     api.dats.delete({id: data.id}, function (err, resp, json) {
       if (err) return emitter.emit('archive:update', {error: {message: err.message}})
       if (json.deleted === 1) {

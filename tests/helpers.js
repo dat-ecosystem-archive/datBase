@@ -6,7 +6,7 @@ module.exports = {
   server: function (config, cb) {
     const server = Server(config)
     server.listen(config.port, function () {
-      cb(server.close.bind(server))
+      cb(server.router.api.config, server.close.bind(server))
     })
   },
   tearDown: function (config, close) {

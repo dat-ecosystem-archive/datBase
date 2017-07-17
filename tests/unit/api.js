@@ -6,14 +6,16 @@ const helpers = require('../helpers')
 const fs = require('fs')
 const path = require('path')
 const datKey = fs.readFileSync(path.join(__dirname, '..', 'key.txt')).toString()
-var config = JSON.parse(JSON.stringify(require('../../config/config.test.js')))
+var defaultConfig = JSON.parse(JSON.stringify(require('../../config/config.test.js')))
 
-var rootUrl = 'http://localhost:' + config.port
+var rootUrl = 'http://localhost:' + defaultConfig.port
 var api = rootUrl + '/api/v1'
+var config
 test('api', function (t) {
-  helpers.server(config, function (close) {
+  helpers.server(defaultConfig, function (newConfig, close) {
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))
+    config = newConfig
 
     var client = TownshipClient({
       server: api,
