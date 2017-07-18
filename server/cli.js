@@ -5,7 +5,7 @@ const db = require('dat-registry-api/database/init')
 const Server = require('./')
 
 const env = process.env.NODE_ENV || 'development'
-var config = require(path.join(__dirname, '..', 'config', 'config.' + env + '.js'))
+const config = require(path.join(__dirname, '..', 'config', 'config.' + env + '.js'))
 
 bole.output({
   level: 'info',
