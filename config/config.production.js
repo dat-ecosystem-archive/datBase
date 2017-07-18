@@ -28,5 +28,9 @@ module.exports = {
     },
     useNullAsDefault: true
   },
-  whitelist: false
+  whitelist: false,
+  archiver: {
+    dir: 'archiver',
+    verifyConnection: true
+  }
 }

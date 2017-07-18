@@ -12,22 +12,22 @@ A web registry for the dat network. Hosted at [http://datproject.org](http://dat
 
 ## Setup
 
-0. Clone this repository, then copy the configuration file:
+Copy the configuration file and modify it to your liking.
 
 ```
 cp config/default.js config/config.development.js
 ```
 
-1. Install the dependencies:
+Install the dependencies
 
 ```
 npm install
 ```
 
-Create the database
-
+Watch assets:
 ```
-npm run database
+npm run watch-css
+npm run watch-js
 ```
 
 Start the server

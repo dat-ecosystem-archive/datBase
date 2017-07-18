@@ -33,10 +33,14 @@ module.exports = function (state, emitter) {
       emitter.emit('archive:update', json)
     })
   })
+
   emitter.on('archive:delete', function (data) {
     api.dats.delete({id: data.id}, function (err, resp, json) {
       if (err) return emitter.emit('archive:update', {error: {message: err.message}})
-      emitter.emit('pushState', '/profile')
+      if (json.deleted === 1) {
+        emitter.emit('message:success', 'Archive deleted.')
+        window.location.href = window.location.href
+      }
     })
   })
   emitter.on('archive:view', function (link) {

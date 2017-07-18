@@ -7,6 +7,7 @@ module.exports = function (config) {
   var server = http.createServer(function (req, res) {
     router(req, res)
   })
+  server.router = router
 
   server.on('close', function () {
     router.api.close(function () {

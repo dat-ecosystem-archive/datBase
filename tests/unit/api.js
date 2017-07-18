@@ -3,18 +3,19 @@ const TownshipClient = require('township-client')
 const request = require('request')
 const xtend = require('xtend')
 const helpers = require('../helpers')
-const Config = require('../../server/config')
 const fs = require('fs')
 const path = require('path')
 const datKey = fs.readFileSync(path.join(__dirname, '..', 'key.txt')).toString()
-var config = JSON.parse(JSON.stringify(Config()))
+var defaultConfig = JSON.parse(JSON.stringify(require('../../config/config.test.js')))
 
-var rootUrl = 'http://localhost:' + config.port
+var rootUrl = 'http://localhost:' + defaultConfig.port
 var api = rootUrl + '/api/v1'
+var config
 test('api', function (t) {
-  helpers.server(config, function (close) {
+  helpers.server(defaultConfig, function (newConfig, close) {
     var users = JSON.parse(JSON.stringify(helpers.users))
     var dats = JSON.parse(JSON.stringify(helpers.dats))
+    config = newConfig
 
     var client = TownshipClient({
       server: api,
@@ -69,6 +70,7 @@ test('api', function (t) {
         })
       })
     })
+
     test('api usernames should be unique', function (t) {
       client.register(users.joe, function (err, resp, body) {
         t.ok(err)
@@ -351,6 +353,40 @@ test('api', function (t) {
             t.ifError(err)
             /* XXX: verify joe's password is updated */
             t.end()
+          })
+        })
+      })
+    })
+
+    test('api admin can delete joes dat', function (t) {
+      client.login(users.admin, function (err) {
+        t.ifError(err)
+        client.secureRequest({method: 'DELETE', url: '/dats', body: {id: dats.cats.id}, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.deleted, 1, 'one row deleted')
+          client.secureRequest({url: '/dats?id=' + dats.cats.id, json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 0, 'dat is gone')
+            t.end()
+          })
+        })
+      })
+    })
+
+    test('api admin can suspend joe', function (t) {
+      client.login(users.admin, function (err) {
+        t.ifError(err)
+        client.secureRequest({method: 'PUT', url: '/users/suspend', body: {id: users.joe.id}, json: true}, function (err, resp, body) {
+          t.ifError(err)
+          t.same(body.suspended, 1, 'one row suspended')
+          client.secureRequest({url: '/users?id=' + users.joe.id, json: true}, function (err, resp, body) {
+            t.ifError(err)
+            t.same(body.length, 1, 'got joe')
+            t.same(body[0].role, '86', 'joe is suspended')
+            client.login(users.joe, function (err) {
+              t.ok(err)
+              t.end()
+            })
           })
         })
       })

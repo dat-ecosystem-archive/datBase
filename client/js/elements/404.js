@@ -1,6 +1,6 @@
 const html = require('choo/html')
-const datIcon = require('../icon')
-const loaderIcon = require('../loader-icon')
+const datIcon = require('./icon')
+const loaderIcon = require('./loader-icon')
 
 module.exports = function (props) {
   if (!props) props = {}

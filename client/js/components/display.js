@@ -58,13 +58,11 @@ module.exports = function (state, emit) {
     }
 
     function onerror (err) {
-      console.log('got err', err)
       var update = {}
       console.error(err)
       var message = 'Unsupported filetype'
       update.isLoading = false // Allow downloads for unsupported files
       update.error = {message: message}
-      console.log('sending', update)
       return emit('preview:update', update)
     }
   })

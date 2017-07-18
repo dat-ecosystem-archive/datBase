@@ -2,6 +2,9 @@ var path = require('path')
 
 module.exports = {
   data: path.join(__dirname, '..', 'tests'),
+  admins: [
+    'admin'
+  ],
   db: {
     dialect: 'sqlite3',
     connection: {
@@ -10,5 +13,9 @@ module.exports = {
     useNullAsDefault: true
   },
   whitelist: false,
-  port: process.env.PORT || 8888
+  port: process.env.PORT || 8888,
+  archiver: {
+    dir: 'archiver',
+    verifyConnection: false
+  }
 }

@@ -13,7 +13,6 @@ function createDat (dat) {
     dat.url = 'dat://' + archive.key.toString('hex')
     api.dats.create(dat, function (err, resp, json) {
       if (err) console.error(err.toString())
-      console.log('json')
     })
   })
 }

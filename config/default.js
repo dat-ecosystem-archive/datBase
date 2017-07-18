@@ -1,5 +1,6 @@
 module.exports = {
   data: 'data',
+  admins: ['admins'],
   mixpanel: process.env.MIXPANEL || 'notakey',
   township: {
     secret: process.env.TOWNSHIP_SECRET || 'very very not secret',
@@ -17,5 +18,9 @@ module.exports = {
     useNullAsDefault: true
   },
   whitelist: false,
-  archiver: 'archiver'
+  archiver: {
+    dir: 'archiver',
+    verifyConnection: false,
+    timeout: 3000
+  }
 }
