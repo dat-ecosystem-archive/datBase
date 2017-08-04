@@ -1,9 +1,5 @@
 const fourohfour = require('../elements/404')
-const http = require('nets')
-const from = require('from2')
 const html = require('choo/html')
-
-const renderData = module.parent ? function () { } : require('render-data')
 
 module.exports = function (state, emit) {
   var display = html`<div id="item">
@@ -14,9 +10,8 @@ module.exports = function (state, emit) {
     body: 'This could take a second..',
     link: false
   })}
-
   </div>`
-  if (module.parent) return
+  if (module.parent) return display
   const entryName = state.preview.entry && state.preview.entry.name
 
   if (state.preview.error) {
@@ -39,34 +34,7 @@ module.exports = function (state, emit) {
       link: false
     })
   }
-
-  // proper escape is done, but # is special
-  http({url: `/download/${state.archive.key}/${entryName.replace(/#/g, '%23')}`, method: 'GET'}, function (err, resp, file) {
-    if (resp.statusCode === 400) err = new Error('File does not exist.')
-    if (err) return emit('preview:update', {error: err})
-    try {
-      renderData.render({
-        name: entryName,
-        createReadStream: function () {
-          return from([file])
-        }
-      }, display, function (err) {
-        if (err) return onerror(err)
-      })
-    } catch (err) {
-      onerror(err)
-    }
-
-    function onerror (err) {
-      console.log('got err', err)
-      var update = {}
-      console.error(err)
-      var message = 'Unsupported filetype'
-      update.isLoading = false // Allow downloads for unsupported files
-      update.error = {message: message}
-      console.log('sending', update)
-      return emit('preview:update', update)
-    }
-  })
-  return display
+  return html`<iframe src="/download/${state.archive.key}/${entryName.replace(/#/g, '%23')}">
+    </frame>
+  `
 }
