@@ -6,7 +6,7 @@ const css = require('sheetify')
 
 // define models:
 var key = module.parent ? '' : window.location.origin
-app.use(persist({name: 'choo-datproject.org:' + key}))
+app.use(persist({name: 'choo-hypertracker' + key}))
 app.use(logger)
 app.use(require('./defaults')(defaults))
 app.use(require('./models/archive'))
