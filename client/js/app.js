@@ -23,6 +23,7 @@ function logger (state, emitter) {
 }
 
 css('dat-colors')
+css('tachyons')
 
 // define routes:
 app.route('/install', require('./pages/install'))

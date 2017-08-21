@@ -70,9 +70,6 @@ module.exports = function (config) {
   // landing page
   router.get('/install', send)
   router.get('/register', send)
-  router.get('/', send)
-  router.get('/about', send)
-  router.get('/team', send)
   router.get('/login', send)
   router.get('/reset-password', send)
   router.get('/profile/delete', send)
@@ -98,9 +95,6 @@ module.exports = function (config) {
     })
   })
 
-  router.get('/blog/*', function (req, res) {
-    res.redirect(301, 'http://blog.datproject.org')
-  })
   // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
   function onfile (archive, name, req, res) {
