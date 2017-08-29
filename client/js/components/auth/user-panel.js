@@ -88,7 +88,7 @@ module.exports = function (state, emit) {
           Signed in as <b>${state.township.profile.username}</b>
         </div>
       </div>
-      <ul>
+      <ul class="list">
         <li><a href="/${state.township.username}" data-no-routing>View Profile</a></li>
         <li><a href="/profile/edit" data-no-routing>Edit Profile</a></li>
         <li><a href="http://github.com/datproject/datproject.org/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>

@@ -21,7 +21,6 @@
 @import "imports/sections";
 @import "imports/horizontal-rule";
 @import "imports/block-create";
-@import "imports/footer";
 @import "imports/status-bar";
 @import "imports/file-system";
 @import "imports/buttons";
@@ -45,10 +44,11 @@ pre {
   box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
 }
 
-ul {
-  list-style: initial;
-  padding-left: 1rem;
-}
+// Comment out for footer, does it break anything else
+// ul {
+//   list-style: initial;
+//   padding-left: 1rem;
+// }
 
 .content-title {
   font-size: 2rem;
