@@ -1,25 +1,20 @@
 const choo = require('choo')
 const persist = require('choo-persist')
-const app = choo()
-const defaults = require('./models/defaults')
+const logger = require('choo-log')
 const css = require('sheetify')
+const defaults = require('./models/defaults')
+const app = choo()
 
 // define models:
 var key = module.parent ? '' : window.location.origin
 app.use(persist({name: 'choo-hypertracker' + key}))
-app.use(logger)
+app.use(logger())
 app.use(require('./defaults')(defaults))
 app.use(require('./models/archive'))
 app.use(require('./models/township'))
 app.use(require('./models/profile'))
 app.use(require('./models/message'))
 app.use(require('./models/preview'))
-
-function logger (state, emitter) {
-  emitter.on('*', function (messageName, data) {
-    console.log('event', messageName, data)
-  })
-}
 
 css('tachyons')
 css('dat-colors')
