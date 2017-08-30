@@ -32,7 +32,6 @@ function page (url, contents, appState) {
         <meta charset="utf-8" />
         <title>Dat</title>
         <link rel="stylesheet" type="text/css" href="/public/css/app.css"/>
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500|Source+Sans+Pro:400,700" rel="stylesheet">
         <link rel="icon" href="/public/img/favicon.ico">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${renderMetaTags()}
