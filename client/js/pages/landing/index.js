@@ -20,7 +20,7 @@ module.exports = function (state, emit) {
     }
   `
   const backgroundImageUrl = '/public/img/bg-landing-page.svg'
-  const star = datIcon('star-dat', {class: 'color-green'})
+  const hex = datIcon('hexagon-up', {class: 'color-green-darker'})
   return html`
     <div class="min-vh-100 pb7">
       <div class="absolute w-100">
@@ -33,9 +33,9 @@ module.exports = function (state, emit) {
       <div class="${splash} pb6-ns pb4 w-100 center" style="background-image: url(${backgroundImageUrl})">
         <section class="tc pa3 pt5-ns">
           <h1 class="f3 f2-m f1-l fw2 black-90 mv3 tracked">
-            Dat<span class="v-mid dib grow w2 h2">
-              ${star}
-            </span>Base
+            <span class="dib grow w2 h2 hex-title-icon">
+              ${hex}
+            </span>datBase
           </h1>
           <h2 class="f5 fw2 color-neutral-60 mb4 lh-copy">
             Search for data preprints on DatBase!
