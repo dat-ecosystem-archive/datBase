@@ -21,8 +21,8 @@ function logger (state, emitter) {
   })
 }
 
-css('dat-colors')
 css('tachyons')
+css('dat-colors')
 
 // define routes:
 app.route('/publish', require('./pages/publish'))

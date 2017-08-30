@@ -34,6 +34,7 @@ function page (url, contents, appState) {
         <link rel="stylesheet" type="text/css" href="/public/css/app.css"/>
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500|Source+Sans+Pro:400,700" rel="stylesheet">
         <link rel="icon" href="/public/img/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         ${renderMetaTags()}
         <meta property="og:site_name" content="Dat" />
         <meta property="og:type" content="article" />
