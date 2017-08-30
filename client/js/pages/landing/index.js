@@ -117,11 +117,11 @@ module.exports = function (state, emit) {
       }
     }
 
-    const searchIcon = datIcon('search', {class: 'absolute top-1 ml1 left-0 h2 w2 color-green'})
+    const searchIcon = datIcon('search', {class: 'bg-white absolute top-1 ml1 left-0 h2 w2 color-green'})
     return html`
       <div class="relative dat-input db">
         ${searchIcon}
-        <input class="f3 pv3 pr4 pl3 indent w-100 dat-input__input h3" name="import-dat" type="text" placeholder="preview dat://" onkeydown=${keydown} />
+        <input style="overflow:hidden;" class="f3 pv3 pr4 pl3 indent w-100 dat-input__input h3" name="import-dat" type="text" placeholder="preview dat://" onkeydown=${keydown} />
       </div>
     `
   }
