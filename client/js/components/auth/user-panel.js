@@ -88,11 +88,11 @@ module.exports = function (state, emit) {
           Signed in as <b>${state.township.profile.username}</b>
         </div>
       </div>
-      <ul class="list">
+      <ul class="list mb0">
         <li><a href="/${state.township.username}" data-no-routing>View Profile</a></li>
         <li><a href="/profile/edit" data-no-routing>Edit Profile</a></li>
         <li><a href="http://github.com/datproject/datproject.org/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>
-        <li><a href="#" onclick=${() => emit('township:logout', {})}>Logout</a></li>
+        <li class="mb0"><a href="#" onclick=${() => emit('township:logout', {})}>Logout</a></li>
       </ul>
   </div>`
 }

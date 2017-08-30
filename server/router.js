@@ -72,6 +72,7 @@ module.exports = function (config) {
     archiveRoute(req.query.query, function (state) {
       if (state.archive.error && state.archive.error.message === 'Invalid key') {
         // var url = '/' + req._parsedUrl.search
+        // TODO: this needs to show an error message or something
         return res.redirect(301, '/')
       }
       return sendSPA(req, res, state)

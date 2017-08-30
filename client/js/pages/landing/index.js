@@ -3,6 +3,9 @@ const css = require('sheetify')
 const footer = require('../../elements/footer')
 const datIcon = require('../../elements/icon')
 const homeSection = require('../../elements/home-section')
+const panel = require('../../components/auth/user-panel')
+const loginButton = require('../../components/login-button')
+const message = require('../../elements/message')
 
 module.exports = function (state, emit) {
   const splash = css`
@@ -18,9 +21,15 @@ module.exports = function (state, emit) {
   `
   const backgroundImageUrl = '/public/img/bg-landing-page.svg'
   const star = datIcon('star-dat', {class: 'color-green'})
-
   return html`
     <div class="min-vh-100 pb7">
+      <div class="absolute w-100">
+        ${message(state.message)}
+        <div class="tr pa2 ph4-l">
+          ${loginButton(state, emit)}
+          ${panel(state, emit)}
+        </div>
+      </div>
       <div class="${splash} pb6-ns pb4 w-100 center" style="background-image: url(${backgroundImageUrl})">
         <section class="tc pa3 pt5-ns">
           <h1 class="f3 f2-m f1-l fw2 black-90 mv3 tracked">
