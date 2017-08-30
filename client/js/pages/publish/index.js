@@ -1,11 +1,9 @@
 const html = require('choo/html')
-const header = require('./../../components/header')
+const wrapper = require('../wrapper')
 
 const publish = (state, emit) => {
   return html`
-    <div>
-    ${header(state, emit)}
-
+    <div class="">
     <section class="section bg-splash-02" id="publish">
       <div class="container">
           <div class="col-xs-12 col-sm-5 flex flex-column justify-center">
@@ -24,4 +22,4 @@ $ dat publish</code></pre>
     </div>`
 }
 
-module.exports = publish
+module.exports = wrapper(publish)

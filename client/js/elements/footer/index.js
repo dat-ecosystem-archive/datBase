@@ -37,7 +37,7 @@ module.exports = function () {
   `
 
   return html`
-  <footer class="bg-neutral white">
+  <footer class="bg-neutral white absolute bottom-0 w-100">
     <section class="pa2 ph4-m mw8-ns center-ns">
       <div class="pt2 cf">
         <div class="fl w-third">

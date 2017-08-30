@@ -1,10 +1,9 @@
 const html = require('choo/html')
-const header = require('../components/header')
+const wrapper = require('./wrapper')
 
-module.exports = function (state, emit) {
+module.exports = wrapper(function (state, emit) {
   return html`
     <div>
-      ${header(state, emit)}
       <section class="section">
         <div class="container">
           <h1>Desktop app</h1>
@@ -44,4 +43,4 @@ module.exports = function (state, emit) {
       </section>
     </div>
   `
-}
+})

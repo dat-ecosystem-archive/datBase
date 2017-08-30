@@ -77,7 +77,7 @@ const prefix = css`
 module.exports = function (state, emit) {
   if (!state.township.username) return
 
-  return html`<div class="user-panel ${prefix} ${state.township.sidePanel}">
+  return html`<div class="user-panel tl mr2 mr4-l ${prefix} ${state.township.sidePanel}">
       <a class="close-button" title="Close" href="#" onclick=${() => emit('township:sidePanel')}>
         <svg>
           <use xlink:href="#daticon-cross" />

@@ -1,8 +1,8 @@
 const html = require('choo/html')
+const wrapper = require('../wrapper')
 const hyperdrive = require('../../components/hyperdrive')
 const hyperhealth = require('../../components/health')
 const copyButton = require('../../components/copy-button')
-const header = require('../../components/header')
 const preview = require('../../components/preview')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
@@ -28,8 +28,7 @@ const archivePage = (state, emit) => {
       var props = ARCHIVE_ERRORS[err.message]
       if (props) {
         return html`
-        <div>
-        ${header(state, emit)}
+        <div class="">
         ${fourohfour(props)}
         </div>
         `
@@ -100,7 +99,6 @@ const archivePage = (state, emit) => {
 
   return html`
     <div class="${styles}">
-      ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header-actions-wrapper">
@@ -137,4 +135,4 @@ const archivePage = (state, emit) => {
     </div>`
 }
 
-module.exports = archivePage
+module.exports = wrapper(archivePage)
