@@ -49,7 +49,7 @@ module.exports = function (state, emit) {
             Research papers are becoming increasingly accessible through open access and preprint servers.
             Research data is still behind locked custom APIs, confusing interfaces, or slow HTTP servers.
             We dream of world when all this data can be accessed as easy as the web.
-            <a href="#">Imagine with us</a>.
+            <a href="#"> Imagine with us</a>.
           </p>
           <p class="f3 lh-copy measure-wide">
             DatBase is distributed preprints for data!
