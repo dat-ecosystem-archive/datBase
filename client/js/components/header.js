@@ -34,7 +34,8 @@ const header = (state, emit) => {
               <span class="dat-logo__word">Dat</span>
             </a>
             ${importButton(emit)}
-            <a href="/explore" data-no-routing class="header-nav-link">Explore</a>
+            <a href="https://docs.datproject.org" data-no-routing class="header-nav-link">Docs</a>
+            <a href="/explore" class="header-nav-link">Explore</a>
             <a href="/install" class="header-nav-link">Install</a>
           </nav>
           <div>

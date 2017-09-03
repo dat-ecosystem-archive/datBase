@@ -69,7 +69,7 @@ module.exports = function (state, emit) {
   </div>
 </section>
 
-<section class="section bg-neutral-04">
+<section id="explore" class="section bg-neutral-04">
   <div class="container">
 
     <h2 class="content-title">Shared with Dat</h2>
