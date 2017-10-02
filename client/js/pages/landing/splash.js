@@ -197,6 +197,9 @@ module.exports = function (state, emit) {
       <a href="http://www.knightfoundation.org/grants/201346305/">
         <img src="/public/img/knight.png">
       </a>
+      <a href="https://www.moore.org/">
+        <img src="/public/img/moore.png">
+      </a>
     </div>
   </div>
 </section>
