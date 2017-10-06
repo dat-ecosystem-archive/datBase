@@ -27,6 +27,6 @@ after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
     if [[ "$TRAVIS_BRANCH" == "master" || "$TRAVIS_BRANCH" == "beta" || "$TRAVIS_BRANCH" == "released" ]]; then
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker tag datproject/datfolder:travis-${TRAVIS_BUILD_NUMBER} datproject/datfolder:$TRAVIS_BRANCH;
-    docker push datproject/datfolder:$TRAVIS_BRANCH;
+    docker tag datproject/datbase:travis-${TRAVIS_BUILD_NUMBER} datproject/datbase:$TRAVIS_BRANCH;
+    docker push datproject/datbase:$TRAVIS_BRANCH;
     fi; fi

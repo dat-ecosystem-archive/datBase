@@ -1,6 +1,6 @@
 var fs = require('fs')
 var path = require('path')
-var testServer = process.env.TEST_SERVER || 'https://datproject.org'
+var testServer = process.env.TEST_SERVER || 'https://datbase.org'
 const os = require('os')
 const modificatorKey = (os.type().toLowerCase() === 'darwin')
  ? 'COMMAND'

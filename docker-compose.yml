@@ -1,8 +1,8 @@
 version: '2'
 services:
-  datproject:
+  datbase:
     build: .
-    image: datproject/datfolder:${TAG}
+    image: datproject/datbase:${TAG}
     ports:
       - 25:25
     expose:
@@ -13,7 +13,7 @@ services:
       - ./data:/data
   newdat:
     build: .
-    image: datproject/datfolder:${TAG}
+    image: datproject/datbase:${TAG}
     command: sh -c 'npm i dat-node && node tests/new-dat.js'
     volumes:
       - ./tests:/usr/src/app/tests
@@ -28,11 +28,11 @@ services:
     image: blueimp/nightwatch:0.9
     depends_on:
       - chromedriver
-      - datproject
+      - datbase
       - newdat
     environment:
       - PORT=80
-      - TEST_SERVER=http://datproject
-      - WAIT_FOR_HOSTS=datproject:80 chromedriver:4444 chromedriver:6060
+      - TEST_SERVER=http://datbase
+      - WAIT_FOR_HOSTS=datbase:80 chromedriver:4444 chromedriver:6060
     volumes:
       - ./tests:/home/node

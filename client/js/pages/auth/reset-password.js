@@ -5,7 +5,8 @@ const header = require('./../../components/header')
 const form = require('get-form-data')
 
 function body (state, emit) {
-//  const authenticated = state.township.username
+  emit(state.events.DOMTITLECHANGE, 'Reset Password | datBase')
+  // const authenticated = state.township.username
   var query = {}
   if (!module.parent) query = url.parse(window.location.href).query
   const {accountKey, resetToken, email} = querystring.parse(query)

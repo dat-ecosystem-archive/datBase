@@ -36,6 +36,7 @@ function placeholder () {
 
 module.exports = (state, emit) => {
   if (state.error) {
+    emit(state.events.DOMTITLECHANGE, 'Error | datBase')
     return html`
     <div>
       ${header(state, emit)}
@@ -43,6 +44,7 @@ module.exports = (state, emit) => {
     </div>
     `
   }
+  emit(state.events.DOMTITLECHANGE, `${state.profile.username} | datBase`)
 
   var username = state.profile.username
   var email = state.profile.email

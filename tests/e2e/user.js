@@ -1,4 +1,4 @@
-var testServer = process.env.TEST_SERVER || 'https://datproject.org'
+var testServer = process.env.TEST_SERVER || 'https://datbase.org'
 
 module.exports = new function () {
   var testCases = this

@@ -47,10 +47,11 @@ a {
   }
 }
 
-ul,
-li {
-  @include list-plain;
-}
+// Comment out for footer, does it break anything else
+// ul,
+// li {
+//   @include list-plain;
+// }
 
 svg {
   fill: currentColor;

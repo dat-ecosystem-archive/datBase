@@ -1,8 +1,8 @@
 const html = require('choo/html')
+const wrapper = require('../wrapper')
 const hyperdrive = require('../../components/hyperdrive')
 const hyperhealth = require('../../components/health')
 const copyButton = require('../../components/copy-button')
-const header = require('../../components/header')
 const preview = require('../../components/preview')
 const fourohfour = require('../../elements/404')
 const error = require('../../elements/error')
@@ -22,14 +22,14 @@ const archivePage = (state, emit) => {
   var err = state.archive.error
   if (!module.parent && state.archive.retries < 3) emit('archive:getMetadata', {timeout: 3000})
   if (err) {
+    emit(state.events.DOMTITLECHANGE, 'Error Loading Dat | datBase')
     if (err.message === 'Block not downloaded') err.message = 'timed out'
     if (!state.archive.entries.length) {
       if (state.archive.retries >= 3) err = {message: 'too many retries'}
       var props = ARCHIVE_ERRORS[err.message]
       if (props) {
         return html`
-        <div>
-        ${header(state, emit)}
+        <div class="">
         ${fourohfour(props)}
         </div>
         `
@@ -40,6 +40,9 @@ const archivePage = (state, emit) => {
   var meta = state.archive.metadata
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
+
+  emit(state.events.DOMTITLECHANGE, `${title} | DatBase`)
+
   var styles = css`
     :host {
       .dat-header {
@@ -100,7 +103,6 @@ const archivePage = (state, emit) => {
 
   return html`
     <div class="${styles}">
-      ${header(state, emit)}
       <div id="dat-info" class="dat-header">
         <div class="container">
           <div class="dat-header-actions-wrapper">
@@ -137,4 +139,4 @@ const archivePage = (state, emit) => {
     </div>`
 }
 
-module.exports = archivePage
+module.exports = wrapper(archivePage)

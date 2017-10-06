@@ -77,7 +77,7 @@ const prefix = css`
 module.exports = function (state, emit) {
   if (!state.township.username) return
 
-  return html`<div class="user-panel ${prefix} ${state.township.sidePanel}">
+  return html`<div class="user-panel tl mr2 mr4-l ${prefix} ${state.township.sidePanel}">
       <a class="close-button" title="Close" href="#" onclick=${() => emit('township:sidePanel')}>
         <svg>
           <use xlink:href="#daticon-cross" />
@@ -88,11 +88,11 @@ module.exports = function (state, emit) {
           Signed in as <b>${state.township.profile.username}</b>
         </div>
       </div>
-      <ul>
+      <ul class="list mb0">
         <li><a href="/${state.township.username}" data-no-routing>View Profile</a></li>
         <li><a href="/profile/edit" data-no-routing>Edit Profile</a></li>
-        <li><a href="http://github.com/datproject/datproject.org/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>
-        <li><a href="#" onclick=${() => emit('township:logout', {})}>Logout</a></li>
+        <li><a href="http://github.com/datproject/datbase/issues" target="_blank" class="color-neutral-50 hover-color-neutral-70">Report Bug</a></li>
+        <li class="mb0"><a href="#" onclick=${() => emit('township:logout', {})}>Logout</a></li>
       </ul>
   </div>`
 }
