@@ -20,7 +20,7 @@ install:
 
 script:
   - docker-compose up -d newdat && sleep 10
-  - docker-compose run --rm datproject sh -c 'npm i --only=dev --loglevel warn && npm run test'
+  - docker-compose run --rm datbase sh -c 'npm i --only=dev --loglevel warn && npm run test'
   - docker-compose run --rm nightwatch
 
 after_success:
