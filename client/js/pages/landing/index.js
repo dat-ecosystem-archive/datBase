@@ -50,7 +50,7 @@ module.exports = function (state, emit) {
       </div>
       ${homeSection({
         'title': 'Coming to a computer near you...',
-        'subtitle': 'Built on the Dat Protocol, we are enhancing research & publishing tools with a data-first infrastructure.',
+        'subtitle': 'Built on the Dat Protocol, enhancing existing research & publishing tools with a data-first infrastructure.',
         'sections': [
           {
             'title': 'Try Dat',
