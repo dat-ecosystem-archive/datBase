@@ -1,6 +1,6 @@
 var fs = require('fs')
 var path = require('path')
-var testServer = process.env.TEST_SERVER || 'https://datproject.org'
+var testServer = process.env.TEST_SERVER || 'https://datbase.org'
 
 module.exports = new function () {
   var key = fs.readFileSync(path.join(__dirname, '..', 'key.txt')).toString()

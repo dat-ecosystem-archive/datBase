@@ -7,11 +7,11 @@ function page (url, contents, appState) {
 
   function renderMetaTags () {
     var defaultMetadata = {
-      title: 'Dat',
-      author: 'Dat',
-      description: 'Dat is the non-profit, secure, and distributed package manager for data.',
-      image: 'https://datproject.org/public/img/dat-hexagon.png',
-      twitterImage: 'https://datproject.org/public/img/dat-data-logo.png',
+      title: 'datBase',
+      author: 'Dat Project',
+      description: 'Open data powered by Dat. Future-friendly apps for your research data pipeline.',
+      image: 'https://datbase.org/public/img/dat-hexagon.png',
+      twitterImage: 'https://datbase.org/public/img/dat-data-logo.png',
       twitterSite: '@dat_project'
     }
     var md = appState.archive && appState.archive.metadata ? appState.archive.metadata : {}
@@ -55,7 +55,7 @@ function page (url, contents, appState) {
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', 'UA-49664853-1', 'datproject.org');
+        ga('create', 'UA-49664853-1', 'datbase.org');
         ga('send', 'pageview');
       </script>
       <script type="text/javascript" src="/public/js/app.js"></script>

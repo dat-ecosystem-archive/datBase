@@ -1,14 +1,14 @@
 {
-  "name": "datproject.org",
+  "name": "datbase.org",
   "version": "1.0.0",
-  "description": "An online place for dats.",
+  "description": "Open data powered by Dat",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/datproject/datproject.org.git"
+    "url": "https://github.com/datproject/datbase.git"
   },
   "bugs": {
-    "url": "https://github.com/datproject/datproject.org/issues"
+    "url": "https://github.com/datproject/datbase/issues"
   },
   "main": "server/index.js",
   "bin": "server/cli.js",
