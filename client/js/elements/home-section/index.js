@@ -41,7 +41,7 @@ module.exports = function (props) {
   subtitle.innerHTML = props.subtitle
 
   return html`
-    <section class="pt4 ${props.bgColor} ${props.color ? props.color : ''}">
+    <section class="pv4 ${props.bgColor} ${props.color ? props.color : ''}">
       <div class="pv2 ph3 pa4-m mw8-ns center-ns">
         <header>
           <h2 class="f2 mb0">${props.title}</h2>
@@ -60,7 +60,7 @@ module.exports = function (props) {
   function cta () {
     if (!props.cta) return
     return html`
-      <p class="pv4">
+      <p class="pt4">
         <a href="${props.cta.link}" class="f5 white bg-animate hover-color-white bg-green hover-bg-dark-green pa3 link">${props.cta.text}</a>
       </p>
     `

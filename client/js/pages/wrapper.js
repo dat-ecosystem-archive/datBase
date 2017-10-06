@@ -5,7 +5,7 @@ const footer = require('../elements/footer')
 module.exports = function (view, opts) {
   return function (state, emit) {
     return html`
-      <div class="min-vh-100 pb7">
+      <div class="">
         ${header(state, emit)}
         ${view(state, emit)}
         ${footer()}
