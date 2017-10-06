@@ -22,6 +22,7 @@ const archivePage = (state, emit) => {
   var err = state.archive.error
   if (!module.parent && state.archive.retries < 3) emit('archive:getMetadata', {timeout: 3000})
   if (err) {
+    emit(state.events.DOMTITLECHANGE, 'Error Loading Dat | datBase')
     if (err.message === 'Block not downloaded') err.message = 'timed out'
     if (!state.archive.entries.length) {
       if (state.archive.retries >= 3) err = {message: 'too many retries'}
@@ -39,6 +40,9 @@ const archivePage = (state, emit) => {
   var meta = state.archive.metadata
   var title = meta && meta.title || meta.shortname || state.archive.key
   var description = meta && meta.description
+
+  emit(state.events.DOMTITLECHANGE, `${title} | DatBase`)
+
   var styles = css`
     :host {
       .dat-header {

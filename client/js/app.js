@@ -15,6 +15,7 @@ app.use(require('./models/township'))
 app.use(require('./models/profile'))
 app.use(require('./models/message'))
 app.use(require('./models/preview'))
+app.use(require('./plugins/analytics'))
 
 css('tachyons')
 css('dat-colors')

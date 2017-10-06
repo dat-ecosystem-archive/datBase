@@ -2,6 +2,7 @@ const html = require('choo/html')
 const wrapper = require('../wrapper')
 
 const publish = (state, emit) => {
+  emit(state.events.DOMTITLECHANGE, 'Publish Data | datBase')
   return html`
     <div class="">
     <section class="section bg-splash-02" id="publish">

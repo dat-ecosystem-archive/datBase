@@ -118,22 +118,4 @@ module.exports = function (state, emit) {
       ${footer()}
     </div>
   `
-
-  function search () {
-    const keydown = (e) => {
-      if (e.keyCode === 13) {
-        var link = e.target.value
-        e.target.value = ''
-        emit('archive:view', link)
-      }
-    }
-
-    const searchIcon = datIcon('search', {class: 'bg-white absolute top-1 ml1 left-0 h2 w2 color-green'})
-    return html`
-      <div class="relative dat-input db">
-        ${searchIcon}
-        <input style="overflow:hidden;" class="f3 pv3 pr4 pl3 indent w-100 dat-input__input h3" name="import-dat" type="text" placeholder="preview dat://" onkeydown=${keydown} />
-      </div>
-    `
-  }
 }

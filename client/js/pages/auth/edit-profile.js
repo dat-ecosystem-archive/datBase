@@ -12,6 +12,8 @@ var prefix = css`
 `
 
 module.exports = (state, emit) => {
+  emit(state.events.DOMTITLECHANGE, 'Edit Profile | datBase')
+
   function onSubmit (e) {
     const data = form(e.target)
     data.id = state.township.profile.id
