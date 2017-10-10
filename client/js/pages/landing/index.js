@@ -50,12 +50,12 @@ module.exports = function (state, emit) {
       </div>
       ${homeSection({
         'title': 'Coming to a computer near you...',
-        'subtitle': 'Built on the Dat Protocol, enhancing existing research & publishing tools with a data-first infrastructure.',
+        'subtitle': 'Using the Dat Protocol, we are enhancing research & publishing tools with a data-first infrastructure. Coming soon.',
         'sections': [
           {
             'title': 'Try Dat',
             'text': `
-            See what it is like to use Dat!
+            See what it is like to use Dat today!
               The Try Dat workshop will walk you through sharing and downloading data.
               It showcases unique properties of the Dat Protocol.
               <br>
