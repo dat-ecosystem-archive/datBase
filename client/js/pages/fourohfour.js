@@ -1,12 +1,12 @@
 const html = require('choo/html')
-const header = require('../components/header')
+const wrapper = require('./wrapper')
 const four = require('../elements/404')
 
-module.exports = function (state, emit) {
+module.exports = wrapper(function fourohfour (state, emit) {
+  emit(state.events.DOMTITLECHANGE, '404 - Page Not Found')
   return html`
     <div>
-      ${header(state, emit)}
       ${four()}
     </div>
   `
-}
+})

@@ -1,8 +1,8 @@
-# Dat Registry
+# datBase
 
-A web registry for the dat network. Hosted at [http://datproject.org](http://datproject.org).
+Open data powered by Dat. Future-friendly apps for your research data pipeline. Hosted at [http://datbase.org](http://datbase.org).
 
-[![Build Status](https://travis-ci.org/datproject/datproject.org.svg?branch=master)](https://travis-ci.org/datproject/datproject.org)
+[![Build Status](https://travis-ci.org/datproject/datBase.svg?branch=master)](https://travis-ci.org/datproject/datBase)
 
 ## Features
 

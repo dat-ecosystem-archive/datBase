@@ -27,7 +27,7 @@ function makeClient () {
 module.exports = new function () {
   var ipcServer, ipcClient
   var firstClient = process.env.__NIGHTWATCH_ENV_KEY.match(/_1$/)
-  var testServer = process.env.TEST_SERVER || 'https://dat.land'
+  var testServer = process.env.TEST_SERVER || 'https://datbase.org'
   if (firstClient) {
     ipcServer = makeServer()
   } else {

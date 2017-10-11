@@ -9,7 +9,6 @@ const compression = require('compression')
 const bodyParser = require('body-parser')
 const UrlParams = require('uparams')
 const express = require('express')
-const redirect = require('express-simple-redirect')
 const Mixpanel = require('mixpanel')
 const app = require('../client/js/app')
 const page = require('./page')
@@ -27,13 +26,7 @@ module.exports = function (config) {
   router.use(compression())
   router.use('/public', express.static(path.join(__dirname, '..', 'public')))
   router.use(bodyParser.json()) // support json encoded bodies
-  router.use(redirect({
-    '/blog': 'https://blog.datproject.org'
-  }, 301))
 
-  router.get('/paper', function (req, res) {
-    fs.createReadStream(path.join(__dirname, '..', 'public', 'dat-paper.pdf')).pipe(res)
-  })
   router.post('/api/v1/users', api.users.post)
   router.get('/api/v1/users', api.users.get)
   router.put('/api/v1/users', api.users.put)
@@ -68,11 +61,8 @@ module.exports = function (config) {
   }
 
   // landing page
-  router.get('/install', send)
-  router.get('/register', send)
   router.get('/', send)
-  router.get('/about', send)
-  router.get('/team', send)
+  router.get('/register', send)
   router.get('/login', send)
   router.get('/reset-password', send)
   router.get('/profile/delete', send)
@@ -81,26 +71,14 @@ module.exports = function (config) {
   router.get('/view', function (req, res) {
     archiveRoute(req.query.query, function (state) {
       if (state.archive.error && state.archive.error.message === 'Invalid key') {
-        var url = '/explore' + req._parsedUrl.search
-        console.log('redirecting', url)
-        return res.redirect(301, url)
+        // var url = '/' + req._parsedUrl.search
+        // TODO: this needs to show an error message or something
+        return res.redirect(301, '/')
       }
       return sendSPA(req, res, state)
     })
   })
 
-  router.get('/explore', function (req, res) {
-    var state = getDefaultAppState()
-    db.dats.search(req.query, function (err, resp) {
-      if (err) return onerror(err, res)
-      state.explore.data = resp
-      sendSPA(req, res, state)
-    })
-  })
-
-  router.get('/blog/*', function (req, res) {
-    res.redirect(301, 'http://blog.datproject.org')
-  })
   // TODO: move a lot of this junk below to some other api file so it can be more easily read
 
   function onfile (archive, name, req, res) {
