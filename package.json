@@ -55,7 +55,6 @@
   "devDependencies": {
     "dat-node": "^3.5.0",
     "marked": "^0.3.6",
-    "nodemon": "^1.10.0",
     "request": "^2.79.0",
     "rimraf": "^2.5.4",
     "standard": "^7.1.2",
@@ -102,6 +101,7 @@
     "node-sass": "^3.8.0",
     "node-sass-magic-importer": "^0.1.4",
     "node-version-assets": "^1.1.0",
+    "nodemon": "^1.10.0",
     "pretty-bytes": "^3.0.1",
     "pump": "^1.0.2",
     "range-parser": "^1.2.0",

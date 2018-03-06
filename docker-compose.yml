@@ -4,9 +4,7 @@ services:
     build: .
     image: datproject/datbase:${TAG}
     ports:
-      - 25:25
-    expose:
-      - 80
+      - 8888:80
     environment:
       - NODE_ENV=${NODE_ENV}
     volumes:
