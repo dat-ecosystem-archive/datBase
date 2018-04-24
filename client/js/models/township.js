@@ -86,4 +86,9 @@ module.exports = function (state, emitter) {
       emitter.emit('township:update', {passwordResetConfirmResponse: body.message, passwordResetResponse: null})
     })
   })
+
+  emitter.on('township:error', function (err) {
+    state.township.error = err.error
+    emitter.emit('render')
+  })
 }
