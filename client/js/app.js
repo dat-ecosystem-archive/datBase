@@ -8,7 +8,9 @@ const app = choo()
 // define models:
 var key = module.parent ? '' : window.location.origin
 app.use(persist({name: 'choo-hypertracker' + key}))
-app.use(logger())
+if (process.env.NODE_ENV !== 'production') {
+  app.use(logger())
+}
 app.use(require('./defaults')(defaults))
 app.use(require('./models/archive'))
 app.use(require('./models/township'))
