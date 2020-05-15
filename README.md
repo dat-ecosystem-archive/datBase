@@ -4,6 +4,10 @@ Open data powered by Dat. Future-friendly apps for your research data pipeline. 
 
 [![Build Status](https://travis-ci.org/datproject/datBase.svg?branch=master)](https://travis-ci.org/datproject/datBase)
 
+## Deprecated
+
+There are no active maintainers.
+
 ## Features
 
 * Preview the files in a dat in the browser.
