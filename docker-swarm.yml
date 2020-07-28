@@ -1,0 +1,41 @@
+version: '3.4'
+# start a swarm stack by running
+#  docker stack up -c docker-swarm.yml dat
+#
+# Requires a docker swarm with traefik running on an externally connectable `infra_traefik` network
+#  see https://github.com/onaci/swarm-infra
+services:
+  datbase:
+    build: .
+    image: datproject/datbase:${TAG:-master}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - TOWNSHIP_SECRET
+      - DATA=/data
+    volumes:
+      - data:/data
+    configs:
+      - source: datbase_config
+        target: /usr/src/app/config/config.development.js
+    networks:
+      default:
+        aliases:
+        - datbase.${STACKDOMAIN:-loc.alho.st}
+      infra_traefik:
+    deploy:
+      labels:
+        - "traefik.docker.network=infra_traefik"
+        # http://datbase.${STACKDOMAIN:-loc.alho.st}/
+        - "traefik.datbase.port=80"
+        - "traefik.datbase.frontend.rule=Host: datbase.${STACKDOMAIN:-loc.alho.st}"
+
+networks:
+  infra_traefik:
+    external: true
+
+volumes:
+  data:
+
+configs:
+  datbase_config:
+    file: ./config/default.js
