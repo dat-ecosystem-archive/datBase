@@ -23,6 +23,7 @@ module.exports = function (state, emit) {
       }
     }
   }
+  
   emit('archive:update', {updatedAt: updated})
   var vals = Object.keys(lookup).map(key => lookup[key])
   var onclick = (ev, entry) => {
@@ -35,6 +36,10 @@ module.exports = function (state, emit) {
       return false
     }
   }
-
-  return hyperdriveRenderer(state.archive.root, vals, onclick)
+  
+  var opts = {
+    offset: state.archive.offset,
+    limit: state.archive.limit
+  }
+  return hyperdriveRenderer(state.archive.root, state.archive.entries, opts, onclick)
 }
