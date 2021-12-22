@@ -1,12 +1,14 @@
+[![deprecated](http://badges.github.io/stability-badges/dist/deprecated.svg)](https://dat-ecosystem.org/) 
+
+More info on active projects and modules at [dat-ecosystem.org](https://dat-ecosystem.org/) <img src="https://i.imgur.com/qZWlO1y.jpg" width="30" height="30" /> 
+
+---
+
 # datBase
 
 Open data powered by Dat. Future-friendly apps for your research data pipeline. Hosted at [http://datbase.org](http://datbase.org).
 
 [![Build Status](https://travis-ci.org/datproject/datBase.svg?branch=master)](https://travis-ci.org/datproject/datBase)
-
-## Deprecated
-
-There are no active maintainers.
 
 ## Features
 
